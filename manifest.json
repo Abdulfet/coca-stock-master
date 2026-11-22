@@ -1,9 +1,19 @@
 {
+  "id": "/coca-stock-master/",
   "name": "መጋዘን",
   "short_name": "መጋዘን",
   "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#060a12",
   "theme_color": "#060a12",
-  "orientation": "portrait"
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "192x192 512x512 any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
 }

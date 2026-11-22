@@ -4,8 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>መጋዘን</title>
-  <link rel="manifest" href="manifest.json">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" type="image/svg+xml" href="./icon.svg">
   <meta name="theme-color" content="#060a12">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
@@ -22,10 +25,10 @@
 
     /* መግቢያ */
     .gate { position: fixed; inset: 0; z-index: 900; background: radial-gradient(circle at top, #172554 0%, #060a12 72%); display: flex; align-items: center; justify-content: center; padding: 14px; }
-    .gate-card { width: 100%; max-width: 350px; background: rgba(15, 23, 42, 0.94); border: 1px solid var(--border-strong); border-radius: 22px; padding: 24px 20px; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 24px 48px rgba(0,0,0,0.75); }
-    .gate-mark { width: 58px; height: 58px; margin: 0 auto; border-radius: 16px; border: 2px solid var(--teal); background: var(--surface-deep); color: var(--teal); font-size: 20px; font-weight: 900; display: flex; align-items: center; justify-content: center; }
+    .gate-card { width: 100%; max-width: 360px; background: rgba(15, 23, 42, 0.95); border: 1px solid var(--border-strong); border-radius: 22px; padding: 22px 18px; display: flex; flex-direction: column; gap: 11px; box-shadow: 0 24px 48px rgba(0,0,0,0.75); }
+    .gate-mark { width: 54px; height: 54px; margin: 0 auto; border-radius: 15px; border: 2px solid var(--teal); background: var(--surface-deep); color: var(--teal); font-size: 20px; font-weight: 900; display: flex; align-items: center; justify-content: center; }
     .gate-title { text-align: center; font-size: 16px; font-weight: 900; }
-    .gate-pin { height: 48px; text-align: center; font-size: 24px; letter-spacing: 8px; -webkit-text-security: disc; }
+    .gate-pin { height: 46px; text-align: center; font-size: 22px; letter-spacing: 8px; -webkit-text-security: disc; }
 
     /* ዋና ቅርፊት */
     .shell { max-width: 640px; height: 100vh; height: 100dvh; margin: 0 auto; display: none; flex-direction: column; padding: 6px 6px 0; position: relative; overflow: hidden; }
@@ -34,7 +37,7 @@
     .brand-box { display: flex; flex-direction: column; min-width: 0; flex-shrink: 1; }
     .brand-name { font-size: 11.5px; font-weight: 900; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .brand-sub { font-size: 8.5px; font-weight: 800; color: var(--teal); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .wh-sel { margin-left: auto; max-width: 142px; height: 30px; padding: 0 6px; border-radius: 8px; border: 1px solid var(--primary); background: var(--surface-deep); color: var(--primary); font-size: 11px; font-weight: 900; outline: none; }
+    .wh-sel { margin-left: auto; max-width: 138px; height: 30px; padding: 0 6px; border-radius: 8px; border: 1px solid var(--primary); background: var(--surface-deep); color: var(--primary); font-size: 11px; font-weight: 900; outline: none; }
     .sync-pill { display: none; height: 26px; padding: 0 7px; border-radius: 13px; border: 1px solid var(--amber); background: rgba(245,158,11,0.18); color: #fde68a; font-size: 10px; font-weight: 900; cursor: pointer; flex-shrink: 0; }
 
     /* ጎን ሜኑ */
@@ -50,26 +53,26 @@
     /* የጋራ ክፍሎች */
     .view { display: none; flex: 1; min-height: 0; flex-direction: column; overflow: hidden; }
     .view.active { display: flex; }
-    .seg { display: flex; gap: 5px; margin-bottom: 6px; flex-shrink: 0; }
-    .seg-btn { flex: 1; height: 34px; border-radius: 10px; border: 1px solid var(--border-strong); background: var(--surface); color: var(--muted); font-size: 11.5px; font-weight: 900; cursor: pointer; }
+    .seg { display: flex; gap: 5px; margin-bottom: 5px; flex-shrink: 0; }
+    .seg-btn { flex: 1; height: 33px; border-radius: 10px; border: 1px solid var(--border-strong); background: var(--surface); color: var(--muted); font-size: 11px; font-weight: 900; cursor: pointer; }
     .seg-btn.out { background: #3b0a0a; border-color: var(--rose); color: #fca5a5; }
     .seg-btn.in { background: #052e16; border-color: var(--emerald); color: #86efac; }
     .seg-btn.adj { background: #172554; border-color: var(--primary); color: #7dd3fc; }
     .seg-btn.teal { background: var(--teal-dark); border-color: var(--teal); color: #99f6e4; }
 
-    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 11px; padding: 6px; margin-bottom: 6px; flex-shrink: 0; }
-    .inp, .sel { width: 100%; height: 35px; padding: 0 8px; border-radius: 8px; border: 1px solid var(--border-strong); background: var(--surface-deep); color: var(--text); font-size: 12px; font-weight: 800; outline: none; }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 11px; padding: 6px; margin-bottom: 5px; flex-shrink: 0; }
+    .inp, .sel { width: 100%; height: 34px; padding: 0 8px; border-radius: 8px; border: 1px solid var(--border-strong); background: var(--surface-deep); color: var(--text); font-size: 12px; font-weight: 800; outline: none; }
     .inp:focus, .sel:focus { border-color: var(--teal); }
     .inp.mono { font-family: ui-monospace, monospace; text-align: center; color: var(--primary); }
     .grid-3 { display: grid; grid-template-columns: 1.2fr 1.05fr 0.85fr; gap: 5px; }
     .grid-2 { display: grid; grid-template-columns: 1.45fr 1fr; gap: 5px; }
-    .doc-combo { display: flex; border: 1.5px solid var(--primary); border-radius: 8px; overflow: hidden; height: 35px; background: var(--surface-deep); }
+    .doc-combo { display: flex; border: 1.5px solid var(--primary); border-radius: 8px; overflow: hidden; height: 34px; background: var(--surface-deep); }
     .doc-combo input { border: none; border-radius: 0; flex: 1; min-width: 0; text-align: center; color: var(--primary); font-family: ui-monospace, monospace; }
     .btn-void-mini { border: none; border-left: 1px solid #7f1d1d; background: #450a0a; color: #fca5a5; padding: 0 7px; font-size: 9.5px; font-weight: 900; cursor: pointer; display: inline-flex; align-items: center; }
 
     /* ገጽ 1: መመዝገቢያ */
     .quick-row { display: grid; grid-template-columns: 1fr 68px 40px; gap: 5px; margin-bottom: 6px; flex-shrink: 0; }
-    .btn-ok-sq { height: 35px; border: none; border-radius: 8px; background: var(--emerald); color: #052e16; font-size: 17px; font-weight: 900; cursor: pointer; }
+    .btn-ok-sq { height: 34px; border: none; border-radius: 8px; background: var(--emerald); color: #052e16; font-size: 17px; font-weight: 900; cursor: pointer; }
     .tiles { flex: 1 1 auto; min-height: 90px; overflow-y: auto; -webkit-overflow-scrolling: touch; display: grid; grid-template-columns: repeat(2, 1fr); align-content: start; gap: 5px; padding-bottom: 70px; }
     .tiles.has-basket { padding-bottom: 8px; }
     .tile { background: var(--surface-deep); border: 1px solid var(--border-strong); border-radius: 10px; padding: 7px 8px; cursor: pointer; display: flex; flex-direction: column; gap: 3px; }
@@ -81,7 +84,7 @@
     .tile-bot { display: flex; justify-content: space-between; align-items: center; font-size: 9.5px; color: var(--muted); font-weight: 800; }
     .tile-cnt-btn { padding: 2px 6px; border-radius: 6px; border: 1px solid var(--teal); background: rgba(20,184,166,0.14); color: var(--teal); font-size: 9.5px; font-weight: 900; cursor: pointer; }
 
-    /* ቅርጫት + 60fps ጎትቶ ማደራደሪያ */
+    /* ቅርጫት */
     .basket-wrap { display: none; flex: 0 0 auto; max-height: 32vh; flex-direction: column; margin-top: auto; margin-bottom: 110px; padding-top: 4px; }
     .basket-list { overflow-y: auto; -webkit-overflow-scrolling: touch; display: flex; flex-direction: column; gap: 5px; }
     .b-row { height: 42px; background: rgba(15, 23, 42, 0.86); border: 1.5px solid rgba(56, 189, 248, 0.38); border-radius: 21px; padding: 4px 8px 4px 6px; display: flex; align-items: center; justify-content: space-between; gap: 6px; backdrop-filter: blur(6px); }
@@ -96,19 +99,29 @@
     .dock-btn.out { background: var(--rose); color: #fff; }
     .dock-btn.in { background: var(--emerald); color: #052e16; }
 
-    /* ገጽ 2: ቆጠራ */
+    /* ገጽ 2: የላቀ ቆጠራ + ባለብዙ ቲኬት */
+    .ticket-bar { display: flex; gap: 5px; overflow-x: auto; margin-bottom: 5px; flex-shrink: 0; padding-bottom: 2px; }
+    .tk-tab { height: 30px; padding: 0 10px; border-radius: 15px; border: 1px solid var(--border-strong); background: var(--surface); color: var(--muted); font-size: 11px; font-weight: 900; cursor: pointer; white-space: nowrap; display: inline-flex; align-items: center; gap: 5px; flex-shrink: 0; }
+    .tk-tab.active { background: #172554; border-color: var(--primary); color: #fff; }
+    .tk-tab.add { border-style: dashed; border-color: var(--teal); color: var(--teal); }
+    .tk-items { display: flex; gap: 5px; overflow-x: auto; margin-bottom: 5px; flex-shrink: 0; padding-bottom: 2px; }
+    .tk-pill { height: 32px; padding: 0 9px; border-radius: 9px; border: 1.5px solid var(--border-strong); background: var(--surface-deep); color: var(--text); font-size: 11px; font-weight: 900; cursor: pointer; white-space: nowrap; display: inline-flex; align-items: center; gap: 5px; flex-shrink: 0; }
+    .tk-pill.active { border-color: var(--teal); background: rgba(20,184,166,0.22); color: #99f6e4; }
+    .tk-pill.done { border-color: var(--emerald); background: rgba(16,185,129,0.2); color: #86efac; }
+    .tk-pill.add { border-style: dashed; border-color: var(--amber); color: var(--amber); }
+
     .preset-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px; }
-    .preset-btn { height: 33px; border-radius: 8px; border: 1px solid var(--border-strong); background: var(--surface-deep); color: var(--text); font-family: ui-monospace, monospace; font-size: 11.5px; font-weight: 900; cursor: pointer; }
+    .preset-btn { height: 31px; border-radius: 8px; border: 1px solid var(--border-strong); background: var(--surface-deep); color: var(--text); font-family: ui-monospace, monospace; font-size: 11px; font-weight: 900; cursor: pointer; }
     .preset-btn.active { background: var(--teal); border-color: #5eead4; color: var(--teal-dark); }
     .preset-btn.custom { font-family: inherit; font-size: 10px; color: var(--amber); }
-    .alert-box { display: none; padding: 7px 10px; border-radius: 10px; text-align: center; font-size: 11.5px; font-weight: 900; margin-bottom: 5px; flex-shrink: 0; }
+    .alert-box { display: none; padding: 6px 10px; border-radius: 10px; text-align: center; font-size: 11px; font-weight: 900; margin-bottom: 5px; flex-shrink: 0; }
     .alert-box.warn { display: block; background: rgba(245,158,11,0.16); border: 1.5px solid var(--amber); color: #fde68a; }
     .alert-box.stop { display: block; background: var(--emerald); color: #022c22; }
     .alert-box.over { display: block; background: rgba(14,165,233,0.18); border: 1.5px solid var(--primary); color: #7dd3fc; }
-    .tally-pad { flex: 1; min-height: 0; background: var(--surface-deep); border: 2px dashed rgba(20,184,166,0.45); border-radius: 16px; display: flex; flex-direction: column; overflow: hidden; cursor: pointer; touch-action: pan-y; margin-bottom: 6px; }
+    .tally-pad { flex: 1; min-height: 0; background: var(--surface-deep); border: 2px dashed rgba(20,184,166,0.45); border-radius: 16px; display: flex; flex-direction: column; overflow: hidden; cursor: pointer; touch-action: pan-y; margin-bottom: 5px; }
     .tally-pad.flash { border-color: var(--emerald); background: rgba(16,185,129,0.08); }
     .tally-pad.done { border-style: solid; border-color: var(--emerald); }
-    .tally-canvas { flex: 1; overflow-y: auto; padding: 12px 10px; display: flex; flex-wrap: wrap; align-content: flex-start; gap: 6px 10px; }
+    .tally-canvas { flex: 1; overflow-y: auto; padding: 10px; display: flex; flex-wrap: wrap; align-content: flex-start; gap: 6px 10px; }
     .t-grp { position: relative; width: 42px; height: 40px; display: inline-flex; align-items: center; justify-content: center; }
     .t-bar { width: 3.5px; height: 30px; background: var(--emerald); margin: 0 2.5px; border-radius: 2px; }
     .t-bar.odd { background: var(--amber); }
@@ -117,14 +130,14 @@
     .anim-s { animation: pSlash 0.14s ease-out; }
     @keyframes pBar { from { transform: scaleY(0.3); opacity: 0.3; } to { transform: scaleY(1); opacity: 1; } }
     @keyframes pSlash { from { transform: rotate(-28deg) scaleX(0.2); opacity: 0.3; } to { transform: rotate(-28deg) scaleX(1); opacity: 1; } }
-    .t-stats { display: grid; grid-template-columns: 1fr 0.8fr 1fr; background: rgba(15,23,42,0.95); border-top: 1px solid var(--border); padding: 7px 12px; flex-shrink: 0; }
+    .t-stats { display: grid; grid-template-columns: 1fr 0.8fr 1fr; background: rgba(15,23,42,0.95); border-top: 1px solid var(--border); padding: 6px 12px; flex-shrink: 0; }
     .t-stat { display: flex; flex-direction: column; }
     .t-stat.c { align-items: center; }
     .t-stat.r { align-items: flex-end; }
-    .t-lbl { font-size: 9.5px; font-weight: 800; color: var(--muted); }
-    .t-num { font-family: ui-monospace, monospace; font-size: 22px; font-weight: 900; line-height: 1.1; }
-    .t-actions { display: grid; grid-template-columns: 0.8fr 0.8fr 0.8fr 1.6fr; gap: 5px; margin-bottom: 62px; flex-shrink: 0; }
-    .t-btn { height: 42px; border-radius: 11px; border: 1px solid var(--border-strong); background: var(--surface); color: var(--text); font-size: 11px; font-weight: 900; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .t-lbl { font-size: 9px; font-weight: 800; color: var(--muted); }
+    .t-num { font-family: ui-monospace, monospace; font-size: 21px; font-weight: 900; line-height: 1.1; }
+    .t-actions { display: grid; grid-template-columns: 0.75fr 0.75fr 0.75fr 1.75fr; gap: 5px; margin-bottom: 62px; flex-shrink: 0; }
+    .t-btn { height: 41px; border-radius: 11px; border: 1px solid var(--border-strong); background: var(--surface); color: var(--text); font-size: 10.5px; font-weight: 900; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; }
     .t-btn.commit { background: var(--teal); border-color: #5eead4; color: var(--teal-dark); font-size: 11.5px; }
 
     /* ሠንጠረዦች */
@@ -185,19 +198,29 @@
     .toast-btn { background: var(--amber); color: #000; border: none; border-radius: 7px; padding: 4px 8px; font-size: 11px; font-weight: 900; cursor: pointer; }
     video.qr-video { width: 100%; border-radius: 12px; background: #000; max-height: 260px; object-fit: cover; }
 
-    #pdfStage { position: fixed; left: -9999px; top: 0; width: 794px; background: #fff; color: #000; font-family: system-ui, Arial, sans-serif; padding: 14px; }
+    #pdfStage { position: fixed; left: -9999px; top: 0; width: 780px; background: #fff; color: #000; font-family: system-ui, Arial, sans-serif; padding: 10px; }
     @media (min-width: 640px) { .modal-bg { align-items: center; } }
   </style>
 </head>
 <body>
 
-  <!-- መግቢያ -->
+  <!-- መግቢያ (ኢሜል + ፓስወርድ እና ፒን) -->
   <div id="loginGate" class="gate">
     <div class="gate-card">
       <div class="gate-mark" id="gateMark">መ</div>
       <div class="gate-title" id="lblGateTitle"></div>
-      <input type="text" id="inpOrgCode" class="inp mono" style="height:42px;text-transform:uppercase;" autocomplete="organization">
-      <input type="password" id="inpLoginPin" class="inp gate-pin" maxlength="6" inputmode="numeric" placeholder="••••••" onkeydown="if(event.key==='Enter') doLogin()">
+      <div class="seg" style="margin-bottom:2px;">
+        <button type="button" id="btnAuthPin" class="seg-btn teal" onclick="setAuthMode('PIN')"></button>
+        <button type="button" id="btnAuthEmail" class="seg-btn" onclick="setAuthMode('EMAIL')"></button>
+      </div>
+      <div id="authPinBox" style="display:flex;flex-direction:column;gap:10px;">
+        <input type="text" id="inpOrgCode" class="inp mono" style="height:42px;text-transform:uppercase;" autocomplete="organization">
+        <input type="password" id="inpLoginPin" class="inp gate-pin" maxlength="6" inputmode="numeric" placeholder="••••••" onkeydown="if(event.key==='Enter') doLogin()">
+      </div>
+      <div id="authEmailBox" style="display:none;flex-direction:column;gap:10px;">
+        <input type="email" id="inpLoginEmail" class="inp" style="height:42px;" autocomplete="email">
+        <input type="password" id="inpLoginPass" class="inp" style="height:42px;" autocomplete="current-password" onkeydown="if(event.key==='Enter') doLogin()">
+      </div>
       <button type="button" class="btn teal" id="btnLoginSubmit" onclick="doLogin()"></button>
       <div id="loginErr" style="color:var(--rose);font-size:11.5px;font-weight:900;text-align:center;"></div>
       <button type="button" class="btn muted" style="height:34px;font-size:11px;" id="btnGateLang" onclick="toggleLang()"></button>
@@ -213,6 +236,7 @@
     </div>
     <div class="drawer-list" id="drawerList"></div>
     <div style="border-top:1px solid var(--border);padding-top:10px;display:flex;flex-direction:column;gap:7px;">
+      <button type="button" id="btnInstallApp" class="btn primary" style="display:none;height:36px;" onclick="triggerPwaInstall()"></button>
       <div id="drawerUserInfo" style="font-size:11px;font-weight:800;color:var(--muted);"></div>
       <button type="button" class="btn danger" id="btnLogout" onclick="doLogout()"></button>
     </div>
@@ -260,24 +284,53 @@
       </div>
     </section>
 
-    <!-- ገጽ 2: ቆጠራ -->
+    <!-- ገጽ 2: ቆጠራ (ነጻ ቆጠራ + ባለብዙ ቲኬት/መኪና + ኦዲት) -->
     <section id="viewTally" class="view">
       <div class="seg">
-        <button type="button" id="btnTOut" class="seg-btn out" onclick="setTallyMode('OUT')"></button>
-        <button type="button" id="btnTIn" class="seg-btn" onclick="setTallyMode('IN')"></button>
-        <button type="button" id="btnTAudit" class="seg-btn" onclick="setTallyMode('AUDIT')"></button>
+        <button type="button" id="btnTTicket" class="seg-btn teal" onclick="setTallyTab('TICKET')"></button>
+        <button type="button" id="btnTFree" class="seg-btn" onclick="setTallyTab('FREE')"></button>
+        <button type="button" id="btnTAudit" class="seg-btn" onclick="setTallyTab('AUDIT')"></button>
       </div>
-      <div class="grid-2" style="margin-bottom:5px;flex-shrink:0;">
-        <select id="selTallyItem" class="sel" onchange="onTallyItemChange()"></select>
-        <input type="number" id="inpTallyTarget" class="inp mono" min="0" inputmode="numeric" oninput="onTallyTargetInput()">
+
+      <!-- የጭነት ቲኬቶች ክፍል -->
+      <div id="tallyTicketArea">
+        <div id="ticketBar" class="ticket-bar"></div>
+        <div class="card" style="padding:5px;">
+          <div style="display:grid;grid-template-columns:auto 0.9fr 1fr 0.8fr auto;gap:4px;align-items:center;">
+            <button type="button" id="btnTkDir" class="icon-btn" style="width:auto;padding:0 7px;font-size:10px;" onclick="toggleTicketDir()"></button>
+            <input type="text" id="inpTkDoc" class="inp mono" style="height:31px;" oninput="updateTicketField('docNo',this.value)">
+            <input type="text" id="inpTkParty" class="inp" style="height:31px;" oninput="updateTicketField('party',this.value)">
+            <input type="text" id="inpTkRef" class="inp" style="height:31px;" oninput="updateTicketField('ref',this.value)">
+            <button type="button" class="icon-btn" style="width:28px;height:30px;color:var(--rose);" onclick="deleteActiveTicket()">✕</button>
+          </div>
+        </div>
+        <div id="ticketItemsStrip" class="tk-items"></div>
       </div>
-      <div class="card">
-        <div style="display:flex;justify-content:space-between;font-size:10.5px;font-weight:800;color:var(--muted);margin-bottom:5px;">
+
+      <!-- የነጻ ቆጠራ ክፍል -->
+      <div id="tallyFreeArea" style="display:none;margin-bottom:5px;flex-shrink:0;">
+        <div class="grid-2">
+          <input type="text" id="inpFreeLabel" class="inp" oninput="freeTally.label=this.value;saveTallyState()">
+          <input type="number" id="inpFreeTarget" class="inp mono" min="0" inputmode="numeric" oninput="freeTally.target=Math.max(0,Math.floor(Number(this.value||0)));saveTallyState();renderTallyStats()">
+        </div>
+      </div>
+
+      <!-- የስቶክ ኦዲት ክፍል -->
+      <div id="tallyAuditArea" style="display:none;margin-bottom:5px;flex-shrink:0;">
+        <div class="grid-2">
+          <select id="selAuditItem" class="sel" onchange="onAuditItemChange()"></select>
+          <input type="number" id="inpAuditSys" class="inp mono" readonly>
+        </div>
+      </div>
+
+      <div class="card" style="padding:5px;">
+        <div style="display:flex;justify-content:space-between;font-size:10px;font-weight:800;color:var(--muted);margin-bottom:4px;">
           <span id="lblPerCarry"></span>
           <span id="lblCarryVal" style="color:var(--teal);font-family:ui-monospace,monospace;"></span>
         </div>
         <div id="presetGrid" class="preset-grid"></div>
       </div>
+
       <div id="tallyAlert" class="alert-box"></div>
       <div id="tallyPad" class="tally-pad">
         <div id="tallyCanvas" class="tally-canvas"></div>
@@ -298,8 +351,9 @@
     <!-- ገጽ 3: ዕለታዊ -->
     <section id="viewDaily" class="view">
       <div class="card">
-        <div style="display:grid;grid-template-columns:1fr auto auto;gap:5px;">
+        <div style="display:grid;grid-template-columns:1fr auto auto auto;gap:5px;">
           <input type="text" id="inpDailySearch" class="inp" oninput="renderDaily()">
+          <button type="button" id="btnDailySort" class="icon-btn" style="width:auto;padding:0 7px;font-size:10.5px;" onclick="toggleDailySort()">#</button>
           <button type="button" id="btnZeroOnly" class="icon-btn" style="width:auto;padding:0 8px;color:var(--amber);" onclick="toggleZeroFilter()">0</button>
           <button type="button" id="btnDailyPdf" class="icon-btn" style="width:auto;padding:0 8px;font-size:10.5px;color:var(--teal);" onclick="exportCurrentViewPdf(false)"></button>
         </div>
@@ -308,7 +362,7 @@
       <div class="tbl-wrap"><table class="tbl"><thead id="dailyHead"></thead><tbody id="dailyBody"></tbody></table></div>
     </section>
 
-    <!-- ገጽ 4: ስቶክ (ዜሮ ሮሎቨር) -->
+    <!-- ገጽ 4: ስቶክ -->
     <section id="viewStock" class="view">
       <div class="seg">
         <button type="button" id="btnPWeek" class="seg-btn teal" onclick="setStockPeriod('WEEK')"></button>
@@ -323,7 +377,7 @@
       <div class="tbl-wrap"><table class="tbl"><thead id="stockHead"></thead><tbody id="stockBody"></tbody></table></div>
     </section>
 
-    <!-- ገጽ 5: ካርታ + ካሜራ ስካነር -->
+    <!-- ገጽ 5: ካርታ -->
     <section id="viewMap" class="view">
       <div class="card" style="display:flex;gap:5px;">
         <input type="text" id="inpMapSearch" class="inp" style="flex:1;" oninput="renderMap()">
@@ -376,22 +430,30 @@
     const SESSION_KEY = 'erp_session_v4';
     const QUEUE_KEY = 'erp_offline_queue_v4';
     const LANG_KEY = 'erp_lang_v4';
+    const BRAND_OVERRIDE_KEY = 'erp_brand_overrides_v4';
+    const TALLY_STATE_KEY = 'erp_tally_state_v5';
     const PRESETS = [1, 2, 3, 5, 10, 15, 20];
 
-    // ጥብቅ የቋንቋ ልዩነት (100% አማርኛ ወይም 100% እንግሊዝኛ)
     const I18N = {
       am: {
-        defaultBrand: 'መጋዘን', gateMark: 'መ', gateTitle: 'ወደ ሲስተም ግባ', orgCodePh: 'የድርጅት ኮድ',
-        loginBtn: 'ግባ', langSwitch: 'እንግሊዝኛ', langShort: 'እንግሊዝኛ', logout: 'ውጣ',
+        defaultBrand: 'መጋዘን', gateMark: 'መ', gateTitle: 'ወደ ሲስተም ግባ',
+        authPin: 'ኮድ እና ፒን', authEmail: 'ኢሜል እና ፓስወርድ',
+        orgCodePh: 'የድርጅት ኮድ', emailPh: 'ኢሜል አድራሻ', passPh: 'ፓስወርድ',
+        loginBtn: 'ግባ', langSwitch: 'እንግሊዝኛ', langShort: 'እንግሊዝኛ', logout: 'ውጣ', installApp: '📲 አፑን ጫን',
         navEntry: 'መመዝገቢያ', navTally: 'ቆጠራ', navDaily: 'ዕለታዊ', navStock: 'ስቶክ', navMap: 'ካርታ',
         modeOut: 'የወጪ ዕቃ', modeIn: 'የገቢ ዕቃ', voidShort: 'የተበላሸ', pdfBtn: 'ፒዲኤፍ',
-        tOut: 'ወጪ ጭነት', tIn: 'ገቢ ርክክብ', tAudit: 'ስቶክ ማስተካከያ',
+        tTicket: 'የጭነት ቲኬት', tFree: 'ነጻ ቆጠራ', tAudit: 'ስቶክ ማስተካከያ',
+        tkShort: 'ቲኬት', tkNew: 'አዲስ', tkAddItem: 'ዕቃ ጨምር', tkDirOut: 'ወጪ', tkDirIn: 'ገቢ',
+        tkAddModalTitle: 'ወደ ቲኬት ዕቃዎች ጨምር', tkTargetPh: 'ዒላማ ብዛት (0 = ክፍት)',
+        tkNoItems: 'ዕቃ ለመቁጠር ከላይ «+ ዕቃ ጨምር» ይጫኑ',
+        freeLabelPh: 'ማስታወሻ (አማራጭ)', freeTargetPh: 'ዒላማ ብዛት (አማራጭ)',
+        postDirect: 'ቀጥታ መዝግብ', sendEntry: 'ወደ መመዝገቢያ', applyAdj: 'ማስተካከያ ላክ',
         docPh: 'ሰነድ ቁ.', partyOutPh: 'ደንበኛ', partyInPh: 'አቅራቢ', refOutPh: 'ፓድ ቁ.', refInPh: 'ሹፌር / ታርጋ',
         searchPh: 'ዕቃ ፈልግ...', qtyPh: 'ብዛት', dailySearchPh: 'ሰነድ፣ ዕቃ፣ ደንበኛ ወይም ቀን ፈልግ...',
         stockSearchPh: 'ዕቃ ወይም ካቴጎሪ ፈልግ...', mapSearchPh: 'በካርታው ላይ ዕቃ ፈልግ...',
         countBtn: 'ቁጠር', perCarry: 'በአንድ ሸክም', other: 'ሌላ',
         counted: 'የተቆጠረ', strokes: 'ጭረት', remaining: 'ቀሪ', diff: 'ልዩነት',
-        undo: 'መልስ', odd: 'ጎዶሎ', clear: 'አጽዳ', sendBasket: 'ወደ ቅርጫት ላክ', applyAdj: 'ማስተካከያ ላክ',
+        undo: 'መልስ', odd: 'ጎዶሎ', clear: 'አጽዳ',
         submitOut: 'ወጪ መዝግብ', submitIn: 'ገቢ መዝግብ',
         pWeek: 'ይህ ሳምንት', pLastWeek: 'ያለፈው ሳምንት', pMonth: 'ይህ ወር', pAll: 'ሁሉም',
         stopAlert: 'ግቡ ሞልቷል — ጭነት አስቆም', oddWarn: (r) => `የቀረው ${r} ብቻ ነው`,
@@ -399,17 +461,27 @@
         exactMatch: 'ከሲስተም ቀሪ ጋር እኩል ነው',
         dockTot: (c, q) => `ድምር፦ ${c} ዓይነት (${q} ፍሬ)`,
         dCols: ['ሰነድ', 'ዕቃ', 'መነሻ', 'ገቢ', 'ወጪ', 'ቀሪ', 'ደንበኛ / ምክንያት', 'ቀን', 'እርምጃ'],
+        dPdfCols: ['የሰነድ ቁጥር', 'የዕቃው አይነት', 'ያለው ብዛት', 'የገባ', 'የወጣ', 'ቀሪ', 'ደንበኛ / አቅራቢ', 'ፓድ / ታርጋ', 'ቀን'],
         sCols: ['ዕቃ', 'መነሻ', 'ገቢ', 'ወጪ', 'ማስተካከያ', 'ቀሪ'],
-        mOrgs: 'ድርጅቶች', mBranches: 'ቅርንጫፎች', mStaff: 'ሰራተኞች እና ፈቃድ',
+        sPdfCols5: ['የዕቃ አይነት', 'መነሻ', 'የገባ (+)', 'የወጣ (-)', 'ቀሪ'],
+        sPdfCols6: ['የዕቃ አይነት', 'መነሻ', 'የገባ (+)', 'የወጣ (-)', 'ማስተካከያ', 'ቀሪ'],
+        pdfDailySub: 'ዕለታዊ ሪፖርት', pdfStockSub: 'ማስተር ስቶክ ሪፖርት',
+        pdfEndList: '✦ የዝርዝር መጨረሻ ✦',
+        pdfTotLabel: 'የሪፖርቱ አጠቃላይ ድምር (ገቢ / ወጪ)',
+        pdfRowsCount: (n) => `የተመዘገቡ ዕቃዎች፦ ${n} ረድፍ`,
+        pdfStockTot: (n) => `ጠቅላላ (${n} ዓይነት)`,
+        mOrgs: 'ድርጅቶች', mBrand: 'የድርጅት ስም', mBranches: 'ቅርንጫፎች', mStaff: 'ሰራተኞች እና ፈቃድ',
         mChannels: 'የመገናኛ አድራሻዎች', mCatalog: 'ዕቃዎች እና ካቴጎሪ', mRacks: 'መደርደሪያዎች',
         mApprovals: 'የማስተካከያ ጥያቄዎች', mRisk: 'የስጋት ኦዲት ላክ', mPin: 'ፒን ቀይር',
+        phBrandTitle: 'የድርጅትዎ መጠሪያ ስም',
         save: 'አስቀምጥ', close: 'ዝጋ', cancel: 'ተው', ok: 'አጽድቅ', del: 'አጥፋ', add: 'ጨምር',
         emptySlot: 'ባዶ', assignBtn: 'መድብ', clearSlot: 'ሳጥን አጽዳ', appendSlot: 'ከነባሩ ሳይጠፋ ጨምር',
         pdfClear: 'አጽዳ', pdfDown: 'አውርድ', pdfSend: 'ላክ',
         savedOk: 'በተሳካ ሁኔታ ተመዝግቧል', offlineSaved: 'ኢንተርኔት የለም — ስልኩ ላይ ተቀምጧል',
         syncNow: (n) => `ላክ (${n})`, syncedOk: 'ሁሉም የተጠራቀሙ ሰነዶች ተልከዋል',
-        errPin: 'የተሳሳተ የድርጅት ኮድ ወይም ፒን', errStock: 'በቂ ስቶክ የለም',
-        errNeedDoc: 'የሰነድ ቁጥር ያስገቡ', dupTitle: 'የተደገመ የሰነድ ቁጥር',
+        errPin: 'የተሳሳተ መለያ ወይም ሚስጥር ቁጥር', errEmailNotReady: 'የኢሜል መግቢያ በዳታቤዝ ላይ ገና አልተገናኘም — ለጊዜው በፒን ይግቡ',
+        errStock: 'በቂ ስቶክ የለም', errNeedDoc: 'የሰነድ ቁጥር ያስገቡ', errNeedCount: 'ቢያንስ አንድ ዕቃ ይቁጠሩ',
+        dupTitle: 'የተደገመ የሰነድ ቁጥር',
         dupAskPin: 'ይህ ሰነድ ቀድሞ ተመዝግቧል። በአዲስ ፓድ ከሆነ የአድሚን ፒን ያስገቡ፦',
         seqJumpTitle: 'የሰነድ ተራ ቁጥር ለውጥ', seqVoidChk: 'የቀድሞውን ፓድ ቀሪ ቅጠሎች በአንድ ረድፍ የተበላሸ አድርግ፦',
         qrTitle: 'የመደርደሪያ ኮድ ስካነር', qrManualPh: 'ወይም ሳጥን ኮድ ይጻፉ',
@@ -426,20 +498,27 @@
         phCatName: 'አዲስ ካቴጎሪ ስም', phItemName: 'የዕቃ ስም', phOpening: 'መነሻ ብዛት',
         phRackCode: 'ኮድ', phRackName: 'የመደርደሪያ ስም', phRackCols: 'አምዶች',
         voidLabel: 'የተበላሸ', metricVoid: 'የተበላሸ', pdfLoading: 'ፒዲኤፍ በመጫን ላይ...', pdfLocal: 'ስልኩ ላይ ወርዷል',
-        errGeneric: 'ስህተት ተፈጥሯል', noItems: 'ምንም መረጃ የለም'
+        errGeneric: 'ስህተት ተፈጥሯል', noItems: 'ምንም መረጃ የለም', sortDoc: 'በሰነድ ቁጥር', sortTime: 'በጊዜ'
       },
       en: {
-        defaultBrand: 'Warehouse', gateMark: 'W', gateTitle: 'Sign In', orgCodePh: 'Organization Code',
-        loginBtn: 'Sign In', langSwitch: 'Amharic', langShort: 'Amharic', logout: 'Sign Out',
+        defaultBrand: 'Warehouse', gateMark: 'W', gateTitle: 'Sign In',
+        authPin: 'Code & PIN', authEmail: 'Email & Password',
+        orgCodePh: 'Organization Code', emailPh: 'Email Address', passPh: 'Password',
+        loginBtn: 'Sign In', langSwitch: 'Amharic', langShort: 'Amharic', logout: 'Sign Out', installApp: '📲 Install App',
         navEntry: 'Entry', navTally: 'Tally', navDaily: 'Daily', navStock: 'Stock', navMap: 'Map',
         modeOut: 'Issue Out', modeIn: 'Receive In', voidShort: 'Void', pdfBtn: 'PDF',
-        tOut: 'Load Out', tIn: 'Receive Count', tAudit: 'Stock Audit',
+        tTicket: 'Loading Ticket', tFree: 'Free Count', tAudit: 'Stock Audit',
+        tkShort: 'Ticket', tkNew: 'New', tkAddItem: 'Add Item', tkDirOut: 'OUT', tkDirIn: 'IN',
+        tkAddModalTitle: 'Add Items to Ticket', tkTargetPh: 'Target Qty (0 = Open)',
+        tkNoItems: 'Tap "+ Add Item" above to load items',
+        freeLabelPh: 'Note (optional)', freeTargetPh: 'Target Qty (optional)',
+        postDirect: 'Post Directly', sendEntry: 'Copy to Entry', applyAdj: 'Submit Adjustment',
         docPh: 'Doc No.', partyOutPh: 'Customer', partyInPh: 'Supplier', refOutPh: 'Pad No.', refInPh: 'Driver / Plate',
         searchPh: 'Search item...', qtyPh: 'Qty', dailySearchPh: 'Search doc, item, party, date...',
         stockSearchPh: 'Search item or category...', mapSearchPh: 'Find item on map...',
         countBtn: 'Count', perCarry: 'Per load', other: 'Other',
         counted: 'Counted', strokes: 'Strokes', remaining: 'Left', diff: 'Variance',
-        undo: 'Undo', odd: 'Odd', clear: 'Clear', sendBasket: 'Send to Basket', applyAdj: 'Submit Adjustment',
+        undo: 'Undo', odd: 'Odd', clear: 'Clear',
         submitOut: 'Post Issue', submitIn: 'Post Receipt',
         pWeek: 'This Week', pLastWeek: 'Last Week', pMonth: 'This Month', pAll: 'All Time',
         stopAlert: 'Target reached — Stop loading', oddWarn: (r) => `Only ${r} remaining`,
@@ -447,17 +526,27 @@
         exactMatch: 'Matches system balance',
         dockTot: (c, q) => `Total: ${c} items (${q} pcs)`,
         dCols: ['Doc', 'Item', 'Open', 'In', 'Out', 'Bal', 'Party / Reason', 'Date', 'Action'],
+        dPdfCols: ['Doc No.', 'Item Name', 'Opening', 'In', 'Out', 'Balance', 'Party', 'Pad / Plate', 'Date'],
         sCols: ['Item', 'Open', 'In', 'Out', 'Adj', 'Bal'],
-        mOrgs: 'Organizations', mBranches: 'Branches', mStaff: 'Staff & Access',
+        sPdfCols5: ['Item Name', 'Opening', 'In (+)', 'Out (-)', 'Balance'],
+        sPdfCols6: ['Item Name', 'Opening', 'In (+)', 'Out (-)', 'Adj', 'Balance'],
+        pdfDailySub: 'Daily Report', pdfStockSub: 'Master Stock Report',
+        pdfEndList: '✦ End of List ✦',
+        pdfTotLabel: 'Report Totals (In / Out)',
+        pdfRowsCount: (n) => `Recorded Lines: ${n}`,
+        pdfStockTot: (n) => `Total (${n} items)`,
+        mOrgs: 'Organizations', mBrand: 'Organization Name', mBranches: 'Branches', mStaff: 'Staff & Access',
         mChannels: 'Notification Channels', mCatalog: 'Items & Categories', mRacks: 'Racks',
         mApprovals: 'Pending Adjustments', mRisk: 'Send Risk Audit', mPin: 'Change PIN',
+        phBrandTitle: 'Your Organization Display Name',
         save: 'Save', close: 'Close', cancel: 'Cancel', ok: 'Confirm', del: 'Delete', add: 'Add',
         emptySlot: 'Empty', assignBtn: 'Assign', clearSlot: 'Clear Slot', appendSlot: 'Keep existing slots',
         pdfClear: 'Clear', pdfDown: 'Download', pdfSend: 'Send',
         savedOk: 'Saved successfully', offlineSaved: 'Offline — queued on device',
         syncNow: (n) => `Sync (${n})`, syncedOk: 'Offline queue synced',
-        errPin: 'Invalid organization code or PIN', errStock: 'Insufficient stock',
-        errNeedDoc: 'Enter document number', dupTitle: 'Duplicate Document',
+        errPin: 'Invalid credentials', errEmailNotReady: 'Email login backend not enabled yet — use PIN for now',
+        errStock: 'Insufficient stock', errNeedDoc: 'Enter document number', errNeedCount: 'Count at least one item first',
+        dupTitle: 'Duplicate Document',
         dupAskPin: 'This document number already exists. Enter Admin PIN to override:',
         seqJumpTitle: 'Document Sequence Change', seqVoidChk: 'Close previous pad leaves as one Void row:',
         qrTitle: 'Bin QR Scanner', qrManualPh: 'Or type slot code',
@@ -474,18 +563,28 @@
         phCatName: 'New Category Name', phItemName: 'Item Name', phOpening: 'Opening Qty',
         phRackCode: 'Code', phRackName: 'Rack Name', phRackCols: 'Columns',
         voidLabel: 'Void', metricVoid: 'Void', pdfLoading: 'PDF engine loading...', pdfLocal: 'Downloaded locally',
-        errGeneric: 'Operation failed', noItems: 'No records found'
+        errGeneric: 'Operation failed', noItems: 'No records found', sortDoc: 'By Doc No', sortTime: 'By Time'
       }
     };
 
     let lang = localStorage.getItem(LANG_KEY) === 'en' ? 'en' : 'am';
+    let authMode = 'PIN';
     let session = loadJson(SESSION_KEY, null);
     let currentWhId = '';
     let whData = { warehouse: {}, items: [], categories: [], racks: [], slot_map: {}, last_doc_num: 0, next_doc_num: 1, pending_adjustments_count: 0, is_branch_admin: false, is_org_admin: false, org_warehouses: [] };
     let entryMode = 'OUT';
     let basket = [];
-    let tally = { mode: 'OUT', itemId: '', target: 0, carryMult: 5, strokes: [] };
+
+    // የላቀ ቆጠራ ዳታ (በስልኩ ላይ ይቀመጣል)
+    let tallyTab = 'TICKET'; // TICKET | FREE | AUDIT
+    let carryMult = 5;
+    let tickets = [];
+    let activeTicketId = '';
+    let freeTally = { label: '', target: 0, strokes: [] };
+    let auditTally = { itemId: '', strokes: [] };
+
     let dailyRows = [];
+    let dailySort = 'DOC'; // DOC | TIME
     let stockRows = [];
     let stockPeriod = 'WEEK';
     let zeroFilter = false;
@@ -503,6 +602,7 @@
     let qrLoopId = null;
     let dragEl = null;
     let dragIdx = -1;
+    let deferredInstallPrompt = null;
 
     function t(k) { return I18N[lang][k]; }
     function esc(s) { return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
@@ -510,6 +610,36 @@
     function loadJson(k, def) { try { const r = localStorage.getItem(k); return r ? JSON.parse(r) : def; } catch { return def; } }
     function saveJson(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
     function roleLabel(r) { return r === 'SUPER_ADMIN' ? t('roleSuper') : (r === 'ORG_ADMIN' ? t('roleOrgAdm') : t('roleStaff')); }
+    function docNumInt(v) { const m = String(v || '').match(/\d+/); return m ? parseInt(m[0], 10) : 0; }
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredInstallPrompt = e;
+      const b = document.getElementById('btnInstallApp');
+      if (b) { b.style.display = 'block'; b.textContent = t('installApp'); }
+    });
+
+    async function triggerPwaInstall() {
+      if (!deferredInstallPrompt) return;
+      deferredInstallPrompt.prompt();
+      await deferredInstallPrompt.userChoice;
+      deferredInstallPrompt = null;
+      document.getElementById('btnInstallApp').style.display = 'none';
+    }
+
+    function getBrandOverrides() { return loadJson(BRAND_OVERRIDE_KEY, {}); }
+    function getActiveBrand() {
+      const ov = getBrandOverrides();
+      const whId = whData.warehouse?.id || currentWhId;
+      const orgId = whData.warehouse?.organization_id || session?.organization?.id || '';
+      return ov[whId] || ov[orgId] || whData.warehouse?.brand_title || session?.organization?.brand_title || session?.organization?.name || t('defaultBrand');
+    }
+    function applyBrandDisplay() {
+      const brand = getActiveBrand();
+      document.title = brand;
+      document.getElementById('topBrand').textContent = brand;
+      document.getElementById('drawerBrand').textContent = brand;
+    }
 
     function playTone(f, d, type = 'sine', vol = 0.12) {
       try {
@@ -606,16 +736,40 @@
     }
     window.addEventListener('online', syncOfflineQueue);
 
-    // ==================== መግቢያ እና ዳታ መጫኛ ====================
+    // ==================== መግቢያ (PIN + Email Ready) ====================
+    function setAuthMode(m) {
+      authMode = m; vib(15);
+      document.getElementById('btnAuthPin').className = 'seg-btn' + (m === 'PIN' ? ' teal' : '');
+      document.getElementById('btnAuthEmail').className = 'seg-btn' + (m === 'EMAIL' ? ' teal' : '');
+      document.getElementById('authPinBox').style.display = m === 'PIN' ? 'flex' : 'none';
+      document.getElementById('authEmailBox').style.display = m === 'EMAIL' ? 'flex' : 'none';
+      document.getElementById('loginErr').textContent = '';
+    }
+
     async function doLogin() {
-      const orgCode = document.getElementById('inpOrgCode').value.trim().toUpperCase();
-      const pin = document.getElementById('inpLoginPin').value.trim();
       const errEl = document.getElementById('loginErr');
-      if (!pin) { errEl.textContent = t('errPin'); return; }
       errEl.textContent = '...';
       try {
-        const res = await callRpc('rpc_login', { p_org_code: orgCode, p_pin: pin });
-        if (!res.success) { errEl.textContent = t('errPin'); return; }
+        let res;
+        if (authMode === 'EMAIL') {
+          const email = document.getElementById('inpLoginEmail').value.trim().toLowerCase();
+          const pass = document.getElementById('inpLoginPass').value;
+          if (!email || !pass) { errEl.textContent = t('errPin'); return; }
+          try {
+            res = await callRpc('rpc_login_email', { p_email: email, p_password: pass });
+          } catch (e) {
+            if (String(e.message).includes('Could not find the function')) {
+              errEl.textContent = t('errEmailNotReady'); return;
+            }
+            throw e;
+          }
+        } else {
+          const orgCode = document.getElementById('inpOrgCode').value.trim().toUpperCase();
+          const pin = document.getElementById('inpLoginPin').value.trim();
+          if (!pin) { errEl.textContent = t('errPin'); return; }
+          res = await callRpc('rpc_login', { p_org_code: orgCode, p_pin: pin });
+        }
+        if (!res || !res.success) { errEl.textContent = t('errPin'); return; }
         session = res;
         saveJson(SESSION_KEY, session);
         errEl.textContent = '';
@@ -633,6 +787,7 @@
       document.getElementById('appShell').style.display = 'none';
       document.getElementById('loginGate').style.display = 'flex';
       document.getElementById('inpLoginPin').value = '';
+      document.getElementById('inpLoginPass').value = '';
     }
 
     function populateWarehouseSelector(list) {
@@ -647,6 +802,7 @@
       document.getElementById('loginGate').style.display = 'none';
       document.getElementById('appShell').style.display = 'flex';
       populateWarehouseSelector(session.warehouses || []);
+      loadTallyState();
       if (currentWhId) loadWarehouseData(currentWhId);
       renderStaticLabels();
       updateSyncPill();
@@ -664,13 +820,13 @@
           populateWarehouseSelector(res.org_warehouses.filter((w) => w.is_active !== false));
         }
         const w = res.warehouse || {};
-        document.getElementById('topBrand').textContent = w.brand_title || session.organization?.brand_title || t('defaultBrand');
+        applyBrandDisplay();
         document.getElementById('topOrgSub').textContent = w.name || '';
-        document.getElementById('drawerBrand').textContent = w.brand_title || t('defaultBrand');
         document.getElementById('drawerUserInfo').textContent = `${session.user.full_name} (${roleLabel(session.user.role)})`;
         if (entryMode === 'OUT') document.getElementById('inpDocNo').value = String(res.next_doc_num || 1);
-        if (!tally.itemId && res.items.length) tally.itemId = res.items[0].id;
+        if (!auditTally.itemId && res.items.length) auditTally.itemId = res.items[0].id;
         if (res.racks.length && !res.racks.some((r) => r.code === activeRack)) activeRack = res.racks[0].code;
+        ensureDefaultTicket();
 
         renderDrawerMenu();
         renderTiles();
@@ -840,24 +996,39 @@
       } catch {}
     }
 
-    async function handleDocumentSubmit() {
-      if (!basket.length) return;
-      const docNo = document.getElementById('inpDocNo').value.trim();
-      if (entryMode === 'OUT' && !docNo) { showToast(t('errNeedDoc')); return; }
+    async function submitGenericDocument(docType, docNo, party, ref, itemsPayload, onSuccess) {
+      if (!itemsPayload.length) { showToast(t('errNeedCount')); return; }
+      if (docType === 'OUT' && !docNo) { showToast(t('errNeedDoc')); return; }
 
-      if (entryMode === 'OUT' && navigator.onLine) {
+      if (docType === 'OUT' && navigator.onLine) {
         const chk = await callRpc('rpc_check_doc_sequence', { p_token: session.token, p_warehouse_id: currentWhId, p_doc_no: docNo });
         if (chk.is_duplicate) {
-          openDuplicateModal(docNo, chk.existing, (adminPin) => executePostDocument(docNo, null, adminPin));
+          openDuplicateModal(docNo, chk.existing, (adminPin) => executePostDocument(docType, docNo, party, ref, itemsPayload, null, adminPin, onSuccess));
           return;
         }
+        // የሁለት ሰራተኞች ትይዩ ጭነት መፍትሔ፦ ወደፊት ሲዘል ብቻ ያስጠነቅቃል፤ ወደ ኋላ የቀረውን (#1331 ከ #1332 በኋላ) በሰላም ይቀበላል!
         const nVal = Number(docNo);
-        if (whData.last_doc_num > 0 && nVal > 0 && nVal !== whData.next_doc_num && !/^\d+-\d+$/.test(docNo)) {
-          openSeqJumpModal(docNo, whData.next_doc_num, (voidRange) => executePostDocument(docNo, voidRange, null));
+        if (whData.last_doc_num > 0 && nVal > whData.next_doc_num && !/^\d+-\d+$/.test(docNo)) {
+          openSeqJumpModal(docNo, whData.next_doc_num, (voidRange) => executePostDocument(docType, docNo, party, ref, itemsPayload, voidRange, null, onSuccess));
           return;
         }
       }
-      executePostDocument(docNo, null, null);
+      executePostDocument(docType, docNo, party, ref, itemsPayload, null, null, onSuccess);
+    }
+
+    function handleDocumentSubmit() {
+      submitGenericDocument(
+        entryMode,
+        document.getElementById('inpDocNo').value.trim(),
+        document.getElementById('inpParty').value.trim(),
+        document.getElementById('inpRef').value.trim(),
+        basket.map((b) => ({ item_id: b.item_id, qty: b.qty, tally_proof: b.tally_proof || null })),
+        () => {
+          basket = [];
+          document.getElementById('inpParty').value = '';
+          document.getElementById('inpRef').value = '';
+        }
+      );
     }
 
     function openDuplicateModal(docNo, existing, onConfirm) {
@@ -896,15 +1067,15 @@
       };
     }
 
-    async function executePostDocument(docNo, voidRangeFirst, adminPin) {
+    async function executePostDocument(docType, docNo, party, ref, itemsPayload, voidRangeFirst, adminPin, onSuccess) {
       const params = {
         p_token: session.token,
         p_warehouse_id: currentWhId,
-        p_doc_type: entryMode,
+        p_doc_type: docType,
         p_doc_no: docNo,
-        p_party_name: document.getElementById('inpParty').value.trim(),
-        p_ref_no: document.getElementById('inpRef').value.trim(),
-        p_items: basket.map((b) => ({ item_id: b.item_id, qty: b.qty, tally_proof: b.tally_proof || null })),
+        p_party_name: party,
+        p_ref_no: ref,
+        p_items: itemsPayload,
         p_idempotency_key: (crypto.randomUUID ? crypto.randomUUID() : 'k_' + Date.now() + '_' + Math.random()),
         p_void_range_first: voidRangeFirst,
         p_admin_override_pin: adminPin,
@@ -912,7 +1083,8 @@
 
       if (!navigator.onLine) {
         const q = getOfflineQueue(); q.push({ params, ts: Date.now() }); saveJson(QUEUE_KEY, q);
-        basket = []; renderBasket(); updateSyncPill();
+        if (onSuccess) onSuccess();
+        renderBasket(); updateSyncPill();
         showToast(t('offlineSaved'));
         return;
       }
@@ -924,17 +1096,16 @@
           return;
         }
         vib([35, 30, 50]); playTone(680, 0.1, 'triangle');
-        if (entryMode === 'IN' && res.document_id) {
+        if (docType === 'IN' && res.document_id) {
           callBot({ action: 'send_grn', warehouse_id: currentWhId, document_id: res.document_id }).catch(() => {});
         }
-        basket = [];
-        document.getElementById('inpParty').value = '';
-        document.getElementById('inpRef').value = '';
+        if (onSuccess) onSuccess();
         showToast(t('savedOk') + (res.zero_out_items?.length ? ` ⚠️ 0: ${res.zero_out_items.join(', ')}` : ''));
         loadWarehouseData(currentWhId);
       } catch {
         const q = getOfflineQueue(); q.push({ params, ts: Date.now() }); saveJson(QUEUE_KEY, q);
-        basket = []; renderBasket(); updateSyncPill();
+        if (onSuccess) onSuccess();
+        renderBasket(); updateSyncPill();
         showToast(t('offlineSaved'));
       }
     }
@@ -959,136 +1130,381 @@
       else showToast(t('errGeneric'));
     }
 
-    // ==================== ገጽ 2: ቆጠራ ====================
+    // ==================== ገጽ 2: ባለብዙ ቲኬት ቆጠራ + ነጻ ቆጠራ ====================
+    function loadTallyState() {
+      const st = loadJson(TALLY_STATE_KEY, null);
+      if (st) {
+        tallyTab = st.tallyTab || 'TICKET';
+        carryMult = st.carryMult || 5;
+        tickets = Array.isArray(st.tickets) ? st.tickets : [];
+        activeTicketId = st.activeTicketId || '';
+        freeTally = st.freeTally || { label: '', target: 0, strokes: [] };
+        auditTally = st.auditTally || { itemId: '', strokes: [] };
+      }
+      ensureDefaultTicket();
+    }
+
+    function saveTallyState() {
+      saveJson(TALLY_STATE_KEY, { tallyTab, carryMult, tickets, activeTicketId, freeTally, auditTally });
+    }
+
+    function ensureDefaultTicket() {
+      if (!tickets.length) {
+        const id = 'tk_' + Date.now();
+        tickets.push({
+          id, dir: 'OUT', docNo: String(whData.next_doc_num || ''),
+          party: '', ref: '', items: [], activeItemId: '',
+        });
+        activeTicketId = id;
+        saveTallyState();
+      } else if (!tickets.some((x) => x.id === activeTicketId)) {
+        activeTicketId = tickets[0].id;
+      }
+    }
+
+    function getActiveTicket() {
+      ensureDefaultTicket();
+      return tickets.find((x) => x.id === activeTicketId) || tickets[0];
+    }
+
+    function getActiveTicketItem() {
+      const tk = getActiveTicket();
+      if (!tk || !tk.items.length) return null;
+      let it = tk.items.find((x) => x.item_id === tk.activeItemId);
+      if (!it) { it = tk.items[0]; tk.activeItemId = it.item_id; }
+      return it;
+    }
+
+    function addNewTicket() {
+      vib(20);
+      const maxDoc = tickets.reduce((m, tk) => Math.max(m, docNumInt(tk.docNo)), Number(whData.last_doc_num || 0));
+      const id = 'tk_' + Date.now() + '_' + Math.floor(Math.random() * 99);
+      tickets.push({ id, dir: 'OUT', docNo: maxDoc > 0 ? String(maxDoc + 1) : '', party: '', ref: '', items: [], activeItemId: '' });
+      activeTicketId = id;
+      saveTallyState();
+      renderTally();
+    }
+
+    function selectTicket(id) {
+      vib(15); activeTicketId = id; saveTallyState(); renderTally();
+    }
+
+    function deleteActiveTicket() {
+      vib(22);
+      tickets = tickets.filter((x) => x.id !== activeTicketId);
+      ensureDefaultTicket();
+      saveTallyState();
+      renderTally();
+    }
+
+    function toggleTicketDir() {
+      const tk = getActiveTicket();
+      tk.dir = tk.dir === 'OUT' ? 'IN' : 'OUT';
+      vib(16); saveTallyState(); renderTally();
+    }
+
+    function updateTicketField(field, val) {
+      const tk = getActiveTicket();
+      tk[field] = val;
+      saveTallyState();
+      renderTicketBarOnly();
+    }
+
+    function openInTally(itemId) {
+      const it = (whData.items || []).find((x) => x.id === itemId);
+      if (!it) return;
+      tallyTab = 'TICKET';
+      const tk = getActiveTicket();
+      if (!tk.items.some((x) => x.item_id === itemId)) {
+        tk.items.push({ item_id: it.id, name: it.name, target: 0, strokes: [] });
+      }
+      tk.activeItemId = itemId;
+      saveTallyState();
+      switchView('tally');
+    }
+
+    function openTicketAddItemModal() {
+      const tk = getActiveTicket();
+      const renderModalList = () => {
+        const listEl = document.getElementById('tkModAddedList');
+        if (!listEl) return;
+        listEl.innerHTML = tk.items.map((x) => `
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:11.5px;font-weight:800;padding:4px 0;border-bottom:1px solid var(--border);">
+            <span>${esc(x.name)} ${x.target > 0 ? `<b style="color:var(--teal);">(${x.target})</b>` : ''}</span>
+            <button type="button" class="icon-btn" style="width:24px;height:24px;color:var(--rose);" onclick="removeTicketItem('${x.item_id}')">✕</button>
+          </div>`).join('') || `<div class="lbl-sm" style="text-align:center;">${esc(t('noItems'))}</div>`;
+      };
+
+      const itemOpts = (whData.items || []).map((it) => `<option value="${it.id}">${esc(it.name)} (${it.stock})</option>`).join('');
+      openMainModal(t('tkAddModalTitle'), `
+        <div class="sub-card">
+          <input type="text" id="tkModFilter" class="inp" placeholder="${esc(t('searchPh'))}" oninput="filterTkItemSelect(this.value)">
+          <select id="tkModSel" class="sel">${itemOpts}</select>
+          <div class="grid-2">
+            <input type="number" id="tkModTarget" class="inp mono" min="0" inputmode="numeric" placeholder="${esc(t('tkTargetPh'))}">
+            <button type="button" class="btn teal" onclick="pushItemToTicket()">+ ${esc(t('add'))}</button>
+          </div>
+        </div>
+        <div class="sub-card" id="tkModAddedList"></div>`,
+        `<button type="button" class="btn primary" style="grid-column:span 2;" onclick="closeMainModal();renderTally();">${esc(t('ok'))}</button>`);
+      renderModalList();
+    }
+
+    function filterTkItemSelect(q) {
+      const clean = q.trim().toLowerCase();
+      const sel = document.getElementById('tkModSel');
+      const filtered = (whData.items || []).filter((it) => !clean || it.name.toLowerCase().includes(clean));
+      sel.innerHTML = filtered.map((it) => `<option value="${it.id}">${esc(it.name)} (${it.stock})</option>`).join('');
+    }
+
+    function pushItemToTicket() {
+      const sel = document.getElementById('tkModSel');
+      const itemId = sel?.value;
+      const it = (whData.items || []).find((x) => x.id === itemId);
+      if (!it) return;
+      const target = Math.max(0, Math.floor(Number(document.getElementById('tkModTarget').value || 0)));
+      const tk = getActiveTicket();
+      const ex = tk.items.find((x) => x.item_id === itemId);
+      if (ex) { ex.target = target; }
+      else { tk.items.push({ item_id: it.id, name: it.name, target, strokes: [] }); }
+      tk.activeItemId = itemId;
+      document.getElementById('tkModTarget').value = '';
+      document.getElementById('tkModFilter').value = '';
+      filterTkItemSelect('');
+      vib(20); saveTallyState();
+      openTicketAddItemModal();
+    }
+
+    function removeTicketItem(itemId) {
+      const tk = getActiveTicket();
+      tk.items = tk.items.filter((x) => x.item_id !== itemId);
+      if (tk.activeItemId === itemId) tk.activeItemId = tk.items[0]?.item_id || '';
+      saveTallyState();
+      openTicketAddItemModal();
+    }
+
+    function selectTicketItem(itemId) {
+      const tk = getActiveTicket();
+      tk.activeItemId = itemId;
+      vib(15); saveTallyState(); renderTally();
+    }
+
+    function setTallyTab(tab) {
+      tallyTab = tab; vib(16);
+      saveTallyState(); renderTally();
+    }
+
+    function onAuditItemChange() {
+      auditTally.itemId = document.getElementById('selAuditItem').value;
+      auditTally.strokes = [];
+      saveTallyState(); renderTally();
+    }
+
+    function getActiveStrokeContext() {
+      if (tallyTab === 'FREE') {
+        return { strokes: freeTally.strokes, target: Number(freeTally.target || 0), hardStop: false, isAudit: false, enabled: true };
+      }
+      if (tallyTab === 'AUDIT') {
+        const it = (whData.items || []).find((x) => x.id === auditTally.itemId);
+        return { strokes: auditTally.strokes, target: it ? Number(it.stock) : 0, hardStop: false, isAudit: true, enabled: Boolean(it) };
+      }
+      const tk = getActiveTicket();
+      const item = getActiveTicketItem();
+      if (!item) return { strokes: [], target: 0, hardStop: false, isAudit: false, enabled: false };
+      return { strokes: item.strokes, target: Number(item.target || 0), hardStop: tk.dir === 'OUT', isAudit: false, enabled: true };
+    }
+
+    function sumStrokes(arr) { return (arr || []).reduce((s, x) => s + Number(x.qty || 0), 0); }
+
     async function ensureWakeLock() {
       if (!('wakeLock' in navigator) || wakeLock) return;
       try { wakeLock = await navigator.wakeLock.request('screen'); wakeLock.addEventListener('release', () => wakeLock = null); } catch {}
     }
 
-    function openInTally(itemId) {
-      tally.itemId = itemId; tally.mode = entryMode; tally.strokes = [];
-      if (tally.mode === 'AUDIT') {
-        const it = whData.items.find((x) => x.id === itemId);
-        tally.target = it ? Number(it.stock) : 0;
-      }
-      switchView('tally');
-    }
-
-    function setTallyMode(m) {
-      tally.mode = m; vib(16);
-      if (m === 'AUDIT') {
-        const it = whData.items.find((x) => x.id === tally.itemId);
-        tally.target = it ? Number(it.stock) : 0;
-      }
-      renderTally();
-    }
-
-    function onTallyItemChange() {
-      tally.itemId = document.getElementById('selTallyItem').value;
-      if (tally.mode === 'AUDIT') {
-        const it = whData.items.find((x) => x.id === tally.itemId);
-        tally.target = it ? Number(it.stock) : 0;
-      }
-      renderTally();
-    }
-
-    function onTallyTargetInput() {
-      tally.target = Math.max(0, Math.floor(Number(document.getElementById('inpTallyTarget').value || 0)));
-      renderTallyStats();
-    }
-
-    function getTallyTotal() { return tally.strokes.reduce((s, x) => s + Number(x.qty || 0), 0); }
-
     function addTallyStroke(customQty = null) {
+      const ctx = getActiveStrokeContext();
+      if (!ctx.enabled) { openTicketAddItemModal(); return; }
+
       const now = Date.now();
-      if (customQty === null && now - lastTapMs < 140) return;
+      if (customQty === null && now - lastTapMs < 130) return;
       lastTapMs = now;
       ensureWakeLock();
 
-      const counted = getTallyTotal();
-      const target = Number(tally.target || 0);
-      const hardStop = tally.mode === 'OUT';
-
-      if (hardStop && target > 0 && counted >= target) {
+      const counted = sumStrokes(ctx.strokes);
+      if (ctx.hardStop && ctx.target > 0 && counted >= ctx.target) {
         vib([90, 50, 120]); playTone(920, 0.16, 'square', 0.16); return;
       }
 
-      let add = customQty !== null ? Math.floor(Number(customQty)) : Number(tally.carryMult);
+      let add = customQty !== null ? Math.floor(Number(customQty)) : Number(carryMult);
       if (!add || add <= 0) return;
-      let isOdd = add !== tally.carryMult;
-      if (hardStop && target > 0 && counted + add > target) { add = target - counted; isOdd = add !== tally.carryMult; }
+      let isOdd = add !== carryMult;
+      if (ctx.hardStop && ctx.target > 0 && counted + add > ctx.target) { add = ctx.target - counted; isOdd = add !== carryMult; }
 
-      tally.strokes.push({ qty: add, isOdd, ts: now });
+      ctx.strokes.push({ qty: add, isOdd, ts: now });
+      saveTallyState();
+
       const pad = document.getElementById('tallyPad');
       pad.classList.add('flash'); setTimeout(() => pad.classList.remove('flash'), 100);
 
-      if (hardStop && target > 0 && counted + add >= target) {
+      if (ctx.hardStop && ctx.target > 0 && counted + add >= ctx.target) {
         vib([90, 50, 90, 50, 140]); playTone(880, 0.15, 'square'); setTimeout(() => playTone(1175, 0.22, 'square'), 160);
-      } else if (tally.strokes.length % 5 === 0) {
+      } else if (ctx.strokes.length % 5 === 0) {
         vib([40, 25, 50]); playTone(720, 0.08, 'triangle');
       } else {
         vib(22); playTone(520, 0.05);
       }
+
+      renderTicketItemsStrip();
       renderTallyCanvas(true);
       renderTallyStats();
       const c = document.getElementById('tallyCanvas'); c.scrollTop = c.scrollHeight;
     }
 
-    function undoTally() { if (!tally.strokes.length) return; tally.strokes.pop(); vib(18); renderTallyCanvas(false); renderTallyStats(); }
+    function undoTally() {
+      const ctx = getActiveStrokeContext();
+      if (!ctx.strokes.length) return;
+      ctx.strokes.pop(); vib(18); saveTallyState();
+      renderTicketItemsStrip(); renderTallyCanvas(false); renderTallyStats();
+    }
+
     function clearTallyUndoable() {
-      if (!tally.strokes.length) return;
-      undoTallyBuf = tally.strokes.slice();
-      tally.strokes = []; vib(28); renderTallyCanvas(false); renderTallyStats();
-      showToast(t('clear'), () => { if (undoTallyBuf) { tally.strokes = undoTallyBuf; undoTallyBuf = null; renderTallyCanvas(false); renderTallyStats(); } });
+      const ctx = getActiveStrokeContext();
+      if (!ctx.strokes.length) return;
+      undoTallyBuf = ctx.strokes.slice();
+      ctx.strokes.length = 0; vib(28); saveTallyState();
+      renderTicketItemsStrip(); renderTallyCanvas(false); renderTallyStats();
+      showToast(t('clear'), () => {
+        if (undoTallyBuf) {
+          undoTallyBuf.forEach((x) => ctx.strokes.push(x));
+          undoTallyBuf = null; saveTallyState();
+          renderTicketItemsStrip(); renderTallyCanvas(false); renderTallyStats();
+        }
+      });
     }
 
     async function commitTally() {
-      const total = getTallyTotal();
-      const it = (whData.items || []).find((x) => x.id === tally.itemId);
-      if (!it) return;
+      if (tallyTab === 'FREE') {
+        const tot = sumStrokes(freeTally.strokes);
+        if (tot <= 0) return;
+        document.getElementById('inpQuickQty').value = String(tot);
+        switchView('entry');
+        showToast(`${t('counted')}: ${tot}`);
+        return;
+      }
 
-      if (tally.mode === 'AUDIT') {
+      if (tallyTab === 'AUDIT') {
+        const it = (whData.items || []).find((x) => x.id === auditTally.itemId);
+        if (!it) return;
+        const total = sumStrokes(auditTally.strokes);
         const res = await callRpc('rpc_submit_adjustment', {
           p_token: session.token, p_warehouse_id: currentWhId,
           p_item_id: it.id, p_counted_qty: total,
           p_reason: total > it.stock ? t('adjPlusReason') : t('adjMinusReason'),
-          p_tally_proof: { mode: 'AUDIT', strokes: tally.strokes },
+          p_tally_proof: { mode: 'AUDIT', strokes: auditTally.strokes },
         });
         if (!res.success) { showToast(t('errGeneric')); return; }
         callBot({ action: 'notify_adjustment', warehouse_id: currentWhId, adjustment_id: res.adjustment_id }).catch(() => {});
-        tally.strokes = [];
+        auditTally.strokes = []; saveTallyState();
         showToast(res.status === 'APPROVED' ? t('adjApproved') : t('adjPending'));
         loadWarehouseData(currentWhId);
         return;
       }
 
-      if (total <= 0) return;
-      setEntryMode(tally.mode);
-      addToBasket(it.id, it.name, total, { mode: tally.mode, strokes: tally.strokes.slice() });
-      tally.strokes = [];
-      switchView('entry');
+      // ባለብዙ ዕቃ ቲኬትን በቀጥታ ወደ ዕለታዊ መመዝገብ
+      const tk = getActiveTicket();
+      const payloadItems = tk.items
+        .map((x) => ({ item_id: x.item_id, qty: sumStrokes(x.strokes), tally_proof: { mode: tk.dir, strokes: x.strokes } }))
+        .filter((x) => x.qty > 0);
+      if (!payloadItems.length) { showToast(t('errNeedCount')); return; }
+
+      submitGenericDocument(tk.dir, tk.docNo.trim(), tk.party.trim(), tk.ref.trim(), payloadItems, () => {
+        tickets = tickets.filter((x) => x.id !== tk.id);
+        ensureDefaultTicket();
+        saveTallyState();
+        renderTally();
+      });
+    }
+
+    function renderTicketBarOnly() {
+      const bar = document.getElementById('ticketBar');
+      bar.innerHTML = tickets.map((tk, i) => {
+        const label = tk.docNo ? `#${tk.docNo}` : `${t('tkShort')} ${i + 1}`;
+        const sub = tk.party ? ` · ${tk.party.slice(0, 8)}` : '';
+        return `<button type="button" class="tk-tab ${tk.id === activeTicketId ? 'active' : ''}" onclick="selectTicket('${tk.id}')">🚛 ${esc(label + sub)}</button>`;
+      }).join('') + `<button type="button" class="tk-tab add" onclick="addNewTicket()">+ ${esc(t('tkNew'))}</button>`;
+    }
+
+    function renderTicketItemsStrip() {
+      if (tallyTab !== 'TICKET') return;
+      const tk = getActiveTicket();
+      const strip = document.getElementById('ticketItemsStrip');
+      strip.innerHTML = tk.items.map((x) => {
+        const cnt = sumStrokes(x.strokes);
+        const isDone = x.target > 0 && cnt >= x.target;
+        const cls = x.item_id === tk.activeItemId ? 'active' : (isDone ? 'done' : '');
+        const stat = x.target > 0 ? `${cnt}/${x.target}` : String(cnt);
+        return `<button type="button" class="tk-pill ${cls}" onclick="selectTicketItem('${x.item_id}')">${isDone ? '✅ ' : ''}${esc(x.name)} <span style="font-family:ui-monospace,monospace;">${stat}</span></button>`;
+      }).join('') + `<button type="button" class="tk-pill add" onclick="openTicketAddItemModal()">+ ${esc(t('tkAddItem'))}</button>`;
     }
 
     function renderTally() {
-      document.getElementById('btnTOut').className = 'seg-btn' + (tally.mode === 'OUT' ? ' out' : '');
-      document.getElementById('btnTIn').className = 'seg-btn' + (tally.mode === 'IN' ? ' in' : '');
-      document.getElementById('btnTAudit').className = 'seg-btn' + (tally.mode === 'AUDIT' ? ' adj' : '');
-      const sel = document.getElementById('selTallyItem');
-      sel.innerHTML = (whData.items || []).map((it) => `<option value="${it.id}" ${it.id === tally.itemId ? 'selected' : ''}>${esc(it.name)} (${it.stock})</option>`).join('');
-      const tInp = document.getElementById('inpTallyTarget');
-      tInp.readOnly = (tally.mode === 'AUDIT');
-      if (document.activeElement !== tInp) tInp.value = (tally.target > 0 || tally.mode === 'AUDIT') ? tally.target : '';
-      document.getElementById('lblCarryVal').textContent = `1 = ${tally.carryMult}`;
-      const isP = PRESETS.includes(tally.carryMult);
+      document.getElementById('btnTTicket').className = 'seg-btn' + (tallyTab === 'TICKET' ? ' teal' : '');
+      document.getElementById('btnTFree').className = 'seg-btn' + (tallyTab === 'FREE' ? ' in' : '');
+      document.getElementById('btnTAudit').className = 'seg-btn' + (tallyTab === 'AUDIT' ? ' adj' : '');
+
+      document.getElementById('tallyTicketArea').style.display = tallyTab === 'TICKET' ? 'block' : 'none';
+      document.getElementById('tallyFreeArea').style.display = tallyTab === 'FREE' ? 'block' : 'none';
+      document.getElementById('tallyAuditArea').style.display = tallyTab === 'AUDIT' ? 'block' : 'none';
+
+      if (tallyTab === 'TICKET') {
+        const tk = getActiveTicket();
+        renderTicketBarOnly();
+        const dirBtn = document.getElementById('btnTkDir');
+        dirBtn.textContent = tk.dir === 'OUT' ? t('tkDirOut') : t('tkDirIn');
+        dirBtn.style.color = tk.dir === 'OUT' ? '#fca5a5' : '#86efac';
+        dirBtn.style.borderColor = tk.dir === 'OUT' ? 'var(--rose)' : 'var(--emerald)';
+        if (document.activeElement !== document.getElementById('inpTkDoc')) document.getElementById('inpTkDoc').value = tk.docNo || '';
+        if (document.activeElement !== document.getElementById('inpTkParty')) document.getElementById('inpTkParty').value = tk.party || '';
+        if (document.activeElement !== document.getElementById('inpTkRef')) document.getElementById('inpTkRef').value = tk.ref || '';
+        document.getElementById('inpTkDoc').placeholder = t('docPh');
+        document.getElementById('inpTkParty').placeholder = tk.dir === 'OUT' ? t('partyOutPh') : t('partyInPh');
+        document.getElementById('inpTkRef').placeholder = tk.dir === 'OUT' ? t('refOutPh') : t('refInPh');
+        renderTicketItemsStrip();
+      } else if (tallyTab === 'FREE') {
+        document.getElementById('inpFreeLabel').value = freeTally.label || '';
+        document.getElementById('inpFreeLabel').placeholder = t('freeLabelPh');
+        document.getElementById('inpFreeTarget').value = freeTally.target > 0 ? freeTally.target : '';
+        document.getElementById('inpFreeTarget').placeholder = t('freeTargetPh');
+      } else {
+        const sel = document.getElementById('selAuditItem');
+        sel.innerHTML = (whData.items || []).map((it) => `<option value="${it.id}" ${it.id === auditTally.itemId ? 'selected' : ''}>${esc(it.name)} (${it.stock})</option>`).join('');
+        const it = (whData.items || []).find((x) => x.id === auditTally.itemId);
+        document.getElementById('inpAuditSys').value = it ? it.stock : 0;
+      }
+
+      document.getElementById('lblCarryVal').textContent = `1 = ${carryMult}`;
+      const isP = PRESETS.includes(carryMult);
       document.getElementById('presetGrid').innerHTML =
-        PRESETS.map((n) => `<button type="button" class="preset-btn ${tally.carryMult === n ? 'active' : ''}" onclick="tally.carryMult=${n};vib(15);renderTally();">+${n}</button>`).join('') +
-        `<button type="button" class="preset-btn custom ${!isP ? 'active' : ''}" onclick="openNumModal('custom')">${!isP ? '+' + tally.carryMult : esc(t('other'))}</button>`;
-      document.getElementById('btnTCommit').textContent = tally.mode === 'AUDIT' ? `⚡ ${t('applyAdj')}` : `📥 ${t('sendBasket')}`;
-      renderTallyCanvas(false); renderTallyStats();
+        PRESETS.map((n) => `<button type="button" class="preset-btn ${carryMult === n ? 'active' : ''}" onclick="carryMult=${n};vib(15);saveTallyState();renderTally();">+${n}</button>`).join('') +
+        `<button type="button" class="preset-btn custom ${!isP ? 'active' : ''}" onclick="openNumModal('custom')">${!isP ? '+' + carryMult : esc(t('other'))}</button>`;
+
+      document.getElementById('btnTCommit').textContent =
+        tallyTab === 'TICKET' ? `✅ ${t('postDirect')}`
+        : tallyTab === 'FREE' ? `📥 ${t('sendEntry')}`
+        : `⚡ ${t('applyAdj')}`;
+
+      renderTallyCanvas(false);
+      renderTallyStats();
     }
 
     function renderTallyCanvas(animLast) {
-      const c = document.getElementById('tallyCanvas'), s = tally.strokes;
+      const c = document.getElementById('tallyCanvas');
+      const ctx = getActiveStrokeContext();
+      if (!ctx.enabled) {
+        c.innerHTML = `<div style="margin:auto;text-align:center;color:var(--muted);font-size:12px;font-weight:800;padding:12px;">${esc(t('tkNoItems'))}</div>`;
+        return;
+      }
+      const s = ctx.strokes;
       if (!s.length) {
         c.innerHTML = `<div style="margin:auto;opacity:0.14;pointer-events:none;"><div class="t-grp" style="transform:scale(1.5);"><div class="t-bar"></div><div class="t-bar"></div><div class="t-bar"></div><div class="t-bar"></div><div class="t-slash"></div></div></div>`;
         return;
@@ -1107,14 +1523,15 @@
     }
 
     function renderTallyStats() {
-      const cnt = getTallyTotal(), trg = Number(tally.target || 0), m = tally.mode;
+      const ctx = getActiveStrokeContext();
+      const cnt = sumStrokes(ctx.strokes), trg = ctx.target;
       document.getElementById('valTCounted').textContent = cnt.toLocaleString();
-      document.getElementById('valTStrokes').textContent = tally.strokes.length.toLocaleString();
+      document.getElementById('valTStrokes').textContent = ctx.strokes.length.toLocaleString();
       const rLbl = document.getElementById('lblTRight'), rVal = document.getElementById('valTRight');
       const box = document.getElementById('tallyAlert'), pad = document.getElementById('tallyPad');
       box.className = 'alert-box'; pad.classList.remove('done');
 
-      if (m === 'AUDIT') {
+      if (ctx.isAudit) {
         const d = cnt - trg;
         rLbl.textContent = t('diff'); rVal.textContent = (d > 0 ? '+' : '') + d;
         if (d > 0) { box.className = 'alert-box over'; box.textContent = t('overWarn')(d); }
@@ -1123,10 +1540,10 @@
       } else {
         rLbl.textContent = t('remaining');
         if (trg <= 0) rVal.textContent = '∞';
-        else if (m === 'OUT') {
+        else if (ctx.hardStop) {
           const rem = Math.max(0, trg - cnt); rVal.textContent = rem.toLocaleString();
           if (cnt >= trg) { box.className = 'alert-box stop'; box.textContent = t('stopAlert'); pad.classList.add('done'); }
-          else if (rem < tally.carryMult) { box.className = 'alert-box warn'; box.textContent = t('oddWarn')(rem); }
+          else if (rem < carryMult) { box.className = 'alert-box warn'; box.textContent = t('oddWarn')(rem); }
         } else {
           const d = cnt - trg; rVal.textContent = d >= 0 ? `+${d}` : String(trg - cnt);
           if (d > 0) { box.className = 'alert-box over'; box.textContent = t('overWarn')(d); }
@@ -1137,7 +1554,7 @@
 
     function openNumModal(mode) {
       openMainModal(mode === 'custom' ? t('perCarry') : t('odd'),
-        `<input type="number" id="inpNumMod" class="inp mono" style="height:46px;font-size:20px;" min="1" inputmode="numeric" value="${mode === 'custom' ? tally.carryMult : ''}">`,
+        `<input type="number" id="inpNumMod" class="inp mono" style="height:46px;font-size:20px;" min="1" inputmode="numeric" value="${mode === 'custom' ? carryMult : ''}">`,
         `<button type="button" class="btn muted" onclick="closeMainModal()">${esc(t('cancel'))}</button>
          <button type="button" class="btn teal" id="btnNumGo">${esc(t('ok'))}</button>`);
       const inp = document.getElementById('inpNumMod'); setTimeout(() => { inp.focus(); inp.select(); }, 40);
@@ -1145,11 +1562,40 @@
         const v = Math.floor(Number(inp.value || 0));
         if (v <= 0) return;
         closeMainModal();
-        if (mode === 'custom') { tally.carryMult = v; renderTally(); } else addTallyStroke(v);
+        if (mode === 'custom') { carryMult = v; saveTallyState(); renderTally(); } else addTallyStroke(v);
       };
     }
 
-    // ==================== ገጽ 3 እና 4: ዕለታዊ እና ስቶክ ====================
+    // ==================== ገጽ 3 እና 4: ዕለታዊ፣ ስቶክ እና የሞባይል ፒዲኤፍ ====================
+    function getSortedDailyRows(rows, ascendingDoc = false) {
+      if (dailySort === 'TIME' && !ascendingDoc) return rows;
+      const groups = [];
+      const map = new Map();
+      rows.forEach((r) => {
+        const key = String(r.document_id || r.ledger_id);
+        if (!map.has(key)) {
+          const g = { docNum: docNumInt(r.doc_no), docStr: String(r.doc_no || ''), lines: [] };
+          map.set(key, g); groups.push(g);
+        }
+        map.get(key).lines.push(r);
+      });
+      groups.sort((a, b) => {
+        if (a.docNum !== b.docNum) return ascendingDoc ? (a.docNum - b.docNum) : (b.docNum - a.docNum);
+        return ascendingDoc ? a.docStr.localeCompare(b.docStr) : b.docStr.localeCompare(a.docStr);
+      });
+      const out = [];
+      groups.forEach((g) => g.lines.forEach((l) => out.push(l)));
+      return out;
+    }
+
+    function toggleDailySort() {
+      dailySort = dailySort === 'DOC' ? 'TIME' : 'DOC';
+      vib(16);
+      document.getElementById('btnDailySort').textContent = dailySort === 'DOC' ? '#' : '🕒';
+      showToast(dailySort === 'DOC' ? t('sortDoc') : t('sortTime'));
+      renderDaily();
+    }
+
     async function loadDaily() {
       const res = await callRpc('rpc_get_daily_ledger', { p_token: session.token, p_warehouse_id: currentWhId });
       if (res.success) { dailyRows = res.rows || []; renderDaily(); }
@@ -1167,8 +1613,9 @@
       document.getElementById('dailyHead').innerHTML = `<tr>${t('dCols').map((c) => `<th>${esc(c)}</th>`).join('')}</tr>`;
       let inT = 0, outT = 0, vCnt = 0, lastDoc = null;
       const html = [];
+      const ordered = getSortedDailyRows(dailyRows, false);
 
-      dailyRows.forEach((r) => {
+      ordered.forEach((r) => {
         if (zeroFilter && !r.is_zero_stock) return;
         const txt = `${r.doc_no} ${r.item_name} ${r.party_name} ${r.ref_no} ${r.date_str}`.toLowerCase();
         if (q && !txt.includes(q)) return;
@@ -1189,8 +1636,8 @@
             <td>${esc(same ? '↳' : r.doc_no)}</td>
             <td>${esc(isVoid ? t('voidLabel') : r.item_name)}</td>
             <td>${isVoid ? '-' : Number(r.opening_bal || 0).toLocaleString()}</td>
-            <td style="color:var(--emerald);">${r.qty_in ? '+' + r.qty_in : '-'}</td>
-            <td style="color:var(--rose);">${r.qty_out ? '-' + r.qty_out : '-'}</td>
+            <td style="color:var(--emerald);">${r.qty_in ? '+' + Number(r.qty_in).toLocaleString() : '-'}</td>
+            <td style="color:var(--rose);">${r.qty_out ? '-' + Number(r.qty_out).toLocaleString() : '-'}</td>
             <td>${isVoid ? '-' : Number(r.closing_bal || 0).toLocaleString()}</td>
             <td>${esc(same ? '↳' : r.party_name)}</td>
             <td>${esc(same ? '↳' : r.date_str)}</td>
@@ -1335,88 +1782,119 @@
       await generateAndDeliverPdf(isStock, null, true);
     }
 
+    // ለሞባይል ንባብ የተመቻቸ እና ቀን በትክክለኛው አምድ ላይ የሚቀመጥ ፒዲኤፍ
     async function generateAndDeliverPdf(isStock, onlyIds, sendToBot) {
       if (!window.html2canvas || !window.jspdf) { showToast(t('pdfLoading')); return; }
       const stage = document.getElementById('pdfStage');
-      const brand = whData.warehouse?.brand_title || t('defaultBrand');
-      const whName = whData.warehouse?.name || '';
+      const brand = getActiveBrand();
       const dateStr = new Date().toLocaleDateString('en-GB');
-      const title = `${brand} — ${whName} (${dateStr})`;
+      const title = `${brand} — ${isStock ? t('pdfStockSub') : t('pdfDailySub')} (${dateStr})`;
 
       let bodyHtml = '';
       if (isStock) {
         const list = onlyIds ? stockRows.filter((r) => onlyIds.includes(r.item_id)) : stockRows.filter((r) => r.closing_qty > 0 || r.in_qty > 0 || r.out_qty > 0 || r.adj_net_qty !== 0);
+        const hasAdj = list.some((r) => Number(r.adj_net_qty || 0) !== 0);
+        const cols = hasAdj ? t('sPdfCols6') : t('sPdfCols5');
         let opT = 0, inT = 0, outT = 0, adjT = 0, clT = 0, lastCat = '';
+
         const trs = list.map((r) => {
           opT += Number(r.opening_qty); inT += Number(r.in_qty); outT += Number(r.out_qty); adjT += Number(r.adj_net_qty); clT += Number(r.closing_qty);
           let catRow = '';
           if (r.category_name !== lastCat) {
             lastCat = r.category_name;
-            catRow = `<tr style="background:#1e3a29;color:#fff;"><td colspan="6" style="padding:6px;font-weight:900;">📁 ${esc(lastCat)}</td></tr>`;
+            catRow = `<tr style="background:#1c4532;color:#fff;"><td colspan="${cols.length}" style="padding:6px 10px;font-weight:900;font-size:12px;">${esc(lastCat)}</td></tr>`;
           }
-          const bg = r.closing_qty === 0 ? '#f4cccc' : (r.closing_qty <= (whData.warehouse?.low_limit || 20) ? '#fff2cc' : '#ffffff');
-          return catRow + `<tr style="background:${bg};">
-            <td style="padding:5px;border:1px solid #cbd5e1;font-weight:700;">${esc(r.item_name)}</td>
-            <td style="padding:5px;border:1px solid #cbd5e1;text-align:center;">${r.opening_qty}</td>
-            <td style="padding:5px;border:1px solid #cbd5e1;text-align:center;">${r.in_qty}</td>
-            <td style="padding:5px;border:1px solid #cbd5e1;text-align:center;">${r.out_qty}</td>
-            <td style="padding:5px;border:1px solid #cbd5e1;text-align:center;">${r.adj_net_qty}</td>
-            <td style="padding:5px;border:1px solid #cbd5e1;text-align:center;font-weight:900;">${r.closing_qty}</td>
+          const lowLim = whData.warehouse?.low_limit || 20;
+          const bg = r.closing_qty === 0 ? '#f8d7da' : (r.closing_qty <= lowLim ? '#fff3cd' : '#ffffff');
+          const txtClr = r.closing_qty === 0 ? '#991b1b' : (r.closing_qty <= lowLim ? '#92400e' : '#0f172a');
+          return catRow + `<tr style="background:${bg};color:${txtClr};">
+            <td style="padding:5px 8px;border:1px solid #cbd5e1;font-weight:800;">${esc(r.item_name)}</td>
+            <td style="padding:5px;border:1px solid #cbd5e1;text-align:center;font-weight:700;">${Number(r.opening_qty).toLocaleString()}</td>
+            <td style="padding:5px;border:1px solid #cbd5e1;text-align:center;font-weight:700;">${Number(r.in_qty).toLocaleString()}</td>
+            <td style="padding:5px;border:1px solid #cbd5e1;text-align:center;font-weight:700;">${Number(r.out_qty).toLocaleString()}</td>
+            ${hasAdj ? `<td style="padding:5px;border:1px solid #cbd5e1;text-align:center;font-weight:700;">${Number(r.adj_net_qty).toLocaleString()}</td>` : ''}
+            <td style="padding:5px;border:1px solid #cbd5e1;text-align:center;font-weight:900;">${Number(r.closing_qty).toLocaleString()}</td>
           </tr>`;
         }).join('');
+
         bodyHtml = `<table style="width:100%;border-collapse:collapse;font-size:12px;">
-          <thead><tr style="background:#0f172a;color:#fff;">${t('sCols').map((c) => `<th style="padding:7px;border:1px solid #334155;">${esc(c)}</th>`).join('')}</tr></thead>
-          <tbody>${trs}</tbody>
+          <thead><tr style="background:#0f172a;color:#fff;">${cols.map((c) => `<th style="padding:7px;border:1px solid #334155;">${esc(c)}</th>`).join('')}</tr></thead>
+          <tbody>${trs || `<tr><td colspan="${cols.length}" style="text-align:center;padding:16px;color:#64748b;">${esc(t('noItems'))}</td></tr>`}</tbody>
           <tfoot><tr style="background:#0f172a;color:#38bdf8;font-weight:900;">
-            <td style="padding:7px;">${list.length}</td><td style="text-align:center;">${opT}</td><td style="text-align:center;color:#86efac;">${inT}</td>
-            <td style="text-align:center;color:#fca5a5;">${outT}</td><td style="text-align:center;">${adjT}</td><td style="text-align:center;">${clT}</td>
+            <td style="padding:7px 8px;">${esc(t('pdfStockTot')(list.length))}</td>
+            <td style="text-align:center;color:#fff;">${opT.toLocaleString()}</td>
+            <td style="text-align:center;color:#86efac;">${inT.toLocaleString()}</td>
+            <td style="text-align:center;color:#fca5a5;">${outT.toLocaleString()}</td>
+            ${hasAdj ? `<td style="text-align:center;color:#7dd3fc;">${adjT.toLocaleString()}</td>` : ''}
+            <td style="text-align:center;color:#fde047;">${clT.toLocaleString()}</td>
           </tr></tfoot></table>`;
       } else {
-        const list = onlyIds ? dailyRows.filter((r) => onlyIds.includes(String(r.ledger_id || r.document_id))) : dailyRows;
+        const rawList = onlyIds ? dailyRows.filter((r) => onlyIds.includes(String(r.ledger_id || r.document_id))) : dailyRows;
+        const list = getSortedDailyRows(rawList, true);
         let lastDoc = null, inT = 0, outT = 0;
+
         const trs = list.map((r) => {
           let sp = '';
-          if (lastDoc && lastDoc !== r.document_id) sp = `<tr style="background:#f1f5f9;"><td colspan="8" style="height:6px;"></td></tr>`;
+          if (lastDoc && lastDoc !== r.document_id) sp = `<tr style="background:#f8fafc;"><td colspan="9" style="height:5px;border-left:1px solid #cbd5e1;border-right:1px solid #cbd5e1;"></td></tr>`;
           const same = lastDoc === r.document_id; lastDoc = r.document_id;
           const isV = r.status === 'VOIDED' || r.is_voided || r.doc_type === 'VOID';
           if (!isV) { inT += Number(r.qty_in || 0); outT += Number(r.qty_out || 0); }
-          const bg = isV ? '#f4cccc' : (r.doc_type === 'IN' ? '#d9ead3' : (r.doc_type === 'ADJ' ? '#dbeafe' : (r.is_zero_stock ? '#ffe599' : '#ffffff')));
+          const bg = isV ? '#f8d7da' : (r.doc_type === 'IN' ? '#d1fae5' : (r.doc_type === 'ADJ' ? '#dbeafe' : (r.is_zero_stock ? '#ffe599' : '#ffffff')));
           return sp + `<tr style="background:${bg};">
-            <td style="padding:5px;border:1px solid #cbd5e1;text-align:center;font-weight:700;">${esc(same ? '↳' : r.doc_no)}</td>
-            <td style="padding:5px;border:1px solid #cbd5e1;font-weight:700;">${esc(isV ? t('voidLabel') : r.item_name)}</td>
-            <td style="padding:5px;border:1px solid #cbd5e1;text-align:center;">${isV ? '-' : r.opening_bal}</td>
-            <td style="padding:5px;border:1px solid #cbd5e1;text-align:center;">${r.qty_in || '-'}</td>
-            <td style="padding:5px;border:1px solid #cbd5e1;text-align:center;">${r.qty_out || '-'}</td>
-            <td style="padding:5px;border:1px solid #cbd5e1;text-align:center;font-weight:900;">${isV ? '-' : r.closing_bal}</td>
-            <td style="padding:5px;border:1px solid #cbd5e1;">${esc(same ? '↳' : r.party_name)}</td>
-            <td style="padding:5px;border:1px solid #cbd5e1;text-align:center;">${esc(same ? '↳' : r.date_str)}</td>
+            <td style="padding:5px 4px;border:1px solid #cbd5e1;text-align:center;font-weight:800;">${esc(same ? '↳' : r.doc_no)}</td>
+            <td style="padding:5px 6px;border:1px solid #cbd5e1;font-weight:800;">${esc(isV ? t('voidLabel') : r.item_name)}</td>
+            <td style="padding:5px 4px;border:1px solid #cbd5e1;text-align:center;font-weight:700;">${isV ? '-' : Number(r.opening_bal || 0).toLocaleString()}</td>
+            <td style="padding:5px 4px;border:1px solid #cbd5e1;text-align:center;font-weight:700;">${r.qty_in ? Number(r.qty_in).toLocaleString() : ''}</td>
+            <td style="padding:5px 4px;border:1px solid #cbd5e1;text-align:center;font-weight:700;">${r.qty_out ? Number(r.qty_out).toLocaleString() : ''}</td>
+            <td style="padding:5px 4px;border:1px solid #cbd5e1;text-align:center;font-weight:900;">${isV ? '-' : Number(r.closing_bal || 0).toLocaleString()}</td>
+            <td style="padding:5px 6px;border:1px solid #cbd5e1;font-weight:700;">${esc(same ? '↳' : r.party_name)}</td>
+            <td style="padding:5px 4px;border:1px solid #cbd5e1;text-align:center;font-weight:700;">${esc(same ? '↳' : (r.ref_no || '-'))}</td>
+            <td style="padding:5px 4px;border:1px solid #cbd5e1;text-align:center;font-weight:700;">${esc(same ? '↳' : r.date_str)}</td>
           </tr>`;
         }).join('');
-        bodyHtml = `<table style="width:100%;border-collapse:collapse;font-size:11.5px;">
-          <thead><tr style="background:#0f172a;color:#fff;">${t('dCols').slice(0,8).map((c) => `<th style="padding:7px;border:1px solid #334155;">${esc(c)}</th>`).join('')}</tr></thead>
-          <tbody>${trs}</tbody>
+
+        bodyHtml = `<table style="width:100%;border-collapse:collapse;font-size:11px;">
+          <thead><tr style="background:#0f172a;color:#fff;">${t('dPdfCols').map((c) => `<th style="padding:6px 4px;border:1px solid #334155;">${esc(c)}</th>`).join('')}</tr></thead>
+          <tbody>
+            ${trs || `<tr><td colspan="9" style="text-align:center;padding:16px;color:#64748b;">${esc(t('noItems'))}</td></tr>`}
+            <tr><td colspan="9" style="text-align:center;padding:6px;color:#94a3b8;font-size:10px;font-weight:700;">${esc(t('pdfEndList'))}</td></tr>
+          </tbody>
           <tfoot><tr style="background:#0f172a;color:#38bdf8;font-weight:900;">
-            <td colspan="3" style="padding:7px;">${list.length}</td>
-            <td style="text-align:center;color:#86efac;">${inT}</td><td style="text-align:center;color:#fca5a5;">${outT}</td>
-            <td colspan="3" style="text-align:center;">${dateStr}</td>
+            <td colspan="3" style="padding:7px 8px;text-align:left;">${esc(t('pdfTotLabel'))}</td>
+            <td style="padding:7px 4px;text-align:center;color:#86efac;">${inT.toLocaleString()}</td>
+            <td style="padding:7px 4px;text-align:center;color:#fca5a5;">${outT.toLocaleString()}</td>
+            <td colspan="3" style="padding:7px 6px;text-align:center;color:#e2e8f0;">${esc(t('pdfRowsCount')(list.length))}</td>
+            <td style="padding:7px 4px;text-align:center;color:#38bdf8;">${dateStr}</td>
           </tr></tfoot></table>`;
       }
 
-      stage.innerHTML = `<div style="background:#090e17;color:#38bdf8;padding:12px;text-align:center;font-size:15px;font-weight:900;margin-bottom:6px;">${esc(title)}</div>${bodyHtml}`;
+      stage.innerHTML = `<div style="background:#090e17;color:#38bdf8;padding:10px;text-align:center;font-size:14.5px;font-weight:900;margin-bottom:2px;">${esc(title)}</div>${bodyHtml}`;
       const canvas = await window.html2canvas(stage, { scale: 2, backgroundColor: '#ffffff' });
       const { jsPDF } = window.jspdf;
-      const pdf = new jsPDF({ orientation: 'portrait', unit: 'pt', format: 'a4' });
-      const pw = pdf.internal.pageSize.getWidth(), ph = pdf.internal.pageSize.getHeight();
-      const imgW = pw - 20, imgH = (canvas.height * imgW) / canvas.width;
-      let leftH = imgH, pos = 10;
+
+      // ለሞባይል ሙሉ እይታ የተገጣጠመ የገጽ ቁመት (ባዶ A4 ቦታ ሳይተው)
+      const pw = 595;
+      const margin = 10;
+      const imgW = pw - margin * 2;
+      const imgH = (canvas.height * imgW) / canvas.width;
       const imgData = canvas.toDataURL('image/png');
-      pdf.addImage(imgData, 'PNG', 10, pos, imgW, imgH);
-      leftH -= (ph - 20);
-      while (leftH > 0) {
-        pos = leftH - imgH + 10;
-        pdf.addPage();
-        pdf.addImage(imgData, 'PNG', 10, pos, imgW, imgH);
-        leftH -= (ph - 20);
+
+      let pdf;
+      if (imgH <= 1800) {
+        pdf = new jsPDF({ orientation: 'portrait', unit: 'pt', format: [pw, Math.max(220, imgH + margin * 2)] });
+        pdf.addImage(imgData, 'PNG', margin, margin, imgW, imgH);
+      } else {
+        const ph = 842;
+        pdf = new jsPDF({ orientation: 'portrait', unit: 'pt', format: 'a4' });
+        let leftH = imgH, pos = margin;
+        pdf.addImage(imgData, 'PNG', margin, pos, imgW, imgH);
+        leftH -= (ph - margin * 2);
+        while (leftH > 0) {
+          pos = leftH - imgH + margin;
+          pdf.addPage();
+          pdf.addImage(imgData, 'PNG', margin, pos, imgW, imgH);
+          leftH -= (ph - margin * 2);
+        }
       }
 
       const fileName = `${isStock ? 'Stock' : 'Daily'}_${dateStr.replace(/\//g, '-')}.pdf`;
@@ -1579,6 +2057,7 @@
       const items = [];
       if (role === 'SUPER_ADMIN') items.push({ ico: '🏛️', lbl: t('mOrgs'), fn: 'openOrgsManager()' });
       if (isOrgAdm) {
+        items.push({ ico: '🏷️', lbl: t('mBrand'), fn: 'openBrandManager()' });
         items.push({ ico: '🏢', lbl: t('mBranches'), fn: 'openBranchesManager()' });
         items.push({ ico: '👥', lbl: t('mStaff'), fn: 'openStaffManager()' });
         items.push({ ico: '📡', lbl: t('mChannels'), fn: 'openChannelsManager()' });
@@ -1596,6 +2075,38 @@
           <span>${it.ico} ${esc(it.lbl)}</span>
           ${it.badge ? `<span class="badge-cnt">${it.badge}</span>` : ''}
         </button>`).join('');
+    }
+
+    function openBrandManager() {
+      const cur = getActiveBrand();
+      openMainModal(t('mBrand'), `
+        <div class="sub-card">
+          <span class="lbl-sm">${esc(t('phBrandTitle'))}</span>
+          <input id="inpBrandEdit" class="inp" value="${esc(cur)}" placeholder="${esc(t('phBrandTitle'))}">
+        </div>`,
+        `<button type="button" class="btn muted" onclick="closeMainModal()">${esc(t('cancel'))}</button>
+         <button type="button" class="btn teal" onclick="saveBrandTitle()">${esc(t('save'))}</button>`);
+    }
+
+    async function saveBrandTitle() {
+      const val = document.getElementById('inpBrandEdit').value.trim();
+      if (!val) return;
+      const orgId = whData.warehouse?.organization_id || session?.organization?.id || '';
+      const ov = getBrandOverrides();
+      if (currentWhId) ov[currentWhId] = val;
+      if (orgId) ov[orgId] = val;
+      saveJson(BRAND_OVERRIDE_KEY, ov);
+      try {
+        if (whData.warehouse?.id) {
+          await callRpc('rpc_manage_warehouse', {
+            p_token: session.token, p_action: 'UPSERT',
+            p_payload: { id: whData.warehouse.id, organization_id: whData.warehouse.organization_id, name: whData.warehouse.name, code: whData.warehouse.code, brand_title: val },
+          });
+        }
+      } catch {}
+      if (whData.warehouse) whData.warehouse.brand_title = val;
+      if (session?.organization) { session.organization.brand_title = val; session.organization.name = val; saveJson(SESSION_KEY, session); }
+      applyBrandDisplay(); closeMainModal(); showToast(t('savedOk'));
     }
 
     function openOrgsManager() {
@@ -1616,15 +2127,10 @@
     }
 
     async function createNewOrg() {
+      const orgName = document.getElementById('oName').value.trim();
       const res = await callRpc('rpc_manage_organization', {
         p_token: session.token, p_action: 'CREATE',
-        p_payload: {
-          code: document.getElementById('oCode').value,
-          name: document.getElementById('oName').value,
-          first_branch_name: document.getElementById('oBr').value,
-          admin_name: document.getElementById('oAdmN').value,
-          admin_pin: document.getElementById('oAdmP').value,
-        },
+        p_payload: { code: document.getElementById('oCode').value, name: orgName, brand_title: orgName, first_branch_name: document.getElementById('oBr').value, admin_name: document.getElementById('oAdmN').value, admin_pin: document.getElementById('oAdmP').value },
       });
       if (res.success) { closeMainModal(); showToast(t('savedOk')); } else showToast(t('errGeneric'));
     }
@@ -1644,7 +2150,7 @@
     async function addBranch() {
       const res = await callRpc('rpc_manage_warehouse', {
         p_token: session.token, p_action: 'UPSERT',
-        p_payload: { organization_id: whData.warehouse.organization_id, name: document.getElementById('bName').value, code: document.getElementById('bCode').value },
+        p_payload: { organization_id: whData.warehouse.organization_id, name: document.getElementById('bName').value, code: document.getElementById('bCode').value, brand_title: getActiveBrand() },
       });
       if (res.success) { closeMainModal(); showToast(t('savedOk')); loadWarehouseData(currentWhId); } else showToast(t('errGeneric'));
     }
@@ -1657,6 +2163,7 @@
       const staffCards = staff.map((s) => `
         <div class="sub-card">
           <div style="display:flex;justify-content:space-between;"><b>${esc(s.full_name)}</b><span style="color:var(--teal);font-size:10.5px;">${esc(roleLabel(s.role))}</span></div>
+          ${s.email ? `<div class="lbl-sm">${esc(s.email)}</div>` : ''}
           <div style="display:flex;flex-wrap:wrap;gap:4px;">
             ${whs.map((w) => {
               const has = (s.branches || []).some((b) => b.warehouse_id === w.id);
@@ -1670,6 +2177,10 @@
           <div class="grid-2">
             <input id="stName" class="inp" placeholder="${esc(t('phStaffName'))}">
             <input id="stPin" class="inp mono" maxlength="6" inputmode="numeric" placeholder="${esc(t('phPin'))}">
+          </div>
+          <div class="grid-2">
+            <input id="stEmail" type="email" class="inp" placeholder="${esc(t('emailPh'))}">
+            <input id="stPass" type="password" class="inp" placeholder="${esc(t('passPh'))}">
           </div>
           <select id="stRole" class="sel">
             <option value="STAFF">${esc(t('roleStaff'))}</option>
@@ -1687,6 +2198,8 @@
           organization_id: whData.warehouse.organization_id,
           full_name: document.getElementById('stName').value,
           pin: document.getElementById('stPin').value,
+          email: document.getElementById('stEmail').value.trim().toLowerCase() || null,
+          password: document.getElementById('stPass').value || null,
           role: document.getElementById('stRole').value,
           warehouse_ids: [currentWhId],
         },
@@ -1936,14 +2449,19 @@
 
     function renderStaticLabels() {
       document.getElementById('docRoot').lang = lang;
-      document.title = whData.warehouse?.brand_title || t('defaultBrand');
+      applyBrandDisplay();
       document.getElementById('gateMark').textContent = t('gateMark');
       document.getElementById('lblGateTitle').textContent = t('gateTitle');
+      document.getElementById('btnAuthPin').textContent = t('authPin');
+      document.getElementById('btnAuthEmail').textContent = t('authEmail');
       document.getElementById('inpOrgCode').placeholder = t('orgCodePh');
+      document.getElementById('inpLoginEmail').placeholder = t('emailPh');
+      document.getElementById('inpLoginPass').placeholder = t('passPh');
       document.getElementById('btnLoginSubmit').textContent = t('loginBtn');
       document.getElementById('btnGateLang').textContent = t('langSwitch');
       document.getElementById('btnTopLang').textContent = t('langShort');
       document.getElementById('btnLogout').textContent = t('logout');
+      document.getElementById('btnInstallApp').textContent = t('installApp');
 
       document.getElementById('lblNavEntry').textContent = t('navEntry');
       document.getElementById('lblNavTally').textContent = t('navTally');
@@ -1960,8 +2478,8 @@
       document.getElementById('inpSearch').placeholder = t('searchPh');
       document.getElementById('inpQuickQty').placeholder = t('qtyPh');
 
-      document.getElementById('btnTOut').textContent = t('tOut');
-      document.getElementById('btnTIn').textContent = t('tIn');
+      document.getElementById('btnTTicket').textContent = t('tTicket');
+      document.getElementById('btnTFree').textContent = t('tFree');
       document.getElementById('btnTAudit').textContent = t('tAudit');
       document.getElementById('lblPerCarry').textContent = t('perCarry');
       document.getElementById('lblTCounted').textContent = t('counted');

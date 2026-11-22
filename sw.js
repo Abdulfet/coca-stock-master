@@ -1,5 +1,5 @@
-const CACHE = 'erp-shell-v1';
-const ASSETS = ['./', './index.html', './manifest.json'];
+const CACHE = 'erp-shell-v3';
+const ASSETS = ['./', './index.html', './manifest.json', './icon.svg'];
 
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(ASSETS)));
