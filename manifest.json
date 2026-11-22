@@ -1,0 +1,9 @@
+{
+  "name": "መጋዘን",
+  "short_name": "መጋዘን",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#060a12",
+  "theme_color": "#060a12",
+  "orientation": "portrait"
+}

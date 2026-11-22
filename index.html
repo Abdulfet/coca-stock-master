@@ -1,0 +1,2013 @@
+<!DOCTYPE html>
+<html lang="am" id="docRoot">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>መጋዘን</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#060a12">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+    :root {
+      --bg: #060a12; --surface: #0f172a; --surface-deep: #090f1d;
+      --border: #1e293b; --border-strong: #334155;
+      --text: #f8fafc; --muted: #94a3b8;
+      --primary: #0ea5e9; --teal: #14b8a6; --teal-dark: #042f2e;
+      --emerald: #10b981; --amber: #f59e0b; --rose: #ef4444;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; user-select: none; }
+    input, select, textarea { user-select: auto; }
+    html, body { height: 100%; width: 100%; background: var(--bg); color: var(--text); overflow: hidden; }
+
+    /* መግቢያ */
+    .gate { position: fixed; inset: 0; z-index: 900; background: radial-gradient(circle at top, #172554 0%, #060a12 72%); display: flex; align-items: center; justify-content: center; padding: 14px; }
+    .gate-card { width: 100%; max-width: 350px; background: rgba(15, 23, 42, 0.94); border: 1px solid var(--border-strong); border-radius: 22px; padding: 24px 20px; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 24px 48px rgba(0,0,0,0.75); }
+    .gate-mark { width: 58px; height: 58px; margin: 0 auto; border-radius: 16px; border: 2px solid var(--teal); background: var(--surface-deep); color: var(--teal); font-size: 20px; font-weight: 900; display: flex; align-items: center; justify-content: center; }
+    .gate-title { text-align: center; font-size: 16px; font-weight: 900; }
+    .gate-pin { height: 48px; text-align: center; font-size: 24px; letter-spacing: 8px; -webkit-text-security: disc; }
+
+    /* ዋና ቅርፊት */
+    .shell { max-width: 640px; height: 100vh; height: 100dvh; margin: 0 auto; display: none; flex-direction: column; padding: 6px 6px 0; position: relative; overflow: hidden; }
+    .topbar { height: 42px; display: flex; align-items: center; gap: 6px; background: var(--surface); border: 1px solid var(--border-strong); border-radius: 12px; padding: 0 7px; margin-bottom: 6px; flex-shrink: 0; }
+    .icon-btn { width: 32px; height: 30px; border-radius: 8px; border: 1px solid var(--border-strong); background: var(--surface-deep); color: var(--primary); font-size: 14px; font-weight: 900; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .brand-box { display: flex; flex-direction: column; min-width: 0; flex-shrink: 1; }
+    .brand-name { font-size: 11.5px; font-weight: 900; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .brand-sub { font-size: 8.5px; font-weight: 800; color: var(--teal); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .wh-sel { margin-left: auto; max-width: 142px; height: 30px; padding: 0 6px; border-radius: 8px; border: 1px solid var(--primary); background: var(--surface-deep); color: var(--primary); font-size: 11px; font-weight: 900; outline: none; }
+    .sync-pill { display: none; height: 26px; padding: 0 7px; border-radius: 13px; border: 1px solid var(--amber); background: rgba(245,158,11,0.18); color: #fde68a; font-size: 10px; font-weight: 900; cursor: pointer; flex-shrink: 0; }
+
+    /* ጎን ሜኑ */
+    .drawer-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.76); backdrop-filter: blur(4px); z-index: 600; display: none; }
+    .drawer { position: fixed; top: 0; left: -295px; width: 285px; height: 100%; background: #070b14; border-right: 1px solid var(--border-strong); z-index: 601; transition: left 0.22s ease; display: flex; flex-direction: column; padding: 14px 12px; gap: 8px; }
+    .drawer.open { left: 0; }
+    .drawer-head { display: flex; justify-content: space-between; align-items: center; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+    .drawer-list { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 4px; }
+    .drawer-item { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 11px 10px; border-radius: 10px; background: transparent; border: none; color: var(--text); font-size: 12.5px; font-weight: 800; text-align: left; cursor: pointer; width: 100%; }
+    .drawer-item:active { background: var(--surface); color: var(--teal); }
+    .badge-cnt { background: var(--rose); color: #fff; font-size: 10px; font-weight: 900; padding: 1px 6px; border-radius: 10px; }
+
+    /* የጋራ ክፍሎች */
+    .view { display: none; flex: 1; min-height: 0; flex-direction: column; overflow: hidden; }
+    .view.active { display: flex; }
+    .seg { display: flex; gap: 5px; margin-bottom: 6px; flex-shrink: 0; }
+    .seg-btn { flex: 1; height: 34px; border-radius: 10px; border: 1px solid var(--border-strong); background: var(--surface); color: var(--muted); font-size: 11.5px; font-weight: 900; cursor: pointer; }
+    .seg-btn.out { background: #3b0a0a; border-color: var(--rose); color: #fca5a5; }
+    .seg-btn.in { background: #052e16; border-color: var(--emerald); color: #86efac; }
+    .seg-btn.adj { background: #172554; border-color: var(--primary); color: #7dd3fc; }
+    .seg-btn.teal { background: var(--teal-dark); border-color: var(--teal); color: #99f6e4; }
+
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 11px; padding: 6px; margin-bottom: 6px; flex-shrink: 0; }
+    .inp, .sel { width: 100%; height: 35px; padding: 0 8px; border-radius: 8px; border: 1px solid var(--border-strong); background: var(--surface-deep); color: var(--text); font-size: 12px; font-weight: 800; outline: none; }
+    .inp:focus, .sel:focus { border-color: var(--teal); }
+    .inp.mono { font-family: ui-monospace, monospace; text-align: center; color: var(--primary); }
+    .grid-3 { display: grid; grid-template-columns: 1.2fr 1.05fr 0.85fr; gap: 5px; }
+    .grid-2 { display: grid; grid-template-columns: 1.45fr 1fr; gap: 5px; }
+    .doc-combo { display: flex; border: 1.5px solid var(--primary); border-radius: 8px; overflow: hidden; height: 35px; background: var(--surface-deep); }
+    .doc-combo input { border: none; border-radius: 0; flex: 1; min-width: 0; text-align: center; color: var(--primary); font-family: ui-monospace, monospace; }
+    .btn-void-mini { border: none; border-left: 1px solid #7f1d1d; background: #450a0a; color: #fca5a5; padding: 0 7px; font-size: 9.5px; font-weight: 900; cursor: pointer; display: inline-flex; align-items: center; }
+
+    /* ገጽ 1: መመዝገቢያ */
+    .quick-row { display: grid; grid-template-columns: 1fr 68px 40px; gap: 5px; margin-bottom: 6px; flex-shrink: 0; }
+    .btn-ok-sq { height: 35px; border: none; border-radius: 8px; background: var(--emerald); color: #052e16; font-size: 17px; font-weight: 900; cursor: pointer; }
+    .tiles { flex: 1 1 auto; min-height: 90px; overflow-y: auto; -webkit-overflow-scrolling: touch; display: grid; grid-template-columns: repeat(2, 1fr); align-content: start; gap: 5px; padding-bottom: 70px; }
+    .tiles.has-basket { padding-bottom: 8px; }
+    .tile { background: var(--surface-deep); border: 1px solid var(--border-strong); border-radius: 10px; padding: 7px 8px; cursor: pointer; display: flex; flex-direction: column; gap: 3px; }
+    .tile.picked { border-color: var(--emerald); background: rgba(6, 78, 59, 0.34); }
+    .tile-top { display: flex; justify-content: space-between; gap: 4px; align-items: center; }
+    .tile-name { font-size: 12px; font-weight: 900; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .tile-bal { font-size: 11.5px; font-weight: 900; color: var(--emerald); font-family: ui-monospace, monospace; }
+    .tile-bal.zero { color: var(--amber); }
+    .tile-bot { display: flex; justify-content: space-between; align-items: center; font-size: 9.5px; color: var(--muted); font-weight: 800; }
+    .tile-cnt-btn { padding: 2px 6px; border-radius: 6px; border: 1px solid var(--teal); background: rgba(20,184,166,0.14); color: var(--teal); font-size: 9.5px; font-weight: 900; cursor: pointer; }
+
+    /* ቅርጫት + 60fps ጎትቶ ማደራደሪያ */
+    .basket-wrap { display: none; flex: 0 0 auto; max-height: 32vh; flex-direction: column; margin-top: auto; margin-bottom: 110px; padding-top: 4px; }
+    .basket-list { overflow-y: auto; -webkit-overflow-scrolling: touch; display: flex; flex-direction: column; gap: 5px; }
+    .b-row { height: 42px; background: rgba(15, 23, 42, 0.86); border: 1.5px solid rgba(56, 189, 248, 0.38); border-radius: 21px; padding: 4px 8px 4px 6px; display: flex; align-items: center; justify-content: space-between; gap: 6px; backdrop-filter: blur(6px); }
+    .b-row.dragging { border-color: var(--teal); background: rgba(20, 184, 166, 0.28); transform: scale(1.02); }
+    .b-drag { min-width: 28px; height: 28px; border-radius: 14px; background: var(--primary); color: #fff; font-size: 11.5px; font-weight: 900; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; touch-action: none; cursor: grab; }
+    .b-name { flex: 1; min-width: 0; font-size: 12px; font-weight: 900; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .b-qty { width: 60px; height: 29px; border-radius: 14px; border: 1.5px solid var(--primary); background: var(--bg); color: #fff; text-align: center; font-size: 12.5px; font-weight: 900; }
+    .b-del { width: 26px; height: 26px; border-radius: 50%; border: none; background: rgba(239, 68, 68, 0.2); color: #fca5a5; font-weight: 900; cursor: pointer; }
+
+    .dock { position: fixed; bottom: 60px; left: 50%; transform: translateX(-50%); width: calc(100% - 14px); max-width: 626px; height: 44px; background: rgba(15, 23, 42, 0.9); border: 1.5px solid rgba(56, 189, 248, 0.45); border-radius: 22px; padding: 4px 6px 4px 14px; display: none; align-items: center; justify-content: space-between; z-index: 40; backdrop-filter: blur(8px); }
+    .dock-btn { height: 34px; padding: 0 15px; border: none; border-radius: 17px; font-size: 12px; font-weight: 900; cursor: pointer; }
+    .dock-btn.out { background: var(--rose); color: #fff; }
+    .dock-btn.in { background: var(--emerald); color: #052e16; }
+
+    /* ገጽ 2: ቆጠራ */
+    .preset-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px; }
+    .preset-btn { height: 33px; border-radius: 8px; border: 1px solid var(--border-strong); background: var(--surface-deep); color: var(--text); font-family: ui-monospace, monospace; font-size: 11.5px; font-weight: 900; cursor: pointer; }
+    .preset-btn.active { background: var(--teal); border-color: #5eead4; color: var(--teal-dark); }
+    .preset-btn.custom { font-family: inherit; font-size: 10px; color: var(--amber); }
+    .alert-box { display: none; padding: 7px 10px; border-radius: 10px; text-align: center; font-size: 11.5px; font-weight: 900; margin-bottom: 5px; flex-shrink: 0; }
+    .alert-box.warn { display: block; background: rgba(245,158,11,0.16); border: 1.5px solid var(--amber); color: #fde68a; }
+    .alert-box.stop { display: block; background: var(--emerald); color: #022c22; }
+    .alert-box.over { display: block; background: rgba(14,165,233,0.18); border: 1.5px solid var(--primary); color: #7dd3fc; }
+    .tally-pad { flex: 1; min-height: 0; background: var(--surface-deep); border: 2px dashed rgba(20,184,166,0.45); border-radius: 16px; display: flex; flex-direction: column; overflow: hidden; cursor: pointer; touch-action: pan-y; margin-bottom: 6px; }
+    .tally-pad.flash { border-color: var(--emerald); background: rgba(16,185,129,0.08); }
+    .tally-pad.done { border-style: solid; border-color: var(--emerald); }
+    .tally-canvas { flex: 1; overflow-y: auto; padding: 12px 10px; display: flex; flex-wrap: wrap; align-content: flex-start; gap: 6px 10px; }
+    .t-grp { position: relative; width: 42px; height: 40px; display: inline-flex; align-items: center; justify-content: center; }
+    .t-bar { width: 3.5px; height: 30px; background: var(--emerald); margin: 0 2.5px; border-radius: 2px; }
+    .t-bar.odd { background: var(--amber); }
+    .t-slash { position: absolute; width: 44px; height: 4px; background: var(--amber); border-radius: 2px; transform: rotate(-28deg); }
+    .anim-b { animation: pBar 0.12s ease-out; }
+    .anim-s { animation: pSlash 0.14s ease-out; }
+    @keyframes pBar { from { transform: scaleY(0.3); opacity: 0.3; } to { transform: scaleY(1); opacity: 1; } }
+    @keyframes pSlash { from { transform: rotate(-28deg) scaleX(0.2); opacity: 0.3; } to { transform: rotate(-28deg) scaleX(1); opacity: 1; } }
+    .t-stats { display: grid; grid-template-columns: 1fr 0.8fr 1fr; background: rgba(15,23,42,0.95); border-top: 1px solid var(--border); padding: 7px 12px; flex-shrink: 0; }
+    .t-stat { display: flex; flex-direction: column; }
+    .t-stat.c { align-items: center; }
+    .t-stat.r { align-items: flex-end; }
+    .t-lbl { font-size: 9.5px; font-weight: 800; color: var(--muted); }
+    .t-num { font-family: ui-monospace, monospace; font-size: 22px; font-weight: 900; line-height: 1.1; }
+    .t-actions { display: grid; grid-template-columns: 0.8fr 0.8fr 0.8fr 1.6fr; gap: 5px; margin-bottom: 62px; flex-shrink: 0; }
+    .t-btn { height: 42px; border-radius: 11px; border: 1px solid var(--border-strong); background: var(--surface); color: var(--text); font-size: 11px; font-weight: 900; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .t-btn.commit { background: var(--teal); border-color: #5eead4; color: var(--teal-dark); font-size: 11.5px; }
+
+    /* ሠንጠረዦች */
+    .metrics { display: flex; justify-content: space-around; background: var(--surface-deep); border: 1px solid var(--border); border-radius: 7px; padding: 4px; margin-top: 5px; font-size: 10.5px; font-weight: 900; }
+    .tbl-wrap { flex: 1; min-height: 0; overflow: auto; background: var(--surface); border: 1px solid var(--border-strong); border-radius: 10px; margin-bottom: 62px; }
+    table.tbl { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 11px; }
+    table.tbl th { position: sticky; top: 0; z-index: 5; background: var(--surface-deep); color: var(--primary); padding: 7px 4px; border-bottom: 1.5px solid var(--border-strong); border-right: 1px solid var(--border); font-size: 10px; font-weight: 900; white-space: nowrap; }
+    table.tbl td { padding: 6px 4px; border-bottom: 1px solid var(--border); border-right: 1px solid var(--border); font-weight: 800; white-space: nowrap; }
+    tr.r-in { background: rgba(16,185,129,0.14); color: #a7f3d0; }
+    tr.r-void { background: rgba(239,68,68,0.18); color: #fca5a5; }
+    tr.r-adj { background: rgba(14,165,233,0.16); color: #bae6fd; }
+    tr.r-zero { background: rgba(245,158,11,0.22); color: #fde68a; }
+    tr.r-cat { background: #143323; color: #6ee7b7; }
+    tr.r-sel { background: rgba(14,165,233,0.34) !important; color: #7dd3fc !important; }
+    tr.r-sel td:first-child { border-left: 3px solid var(--emerald); }
+    tr.r-sp td { height: 7px; padding: 0; background: var(--bg); border-left: none; border-right: none; }
+
+    /* ተንሳፋፊ የፒዲኤፍ አሞሌ */
+    .pdf-bar { position: fixed; bottom: 60px; left: 50%; transform: translateX(-50%); width: calc(100% - 14px); max-width: 626px; height: 42px; background: rgba(6,78,59,0.9); border: 1.5px solid var(--emerald); border-radius: 21px; padding: 4px 8px; display: none; align-items: center; justify-content: space-between; gap: 6px; z-index: 45; backdrop-filter: blur(8px); }
+    .pdf-pill { height: 30px; padding: 0 10px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.22); background: rgba(15,23,42,0.82); color: #fff; font-size: 11px; font-weight: 900; cursor: pointer; }
+    .pdf-send { height: 32px; padding: 0 12px; border-radius: 16px; border: none; background: var(--emerald); color: #052e16; font-size: 11px; font-weight: 900; cursor: pointer; }
+
+    /* ካርታ */
+    .rack-tabs { display: flex; gap: 5px; overflow-x: auto; margin-bottom: 6px; flex-shrink: 0; }
+    .rack-tab { min-width: 72px; height: 32px; padding: 0 10px; border-radius: 8px; border: 1px solid var(--border-strong); background: var(--surface-deep); color: var(--muted); font-size: 11px; font-weight: 900; cursor: pointer; white-space: nowrap; }
+    .rack-tab.active { background: var(--primary); color: #fff; border-color: #7dd3fc; }
+    .rack-wrap { flex: 1; overflow: auto; border: 1px solid var(--border-strong); border-radius: 10px; padding: 8px; margin-bottom: 62px; }
+    .rack-grid { display: grid; gap: 5px; min-width: 280px; }
+    .bin { min-height: 54px; border-radius: 8px; border: 1px solid var(--border-strong); background: var(--surface-deep); padding: 4px; text-align: center; display: flex; flex-direction: column; justify-content: center; gap: 2px; cursor: pointer; }
+    .bin.used { background: #064e3b; border-color: var(--emerald); }
+    .bin.hl { border: 2px dashed var(--amber); background: #451a03; }
+    .bin.sel { border: 2px solid var(--primary); background: #0369a1; }
+    .bin-id { font-size: 9.5px; font-weight: 900; color: var(--primary); }
+    .bin-it { font-size: 8.5px; font-weight: 800; word-break: break-word; }
+
+    /* የታችኛው አውራ ጣት ዳሰሳ */
+    .bottom-nav { position: fixed; bottom: 6px; left: 50%; transform: translateX(-50%); width: calc(100% - 14px); max-width: 626px; height: 50px; background: rgba(15,23,42,0.78); border: 1px solid rgba(255,255,255,0.22); border-radius: 25px; display: flex; align-items: center; padding: 3px 4px; z-index: 50; backdrop-filter: blur(8px); }
+    .nav-item { flex: 1; height: 42px; border-radius: 21px; border: none; background: transparent; color: var(--muted); font-size: 10px; font-weight: 900; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; }
+    .nav-item .ico { font-size: 15px; line-height: 1; }
+    .nav-item.active { background: rgba(14,165,233,0.45); color: #fff; border: 1px solid rgba(56,189,248,0.7); }
+
+    /* ሞዳል እና ማሳወቂያ */
+    .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(4px); display: none; align-items: flex-end; justify-content: center; padding: 10px; z-index: 800; }
+    .modal-bg.open { display: flex; }
+    .modal-card { width: 100%; max-width: 440px; max-height: 88vh; background: var(--surface); border: 1px solid var(--border-strong); border-radius: 20px; padding: 14px; display: flex; flex-direction: column; gap: 9px; }
+    .modal-head { display: flex; justify-content: space-between; align-items: center; font-size: 13.5px; font-weight: 900; color: var(--teal); }
+    .modal-body { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
+    .modal-foot { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; padding-top: 6px; border-top: 1px solid var(--border); }
+    .btn { height: 40px; border-radius: 10px; border: none; font-size: 12px; font-weight: 900; cursor: pointer; padding: 0 12px; color: #fff; }
+    .btn.teal { background: var(--teal); color: var(--teal-dark); }
+    .btn.primary { background: var(--primary); }
+    .btn.danger { background: var(--rose); }
+    .btn.muted { background: #1e293b; color: var(--text); }
+    .sub-card { background: var(--surface-deep); border: 1px solid var(--border); border-radius: 10px; padding: 9px; display: flex; flex-direction: column; gap: 6px; }
+    .lbl-sm { font-size: 10px; font-weight: 900; color: var(--muted); }
+    .chk-row { display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 800; }
+    .toast { position: fixed; top: 14px; left: 50%; transform: translateX(-50%); background: #042f2e; border: 1px solid var(--teal); color: #99f6e4; padding: 9px 14px; border-radius: 12px; font-size: 12px; font-weight: 900; z-index: 999; display: flex; align-items: center; gap: 10px; box-shadow: 0 12px 28px rgba(0,0,0,0.7); max-width: 92vw; }
+    .toast-btn { background: var(--amber); color: #000; border: none; border-radius: 7px; padding: 4px 8px; font-size: 11px; font-weight: 900; cursor: pointer; }
+    video.qr-video { width: 100%; border-radius: 12px; background: #000; max-height: 260px; object-fit: cover; }
+
+    #pdfStage { position: fixed; left: -9999px; top: 0; width: 794px; background: #fff; color: #000; font-family: system-ui, Arial, sans-serif; padding: 14px; }
+    @media (min-width: 640px) { .modal-bg { align-items: center; } }
+  </style>
+</head>
+<body>
+
+  <!-- መግቢያ -->
+  <div id="loginGate" class="gate">
+    <div class="gate-card">
+      <div class="gate-mark" id="gateMark">መ</div>
+      <div class="gate-title" id="lblGateTitle"></div>
+      <input type="text" id="inpOrgCode" class="inp mono" style="height:42px;text-transform:uppercase;" autocomplete="organization">
+      <input type="password" id="inpLoginPin" class="inp gate-pin" maxlength="6" inputmode="numeric" placeholder="••••••" onkeydown="if(event.key==='Enter') doLogin()">
+      <button type="button" class="btn teal" id="btnLoginSubmit" onclick="doLogin()"></button>
+      <div id="loginErr" style="color:var(--rose);font-size:11.5px;font-weight:900;text-align:center;"></div>
+      <button type="button" class="btn muted" style="height:34px;font-size:11px;" id="btnGateLang" onclick="toggleLang()"></button>
+    </div>
+  </div>
+
+  <!-- ጎን ሜኑ -->
+  <div id="drawerBg" class="drawer-bg" onclick="closeDrawer()"></div>
+  <aside id="drawer" class="drawer">
+    <div class="drawer-head">
+      <span id="drawerBrand" style="font-size:13px;font-weight:900;color:var(--teal);"></span>
+      <button type="button" class="icon-btn" onclick="closeDrawer()">✕</button>
+    </div>
+    <div class="drawer-list" id="drawerList"></div>
+    <div style="border-top:1px solid var(--border);padding-top:10px;display:flex;flex-direction:column;gap:7px;">
+      <div id="drawerUserInfo" style="font-size:11px;font-weight:800;color:var(--muted);"></div>
+      <button type="button" class="btn danger" id="btnLogout" onclick="doLogout()"></button>
+    </div>
+  </aside>
+
+  <!-- ዋና መተግበሪያ -->
+  <div id="appShell" class="shell">
+    <header class="topbar">
+      <button type="button" class="icon-btn" onclick="openDrawer()">☰</button>
+      <div class="brand-box">
+        <span class="brand-name" id="topBrand"></span>
+        <span class="brand-sub" id="topOrgSub"></span>
+      </div>
+      <button type="button" id="syncPill" class="sync-pill" onclick="syncOfflineQueue()"></button>
+      <select id="selWarehouse" class="wh-sel" onchange="switchWarehouse(this.value)"></select>
+      <button type="button" class="icon-btn" style="width:auto;padding:0 7px;font-size:10px;" id="btnTopLang" onclick="toggleLang()"></button>
+    </header>
+
+    <!-- ገጽ 1: መመዝገቢያ -->
+    <section id="viewEntry" class="view active">
+      <div class="seg">
+        <button type="button" id="btnModeOut" class="seg-btn out" onclick="setEntryMode('OUT')"></button>
+        <button type="button" id="btnModeIn" class="seg-btn" onclick="setEntryMode('IN')"></button>
+      </div>
+      <div class="card">
+        <div class="grid-3">
+          <div class="doc-combo">
+            <input type="text" id="inpDocNo" onfocus="checkDocSilently()">
+            <button type="button" id="btnVoidMini" class="btn-void-mini" onclick="promptDirectVoid()"></button>
+          </div>
+          <input type="text" id="inpParty" class="inp">
+          <input type="text" id="inpRef" class="inp">
+        </div>
+      </div>
+      <div class="quick-row">
+        <input type="text" id="inpSearch" class="inp" oninput="renderTiles()" onkeydown="if(event.key==='Enter') quickAdd()">
+        <input type="number" id="inpQuickQty" class="inp mono" min="1" inputmode="numeric" onkeydown="if(event.key==='Enter') quickAdd()">
+        <button type="button" class="btn-ok-sq" onclick="quickAdd()">✓</button>
+      </div>
+      <div id="tilesGrid" class="tiles"></div>
+      <div id="basketWrap" class="basket-wrap"><div id="basketList" class="basket-list"></div></div>
+      <div id="submitDock" class="dock">
+        <span id="lblDockTot" style="font-size:11.5px;font-weight:900;"></span>
+        <button type="button" id="btnCommitDoc" class="dock-btn out" onclick="handleDocumentSubmit()"></button>
+      </div>
+    </section>
+
+    <!-- ገጽ 2: ቆጠራ -->
+    <section id="viewTally" class="view">
+      <div class="seg">
+        <button type="button" id="btnTOut" class="seg-btn out" onclick="setTallyMode('OUT')"></button>
+        <button type="button" id="btnTIn" class="seg-btn" onclick="setTallyMode('IN')"></button>
+        <button type="button" id="btnTAudit" class="seg-btn" onclick="setTallyMode('AUDIT')"></button>
+      </div>
+      <div class="grid-2" style="margin-bottom:5px;flex-shrink:0;">
+        <select id="selTallyItem" class="sel" onchange="onTallyItemChange()"></select>
+        <input type="number" id="inpTallyTarget" class="inp mono" min="0" inputmode="numeric" oninput="onTallyTargetInput()">
+      </div>
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;font-size:10.5px;font-weight:800;color:var(--muted);margin-bottom:5px;">
+          <span id="lblPerCarry"></span>
+          <span id="lblCarryVal" style="color:var(--teal);font-family:ui-monospace,monospace;"></span>
+        </div>
+        <div id="presetGrid" class="preset-grid"></div>
+      </div>
+      <div id="tallyAlert" class="alert-box"></div>
+      <div id="tallyPad" class="tally-pad">
+        <div id="tallyCanvas" class="tally-canvas"></div>
+        <div class="t-stats">
+          <div class="t-stat"><span class="t-lbl" id="lblTCounted"></span><span class="t-num" id="valTCounted">0</span></div>
+          <div class="t-stat c"><span class="t-lbl" id="lblTStrokes"></span><span class="t-num" style="font-size:18px;color:var(--teal);" id="valTStrokes">0</span></div>
+          <div class="t-stat r"><span class="t-lbl" id="lblTRight"></span><span class="t-num" style="color:var(--amber);" id="valTRight">∞</span></div>
+        </div>
+      </div>
+      <div class="t-actions">
+        <button type="button" class="t-btn" style="color:#fca5a5;" onclick="undoTally()"><span>↩️</span><span id="lblTUndo"></span></button>
+        <button type="button" class="t-btn" style="color:var(--amber);" onclick="openNumModal('odd')"><span>➕</span><span id="lblTOdd"></span></button>
+        <button type="button" class="t-btn" onclick="clearTallyUndoable()"><span>🧹</span><span id="lblTClear"></span></button>
+        <button type="button" class="t-btn commit" id="btnTCommit" onclick="commitTally()"></button>
+      </div>
+    </section>
+
+    <!-- ገጽ 3: ዕለታዊ -->
+    <section id="viewDaily" class="view">
+      <div class="card">
+        <div style="display:grid;grid-template-columns:1fr auto auto;gap:5px;">
+          <input type="text" id="inpDailySearch" class="inp" oninput="renderDaily()">
+          <button type="button" id="btnZeroOnly" class="icon-btn" style="width:auto;padding:0 8px;color:var(--amber);" onclick="toggleZeroFilter()">0</button>
+          <button type="button" id="btnDailyPdf" class="icon-btn" style="width:auto;padding:0 8px;font-size:10.5px;color:var(--teal);" onclick="exportCurrentViewPdf(false)"></button>
+        </div>
+        <div class="metrics" id="dailyMetrics"></div>
+      </div>
+      <div class="tbl-wrap"><table class="tbl"><thead id="dailyHead"></thead><tbody id="dailyBody"></tbody></table></div>
+    </section>
+
+    <!-- ገጽ 4: ስቶክ (ዜሮ ሮሎቨር) -->
+    <section id="viewStock" class="view">
+      <div class="seg">
+        <button type="button" id="btnPWeek" class="seg-btn teal" onclick="setStockPeriod('WEEK')"></button>
+        <button type="button" id="btnPLastWeek" class="seg-btn" onclick="setStockPeriod('LAST_WEEK')"></button>
+        <button type="button" id="btnPMonth" class="seg-btn" onclick="setStockPeriod('MONTH')"></button>
+        <button type="button" id="btnPAll" class="seg-btn" onclick="setStockPeriod('ALL')"></button>
+      </div>
+      <div class="card" style="display:flex;gap:5px;">
+        <input type="text" id="inpStockSearch" class="inp" style="flex:1;" oninput="renderStock()">
+        <button type="button" id="btnStockPdf" class="icon-btn" style="width:auto;padding:0 8px;font-size:10.5px;color:var(--teal);" onclick="exportCurrentViewPdf(true)"></button>
+      </div>
+      <div class="tbl-wrap"><table class="tbl"><thead id="stockHead"></thead><tbody id="stockBody"></tbody></table></div>
+    </section>
+
+    <!-- ገጽ 5: ካርታ + ካሜራ ስካነር -->
+    <section id="viewMap" class="view">
+      <div class="card" style="display:flex;gap:5px;">
+        <input type="text" id="inpMapSearch" class="inp" style="flex:1;" oninput="renderMap()">
+        <button type="button" class="icon-btn" style="width:auto;padding:0 8px;color:var(--teal);" onclick="openQrScanner()">📷</button>
+        <button type="button" id="btnBulkMap" class="icon-btn" style="width:auto;padding:0 8px;" onclick="toggleBulkMap()">☑️</button>
+        <button type="button" id="btnBulkAssign" class="icon-btn" style="display:none;width:auto;padding:0 8px;background:var(--emerald);color:#052e16;" onclick="openBinModal(null)"></button>
+      </div>
+      <div id="rackTabs" class="rack-tabs"></div>
+      <div class="rack-wrap"><div id="rackGrid" class="rack-grid"></div></div>
+    </section>
+
+    <!-- ተንሳፋፊ የፒዲኤፍ አሞሌ -->
+    <div id="pdfBar" class="pdf-bar">
+      <button type="button" class="pdf-pill" id="btnPdfClear" onclick="clearPdfSelection()"></button>
+      <div style="display:flex;gap:5px;">
+        <button type="button" class="pdf-pill" id="btnPdfDownload" onclick="runSelectedPdf(false)"></button>
+        <button type="button" class="pdf-send" id="btnPdfSend" onclick="runSelectedPdf(true)"></button>
+      </div>
+    </div>
+
+    <!-- የታችኛው አውራ ጣት ዳሰሳ -->
+    <nav class="bottom-nav">
+      <button type="button" class="nav-item active" id="navEntry" onclick="switchView('entry')"><span class="ico">📝</span><span id="lblNavEntry"></span></button>
+      <button type="button" class="nav-item" id="navTally" onclick="switchView('tally')"><span class="ico">🧮</span><span id="lblNavTally"></span></button>
+      <button type="button" class="nav-item" id="navDaily" onclick="switchView('daily')"><span class="ico">📋</span><span id="lblNavDaily"></span></button>
+      <button type="button" class="nav-item" id="navStock" onclick="switchView('stock')"><span class="ico">📊</span><span id="lblNavStock"></span></button>
+      <button type="button" class="nav-item" id="navMap" onclick="switchView('map')"><span class="ico">🗺️</span><span id="lblNavMap"></span></button>
+    </nav>
+  </div>
+
+  <!-- ሁለገብ ሞዳል -->
+  <div id="mainModal" class="modal-bg" onclick="if(event.target===this) closeMainModal()">
+    <div class="modal-card">
+      <div class="modal-head">
+        <span id="modalTitle"></span>
+        <button type="button" class="icon-btn" onclick="closeMainModal()">✕</button>
+      </div>
+      <div id="modalBody" class="modal-body"></div>
+      <div id="modalFoot" class="modal-foot"></div>
+    </div>
+  </div>
+
+  <div id="pdfStage"></div>
+
+  <script>
+    const SUPABASE_URL = 'https://bmlttswtxkxwrritobzt.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_jNGXTSwErzYp0PKylU3TOA_29iorjMs';
+    const BOT_FUNCTION = 'Sharp-bot';
+
+    const SESSION_KEY = 'erp_session_v4';
+    const QUEUE_KEY = 'erp_offline_queue_v4';
+    const LANG_KEY = 'erp_lang_v4';
+    const PRESETS = [1, 2, 3, 5, 10, 15, 20];
+
+    // ጥብቅ የቋንቋ ልዩነት (100% አማርኛ ወይም 100% እንግሊዝኛ)
+    const I18N = {
+      am: {
+        defaultBrand: 'መጋዘን', gateMark: 'መ', gateTitle: 'ወደ ሲስተም ግባ', orgCodePh: 'የድርጅት ኮድ',
+        loginBtn: 'ግባ', langSwitch: 'እንግሊዝኛ', langShort: 'እንግሊዝኛ', logout: 'ውጣ',
+        navEntry: 'መመዝገቢያ', navTally: 'ቆጠራ', navDaily: 'ዕለታዊ', navStock: 'ስቶክ', navMap: 'ካርታ',
+        modeOut: 'የወጪ ዕቃ', modeIn: 'የገቢ ዕቃ', voidShort: 'የተበላሸ', pdfBtn: 'ፒዲኤፍ',
+        tOut: 'ወጪ ጭነት', tIn: 'ገቢ ርክክብ', tAudit: 'ስቶክ ማስተካከያ',
+        docPh: 'ሰነድ ቁ.', partyOutPh: 'ደንበኛ', partyInPh: 'አቅራቢ', refOutPh: 'ፓድ ቁ.', refInPh: 'ሹፌር / ታርጋ',
+        searchPh: 'ዕቃ ፈልግ...', qtyPh: 'ብዛት', dailySearchPh: 'ሰነድ፣ ዕቃ፣ ደንበኛ ወይም ቀን ፈልግ...',
+        stockSearchPh: 'ዕቃ ወይም ካቴጎሪ ፈልግ...', mapSearchPh: 'በካርታው ላይ ዕቃ ፈልግ...',
+        countBtn: 'ቁጠር', perCarry: 'በአንድ ሸክም', other: 'ሌላ',
+        counted: 'የተቆጠረ', strokes: 'ጭረት', remaining: 'ቀሪ', diff: 'ልዩነት',
+        undo: 'መልስ', odd: 'ጎዶሎ', clear: 'አጽዳ', sendBasket: 'ወደ ቅርጫት ላክ', applyAdj: 'ማስተካከያ ላክ',
+        submitOut: 'ወጪ መዝግብ', submitIn: 'ገቢ መዝግብ',
+        pWeek: 'ይህ ሳምንት', pLastWeek: 'ያለፈው ሳምንት', pMonth: 'ይህ ወር', pAll: 'ሁሉም',
+        stopAlert: 'ግቡ ሞልቷል — ጭነት አስቆም', oddWarn: (r) => `የቀረው ${r} ብቻ ነው`,
+        overWarn: (d) => `ከግቡ +${d} ትርፍ ተገኝቷል`, shortWarn: (d) => `-${d} ጉድለት አለ`,
+        exactMatch: 'ከሲስተም ቀሪ ጋር እኩል ነው',
+        dockTot: (c, q) => `ድምር፦ ${c} ዓይነት (${q} ፍሬ)`,
+        dCols: ['ሰነድ', 'ዕቃ', 'መነሻ', 'ገቢ', 'ወጪ', 'ቀሪ', 'ደንበኛ / ምክንያት', 'ቀን', 'እርምጃ'],
+        sCols: ['ዕቃ', 'መነሻ', 'ገቢ', 'ወጪ', 'ማስተካከያ', 'ቀሪ'],
+        mOrgs: 'ድርጅቶች', mBranches: 'ቅርንጫፎች', mStaff: 'ሰራተኞች እና ፈቃድ',
+        mChannels: 'የመገናኛ አድራሻዎች', mCatalog: 'ዕቃዎች እና ካቴጎሪ', mRacks: 'መደርደሪያዎች',
+        mApprovals: 'የማስተካከያ ጥያቄዎች', mRisk: 'የስጋት ኦዲት ላክ', mPin: 'ፒን ቀይር',
+        save: 'አስቀምጥ', close: 'ዝጋ', cancel: 'ተው', ok: 'አጽድቅ', del: 'አጥፋ', add: 'ጨምር',
+        emptySlot: 'ባዶ', assignBtn: 'መድብ', clearSlot: 'ሳጥን አጽዳ', appendSlot: 'ከነባሩ ሳይጠፋ ጨምር',
+        pdfClear: 'አጽዳ', pdfDown: 'አውርድ', pdfSend: 'ላክ',
+        savedOk: 'በተሳካ ሁኔታ ተመዝግቧል', offlineSaved: 'ኢንተርኔት የለም — ስልኩ ላይ ተቀምጧል',
+        syncNow: (n) => `ላክ (${n})`, syncedOk: 'ሁሉም የተጠራቀሙ ሰነዶች ተልከዋል',
+        errPin: 'የተሳሳተ የድርጅት ኮድ ወይም ፒን', errStock: 'በቂ ስቶክ የለም',
+        errNeedDoc: 'የሰነድ ቁጥር ያስገቡ', dupTitle: 'የተደገመ የሰነድ ቁጥር',
+        dupAskPin: 'ይህ ሰነድ ቀድሞ ተመዝግቧል። በአዲስ ፓድ ከሆነ የአድሚን ፒን ያስገቡ፦',
+        seqJumpTitle: 'የሰነድ ተራ ቁጥር ለውጥ', seqVoidChk: 'የቀድሞውን ፓድ ቀሪ ቅጠሎች በአንድ ረድፍ የተበላሸ አድርግ፦',
+        qrTitle: 'የመደርደሪያ ኮድ ስካነር', qrManualPh: 'ወይም ሳጥን ኮድ ይጻፉ',
+        adjPending: 'ለአድሚን ማጽደቂያ ተልኳል', adjApproved: 'ማስተካከያው ጸድቆ ተመዝግቧል',
+        adjPlusReason: 'የቆጠራ ትርፍ ማስተካከያ', adjMinusReason: 'የቆጠራ ጉድለት ማስተካከያ',
+        editDocTitle: 'ሰነድ ማስተካከያ', voidDocBtn: 'ሙሉ ሰነዱን የተበላሸ አድርግ',
+        testBtn: 'ሞክር', webhookBtn: 'ቁልፍ አገናኝ', approve: 'አጽድቅ', reject: 'ሰርዝ',
+        phOrgCode: 'የድርጅት ኮድ', phOrgName: 'የድርጅት ስም', phBrName: 'የቅርንጫፍ ስም', phBrCode: 'የቅርንጫፍ ኮድ',
+        phAdmName: 'የአድሚን ስም', phPin: 'ፒን ኮድ', phOldPin: 'የአሁኑ ፒን', phNewPin: 'አዲሱ ፒን',
+        phStaffName: 'የሰራተኛ ስም', roleStaff: 'ሰራተኛ', roleOrgAdm: 'የድርጅት አድሚን', roleSuper: 'ዋና ባለቤት',
+        chTg: 'ቴሌግራም', chWa: 'ዋትሳፕ', chSms: 'ኤስኤምኤስ', chWh: 'ዌብሁክ', chAllBranches: 'ለመላው ድርጅት',
+        phChLabel: 'መለያ ስም', phChTarget: 'የቻት መለያ / ስልክ ቁጥር / አድራሻ',
+        phChCred1: 'ሚስጥራዊ ቁልፍ / ቶከን', phChCred2: 'የስልክ መለያ / ላኪ ስም',
+        phCatName: 'አዲስ ካቴጎሪ ስም', phItemName: 'የዕቃ ስም', phOpening: 'መነሻ ብዛት',
+        phRackCode: 'ኮድ', phRackName: 'የመደርደሪያ ስም', phRackCols: 'አምዶች',
+        voidLabel: 'የተበላሸ', metricVoid: 'የተበላሸ', pdfLoading: 'ፒዲኤፍ በመጫን ላይ...', pdfLocal: 'ስልኩ ላይ ወርዷል',
+        errGeneric: 'ስህተት ተፈጥሯል', noItems: 'ምንም መረጃ የለም'
+      },
+      en: {
+        defaultBrand: 'Warehouse', gateMark: 'W', gateTitle: 'Sign In', orgCodePh: 'Organization Code',
+        loginBtn: 'Sign In', langSwitch: 'Amharic', langShort: 'Amharic', logout: 'Sign Out',
+        navEntry: 'Entry', navTally: 'Tally', navDaily: 'Daily', navStock: 'Stock', navMap: 'Map',
+        modeOut: 'Issue Out', modeIn: 'Receive In', voidShort: 'Void', pdfBtn: 'PDF',
+        tOut: 'Load Out', tIn: 'Receive Count', tAudit: 'Stock Audit',
+        docPh: 'Doc No.', partyOutPh: 'Customer', partyInPh: 'Supplier', refOutPh: 'Pad No.', refInPh: 'Driver / Plate',
+        searchPh: 'Search item...', qtyPh: 'Qty', dailySearchPh: 'Search doc, item, party, date...',
+        stockSearchPh: 'Search item or category...', mapSearchPh: 'Find item on map...',
+        countBtn: 'Count', perCarry: 'Per load', other: 'Other',
+        counted: 'Counted', strokes: 'Strokes', remaining: 'Left', diff: 'Variance',
+        undo: 'Undo', odd: 'Odd', clear: 'Clear', sendBasket: 'Send to Basket', applyAdj: 'Submit Adjustment',
+        submitOut: 'Post Issue', submitIn: 'Post Receipt',
+        pWeek: 'This Week', pLastWeek: 'Last Week', pMonth: 'This Month', pAll: 'All Time',
+        stopAlert: 'Target reached — Stop loading', oddWarn: (r) => `Only ${r} remaining`,
+        overWarn: (d) => `Surplus: +${d}`, shortWarn: (d) => `Shortage: -${d}`,
+        exactMatch: 'Matches system balance',
+        dockTot: (c, q) => `Total: ${c} items (${q} pcs)`,
+        dCols: ['Doc', 'Item', 'Open', 'In', 'Out', 'Bal', 'Party / Reason', 'Date', 'Action'],
+        sCols: ['Item', 'Open', 'In', 'Out', 'Adj', 'Bal'],
+        mOrgs: 'Organizations', mBranches: 'Branches', mStaff: 'Staff & Access',
+        mChannels: 'Notification Channels', mCatalog: 'Items & Categories', mRacks: 'Racks',
+        mApprovals: 'Pending Adjustments', mRisk: 'Send Risk Audit', mPin: 'Change PIN',
+        save: 'Save', close: 'Close', cancel: 'Cancel', ok: 'Confirm', del: 'Delete', add: 'Add',
+        emptySlot: 'Empty', assignBtn: 'Assign', clearSlot: 'Clear Slot', appendSlot: 'Keep existing slots',
+        pdfClear: 'Clear', pdfDown: 'Download', pdfSend: 'Send',
+        savedOk: 'Saved successfully', offlineSaved: 'Offline — queued on device',
+        syncNow: (n) => `Sync (${n})`, syncedOk: 'Offline queue synced',
+        errPin: 'Invalid organization code or PIN', errStock: 'Insufficient stock',
+        errNeedDoc: 'Enter document number', dupTitle: 'Duplicate Document',
+        dupAskPin: 'This document number already exists. Enter Admin PIN to override:',
+        seqJumpTitle: 'Document Sequence Change', seqVoidChk: 'Close previous pad leaves as one Void row:',
+        qrTitle: 'Bin QR Scanner', qrManualPh: 'Or type slot code',
+        adjPending: 'Sent for Admin approval', adjApproved: 'Adjustment approved & posted',
+        adjPlusReason: 'Physical count surplus', adjMinusReason: 'Physical count shortage',
+        editDocTitle: 'Edit Document', voidDocBtn: 'Void Entire Document',
+        testBtn: 'Test', webhookBtn: 'Link Bot', approve: 'Approve', reject: 'Reject',
+        phOrgCode: 'Org Code', phOrgName: 'Organization Name', phBrName: 'Branch Name', phBrCode: 'Branch Code',
+        phAdmName: 'Admin Name', phPin: 'PIN Code', phOldPin: 'Current PIN', phNewPin: 'New PIN',
+        phStaffName: 'Staff Name', roleStaff: 'Staff', roleOrgAdm: 'Org Admin', roleSuper: 'Super Admin',
+        chTg: 'Telegram', chWa: 'WhatsApp', chSms: 'SMS', chWh: 'Webhook', chAllBranches: 'All Branches',
+        phChLabel: 'Channel Label', phChTarget: 'Chat ID / Phone / URL',
+        phChCred1: 'Bot Token / API Key', phChCred2: 'Phone Number ID / Sender ID',
+        phCatName: 'New Category Name', phItemName: 'Item Name', phOpening: 'Opening Qty',
+        phRackCode: 'Code', phRackName: 'Rack Name', phRackCols: 'Columns',
+        voidLabel: 'Void', metricVoid: 'Void', pdfLoading: 'PDF engine loading...', pdfLocal: 'Downloaded locally',
+        errGeneric: 'Operation failed', noItems: 'No records found'
+      }
+    };
+
+    let lang = localStorage.getItem(LANG_KEY) === 'en' ? 'en' : 'am';
+    let session = loadJson(SESSION_KEY, null);
+    let currentWhId = '';
+    let whData = { warehouse: {}, items: [], categories: [], racks: [], slot_map: {}, last_doc_num: 0, next_doc_num: 1, pending_adjustments_count: 0, is_branch_admin: false, is_org_admin: false, org_warehouses: [] };
+    let entryMode = 'OUT';
+    let basket = [];
+    let tally = { mode: 'OUT', itemId: '', target: 0, carryMult: 5, strokes: [] };
+    let dailyRows = [];
+    let stockRows = [];
+    let stockPeriod = 'WEEK';
+    let zeroFilter = false;
+    let activeRack = '';
+    let bulkMapMode = false;
+    let bulkMapSlots = {};
+    let activeModalSlots = [];
+    let selectedPdfIds = {};
+    let pdfSelectType = 'daily';
+    let undoTallyBuf = null;
+    let lastTapMs = 0;
+    let audioCtx = null;
+    let wakeLock = null;
+    let qrStream = null;
+    let qrLoopId = null;
+    let dragEl = null;
+    let dragIdx = -1;
+
+    function t(k) { return I18N[lang][k]; }
+    function esc(s) { return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+    function vib(p) { if (navigator.vibrate) navigator.vibrate(p); }
+    function loadJson(k, def) { try { const r = localStorage.getItem(k); return r ? JSON.parse(r) : def; } catch { return def; } }
+    function saveJson(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
+    function roleLabel(r) { return r === 'SUPER_ADMIN' ? t('roleSuper') : (r === 'ORG_ADMIN' ? t('roleOrgAdm') : t('roleStaff')); }
+
+    function playTone(f, d, type = 'sine', vol = 0.12) {
+      try {
+        const Ctx = window.AudioContext || window.webkitAudioContext;
+        if (!Ctx) return;
+        if (!audioCtx) audioCtx = new Ctx();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+        o.type = type; o.frequency.value = f;
+        g.gain.setValueAtTime(vol, audioCtx.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + d);
+        o.connect(g); g.connect(audioCtx.destination);
+        o.start(); o.stop(audioCtx.currentTime + d);
+      } catch {}
+    }
+
+    function showToast(msg, undoCb = null) {
+      document.querySelectorAll('.toast').forEach((e) => e.remove());
+      const el = document.createElement('div');
+      el.className = 'toast';
+      el.innerHTML = `<span>${esc(msg)}</span>`;
+      if (undoCb) {
+        const b = document.createElement('button');
+        b.className = 'toast-btn'; b.textContent = t('undo');
+        b.onclick = () => { el.remove(); undoCb(); };
+        el.appendChild(b);
+      }
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), undoCb ? 4500 : 2500);
+    }
+
+    // ==================== API እና Offline Sync ====================
+    async function callRpc(fnName, params = {}) {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${fnName}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          apikey: SUPABASE_KEY,
+          Authorization: `Bearer ${SUPABASE_KEY}`,
+        },
+        body: JSON.stringify(params),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || data.error || 'RPC_ERROR');
+      return data;
+    }
+
+    async function callBot(payload) {
+      const res = await fetch(`${SUPABASE_URL}/functions/v1/${BOT_FUNCTION}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          apikey: SUPABASE_KEY,
+          Authorization: `Bearer ${SUPABASE_KEY}`,
+          'x-session-token': session?.token || '',
+        },
+        body: JSON.stringify({ ...payload, token: session?.token || '', function_name: BOT_FUNCTION }),
+      });
+      return await res.json();
+    }
+
+    function getOfflineQueue() { return loadJson(QUEUE_KEY, []); }
+    function updateSyncPill() {
+      const q = getOfflineQueue();
+      const pill = document.getElementById('syncPill');
+      if (q.length > 0) {
+        pill.style.display = 'inline-flex';
+        pill.style.alignItems = 'center';
+        pill.textContent = t('syncNow')(q.length);
+      } else {
+        pill.style.display = 'none';
+      }
+    }
+
+    async function syncOfflineQueue() {
+      const q = getOfflineQueue();
+      if (!q.length || !navigator.onLine || !session?.token) return;
+      const remaining = [];
+      let synced = 0;
+      for (const job of q) {
+        try {
+          const r = await callRpc('rpc_post_document', { ...job.params, p_token: session.token });
+          if (r.success) {
+            synced++;
+            if (job.params.p_doc_type === 'IN' && r.document_id) {
+              callBot({ action: 'send_grn', warehouse_id: job.params.p_warehouse_id, document_id: r.document_id }).catch(() => {});
+            }
+          } else { remaining.push(job); }
+        } catch { remaining.push(job); }
+      }
+      saveJson(QUEUE_KEY, remaining);
+      updateSyncPill();
+      if (synced > 0) { showToast(t('syncedOk')); loadWarehouseData(currentWhId); }
+    }
+    window.addEventListener('online', syncOfflineQueue);
+
+    // ==================== መግቢያ እና ዳታ መጫኛ ====================
+    async function doLogin() {
+      const orgCode = document.getElementById('inpOrgCode').value.trim().toUpperCase();
+      const pin = document.getElementById('inpLoginPin').value.trim();
+      const errEl = document.getElementById('loginErr');
+      if (!pin) { errEl.textContent = t('errPin'); return; }
+      errEl.textContent = '...';
+      try {
+        const res = await callRpc('rpc_login', { p_org_code: orgCode, p_pin: pin });
+        if (!res.success) { errEl.textContent = t('errPin'); return; }
+        session = res;
+        saveJson(SESSION_KEY, session);
+        errEl.textContent = '';
+        enterApp();
+      } catch {
+        errEl.textContent = t('errGeneric');
+      }
+    }
+
+    async function doLogout() {
+      if (session?.token) callRpc('rpc_logout', { p_token: session.token }).catch(() => {});
+      session = null;
+      localStorage.removeItem(SESSION_KEY);
+      closeDrawer();
+      document.getElementById('appShell').style.display = 'none';
+      document.getElementById('loginGate').style.display = 'flex';
+      document.getElementById('inpLoginPin').value = '';
+    }
+
+    function populateWarehouseSelector(list) {
+      const sel = document.getElementById('selWarehouse');
+      if (!list || !list.length) return;
+      sel.innerHTML = list.map((w) => `<option value="${w.id}">${esc(w.name)}</option>`).join('');
+      if (!currentWhId || !list.some((w) => w.id === currentWhId)) currentWhId = list[0].id;
+      sel.value = currentWhId;
+    }
+
+    function enterApp() {
+      document.getElementById('loginGate').style.display = 'none';
+      document.getElementById('appShell').style.display = 'flex';
+      populateWarehouseSelector(session.warehouses || []);
+      if (currentWhId) loadWarehouseData(currentWhId);
+      renderStaticLabels();
+      updateSyncPill();
+      syncOfflineQueue();
+    }
+
+    async function loadWarehouseData(whId) {
+      if (!whId || !session?.token) return;
+      currentWhId = whId;
+      try {
+        const res = await callRpc('rpc_get_initial_data', { p_token: session.token, p_warehouse_id: whId });
+        if (!res.success) return;
+        whData = res;
+        if (res.org_warehouses && res.org_warehouses.length) {
+          populateWarehouseSelector(res.org_warehouses.filter((w) => w.is_active !== false));
+        }
+        const w = res.warehouse || {};
+        document.getElementById('topBrand').textContent = w.brand_title || session.organization?.brand_title || t('defaultBrand');
+        document.getElementById('topOrgSub').textContent = w.name || '';
+        document.getElementById('drawerBrand').textContent = w.brand_title || t('defaultBrand');
+        document.getElementById('drawerUserInfo').textContent = `${session.user.full_name} (${roleLabel(session.user.role)})`;
+        if (entryMode === 'OUT') document.getElementById('inpDocNo').value = String(res.next_doc_num || 1);
+        if (!tally.itemId && res.items.length) tally.itemId = res.items[0].id;
+        if (res.racks.length && !res.racks.some((r) => r.code === activeRack)) activeRack = res.racks[0].code;
+
+        renderDrawerMenu();
+        renderTiles();
+        renderBasket();
+        renderTally();
+        renderMap();
+        if (document.getElementById('viewDaily').classList.contains('active')) loadDaily();
+        if (document.getElementById('viewStock').classList.contains('active')) loadStock();
+      } catch (e) {
+        if (String(e.message).includes('UNAUTHORIZED')) doLogout();
+      }
+    }
+
+    function switchWarehouse(id) { vib(18); basket = []; loadWarehouseData(id); }
+
+    // ==================== ገጽ 1: መመዝገቢያ ====================
+    function setEntryMode(m) {
+      entryMode = m; vib(16);
+      document.getElementById('btnModeOut').className = 'seg-btn' + (m === 'OUT' ? ' out' : '');
+      document.getElementById('btnModeIn').className = 'seg-btn' + (m === 'IN' ? ' in' : '');
+      document.getElementById('btnVoidMini').style.display = (m === 'OUT') ? 'inline-flex' : 'none';
+      document.getElementById('inpDocNo').value = (m === 'OUT') ? String(whData.next_doc_num || 1) : '';
+      document.getElementById('inpParty').placeholder = (m === 'OUT') ? t('partyOutPh') : t('partyInPh');
+      document.getElementById('inpRef').placeholder = (m === 'OUT') ? t('refOutPh') : t('refInPh');
+      renderBasket();
+    }
+
+    function renderTiles() {
+      const q = document.getElementById('inpSearch').value.trim().toLowerCase();
+      const picked = {}; basket.forEach((b) => { picked[b.item_id] = b.qty; });
+      const grid = document.getElementById('tilesGrid');
+      const filtered = (whData.items || []).filter((it) => !q || it.name.toLowerCase().includes(q) || (it.category_name || '').toLowerCase().includes(q));
+      if (!filtered.length) {
+        grid.innerHTML = `<div style="grid-column:span 2;text-align:center;padding:18px;color:var(--muted);font-weight:800;">${esc(t('noItems'))}</div>`;
+        return;
+      }
+      grid.innerHTML = filtered.map((it) => `
+        <div class="tile ${picked[it.id] ? 'picked' : ''}" onclick="pickTile('${it.id}')">
+          <div class="tile-top">
+            <span class="tile-name">${esc(it.name)}</span>
+            <span class="tile-bal ${it.stock === 0 ? 'zero' : ''}">${Number(it.stock).toLocaleString()}</span>
+          </div>
+          <div class="tile-bot">
+            <span>📍 ${esc((it.slots || []).join(', ') || '-')}</span>
+            <button type="button" class="tile-cnt-btn" onclick="event.stopPropagation(); openInTally('${it.id}')">🧮 ${esc(t('countBtn'))}</button>
+          </div>
+        </div>`).join('');
+    }
+
+    function pickTile(id) {
+      vib(15);
+      const it = whData.items.find((x) => x.id === id);
+      if (!it) return;
+      document.getElementById('inpSearch').value = it.name;
+      document.getElementById('inpQuickQty').focus();
+    }
+
+    function quickAdd() {
+      const q = document.getElementById('inpSearch').value.trim().toLowerCase();
+      const qty = Math.floor(Number(document.getElementById('inpQuickQty').value || 0));
+      const it = (whData.items || []).find((x) => x.name.toLowerCase() === q) || (whData.items || []).find((x) => x.name.toLowerCase().includes(q));
+      if (!it || qty <= 0) return;
+      addToBasket(it.id, it.name, qty, null);
+      document.getElementById('inpSearch').value = '';
+      document.getElementById('inpQuickQty').value = '';
+    }
+
+    function addToBasket(item_id, name, qty, tally_proof) {
+      const f = basket.find((x) => x.item_id === item_id);
+      if (f) { f.qty += qty; if (tally_proof) f.tally_proof = tally_proof; }
+      else basket.push({ item_id, name, qty, tally_proof });
+      vib(22); renderBasket(); renderTiles();
+    }
+
+    function renderBasket() {
+      const wrap = document.getElementById('basketWrap');
+      const list = document.getElementById('basketList');
+      const dock = document.getElementById('submitDock');
+      const grid = document.getElementById('tilesGrid');
+      const active = document.getElementById('viewEntry').classList.contains('active');
+
+      if (!basket.length) {
+        wrap.style.display = 'none'; dock.style.display = 'none'; grid.classList.remove('has-basket');
+        return;
+      }
+      wrap.style.display = 'flex';
+      dock.style.display = active ? 'flex' : 'none';
+      grid.classList.add('has-basket');
+
+      list.innerHTML = '';
+      basket.forEach((b, i) => {
+        const row = document.createElement('div');
+        row.className = 'b-row';
+        row.innerHTML = `
+          <span class="b-drag">${i + 1}</span>
+          <span class="b-name">${esc(b.name)} ${b.tally_proof ? `<small style="color:var(--teal);">🧮${b.tally_proof.strokes.length}</small>` : ''}</span>
+          <input type="number" class="b-qty" value="${b.qty}" min="1">
+          <button type="button" class="b-del">✕</button>`;
+
+        row.querySelector('.b-drag').addEventListener('pointerdown', (e) => startBasketDrag(row, e));
+        row.querySelector('.b-qty').addEventListener('input', (e) => {
+          const curIdx = Array.from(list.children).indexOf(row);
+          if (curIdx >= 0) { basket[curIdx].qty = Math.max(1, Math.floor(Number(e.target.value) || 1)); updateDockTot(); }
+        });
+        row.querySelector('.b-del').addEventListener('click', () => {
+          const curIdx = Array.from(list.children).indexOf(row);
+          if (curIdx >= 0) { basket.splice(curIdx, 1); vib(18); renderBasket(); renderTiles(); }
+        });
+        list.appendChild(row);
+      });
+      updateDockTot();
+    }
+
+    function updateDockTot() {
+      const tot = basket.reduce((s, b) => s + Number(b.qty || 0), 0);
+      document.getElementById('lblDockTot').textContent = t('dockTot')(basket.length, tot.toLocaleString());
+      const btn = document.getElementById('btnCommitDoc');
+      btn.className = 'dock-btn ' + (entryMode === 'OUT' ? 'out' : 'in');
+      btn.textContent = entryMode === 'OUT' ? t('submitOut') : t('submitIn');
+    }
+
+    function startBasketDrag(rowEl, e) {
+      if (basket.length <= 1) return;
+      e.preventDefault();
+      const list = document.getElementById('basketList');
+      dragEl = rowEl;
+      dragIdx = Array.from(list.children).indexOf(rowEl);
+      rowEl.classList.add('dragging');
+      vib(30);
+
+      const onMove = (ev) => {
+        if (!dragEl) return;
+        const rows = Array.from(list.children);
+        for (let i = 0; i < rows.length; i++) {
+          const r = rows[i].getBoundingClientRect();
+          if (ev.clientY >= r.top && ev.clientY <= r.bottom && i !== dragIdx) {
+            const moved = basket.splice(dragIdx, 1)[0];
+            basket.splice(i, 0, moved);
+            list.insertBefore(dragEl, i < dragIdx ? rows[i] : rows[i].nextSibling);
+            dragIdx = i;
+            vib(14);
+            Array.from(list.children).forEach((el, k) => el.querySelector('.b-drag').textContent = k + 1);
+            break;
+          }
+        }
+      };
+      const onUp = () => {
+        if (dragEl) dragEl.classList.remove('dragging');
+        dragEl = null; dragIdx = -1;
+        window.removeEventListener('pointermove', onMove);
+        window.removeEventListener('pointerup', onUp);
+      };
+      window.addEventListener('pointermove', onMove);
+      window.addEventListener('pointerup', onUp);
+    }
+
+    async function checkDocSilently() {
+      if (!navigator.onLine || !currentWhId || entryMode !== 'OUT') return;
+      try {
+        const r = await callRpc('rpc_check_doc_sequence', { p_token: session.token, p_warehouse_id: currentWhId });
+        if (r.success) {
+          whData.last_doc_num = r.last_doc_num;
+          whData.next_doc_num = r.next_doc_num;
+          const inp = document.getElementById('inpDocNo');
+          if (!inp.value.trim()) inp.value = String(r.next_doc_num);
+        }
+      } catch {}
+    }
+
+    async function handleDocumentSubmit() {
+      if (!basket.length) return;
+      const docNo = document.getElementById('inpDocNo').value.trim();
+      if (entryMode === 'OUT' && !docNo) { showToast(t('errNeedDoc')); return; }
+
+      if (entryMode === 'OUT' && navigator.onLine) {
+        const chk = await callRpc('rpc_check_doc_sequence', { p_token: session.token, p_warehouse_id: currentWhId, p_doc_no: docNo });
+        if (chk.is_duplicate) {
+          openDuplicateModal(docNo, chk.existing, (adminPin) => executePostDocument(docNo, null, adminPin));
+          return;
+        }
+        const nVal = Number(docNo);
+        if (whData.last_doc_num > 0 && nVal > 0 && nVal !== whData.next_doc_num && !/^\d+-\d+$/.test(docNo)) {
+          openSeqJumpModal(docNo, whData.next_doc_num, (voidRange) => executePostDocument(docNo, voidRange, null));
+          return;
+        }
+      }
+      executePostDocument(docNo, null, null);
+    }
+
+    function openDuplicateModal(docNo, existing, onConfirm) {
+      openMainModal(t('dupTitle'), `
+        <div class="sub-card" style="font-size:12px;font-weight:800;">
+          <div>${esc(t('dupAskPin'))}</div>
+          <div style="color:var(--amber);">#${esc(existing.doc_no)} — ${esc(existing.party_name)} (${esc(existing.recorder_name)})</div>
+          <input type="password" id="inpDupPin" class="inp mono" maxlength="6" inputmode="numeric" placeholder="••••••">
+        </div>`,
+        `<button type="button" class="btn muted" onclick="closeMainModal()">${esc(t('cancel'))}</button>
+         <button type="button" class="btn teal" id="btnDupGo">${esc(t('ok'))}</button>`);
+      document.getElementById('btnDupGo').onclick = () => {
+        const pin = document.getElementById('inpDupPin').value.trim();
+        closeMainModal(); onConfirm(pin);
+      };
+    }
+
+    function openSeqJumpModal(docNo, expectedNext, onConfirm) {
+      const sugEnd = Math.ceil((expectedNext - 1) / 50) * 50;
+      openMainModal(t('seqJumpTitle'), `
+        <div class="sub-card" style="font-size:12px;font-weight:800;">
+          <div>#${expectedNext} ➔ <b style="color:var(--amber);">#${esc(docNo)}</b></div>
+          <label class="chk-row"><input type="checkbox" id="chkRangeVoid"><span>${esc(t('seqVoidChk'))}</span></label>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <span>${expectedNext} -</span>
+            <input type="number" id="inpRangeEnd" class="inp mono" style="width:90px;" value="${sugEnd >= expectedNext ? sugEnd : expectedNext}">
+          </div>
+        </div>`,
+        `<button type="button" class="btn muted" onclick="closeMainModal()">${esc(t('cancel'))}</button>
+         <button type="button" class="btn teal" id="btnSeqGo">${esc(t('ok'))}</button>`);
+      document.getElementById('btnSeqGo').onclick = () => {
+        const useVoid = document.getElementById('chkRangeVoid').checked;
+        const vEnd = Number(document.getElementById('inpRangeEnd').value || expectedNext);
+        const rangeStr = useVoid && vEnd >= expectedNext ? (vEnd === expectedNext ? String(expectedNext) : `${expectedNext}-${vEnd}`) : null;
+        closeMainModal(); onConfirm(rangeStr);
+      };
+    }
+
+    async function executePostDocument(docNo, voidRangeFirst, adminPin) {
+      const params = {
+        p_token: session.token,
+        p_warehouse_id: currentWhId,
+        p_doc_type: entryMode,
+        p_doc_no: docNo,
+        p_party_name: document.getElementById('inpParty').value.trim(),
+        p_ref_no: document.getElementById('inpRef').value.trim(),
+        p_items: basket.map((b) => ({ item_id: b.item_id, qty: b.qty, tally_proof: b.tally_proof || null })),
+        p_idempotency_key: (crypto.randomUUID ? crypto.randomUUID() : 'k_' + Date.now() + '_' + Math.random()),
+        p_void_range_first: voidRangeFirst,
+        p_admin_override_pin: adminPin,
+      };
+
+      if (!navigator.onLine) {
+        const q = getOfflineQueue(); q.push({ params, ts: Date.now() }); saveJson(QUEUE_KEY, q);
+        basket = []; renderBasket(); updateSyncPill();
+        showToast(t('offlineSaved'));
+        return;
+      }
+
+      try {
+        const res = await callRpc('rpc_post_document', params);
+        if (!res.success) {
+          showToast(res.error === 'INSUFFICIENT_STOCK' ? t('errStock') : t('errGeneric'));
+          return;
+        }
+        vib([35, 30, 50]); playTone(680, 0.1, 'triangle');
+        if (entryMode === 'IN' && res.document_id) {
+          callBot({ action: 'send_grn', warehouse_id: currentWhId, document_id: res.document_id }).catch(() => {});
+        }
+        basket = [];
+        document.getElementById('inpParty').value = '';
+        document.getElementById('inpRef').value = '';
+        showToast(t('savedOk') + (res.zero_out_items?.length ? ` ⚠️ 0: ${res.zero_out_items.join(', ')}` : ''));
+        loadWarehouseData(currentWhId);
+      } catch {
+        const q = getOfflineQueue(); q.push({ params, ts: Date.now() }); saveJson(QUEUE_KEY, q);
+        basket = []; renderBasket(); updateSyncPill();
+        showToast(t('offlineSaved'));
+      }
+    }
+
+    function promptDirectVoid() {
+      const docNo = document.getElementById('inpDocNo').value.trim();
+      if (!docNo) { showToast(t('errNeedDoc')); return; }
+      openMainModal(t('voidLabel'), `<div class="sub-card" style="font-weight:900;text-align:center;">#${esc(docNo)} ➔ ${esc(t('voidLabel'))}</div>`,
+        `<button type="button" class="btn muted" onclick="closeMainModal()">${esc(t('cancel'))}</button>
+         <button type="button" class="btn danger" id="btnDoVoid">${esc(t('voidShort'))}</button>`);
+      document.getElementById('btnDoVoid').onclick = () => executeDirectVoid(docNo);
+    }
+
+    async function executeDirectVoid(docNo) {
+      closeMainModal();
+      const res = await callRpc('rpc_post_document', {
+        p_token: session.token, p_warehouse_id: currentWhId, p_doc_type: 'VOID',
+        p_doc_no: docNo, p_party_name: t('voidLabel'), p_ref_no: '-', p_items: [],
+        p_idempotency_key: (crypto.randomUUID ? crypto.randomUUID() : 'v_' + Date.now()),
+      });
+      if (res.success) { showToast(t('savedOk')); loadWarehouseData(currentWhId); }
+      else showToast(t('errGeneric'));
+    }
+
+    // ==================== ገጽ 2: ቆጠራ ====================
+    async function ensureWakeLock() {
+      if (!('wakeLock' in navigator) || wakeLock) return;
+      try { wakeLock = await navigator.wakeLock.request('screen'); wakeLock.addEventListener('release', () => wakeLock = null); } catch {}
+    }
+
+    function openInTally(itemId) {
+      tally.itemId = itemId; tally.mode = entryMode; tally.strokes = [];
+      if (tally.mode === 'AUDIT') {
+        const it = whData.items.find((x) => x.id === itemId);
+        tally.target = it ? Number(it.stock) : 0;
+      }
+      switchView('tally');
+    }
+
+    function setTallyMode(m) {
+      tally.mode = m; vib(16);
+      if (m === 'AUDIT') {
+        const it = whData.items.find((x) => x.id === tally.itemId);
+        tally.target = it ? Number(it.stock) : 0;
+      }
+      renderTally();
+    }
+
+    function onTallyItemChange() {
+      tally.itemId = document.getElementById('selTallyItem').value;
+      if (tally.mode === 'AUDIT') {
+        const it = whData.items.find((x) => x.id === tally.itemId);
+        tally.target = it ? Number(it.stock) : 0;
+      }
+      renderTally();
+    }
+
+    function onTallyTargetInput() {
+      tally.target = Math.max(0, Math.floor(Number(document.getElementById('inpTallyTarget').value || 0)));
+      renderTallyStats();
+    }
+
+    function getTallyTotal() { return tally.strokes.reduce((s, x) => s + Number(x.qty || 0), 0); }
+
+    function addTallyStroke(customQty = null) {
+      const now = Date.now();
+      if (customQty === null && now - lastTapMs < 140) return;
+      lastTapMs = now;
+      ensureWakeLock();
+
+      const counted = getTallyTotal();
+      const target = Number(tally.target || 0);
+      const hardStop = tally.mode === 'OUT';
+
+      if (hardStop && target > 0 && counted >= target) {
+        vib([90, 50, 120]); playTone(920, 0.16, 'square', 0.16); return;
+      }
+
+      let add = customQty !== null ? Math.floor(Number(customQty)) : Number(tally.carryMult);
+      if (!add || add <= 0) return;
+      let isOdd = add !== tally.carryMult;
+      if (hardStop && target > 0 && counted + add > target) { add = target - counted; isOdd = add !== tally.carryMult; }
+
+      tally.strokes.push({ qty: add, isOdd, ts: now });
+      const pad = document.getElementById('tallyPad');
+      pad.classList.add('flash'); setTimeout(() => pad.classList.remove('flash'), 100);
+
+      if (hardStop && target > 0 && counted + add >= target) {
+        vib([90, 50, 90, 50, 140]); playTone(880, 0.15, 'square'); setTimeout(() => playTone(1175, 0.22, 'square'), 160);
+      } else if (tally.strokes.length % 5 === 0) {
+        vib([40, 25, 50]); playTone(720, 0.08, 'triangle');
+      } else {
+        vib(22); playTone(520, 0.05);
+      }
+      renderTallyCanvas(true);
+      renderTallyStats();
+      const c = document.getElementById('tallyCanvas'); c.scrollTop = c.scrollHeight;
+    }
+
+    function undoTally() { if (!tally.strokes.length) return; tally.strokes.pop(); vib(18); renderTallyCanvas(false); renderTallyStats(); }
+    function clearTallyUndoable() {
+      if (!tally.strokes.length) return;
+      undoTallyBuf = tally.strokes.slice();
+      tally.strokes = []; vib(28); renderTallyCanvas(false); renderTallyStats();
+      showToast(t('clear'), () => { if (undoTallyBuf) { tally.strokes = undoTallyBuf; undoTallyBuf = null; renderTallyCanvas(false); renderTallyStats(); } });
+    }
+
+    async function commitTally() {
+      const total = getTallyTotal();
+      const it = (whData.items || []).find((x) => x.id === tally.itemId);
+      if (!it) return;
+
+      if (tally.mode === 'AUDIT') {
+        const res = await callRpc('rpc_submit_adjustment', {
+          p_token: session.token, p_warehouse_id: currentWhId,
+          p_item_id: it.id, p_counted_qty: total,
+          p_reason: total > it.stock ? t('adjPlusReason') : t('adjMinusReason'),
+          p_tally_proof: { mode: 'AUDIT', strokes: tally.strokes },
+        });
+        if (!res.success) { showToast(t('errGeneric')); return; }
+        callBot({ action: 'notify_adjustment', warehouse_id: currentWhId, adjustment_id: res.adjustment_id }).catch(() => {});
+        tally.strokes = [];
+        showToast(res.status === 'APPROVED' ? t('adjApproved') : t('adjPending'));
+        loadWarehouseData(currentWhId);
+        return;
+      }
+
+      if (total <= 0) return;
+      setEntryMode(tally.mode);
+      addToBasket(it.id, it.name, total, { mode: tally.mode, strokes: tally.strokes.slice() });
+      tally.strokes = [];
+      switchView('entry');
+    }
+
+    function renderTally() {
+      document.getElementById('btnTOut').className = 'seg-btn' + (tally.mode === 'OUT' ? ' out' : '');
+      document.getElementById('btnTIn').className = 'seg-btn' + (tally.mode === 'IN' ? ' in' : '');
+      document.getElementById('btnTAudit').className = 'seg-btn' + (tally.mode === 'AUDIT' ? ' adj' : '');
+      const sel = document.getElementById('selTallyItem');
+      sel.innerHTML = (whData.items || []).map((it) => `<option value="${it.id}" ${it.id === tally.itemId ? 'selected' : ''}>${esc(it.name)} (${it.stock})</option>`).join('');
+      const tInp = document.getElementById('inpTallyTarget');
+      tInp.readOnly = (tally.mode === 'AUDIT');
+      if (document.activeElement !== tInp) tInp.value = (tally.target > 0 || tally.mode === 'AUDIT') ? tally.target : '';
+      document.getElementById('lblCarryVal').textContent = `1 = ${tally.carryMult}`;
+      const isP = PRESETS.includes(tally.carryMult);
+      document.getElementById('presetGrid').innerHTML =
+        PRESETS.map((n) => `<button type="button" class="preset-btn ${tally.carryMult === n ? 'active' : ''}" onclick="tally.carryMult=${n};vib(15);renderTally();">+${n}</button>`).join('') +
+        `<button type="button" class="preset-btn custom ${!isP ? 'active' : ''}" onclick="openNumModal('custom')">${!isP ? '+' + tally.carryMult : esc(t('other'))}</button>`;
+      document.getElementById('btnTCommit').textContent = tally.mode === 'AUDIT' ? `⚡ ${t('applyAdj')}` : `📥 ${t('sendBasket')}`;
+      renderTallyCanvas(false); renderTallyStats();
+    }
+
+    function renderTallyCanvas(animLast) {
+      const c = document.getElementById('tallyCanvas'), s = tally.strokes;
+      if (!s.length) {
+        c.innerHTML = `<div style="margin:auto;opacity:0.14;pointer-events:none;"><div class="t-grp" style="transform:scale(1.5);"><div class="t-bar"></div><div class="t-bar"></div><div class="t-bar"></div><div class="t-bar"></div><div class="t-slash"></div></div></div>`;
+        return;
+      }
+      let h = '';
+      for (let i = 0; i < s.length; i += 5) {
+        const ch = s.slice(i, i + 5);
+        h += '<div class="t-grp">';
+        for (let b = 0; b < Math.min(4, ch.length); b++) {
+          h += `<div class="t-bar ${ch[b].isOdd ? 'odd' : ''} ${animLast && i + b === s.length - 1 ? 'anim-b' : ''}"></div>`;
+        }
+        if (ch.length === 5) h += `<div class="t-slash ${animLast && i + 4 === s.length - 1 ? 'anim-s' : ''}"></div>`;
+        h += '</div>';
+      }
+      c.innerHTML = h;
+    }
+
+    function renderTallyStats() {
+      const cnt = getTallyTotal(), trg = Number(tally.target || 0), m = tally.mode;
+      document.getElementById('valTCounted').textContent = cnt.toLocaleString();
+      document.getElementById('valTStrokes').textContent = tally.strokes.length.toLocaleString();
+      const rLbl = document.getElementById('lblTRight'), rVal = document.getElementById('valTRight');
+      const box = document.getElementById('tallyAlert'), pad = document.getElementById('tallyPad');
+      box.className = 'alert-box'; pad.classList.remove('done');
+
+      if (m === 'AUDIT') {
+        const d = cnt - trg;
+        rLbl.textContent = t('diff'); rVal.textContent = (d > 0 ? '+' : '') + d;
+        if (d > 0) { box.className = 'alert-box over'; box.textContent = t('overWarn')(d); }
+        else if (d < 0 && cnt > 0) { box.className = 'alert-box warn'; box.textContent = t('shortWarn')(Math.abs(d)); }
+        else if (d === 0 && cnt > 0) { box.className = 'alert-box stop'; box.textContent = t('exactMatch'); pad.classList.add('done'); }
+      } else {
+        rLbl.textContent = t('remaining');
+        if (trg <= 0) rVal.textContent = '∞';
+        else if (m === 'OUT') {
+          const rem = Math.max(0, trg - cnt); rVal.textContent = rem.toLocaleString();
+          if (cnt >= trg) { box.className = 'alert-box stop'; box.textContent = t('stopAlert'); pad.classList.add('done'); }
+          else if (rem < tally.carryMult) { box.className = 'alert-box warn'; box.textContent = t('oddWarn')(rem); }
+        } else {
+          const d = cnt - trg; rVal.textContent = d >= 0 ? `+${d}` : String(trg - cnt);
+          if (d > 0) { box.className = 'alert-box over'; box.textContent = t('overWarn')(d); }
+          else if (d === 0) { box.className = 'alert-box stop'; box.textContent = t('exactMatch'); pad.classList.add('done'); }
+        }
+      }
+    }
+
+    function openNumModal(mode) {
+      openMainModal(mode === 'custom' ? t('perCarry') : t('odd'),
+        `<input type="number" id="inpNumMod" class="inp mono" style="height:46px;font-size:20px;" min="1" inputmode="numeric" value="${mode === 'custom' ? tally.carryMult : ''}">`,
+        `<button type="button" class="btn muted" onclick="closeMainModal()">${esc(t('cancel'))}</button>
+         <button type="button" class="btn teal" id="btnNumGo">${esc(t('ok'))}</button>`);
+      const inp = document.getElementById('inpNumMod'); setTimeout(() => { inp.focus(); inp.select(); }, 40);
+      document.getElementById('btnNumGo').onclick = () => {
+        const v = Math.floor(Number(inp.value || 0));
+        if (v <= 0) return;
+        closeMainModal();
+        if (mode === 'custom') { tally.carryMult = v; renderTally(); } else addTallyStroke(v);
+      };
+    }
+
+    // ==================== ገጽ 3 እና 4: ዕለታዊ እና ስቶክ ====================
+    async function loadDaily() {
+      const res = await callRpc('rpc_get_daily_ledger', { p_token: session.token, p_warehouse_id: currentWhId });
+      if (res.success) { dailyRows = res.rows || []; renderDaily(); }
+    }
+
+    function toggleZeroFilter() {
+      zeroFilter = !zeroFilter; vib(16);
+      document.getElementById('btnZeroOnly').style.background = zeroFilter ? 'var(--amber)' : 'var(--surface-deep)';
+      document.getElementById('btnZeroOnly').style.color = zeroFilter ? '#000' : 'var(--amber)';
+      renderDaily();
+    }
+
+    function renderDaily() {
+      const q = document.getElementById('inpDailySearch').value.trim().toLowerCase();
+      document.getElementById('dailyHead').innerHTML = `<tr>${t('dCols').map((c) => `<th>${esc(c)}</th>`).join('')}</tr>`;
+      let inT = 0, outT = 0, vCnt = 0, lastDoc = null;
+      const html = [];
+
+      dailyRows.forEach((r) => {
+        if (zeroFilter && !r.is_zero_stock) return;
+        const txt = `${r.doc_no} ${r.item_name} ${r.party_name} ${r.ref_no} ${r.date_str}`.toLowerCase();
+        if (q && !txt.includes(q)) return;
+
+        if (!q && lastDoc && lastDoc !== r.document_id) html.push('<tr class="r-sp"><td colspan="9"></td></tr>');
+        const same = (!q && lastDoc === r.document_id);
+        lastDoc = r.document_id;
+
+        const isVoid = r.status === 'VOIDED' || r.is_voided || r.doc_type === 'VOID';
+        if (isVoid) vCnt++; else { inT += Number(r.qty_in || 0); outT += Number(r.qty_out || 0); }
+
+        const selKey = String(r.ledger_id || r.document_id);
+        const isSel = pdfSelectType === 'daily' && Boolean(selectedPdfIds[selKey]);
+        const cls = isSel ? 'r-sel' : (isVoid ? 'r-void' : (r.doc_type === 'IN' ? 'r-in' : (r.doc_type === 'ADJ' ? 'r-adj' : (r.is_zero_stock ? 'r-zero' : ''))));
+
+        html.push(`
+          <tr class="${cls}" onclick="togglePdfRow('daily','${selKey}',this)">
+            <td>${esc(same ? '↳' : r.doc_no)}</td>
+            <td>${esc(isVoid ? t('voidLabel') : r.item_name)}</td>
+            <td>${isVoid ? '-' : Number(r.opening_bal || 0).toLocaleString()}</td>
+            <td style="color:var(--emerald);">${r.qty_in ? '+' + r.qty_in : '-'}</td>
+            <td style="color:var(--rose);">${r.qty_out ? '-' + r.qty_out : '-'}</td>
+            <td>${isVoid ? '-' : Number(r.closing_bal || 0).toLocaleString()}</td>
+            <td>${esc(same ? '↳' : r.party_name)}</td>
+            <td>${esc(same ? '↳' : r.date_str)}</td>
+            <td style="text-align:center;">${r.can_edit && !isVoid ? `<button type="button" class="icon-btn" style="width:26px;height:24px;font-size:11px;" onclick="event.stopPropagation();openEditDocModal('${r.document_id}')">⚙️</button>` : ''}</td>
+          </tr>`);
+      });
+
+      document.getElementById('dailyBody').innerHTML = html.length ? html.join('') : `<tr><td colspan="9" style="text-align:center;padding:16px;color:var(--muted);">${esc(t('noItems'))}</td></tr>`;
+      document.getElementById('dailyMetrics').innerHTML =
+        `<span style="color:var(--emerald);">+${inT.toLocaleString()}</span><span style="color:var(--rose);">-${outT.toLocaleString()}</span><span style="color:var(--amber);">${esc(t('metricVoid'))}: ${vCnt}</span>`;
+    }
+
+    function openEditDocModal(docId) {
+      const lines = dailyRows.filter((r) => r.document_id === docId && !r.is_voided);
+      if (!lines.length) return;
+      const head = lines[0];
+      const rowsHtml = lines.map((l) => `
+        <div style="display:flex;gap:5px;align-items:center;">
+          <span style="flex:1;font-size:11.5px;font-weight:800;">${esc(l.item_name)}</span>
+          <input type="number" class="inp mono" style="width:72px;" data-lid="${l.ledger_id}" data-iid="${l.item_id}" value="${l.qty_in || l.qty_out}" min="1">
+        </div>`).join('');
+
+      openMainModal(t('editDocTitle'), `
+        <div class="sub-card">
+          <div class="grid-3">
+            <input type="text" id="edDocNo" class="inp mono" value="${esc(head.doc_no)}">
+            <input type="text" id="edParty" class="inp" value="${esc(head.party_name)}">
+            <input type="text" id="edRef" class="inp" value="${esc(head.ref_no)}">
+          </div>
+          ${rowsHtml}
+        </div>
+        <button type="button" class="btn danger" onclick="executeVoidDoc('${docId}')">${esc(t('voidDocBtn'))}</button>`,
+        `<button type="button" class="btn muted" onclick="closeMainModal()">${esc(t('cancel'))}</button>
+         <button type="button" class="btn teal" onclick="saveEditDoc('${docId}')">${esc(t('save'))}</button>`);
+    }
+
+    async function saveEditDoc(docId) {
+      const updates = Array.from(document.querySelectorAll('#modalBody input[data-lid]')).map((el) => ({
+        ledger_id: Number(el.dataset.lid), item_id: el.dataset.iid, qty: Math.max(1, Number(el.value || 1)),
+      }));
+      const res = await callRpc('rpc_edit_document', {
+        p_token: session.token, p_document_id: docId,
+        p_new_doc_no: document.getElementById('edDocNo').value.trim(),
+        p_new_party: document.getElementById('edParty').value.trim(),
+        p_new_ref: document.getElementById('edRef').value.trim(),
+        p_line_updates: updates,
+      });
+      if (!res.success) { showToast(res.error === 'INSUFFICIENT_STOCK' ? t('errStock') : t('errGeneric')); return; }
+      closeMainModal(); showToast(t('savedOk')); loadWarehouseData(currentWhId); loadDaily();
+    }
+
+    async function executeVoidDoc(docId) {
+      const res = await callRpc('rpc_void_document', { p_token: session.token, p_document_id: docId });
+      if (!res.success) { showToast(t('errGeneric')); return; }
+      closeMainModal(); showToast(t('savedOk')); loadWarehouseData(currentWhId); loadDaily();
+    }
+
+    function getPeriodBounds(p) {
+      const now = new Date(), end = new Date();
+      let start = new Date(0);
+      if (p === 'WEEK') {
+        const d = new Date(now); const day = d.getDay() || 7; d.setHours(0,0,0,0); d.setDate(d.getDate() - (day - 1)); start = d;
+      } else if (p === 'LAST_WEEK') {
+        const d = new Date(now); const day = d.getDay() || 7; d.setHours(0,0,0,0); d.setDate(d.getDate() - (day - 1));
+        end.setTime(d.getTime() - 1);
+        start = new Date(d.getTime() - 7 * 86400000);
+      } else if (p === 'MONTH') {
+        start = new Date(now.getFullYear(), now.getMonth(), 1);
+      }
+      return { start: start.toISOString(), end: end.toISOString() };
+    }
+
+    function setStockPeriod(p) { stockPeriod = p; vib(16); loadStock(); }
+
+    async function loadStock() {
+      ['WEEK','LAST_WEEK','MONTH','ALL'].forEach((k) => {
+        const id = { WEEK:'btnPWeek', LAST_WEEK:'btnPLastWeek', MONTH:'btnPMonth', ALL:'btnPAll' }[k];
+        document.getElementById(id).className = 'seg-btn' + (stockPeriod === k ? ' teal' : '');
+      });
+      const b = getPeriodBounds(stockPeriod);
+      const res = await callRpc('rpc_get_period_stock_report', { p_token: session.token, p_warehouse_id: currentWhId, p_start: b.start, p_end: b.end, p_active_only: false });
+      if (res.success) { stockRows = res.rows || []; renderStock(); }
+    }
+
+    function renderStock() {
+      const q = document.getElementById('inpStockSearch').value.trim().toLowerCase();
+      document.getElementById('stockHead').innerHTML = `<tr>${t('sCols').map((c) => `<th>${esc(c)}</th>`).join('')}</tr>`;
+      const byCat = {};
+      stockRows.forEach((r) => {
+        if (q && !r.item_name.toLowerCase().includes(q) && !r.category_name.toLowerCase().includes(q)) return;
+        if (!byCat[r.category_name]) byCat[r.category_name] = [];
+        byCat[r.category_name].push(r);
+      });
+
+      const html = [];
+      Object.keys(byCat).forEach((cat) => {
+        html.push(`<tr class="r-cat"><td colspan="6">📁 ${esc(cat)}</td></tr>`);
+        byCat[cat].forEach((r) => {
+          const isSel = pdfSelectType === 'stock' && Boolean(selectedPdfIds[r.item_id]);
+          const adjTxt = r.adj_net_qty === 0 ? '0' : (r.adj_net_qty > 0 ? `+${r.adj_net_qty}` : String(r.adj_net_qty));
+          html.push(`
+            <tr class="${isSel ? 'r-sel' : (r.closing_qty === 0 ? 'r-zero' : '')}" onclick="togglePdfRow('stock','${r.item_id}',this)">
+              <td>${esc(r.item_name)}</td>
+              <td>${Number(r.opening_qty).toLocaleString()}</td>
+              <td style="color:var(--emerald);">+${Number(r.in_qty).toLocaleString()}</td>
+              <td style="color:var(--rose);">-${Number(r.out_qty).toLocaleString()}</td>
+              <td style="color:var(--primary);">${adjTxt}</td>
+              <td><b>${Number(r.closing_qty).toLocaleString()}</b></td>
+            </tr>`);
+        });
+      });
+      document.getElementById('stockBody').innerHTML = html.length ? html.join('') : `<tr><td colspan="6" style="text-align:center;padding:16px;color:var(--muted);">${esc(t('noItems'))}</td></tr>`;
+    }
+
+    function togglePdfRow(type, key, trEl) {
+      vib(20);
+      if (pdfSelectType !== type) { selectedPdfIds = {}; pdfSelectType = type; }
+      if (selectedPdfIds[key]) { delete selectedPdfIds[key]; trEl.classList.remove('r-sel'); }
+      else { selectedPdfIds[key] = true; trEl.classList.add('r-sel'); }
+      updatePdfBar();
+    }
+
+    function clearPdfSelection() {
+      selectedPdfIds = {}; updatePdfBar();
+      if (pdfSelectType === 'daily') renderDaily(); else renderStock();
+    }
+
+    function updatePdfBar() {
+      const cnt = Object.keys(selectedPdfIds).length;
+      document.getElementById('pdfBar').style.display = cnt > 0 ? 'flex' : 'none';
+      document.getElementById('btnPdfSend').textContent = `${t('pdfSend')} (${cnt})`;
+    }
+
+    async function runSelectedPdf(sendToBot) {
+      const ids = Object.keys(selectedPdfIds);
+      if (!ids.length) return;
+      await generateAndDeliverPdf(pdfSelectType === 'stock', ids, sendToBot);
+      clearPdfSelection();
+    }
+
+    async function exportCurrentViewPdf(isStock) {
+      await generateAndDeliverPdf(isStock, null, true);
+    }
+
+    async function generateAndDeliverPdf(isStock, onlyIds, sendToBot) {
+      if (!window.html2canvas || !window.jspdf) { showToast(t('pdfLoading')); return; }
+      const stage = document.getElementById('pdfStage');
+      const brand = whData.warehouse?.brand_title || t('defaultBrand');
+      const whName = whData.warehouse?.name || '';
+      const dateStr = new Date().toLocaleDateString('en-GB');
+      const title = `${brand} — ${whName} (${dateStr})`;
+
+      let bodyHtml = '';
+      if (isStock) {
+        const list = onlyIds ? stockRows.filter((r) => onlyIds.includes(r.item_id)) : stockRows.filter((r) => r.closing_qty > 0 || r.in_qty > 0 || r.out_qty > 0 || r.adj_net_qty !== 0);
+        let opT = 0, inT = 0, outT = 0, adjT = 0, clT = 0, lastCat = '';
+        const trs = list.map((r) => {
+          opT += Number(r.opening_qty); inT += Number(r.in_qty); outT += Number(r.out_qty); adjT += Number(r.adj_net_qty); clT += Number(r.closing_qty);
+          let catRow = '';
+          if (r.category_name !== lastCat) {
+            lastCat = r.category_name;
+            catRow = `<tr style="background:#1e3a29;color:#fff;"><td colspan="6" style="padding:6px;font-weight:900;">📁 ${esc(lastCat)}</td></tr>`;
+          }
+          const bg = r.closing_qty === 0 ? '#f4cccc' : (r.closing_qty <= (whData.warehouse?.low_limit || 20) ? '#fff2cc' : '#ffffff');
+          return catRow + `<tr style="background:${bg};">
+            <td style="padding:5px;border:1px solid #cbd5e1;font-weight:700;">${esc(r.item_name)}</td>
+            <td style="padding:5px;border:1px solid #cbd5e1;text-align:center;">${r.opening_qty}</td>
+            <td style="padding:5px;border:1px solid #cbd5e1;text-align:center;">${r.in_qty}</td>
+            <td style="padding:5px;border:1px solid #cbd5e1;text-align:center;">${r.out_qty}</td>
+            <td style="padding:5px;border:1px solid #cbd5e1;text-align:center;">${r.adj_net_qty}</td>
+            <td style="padding:5px;border:1px solid #cbd5e1;text-align:center;font-weight:900;">${r.closing_qty}</td>
+          </tr>`;
+        }).join('');
+        bodyHtml = `<table style="width:100%;border-collapse:collapse;font-size:12px;">
+          <thead><tr style="background:#0f172a;color:#fff;">${t('sCols').map((c) => `<th style="padding:7px;border:1px solid #334155;">${esc(c)}</th>`).join('')}</tr></thead>
+          <tbody>${trs}</tbody>
+          <tfoot><tr style="background:#0f172a;color:#38bdf8;font-weight:900;">
+            <td style="padding:7px;">${list.length}</td><td style="text-align:center;">${opT}</td><td style="text-align:center;color:#86efac;">${inT}</td>
+            <td style="text-align:center;color:#fca5a5;">${outT}</td><td style="text-align:center;">${adjT}</td><td style="text-align:center;">${clT}</td>
+          </tr></tfoot></table>`;
+      } else {
+        const list = onlyIds ? dailyRows.filter((r) => onlyIds.includes(String(r.ledger_id || r.document_id))) : dailyRows;
+        let lastDoc = null, inT = 0, outT = 0;
+        const trs = list.map((r) => {
+          let sp = '';
+          if (lastDoc && lastDoc !== r.document_id) sp = `<tr style="background:#f1f5f9;"><td colspan="8" style="height:6px;"></td></tr>`;
+          const same = lastDoc === r.document_id; lastDoc = r.document_id;
+          const isV = r.status === 'VOIDED' || r.is_voided || r.doc_type === 'VOID';
+          if (!isV) { inT += Number(r.qty_in || 0); outT += Number(r.qty_out || 0); }
+          const bg = isV ? '#f4cccc' : (r.doc_type === 'IN' ? '#d9ead3' : (r.doc_type === 'ADJ' ? '#dbeafe' : (r.is_zero_stock ? '#ffe599' : '#ffffff')));
+          return sp + `<tr style="background:${bg};">
+            <td style="padding:5px;border:1px solid #cbd5e1;text-align:center;font-weight:700;">${esc(same ? '↳' : r.doc_no)}</td>
+            <td style="padding:5px;border:1px solid #cbd5e1;font-weight:700;">${esc(isV ? t('voidLabel') : r.item_name)}</td>
+            <td style="padding:5px;border:1px solid #cbd5e1;text-align:center;">${isV ? '-' : r.opening_bal}</td>
+            <td style="padding:5px;border:1px solid #cbd5e1;text-align:center;">${r.qty_in || '-'}</td>
+            <td style="padding:5px;border:1px solid #cbd5e1;text-align:center;">${r.qty_out || '-'}</td>
+            <td style="padding:5px;border:1px solid #cbd5e1;text-align:center;font-weight:900;">${isV ? '-' : r.closing_bal}</td>
+            <td style="padding:5px;border:1px solid #cbd5e1;">${esc(same ? '↳' : r.party_name)}</td>
+            <td style="padding:5px;border:1px solid #cbd5e1;text-align:center;">${esc(same ? '↳' : r.date_str)}</td>
+          </tr>`;
+        }).join('');
+        bodyHtml = `<table style="width:100%;border-collapse:collapse;font-size:11.5px;">
+          <thead><tr style="background:#0f172a;color:#fff;">${t('dCols').slice(0,8).map((c) => `<th style="padding:7px;border:1px solid #334155;">${esc(c)}</th>`).join('')}</tr></thead>
+          <tbody>${trs}</tbody>
+          <tfoot><tr style="background:#0f172a;color:#38bdf8;font-weight:900;">
+            <td colspan="3" style="padding:7px;">${list.length}</td>
+            <td style="text-align:center;color:#86efac;">${inT}</td><td style="text-align:center;color:#fca5a5;">${outT}</td>
+            <td colspan="3" style="text-align:center;">${dateStr}</td>
+          </tr></tfoot></table>`;
+      }
+
+      stage.innerHTML = `<div style="background:#090e17;color:#38bdf8;padding:12px;text-align:center;font-size:15px;font-weight:900;margin-bottom:6px;">${esc(title)}</div>${bodyHtml}`;
+      const canvas = await window.html2canvas(stage, { scale: 2, backgroundColor: '#ffffff' });
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF({ orientation: 'portrait', unit: 'pt', format: 'a4' });
+      const pw = pdf.internal.pageSize.getWidth(), ph = pdf.internal.pageSize.getHeight();
+      const imgW = pw - 20, imgH = (canvas.height * imgW) / canvas.width;
+      let leftH = imgH, pos = 10;
+      const imgData = canvas.toDataURL('image/png');
+      pdf.addImage(imgData, 'PNG', 10, pos, imgW, imgH);
+      leftH -= (ph - 20);
+      while (leftH > 0) {
+        pos = leftH - imgH + 10;
+        pdf.addPage();
+        pdf.addImage(imgData, 'PNG', 10, pos, imgW, imgH);
+        leftH -= (ph - 20);
+      }
+
+      const fileName = `${isStock ? 'Stock' : 'Daily'}_${dateStr.replace(/\//g, '-')}.pdf`;
+      if (!sendToBot) { pdf.save(fileName); return; }
+
+      try {
+        const blob = pdf.output('blob');
+        const fd = new FormData();
+        fd.append('token', session.token);
+        fd.append('warehouse_id', currentWhId);
+        fd.append('report_title', title);
+        fd.append('file', blob, fileName);
+
+        const res = await fetch(`${SUPABASE_URL}/functions/v1/${BOT_FUNCTION}`, {
+          method: 'POST',
+          headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'x-session-token': session.token },
+          body: fd,
+        }).then((r) => r.json());
+
+        if (res.success) showToast(t('savedOk'));
+        else { pdf.save(fileName); showToast(t('pdfLocal')); }
+      } catch {
+        pdf.save(fileName); showToast(t('pdfLocal'));
+      }
+    }
+
+    // ==================== ገጽ 5: ካርታ + ካሜራ ስካነር ====================
+    function toggleBulkMap() {
+      bulkMapMode = !bulkMapMode; bulkMapSlots = {}; vib(16);
+      document.getElementById('btnBulkMap').style.background = bulkMapMode ? 'var(--primary)' : 'var(--surface-deep)';
+      document.getElementById('btnBulkMap').style.color = bulkMapMode ? '#fff' : 'var(--primary)';
+      document.getElementById('btnBulkAssign').style.display = 'none';
+      renderMap();
+    }
+
+    function renderMap() {
+      const racks = whData.racks || [];
+      document.getElementById('rackTabs').innerHTML = racks.map((r) =>
+        `<button type="button" class="rack-tab ${activeRack === r.code ? 'active' : ''}" onclick="activeRack='${r.code}';vib(15);renderMap();">${esc(r.name)}</button>`
+      ).join('');
+      const rk = racks.find((r) => r.code === activeRack) || racks[0];
+      const grid = document.getElementById('rackGrid');
+      if (!rk) { grid.innerHTML = ''; return; }
+      const q = document.getElementById('inpMapSearch').value.trim().toLowerCase();
+      grid.style.gridTemplateColumns = `repeat(${rk.cols}, 1fr)`;
+      const cells = [];
+      for (let i = 1; i <= rk.cols * rk.rows; i++) {
+        const sid = `${rk.code}-${i < 10 ? '0' + i : i}`;
+        const list = whData.slot_map?.[sid] || [];
+        const names = list.map((x) => x.item_name);
+        const hl = q && names.some((n) => n.toLowerCase().includes(q));
+        const cls = bulkMapSlots[sid] ? 'sel' : (hl ? 'hl' : (names.length ? 'used' : ''));
+        cells.push(`<div class="bin ${cls}" onclick="onBinClick('${sid}')"><span class="bin-id">${sid}</span><span class="bin-it">${names.length ? esc(names.join('፣ ')) : esc(t('emptySlot'))}</span></div>`);
+      }
+      grid.innerHTML = cells.join('');
+    }
+
+    function onBinClick(sid) {
+      vib(18);
+      if (bulkMapMode) {
+        if (bulkMapSlots[sid]) delete bulkMapSlots[sid]; else bulkMapSlots[sid] = true;
+        const n = Object.keys(bulkMapSlots).length;
+        const btn = document.getElementById('btnBulkAssign');
+        btn.style.display = n ? 'inline-flex' : 'none';
+        btn.textContent = `${t('assignBtn')} (${n})`;
+        renderMap();
+        return;
+      }
+      openBinModal(sid);
+    }
+
+    function openBinModal(singleSlot) {
+      activeModalSlots = singleSlot ? [singleSlot] : Object.keys(bulkMapSlots);
+      if (!activeModalSlots.length) return;
+      const curList = singleSlot ? (whData.slot_map?.[singleSlot] || []) : [];
+      const curHtml = curList.map((x) => `
+        <div style="display:flex;justify-content:space-between;align-items:center;font-size:11.5px;font-weight:800;">
+          <span>• ${esc(x.item_name)}</span>
+          <button type="button" class="icon-btn" style="width:24px;height:24px;color:var(--rose);" onclick="removeBinItem('${singleSlot}','${x.item_id}')">✕</button>
+        </div>`).join('');
+
+      openMainModal(`📍 ${activeModalSlots.join(', ')}`, `
+        ${curHtml ? `<div class="sub-card">${curHtml}</div>` : ''}
+        <select id="selBinIt" class="sel">${(whData.items || []).map((it) => `<option value="${it.id}">${esc(it.name)}</option>`).join('')}</select>
+        <label class="chk-row"><input type="checkbox" id="chkBinApp" checked><span>${esc(t('appendSlot'))}</span></label>`,
+        `${singleSlot ? `<button type="button" class="btn danger" onclick="clearSingleBin('${singleSlot}')">${esc(t('clearSlot'))}</button>` : `<button type="button" class="btn muted" onclick="closeMainModal()">${esc(t('cancel'))}</button>`}
+         <button type="button" class="btn teal" onclick="saveBinAssign()">${esc(t('assignBtn'))}</button>`);
+    }
+
+    async function saveBinAssign() {
+      const itemId = document.getElementById('selBinIt').value;
+      const append = document.getElementById('chkBinApp').checked;
+      if (!itemId || !activeModalSlots.length) return;
+      const res = await callRpc('rpc_manage_bin_slots', {
+        p_token: session.token, p_warehouse_id: currentWhId, p_action: 'ASSIGN',
+        p_slots: activeModalSlots, p_item_id: itemId, p_append_mode: append,
+      });
+      if (res.success) { closeMainModal(); if (bulkMapMode) toggleBulkMap(); showToast(t('savedOk')); loadWarehouseData(currentWhId); }
+    }
+
+    async function removeBinItem(slot, itemId) {
+      await callRpc('rpc_manage_bin_slots', { p_token: session.token, p_warehouse_id: currentWhId, p_action: 'REMOVE_ITEM', p_slots: [slot], p_item_id: itemId });
+      closeMainModal(); loadWarehouseData(currentWhId);
+    }
+
+    async function clearSingleBin(slot) {
+      await callRpc('rpc_manage_bin_slots', { p_token: session.token, p_warehouse_id: currentWhId, p_action: 'CLEAR_SLOT', p_slots: [slot] });
+      closeMainModal(); loadWarehouseData(currentWhId);
+    }
+
+    async function openQrScanner() {
+      openMainModal(t('qrTitle'), `
+        <video id="qrVideo" class="qr-video" autoplay playsinline muted></video>
+        <input type="text" id="inpQrManual" class="inp mono" placeholder="${esc(t('qrManualPh'))}" onkeydown="if(event.key==='Enter') jumpToScannedSlot(this.value)">`,
+        `<button type="button" class="btn muted" onclick="closeMainModal()">${esc(t('close'))}</button>
+         <button type="button" class="btn teal" onclick="jumpToScannedSlot(document.getElementById('inpQrManual').value)">${esc(t('ok'))}</button>`);
+
+      try {
+        qrStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+        const vid = document.getElementById('qrVideo');
+        vid.srcObject = qrStream;
+        if ('BarcodeDetector' in window) {
+          const detector = new BarcodeDetector({ formats: ['qr_code', 'code_128'] });
+          const scan = async () => {
+            if (!qrStream) return;
+            try {
+              const codes = await detector.detect(vid);
+              if (codes.length && codes[0].rawValue) { jumpToScannedSlot(codes[0].rawValue); return; }
+            } catch {}
+            qrLoopId = requestAnimationFrame(scan);
+          };
+          qrLoopId = requestAnimationFrame(scan);
+        }
+      } catch {}
+    }
+
+    function stopQrCamera() {
+      if (qrLoopId) { cancelAnimationFrame(qrLoopId); qrLoopId = null; }
+      if (qrStream) { qrStream.getTracks().forEach((tr) => tr.stop()); qrStream = null; }
+    }
+
+    function jumpToScannedSlot(code) {
+      const clean = String(code || '').trim().toUpperCase();
+      if (!clean) return;
+      closeMainModal();
+      const rk = clean.split('-')[0];
+      if ((whData.racks || []).some((r) => r.code === rk)) activeRack = rk;
+      renderMap();
+      openBinModal(clean);
+    }
+
+    // ==================== ጎን ሜኑ እና አስተዳደር ====================
+    function openDrawer() { vib(15); document.getElementById('drawerBg').style.display = 'block'; document.getElementById('drawer').classList.add('open'); }
+    function closeDrawer() { document.getElementById('drawerBg').style.display = 'none'; document.getElementById('drawer').classList.remove('open'); }
+
+    function renderDrawerMenu() {
+      const role = session?.user?.role;
+      const isOrgAdm = whData.is_org_admin || role === 'SUPER_ADMIN' || role === 'ORG_ADMIN';
+      const isBrAdm = whData.is_branch_admin || isOrgAdm;
+      const items = [];
+      if (role === 'SUPER_ADMIN') items.push({ ico: '🏛️', lbl: t('mOrgs'), fn: 'openOrgsManager()' });
+      if (isOrgAdm) {
+        items.push({ ico: '🏢', lbl: t('mBranches'), fn: 'openBranchesManager()' });
+        items.push({ ico: '👥', lbl: t('mStaff'), fn: 'openStaffManager()' });
+        items.push({ ico: '📡', lbl: t('mChannels'), fn: 'openChannelsManager()' });
+      }
+      if (isBrAdm) {
+        items.push({ ico: '📦', lbl: t('mCatalog'), fn: 'openCatalogManager()' });
+        items.push({ ico: '🗄️', lbl: t('mRacks'), fn: 'openRacksManager()' });
+        items.push({ ico: '✅', lbl: t('mApprovals'), fn: 'openApprovalsManager()', badge: whData.pending_adjustments_count || 0 });
+        items.push({ ico: '⚠️', lbl: t('mRisk'), fn: 'sendRiskAuditNow()' });
+      }
+      items.push({ ico: '🔑', lbl: t('mPin'), fn: 'openOwnPinModal()' });
+
+      document.getElementById('drawerList').innerHTML = items.map((it) => `
+        <button type="button" class="drawer-item" onclick="closeDrawer();${it.fn}">
+          <span>${it.ico} ${esc(it.lbl)}</span>
+          ${it.badge ? `<span class="badge-cnt">${it.badge}</span>` : ''}
+        </button>`).join('');
+    }
+
+    function openOrgsManager() {
+      const orgs = session.all_organizations || [];
+      openMainModal(t('mOrgs'), `
+        <div class="sub-card">
+          <input id="oCode" class="inp mono" placeholder="${esc(t('phOrgCode'))}" style="text-transform:uppercase;">
+          <input id="oName" class="inp" placeholder="${esc(t('phOrgName'))}">
+          <input id="oBr" class="inp" placeholder="${esc(t('phBrName'))}">
+          <div class="grid-2">
+            <input id="oAdmN" class="inp" placeholder="${esc(t('phAdmName'))}">
+            <input id="oAdmP" class="inp mono" maxlength="6" inputmode="numeric" placeholder="${esc(t('phPin'))}">
+          </div>
+          <button type="button" class="btn teal" onclick="createNewOrg()">+ ${esc(t('add'))}</button>
+        </div>
+        ${orgs.map((o) => `<div class="sub-card"><b>${esc(o.code)} — ${esc(o.name)}</b></div>`).join('')}`,
+        `<button type="button" class="btn muted" style="grid-column:span 2;" onclick="closeMainModal()">${esc(t('close'))}</button>`);
+    }
+
+    async function createNewOrg() {
+      const res = await callRpc('rpc_manage_organization', {
+        p_token: session.token, p_action: 'CREATE',
+        p_payload: {
+          code: document.getElementById('oCode').value,
+          name: document.getElementById('oName').value,
+          first_branch_name: document.getElementById('oBr').value,
+          admin_name: document.getElementById('oAdmN').value,
+          admin_pin: document.getElementById('oAdmP').value,
+        },
+      });
+      if (res.success) { closeMainModal(); showToast(t('savedOk')); } else showToast(t('errGeneric'));
+    }
+
+    function openBranchesManager() {
+      const list = whData.org_warehouses || [];
+      openMainModal(t('mBranches'), `
+        <div class="sub-card">
+          <input id="bName" class="inp" placeholder="${esc(t('phBrName'))}">
+          <input id="bCode" class="inp mono" placeholder="${esc(t('phBrCode'))}" style="text-transform:uppercase;">
+          <button type="button" class="btn teal" onclick="addBranch()">+ ${esc(t('add'))}</button>
+        </div>
+        ${list.map((w) => `<div class="sub-card"><b>${esc(w.name)} (${esc(w.code)})</b></div>`).join('')}`,
+        `<button type="button" class="btn muted" style="grid-column:span 2;" onclick="closeMainModal()">${esc(t('close'))}</button>`);
+    }
+
+    async function addBranch() {
+      const res = await callRpc('rpc_manage_warehouse', {
+        p_token: session.token, p_action: 'UPSERT',
+        p_payload: { organization_id: whData.warehouse.organization_id, name: document.getElementById('bName').value, code: document.getElementById('bCode').value },
+      });
+      if (res.success) { closeMainModal(); showToast(t('savedOk')); loadWarehouseData(currentWhId); } else showToast(t('errGeneric'));
+    }
+
+    async function openStaffManager() {
+      const res = await callRpc('rpc_manage_branch_access', { p_token: session.token, p_action: 'LIST_ORG_STAFF', p_payload: { organization_id: whData.warehouse.organization_id } });
+      const staff = res.staff || [];
+      const whs = whData.org_warehouses || [];
+
+      const staffCards = staff.map((s) => `
+        <div class="sub-card">
+          <div style="display:flex;justify-content:space-between;"><b>${esc(s.full_name)}</b><span style="color:var(--teal);font-size:10.5px;">${esc(roleLabel(s.role))}</span></div>
+          <div style="display:flex;flex-wrap:wrap;gap:4px;">
+            ${whs.map((w) => {
+              const has = (s.branches || []).some((b) => b.warehouse_id === w.id);
+              return `<button type="button" class="pdf-pill" style="${has ? 'background:var(--teal);color:var(--teal-dark);' : ''}" onclick="toggleStaffBranch('${s.id}','${w.id}',${has})">${esc(w.name)}</button>`;
+            }).join('')}
+          </div>
+        </div>`).join('');
+
+      openMainModal(t('mStaff'), `
+        <div class="sub-card">
+          <div class="grid-2">
+            <input id="stName" class="inp" placeholder="${esc(t('phStaffName'))}">
+            <input id="stPin" class="inp mono" maxlength="6" inputmode="numeric" placeholder="${esc(t('phPin'))}">
+          </div>
+          <select id="stRole" class="sel">
+            <option value="STAFF">${esc(t('roleStaff'))}</option>
+            <option value="ORG_ADMIN">${esc(t('roleOrgAdm'))}</option>
+          </select>
+          <button type="button" class="btn teal" onclick="addStaffMember()">+ ${esc(t('add'))}</button>
+        </div>${staffCards}`,
+        `<button type="button" class="btn muted" style="grid-column:span 2;" onclick="closeMainModal()">${esc(t('close'))}</button>`);
+    }
+
+    async function addStaffMember() {
+      const res = await callRpc('rpc_manage_staff', {
+        p_token: session.token, p_action: 'ADD',
+        p_payload: {
+          organization_id: whData.warehouse.organization_id,
+          full_name: document.getElementById('stName').value,
+          pin: document.getElementById('stPin').value,
+          role: document.getElementById('stRole').value,
+          warehouse_ids: [currentWhId],
+        },
+      });
+      if (res.success) { showToast(t('savedOk')); openStaffManager(); } else showToast(t('errGeneric'));
+    }
+
+    async function toggleStaffBranch(userId, warehouseId, currentlyHas) {
+      const res = await callRpc('rpc_manage_branch_access', {
+        p_token: session.token, p_action: currentlyHas ? 'REVOKE' : 'GRANT',
+        p_payload: { user_id: userId, warehouse_id: warehouseId },
+      });
+      if (res.success) openStaffManager();
+    }
+
+    function chTypeLabel(tp) { return tp === 'TELEGRAM' ? t('chTg') : tp === 'WHATSAPP' ? t('chWa') : tp === 'SMS' ? t('chSms') : t('chWh'); }
+
+    async function openChannelsManager() {
+      const res = await callRpc('rpc_manage_notification_channels', {
+        p_token: session.token, p_action: 'LIST', p_payload: { organization_id: whData.warehouse.organization_id },
+      });
+      const channels = res.channels || [];
+      const whs = whData.org_warehouses || [];
+
+      const cards = channels.map((c) => `
+        <div class="sub-card">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <b>${esc(chTypeLabel(c.channel_type))} — ${esc(c.label)}</b>
+            <span style="font-size:10px;color:var(--muted);">${esc(c.warehouse_name)}</span>
+          </div>
+          <div style="font-size:11px;color:var(--primary);word-break:break-all;">${esc(c.target_address)}</div>
+          <div style="display:flex;gap:5px;">
+            <button type="button" class="pdf-pill" onclick="testNotifChannel('${c.id}')">${esc(t('testBtn'))}</button>
+            ${c.channel_type === 'TELEGRAM' ? `<button type="button" class="pdf-pill" style="border-color:var(--teal);color:var(--teal);" onclick="linkTelegramWebhook('${c.id}')">${esc(t('webhookBtn'))}</button>` : ''}
+            <button type="button" class="pdf-pill" style="color:#fca5a5;" onclick="deleteNotifChannel('${c.id}')">${esc(t('del'))}</button>
+          </div>
+        </div>`).join('');
+
+      openMainModal(t('mChannels'), `
+        <div class="sub-card">
+          <div class="grid-2">
+            <select id="chType" class="sel" onchange="onChTypeChange()">
+              <option value="TELEGRAM">${esc(t('chTg'))}</option>
+              <option value="WHATSAPP">${esc(t('chWa'))}</option>
+              <option value="SMS">${esc(t('chSms'))}</option>
+              <option value="WEBHOOK">${esc(t('chWh'))}</option>
+            </select>
+            <select id="chWh" class="sel">
+              <option value="${currentWhId}">${esc(whData.warehouse.name)}</option>
+              <option value="">${esc(t('chAllBranches'))}</option>
+              ${whs.filter((w) => w.id !== currentWhId).map((w) => `<option value="${w.id}">${esc(w.name)}</option>`).join('')}
+            </select>
+          </div>
+          <input id="chLabel" class="inp" placeholder="${esc(t('phChLabel'))}">
+          <input id="chTarget" class="inp" placeholder="${esc(t('phChTarget'))}">
+          <input id="chCred1" class="inp" placeholder="${esc(t('phChCred1'))}">
+          <input id="chCred2" class="inp" style="display:none;" placeholder="${esc(t('phChCred2'))}">
+          <button type="button" class="btn teal" onclick="saveNotifChannel()">+ ${esc(t('save'))}</button>
+        </div>${cards}`,
+        `<button type="button" class="btn muted" style="grid-column:span 2;" onclick="closeMainModal()">${esc(t('close'))}</button>`);
+    }
+
+    function onChTypeChange() {
+      const tp = document.getElementById('chType').value;
+      document.getElementById('chCred2').style.display = (tp === 'WHATSAPP' || tp === 'SMS') ? 'block' : 'none';
+    }
+
+    async function saveNotifChannel() {
+      const tp = document.getElementById('chType').value;
+      const c1 = document.getElementById('chCred1').value.trim();
+      const c2 = document.getElementById('chCred2').value.trim();
+      const creds = tp === 'TELEGRAM' ? { bot_token: c1 }
+        : tp === 'WHATSAPP' ? { access_token: c1, phone_number_id: c2 }
+        : tp === 'SMS' ? { api_key: c1, sender_id: c2 }
+        : { api_key: c1 };
+
+      const res = await callRpc('rpc_manage_notification_channels', {
+        p_token: session.token, p_action: 'UPSERT',
+        p_payload: {
+          organization_id: whData.warehouse.organization_id,
+          warehouse_id: document.getElementById('chWh').value || null,
+          channel_type: tp,
+          label: document.getElementById('chLabel').value.trim() || chTypeLabel(tp),
+          target_address: document.getElementById('chTarget').value.trim(),
+          credentials: creds,
+        },
+      });
+      if (res.success) {
+        if (tp === 'TELEGRAM' && res.channel_id) await linkTelegramWebhook(res.channel_id, true);
+        showToast(t('savedOk'));
+        openChannelsManager();
+      } else showToast(t('errGeneric'));
+    }
+
+    async function linkTelegramWebhook(channelId, silent = false) {
+      const res = await callBot({ action: 'register_telegram_webhook', channel_id: channelId });
+      if (!silent) showToast(res.success ? t('savedOk') : t('errGeneric'));
+    }
+
+    async function testNotifChannel(channelId) {
+      const res = await callBot({ action: 'test_channel', channel_id: channelId });
+      showToast(res.success ? t('savedOk') : t('errGeneric'));
+    }
+
+    async function deleteNotifChannel(channelId) {
+      await callRpc('rpc_manage_notification_channels', {
+        p_token: session.token, p_action: 'DELETE',
+        p_payload: { organization_id: whData.warehouse.organization_id, channel_id: channelId },
+      });
+      openChannelsManager();
+    }
+
+    function openCatalogManager() {
+      const cats = whData.categories || [];
+      openMainModal(t('mCatalog'), `
+        <div class="sub-card">
+          <div style="display:flex;gap:5px;">
+            <input id="catNewName" class="inp" placeholder="${esc(t('phCatName'))}">
+            <button type="button" class="btn primary" onclick="addCategoryNow()">+</button>
+          </div>
+        </div>
+        <div class="sub-card">
+          <input id="itNewName" class="inp" placeholder="${esc(t('phItemName'))}">
+          <select id="itNewCat" class="sel"><option value="">-</option>${cats.map((c) => `<option value="${c.id}">${esc(c.name)}</option>`).join('')}</select>
+          <input id="itNewOp" type="number" class="inp mono" value="0" min="0" placeholder="${esc(t('phOpening'))}">
+          <button type="button" class="btn teal" onclick="addItemNow()">+ ${esc(t('add'))}</button>
+        </div>`,
+        `<button type="button" class="btn muted" style="grid-column:span 2;" onclick="closeMainModal()">${esc(t('close'))}</button>`);
+    }
+
+    async function addCategoryNow() {
+      const n = document.getElementById('catNewName').value.trim();
+      if (!n) return;
+      await callRpc('rpc_manage_catalog', { p_token: session.token, p_warehouse_id: currentWhId, p_action: 'ADD_CATEGORY', p_payload: { name: n } });
+      await loadWarehouseData(currentWhId); openCatalogManager();
+    }
+
+    async function addItemNow() {
+      const n = document.getElementById('itNewName').value.trim();
+      if (!n) return;
+      const res = await callRpc('rpc_manage_catalog', {
+        p_token: session.token, p_warehouse_id: currentWhId, p_action: 'UPSERT_ITEM',
+        p_payload: { name: n, category_id: document.getElementById('itNewCat').value, opening_qty: Number(document.getElementById('itNewOp').value || 0) },
+      });
+      if (res.success) { showToast(t('savedOk')); await loadWarehouseData(currentWhId); openCatalogManager(); }
+    }
+
+    function openRacksManager() {
+      const rks = whData.racks || [];
+      openMainModal(t('mRacks'), `
+        <div class="sub-card">
+          <div class="grid-3">
+            <input id="rkCode" class="inp mono" placeholder="${esc(t('phRackCode'))}" style="text-transform:uppercase;">
+            <input id="rkName" class="inp" placeholder="${esc(t('phRackName'))}">
+            <input id="rkCols" type="number" class="inp mono" value="6" placeholder="${esc(t('phRackCols'))}">
+          </div>
+          <button type="button" class="btn teal" onclick="addRackNow()">+ ${esc(t('add'))}</button>
+        </div>
+        ${rks.map((r) => `<div class="sub-card"><b>${esc(r.code)} — ${esc(r.name)} (${r.cols}×${r.rows})</b></div>`).join('')}`,
+        `<button type="button" class="btn muted" style="grid-column:span 2;" onclick="closeMainModal()">${esc(t('close'))}</button>`);
+    }
+
+    async function addRackNow() {
+      const code = document.getElementById('rkCode').value.trim().toUpperCase();
+      const name = document.getElementById('rkName').value.trim() || code;
+      const cols = Number(document.getElementById('rkCols').value || 6);
+      if (!code) return;
+      const next = (whData.racks || []).concat([{ code, name, cols, rows: 5 }]);
+      await callRpc('rpc_manage_racks', { p_token: session.token, p_warehouse_id: currentWhId, p_racks: next });
+      await loadWarehouseData(currentWhId); openRacksManager();
+    }
+
+    async function openApprovalsManager() {
+      const res = await callRpc('rpc_get_pending_adjustments', { p_token: session.token, p_warehouse_id: currentWhId });
+      const rows = res.rows || [];
+      openMainModal(t('mApprovals'),
+        rows.length ? rows.map((a) => `
+          <div class="sub-card">
+            <b>${esc(a.item_name)} (${a.system_bal} ➔ ${a.counted_qty} | ${a.diff_qty > 0 ? '+' : ''}${a.diff_qty})</b>
+            <span class="lbl-sm">${esc(a.requested_by)} — ${esc(a.reason)}</span>
+            <div class="grid-2">
+              <button type="button" class="btn teal" onclick="reviewAdj('${a.id}',true)">${esc(t('approve'))}</button>
+              <button type="button" class="btn danger" onclick="reviewAdj('${a.id}',false)">${esc(t('reject'))}</button>
+            </div>
+          </div>`).join('') : `<div class="sub-card" style="text-align:center;">${esc(t('noItems'))}</div>`,
+        `<button type="button" class="btn muted" style="grid-column:span 2;" onclick="closeMainModal()">${esc(t('close'))}</button>`);
+    }
+
+    async function reviewAdj(id, approve) {
+      const res = await callRpc('rpc_review_adjustment', { p_token: session.token, p_adjustment_id: id, p_approve: approve });
+      if (res.success) { showToast(t('savedOk')); await loadWarehouseData(currentWhId); openApprovalsManager(); }
+    }
+
+    async function sendRiskAuditNow() {
+      const res = await callBot({ action: 'send_risk_audit', warehouse_id: currentWhId });
+      showToast(res.success ? t('savedOk') : t('errGeneric'));
+    }
+
+    function openOwnPinModal() {
+      openMainModal(t('mPin'), `
+        <input id="pOld" type="password" class="inp mono" maxlength="6" inputmode="numeric" placeholder="${esc(t('phOldPin'))}">
+        <input id="pNew" type="password" class="inp mono" maxlength="6" inputmode="numeric" placeholder="${esc(t('phNewPin'))}">`,
+        `<button type="button" class="btn muted" onclick="closeMainModal()">${esc(t('cancel'))}</button>
+         <button type="button" class="btn teal" onclick="saveOwnPin()">${esc(t('save'))}</button>`);
+    }
+
+    async function saveOwnPin() {
+      const res = await callRpc('rpc_manage_staff', {
+        p_token: session.token, p_action: 'CHANGE_OWN_PIN',
+        p_payload: { old_pin: document.getElementById('pOld').value, new_pin: document.getElementById('pNew').value },
+      });
+      if (res.success) { closeMainModal(); showToast(t('savedOk')); } else showToast(t('errGeneric'));
+    }
+
+    // ==================== ዳሰሳ፣ ቋንቋ እና ጅማሬ ====================
+    function openMainModal(title, bodyHtml, footHtml) {
+      document.getElementById('modalTitle').textContent = title;
+      document.getElementById('modalBody').innerHTML = bodyHtml;
+      document.getElementById('modalFoot').innerHTML = footHtml;
+      document.getElementById('mainModal').classList.add('open');
+    }
+    function closeMainModal() { stopQrCamera(); document.getElementById('mainModal').classList.remove('open'); }
+
+    function switchView(name) {
+      vib(16);
+      const map = { entry:'viewEntry', tally:'viewTally', daily:'viewDaily', stock:'viewStock', map:'viewMap' };
+      const nav = { entry:'navEntry', tally:'navTally', daily:'navDaily', stock:'navStock', map:'navMap' };
+      Object.values(map).forEach((id) => document.getElementById(id).classList.remove('active'));
+      Object.values(nav).forEach((id) => document.getElementById(id).classList.remove('active'));
+      document.getElementById(map[name]).classList.add('active');
+      document.getElementById(nav[name]).classList.add('active');
+      selectedPdfIds = {}; updatePdfBar();
+      document.getElementById('submitDock').style.display = (name === 'entry' && basket.length) ? 'flex' : 'none';
+      if (name === 'tally') { ensureWakeLock(); renderTally(); }
+      if (name === 'daily') loadDaily();
+      if (name === 'stock') loadStock();
+      if (name === 'map') renderMap();
+    }
+
+    function toggleLang() {
+      lang = (lang === 'am') ? 'en' : 'am';
+      localStorage.setItem(LANG_KEY, lang);
+      vib(16);
+      renderStaticLabels();
+      if (session) { renderDrawerMenu(); renderTiles(); renderBasket(); renderTally(); renderDaily(); renderStock(); renderMap(); }
+    }
+
+    function renderStaticLabels() {
+      document.getElementById('docRoot').lang = lang;
+      document.title = whData.warehouse?.brand_title || t('defaultBrand');
+      document.getElementById('gateMark').textContent = t('gateMark');
+      document.getElementById('lblGateTitle').textContent = t('gateTitle');
+      document.getElementById('inpOrgCode').placeholder = t('orgCodePh');
+      document.getElementById('btnLoginSubmit').textContent = t('loginBtn');
+      document.getElementById('btnGateLang').textContent = t('langSwitch');
+      document.getElementById('btnTopLang').textContent = t('langShort');
+      document.getElementById('btnLogout').textContent = t('logout');
+
+      document.getElementById('lblNavEntry').textContent = t('navEntry');
+      document.getElementById('lblNavTally').textContent = t('navTally');
+      document.getElementById('lblNavDaily').textContent = t('navDaily');
+      document.getElementById('lblNavStock').textContent = t('navStock');
+      document.getElementById('lblNavMap').textContent = t('navMap');
+
+      document.getElementById('btnModeOut').textContent = t('modeOut');
+      document.getElementById('btnModeIn').textContent = t('modeIn');
+      document.getElementById('btnVoidMini').textContent = t('voidShort');
+      document.getElementById('inpDocNo').placeholder = t('docPh');
+      document.getElementById('inpParty').placeholder = entryMode === 'OUT' ? t('partyOutPh') : t('partyInPh');
+      document.getElementById('inpRef').placeholder = entryMode === 'OUT' ? t('refOutPh') : t('refInPh');
+      document.getElementById('inpSearch').placeholder = t('searchPh');
+      document.getElementById('inpQuickQty').placeholder = t('qtyPh');
+
+      document.getElementById('btnTOut').textContent = t('tOut');
+      document.getElementById('btnTIn').textContent = t('tIn');
+      document.getElementById('btnTAudit').textContent = t('tAudit');
+      document.getElementById('lblPerCarry').textContent = t('perCarry');
+      document.getElementById('lblTCounted').textContent = t('counted');
+      document.getElementById('lblTStrokes').textContent = t('strokes');
+      document.getElementById('lblTUndo').textContent = t('undo');
+      document.getElementById('lblTOdd').textContent = t('odd');
+      document.getElementById('lblTClear').textContent = t('clear');
+
+      document.getElementById('inpDailySearch').placeholder = t('dailySearchPh');
+      document.getElementById('inpStockSearch').placeholder = t('stockSearchPh');
+      document.getElementById('inpMapSearch').placeholder = t('mapSearchPh');
+      document.getElementById('btnDailyPdf').textContent = t('pdfBtn');
+      document.getElementById('btnStockPdf').textContent = t('pdfBtn');
+      document.getElementById('btnPWeek').textContent = t('pWeek');
+      document.getElementById('btnPLastWeek').textContent = t('pLastWeek');
+      document.getElementById('btnPMonth').textContent = t('pMonth');
+      document.getElementById('btnPAll').textContent = t('pAll');
+      document.getElementById('btnPdfClear').textContent = t('pdfClear');
+      document.getElementById('btnPdfDownload').textContent = t('pdfDown');
+    }
+
+    (function setupTallyGestures() {
+      const pad = document.getElementById('tallyPad');
+      let sx = 0, sy = 0, st = 0;
+      pad.addEventListener('pointerdown', (e) => {
+        if (!e.isPrimary || e.target.closest('.t-stats')) return;
+        sx = e.clientX; sy = e.clientY; st = Date.now();
+      });
+      pad.addEventListener('pointerup', (e) => {
+        if (!e.isPrimary || e.target.closest('.t-stats')) return;
+        const dx = e.clientX - sx, dy = e.clientY - sy, dt = Date.now() - st;
+        if ((Math.hypot(dx, dy) < 14 && dt < 450) || (Math.abs(dx) > 30 && Math.abs(dx) > Math.abs(dy) * 0.9 && dt < 500)) {
+          addTallyStroke();
+        }
+      });
+    })();
+
+    (function boot() {
+      const urlOrg = new URLSearchParams(location.search).get('org');
+      if (urlOrg) document.getElementById('inpOrgCode').value = urlOrg.toUpperCase();
+      renderStaticLabels();
+      if (session?.token) enterApp();
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('./sw.js').catch(() => {});
+      }
+    })();
+  </script>
+</body>
+</html>
