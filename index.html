@@ -69,13 +69,15 @@
     .txtarea { height: 120px; padding: 8px; resize: vertical; font-family: ui-monospace, monospace; font-size: 11px; }
     .inp:focus, .sel:focus, .txtarea:focus { border-color: var(--teal); }
     .inp.mono { font-family: ui-monospace, monospace; text-align: center; color: var(--primary); }
+    .inp.sm { height: 31px; font-size: 11.5px; padding: 0 6px; }
     .grid-3 { display: grid; grid-template-columns: 1.15fr 1fr 0.95fr; gap: 5px; }
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
     .doc-combo { display: flex; border: 1.5px solid var(--primary); border-radius: 8px; overflow: hidden; height: 34px; background: var(--surface-deep); }
     .doc-combo input { border: none; border-radius: 0; flex: 1; min-width: 0; text-align: center; color: var(--primary); font-family: ui-monospace, monospace; }
     .btn-void-mini { border: none; border-left: 1px solid #7f1d1d; background: #450a0a; color: #fca5a5; padding: 0 7px; font-size: 9.5px; font-weight: 900; cursor: pointer; display: inline-flex; align-items: center; }
     .extra-fields { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 5px; }
-    .extra-fields > * { flex: 1 1 110px; }
+    .extra-fields:empty { display: none; margin-top: 0; }
+    .extra-fields > * { flex: 1 1 100px; }
 
     /* ገጽ 1: መመዝገቢያ */
     .quick-row { display: grid; grid-template-columns: 1fr 68px 40px; gap: 5px; margin-bottom: 6px; flex-shrink: 0; }
@@ -258,7 +260,7 @@
       <button type="button" id="btnInstallApp" class="btn primary" style="display:none;height:36px;" onclick="triggerPwaInstall()"></button>
       <div style="display:flex;justify-content:space-between;align-items:center;">
         <span id="drawerUserInfo" style="font-size:11px;font-weight:800;color:var(--muted);"></span>
-        <span style="font-size:10px;font-weight:900;color:var(--teal);opacity:0.8;">v8</span>
+        <span style="font-size:10px;font-weight:900;color:var(--teal);opacity:0.8;">v9</span>
       </div>
       <button type="button" class="btn danger" id="btnLogout" onclick="doLogout()"></button>
     </div>
@@ -321,7 +323,7 @@
       </div>
     </section>
 
-    <!-- ገጽ 2: ቆጠራ -->
+    <!-- ገጽ 2: ቆጠራ (ከመመዝገቢያ ቅጽ ጋር 100% የተዛመደ) -->
     <section id="viewTally" class="view">
       <div class="seg">
         <button type="button" id="btnTTicket" class="seg-btn teal" onclick="setTallyTab('TICKET')"></button>
@@ -332,13 +334,12 @@
       <div id="tallyTicketArea">
         <div id="ticketBar" class="ticket-bar"></div>
         <div class="card" style="padding:5px;">
-          <div style="display:grid;grid-template-columns:auto 0.9fr 1fr 0.8fr auto;gap:4px;align-items:center;">
-            <button type="button" id="btnTkDir" class="icon-btn" style="width:auto;padding:0 7px;font-size:10px;" onclick="toggleTicketDir()"></button>
-            <input type="text" id="inpTkDoc" class="inp mono" style="height:31px;" oninput="updateTicketField('docNo',this.value)">
-            <input type="text" id="inpTkParty" class="inp" style="height:31px;" oninput="updateTicketField('party',this.value)">
-            <input type="text" id="inpTkRef" class="inp" style="height:31px;" oninput="updateTicketField('ref',this.value)">
-            <button type="button" class="icon-btn" style="width:28px;height:30px;color:var(--rose);" onclick="deleteActiveTicket()">✕</button>
+          <div style="display:grid;grid-template-columns:auto 1fr auto;gap:4px;align-items:center;">
+            <button type="button" id="btnTkDir" class="icon-btn" style="width:auto;padding:0 7px;font-size:10px;height:31px;" onclick="toggleTicketDir()"></button>
+            <div id="tkMainRow" class="grid-3"></div>
+            <button type="button" class="icon-btn" style="width:28px;height:31px;color:var(--rose);" onclick="deleteActiveTicket()">✕</button>
           </div>
+          <div id="tkExtraFields" class="extra-fields"></div>
         </div>
         <div id="ticketItemsStrip" class="tk-items"></div>
       </div>
@@ -426,7 +427,7 @@
       <div class="rack-wrap"><div id="rackGrid" class="rack-grid"></div></div>
     </section>
 
-    <!-- ተንሳፋፊ የፒዲኤፍ አሞሌ (አውርድ / አጋራ / ላክ) -->
+    <!-- ተንሳፋፊ የፒዲኤፍ አሞሌ -->
     <div id="pdfBar" class="pdf-bar">
       <button type="button" class="pdf-pill" id="btnPdfClear" onclick="clearPdfSelection()"></button>
       <div style="display:flex;gap:4px;">
@@ -469,7 +470,7 @@
     const QUEUE_KEY = 'erp_offline_queue_v4';
     const LANG_KEY = 'erp_lang_v4';
     const BRAND_CFG_KEY = 'erp_brand_cfg_v5';
-    const TALLY_STATE_KEY = 'erp_tally_state_v5';
+    const TALLY_STATE_KEY = 'erp_tally_state_v6';
     const FORM_CFG_KEY = 'erp_form_cfg_v2';
     const PDF_CFG_KEY = 'erp_pdf_cfg_v2';
     const UI_CFG_KEY = 'erp_ui_cfg_v1';
@@ -488,10 +489,10 @@
     };
 
     const DEFAULT_PDF_CFG = {
-      mode: 'A4_P', // A4_P | A4_L | A5_P | LETTER_P | CUSTOM
+      mode: 'A4_P',
       widthMm: 210,
       heightMm: 297,
-      fontSize: 'md', // sm | md | lg
+      fontSize: 'md',
       headerSub: '',
       footerNote: '',
       showSign: false,
@@ -731,6 +732,7 @@
     let carryMult = 5;
     let tickets = [];
     let activeTicketId = '';
+    let lastTkFormSig = '';
     let freeTally = { label: '', target: 0, lockTarget: true, strokes: [] };
     let auditTally = { itemId: '', strokes: [] };
 
@@ -851,6 +853,34 @@
         if (hasPadWord || looksNumPad) return `${t('padPrefix')} ${stripPadPrefix(s)}`;
       }
       return s;
+    }
+
+    // የመመዝገቢያ እና ቆጠራ ቅጾች የጋራ ራስጌ አዘጋጅ (100% የተዛመደ)
+    function buildHeaderPayload(mode, fields) {
+      const d = fields || {};
+      let docNo = '', party = '', ref = '';
+      if (mode === 'OUT') {
+        docNo = String(d.docNo || '').trim();
+        party = String(d.party || '').trim();
+        const parts = [];
+        if (formCfg.outShowPad && String(d.pad || '').trim()) parts.push(formatPadRef(d.pad));
+        if (formCfg.outShowKg && String(d.kg || '').trim()) parts.push(`${String(d.kg).trim()} ${t('kgUnit')}`);
+        if (formCfg.outShowDriver && String(d.driver || '').trim()) parts.push(String(d.driver).trim());
+        if (formCfg.outShowPlate && String(d.plate || '').trim()) parts.push(String(d.plate).trim());
+        if (formCfg.outShowNote && String(d.note || '').trim()) parts.push(String(d.note).trim());
+        ref = parts.join(' | ') || '-';
+      } else {
+        docNo = formCfg.inShowDocNo ? String(d.docNo || '').trim() : '';
+        party = String(d.party || '').trim();
+        const dr = String(d.driver || '').trim();
+        const pl = String(d.plate || '').trim();
+        const parts = [];
+        if (dr || pl) parts.push(`${dr || '-'} / ${pl || '-'}`);
+        if (formCfg.inShowKg && String(d.kg || '').trim()) parts.push(`${String(d.kg).trim()} ${t('kgUnit')}`);
+        if (formCfg.inShowNote && String(d.note || '').trim()) parts.push(String(d.note).trim());
+        ref = parts.join(' | ') || '-';
+      }
+      return { docNo, party, ref };
     }
 
     function getBrandCfgMap() { return loadJson(BRAND_CFG_KEY, {}); }
@@ -1071,7 +1101,7 @@
         ensureDefaultTicket();
         refreshCachedChannels();
 
-        renderDrawerMenu(); renderTiles(); renderBasket(); renderTally(); renderMap();
+        renderDrawerMenu(); renderTiles(); renderBasket(); renderTally(true); renderMap();
         if (document.getElementById('viewDaily').classList.contains('active')) loadDaily(false);
         if (document.getElementById('viewStock').classList.contains('active')) loadStock();
       } catch (e) { if (String(e.message).includes('UNAUTHORIZED')) doLogout(); }
@@ -1098,6 +1128,8 @@
       if (formCfg.inShowKg) inEx.push(`<input type="number" id="inpInKg" class="inp mono" placeholder="${esc(t('kgPh'))}">`);
       if (formCfg.inShowNote) inEx.push(`<input type="text" id="inpInNote" class="inp" placeholder="${esc(t('notePh'))}">`);
       document.getElementById('inExtraFields').innerHTML = inEx.join('');
+
+      renderTallyTicketForm(true);
     }
 
     function setEntryMode(m) {
@@ -1271,39 +1303,27 @@
       window.addEventListener('pointerup', onUp);
     }
 
-    function readEntryHeader() {
-      let docNo = '', party = '', ref = '';
+    function readEntryRawFields() {
       if (entryMode === 'OUT') {
-        docNo = document.getElementById('inpDocNo').value.trim();
-        party = document.getElementById('inpParty').value.trim();
-        const parts = [];
-        if (formCfg.outShowPad) {
-          const p = document.getElementById('inpRef').value.trim();
-          if (p) parts.push(formatPadRef(p));
-        }
-        const kg = document.getElementById('inpOutKg')?.value.trim();
-        if (kg) parts.push(`${kg} ${t('kgUnit')}`);
-        const dr = document.getElementById('inpOutDriver')?.value.trim();
-        if (dr) parts.push(dr);
-        const pl = document.getElementById('inpOutPlate')?.value.trim();
-        if (pl) parts.push(pl);
-        const nt = document.getElementById('inpOutNote')?.value.trim();
-        if (nt) parts.push(nt);
-        ref = parts.join(' | ') || '-';
-      } else {
-        docNo = document.getElementById('inpInDocNo')?.value.trim() || '';
-        party = document.getElementById('inpInSupplier').value.trim();
-        const dr = document.getElementById('inpInDriver').value.trim();
-        const pl = document.getElementById('inpInPlate').value.trim();
-        const parts = [];
-        if (dr || pl) parts.push(`${dr || '-'} / ${pl || '-'}`);
-        const kg = document.getElementById('inpInKg')?.value.trim();
-        if (kg) parts.push(`${kg} ${t('kgUnit')}`);
-        const nt = document.getElementById('inpInNote')?.value.trim();
-        if (nt) parts.push(nt);
-        ref = parts.join(' | ') || '-';
+        return {
+          docNo: document.getElementById('inpDocNo')?.value.trim() || '',
+          party: document.getElementById('inpParty')?.value.trim() || '',
+          pad: document.getElementById('inpRef')?.value.trim() || '',
+          kg: document.getElementById('inpOutKg')?.value.trim() || '',
+          driver: document.getElementById('inpOutDriver')?.value.trim() || '',
+          plate: document.getElementById('inpOutPlate')?.value.trim() || '',
+          note: document.getElementById('inpOutNote')?.value.trim() || '',
+        };
       }
-      return { docNo, party, ref };
+      return {
+        docNo: document.getElementById('inpInDocNo')?.value.trim() || '',
+        party: document.getElementById('inpInSupplier')?.value.trim() || '',
+        pad: '',
+        kg: document.getElementById('inpInKg')?.value.trim() || '',
+        driver: document.getElementById('inpInDriver')?.value.trim() || '',
+        plate: document.getElementById('inpInPlate')?.value.trim() || '',
+        note: document.getElementById('inpInNote')?.value.trim() || '',
+      };
     }
 
     function clearEntryInputs() {
@@ -1317,12 +1337,13 @@
     function sendBasketToTally() {
       if (!basket.length) return;
       vib([25, 20, 30]);
-      const hdr = readEntryHeader();
+      const raw = readEntryRawFields();
       const id = 'tk_' + Date.now() + '_' + Math.floor(Math.random() * 99);
       const tkItems = basket.map((b) => ({ item_id: b.item_id, name: b.name, target: Number(b.qty || 0), strokes: [] }));
       tickets.push({
-        id, dir: entryMode, docNo: hdr.docNo, party: hdr.party,
-        ref: entryMode === 'OUT' ? stripPadPrefix(hdr.ref) : hdr.ref,
+        id, dir: entryMode,
+        docNo: raw.docNo, party: raw.party, pad: raw.pad,
+        driver: raw.driver, plate: raw.plate, kg: raw.kg, note: raw.note,
         items: tkItems, activeItemId: tkItems[0]?.item_id || '',
       });
       activeTicketId = id;
@@ -1367,7 +1388,7 @@
     }
 
     function handleDocumentSubmit(btnEl) {
-      const hdr = readEntryHeader();
+      const hdr = buildHeaderPayload(entryMode, readEntryRawFields());
       submitGenericDocument(
         entryMode, hdr.docNo, hdr.party, hdr.ref,
         basket.map((b) => ({ item_id: b.item_id, qty: b.qty, tally_proof: b.tally_proof || null })),
@@ -1465,12 +1486,29 @@
       });
     }
 
-    // ==================== ገጽ 2: ቆጠራ ====================
+    // ==================== ገጽ 2: ቆጠራ (ከመመዝገቢያ ጋር ሙሉ ለሙሉ የተዛመደ) ====================
+    function normalizeTicket(tk) {
+      const n = {
+        id: tk.id || ('tk_' + Date.now()),
+        dir: tk.dir === 'IN' ? 'IN' : 'OUT',
+        docNo: tk.docNo || '',
+        party: tk.party || '',
+        pad: tk.pad !== undefined ? tk.pad : (tk.dir !== 'IN' ? (tk.ref || '') : ''),
+        driver: tk.driver || '',
+        plate: tk.plate !== undefined ? tk.plate : (tk.dir === 'IN' ? (tk.ref || '') : ''),
+        kg: tk.kg || '',
+        note: tk.note || '',
+        items: Array.isArray(tk.items) ? tk.items : [],
+        activeItemId: tk.activeItemId || '',
+      };
+      return n;
+    }
+
     function loadTallyState() {
-      const st = loadJson(TALLY_STATE_KEY, null);
+      const st = loadJson(TALLY_STATE_KEY, null) || loadJson('erp_tally_state_v5', null);
       if (st) {
         tallyTab = st.tallyTab || 'TICKET'; carryMult = st.carryMult || 5;
-        tickets = Array.isArray(st.tickets) ? st.tickets : [];
+        tickets = Array.isArray(st.tickets) ? st.tickets.map(normalizeTicket) : [];
         activeTicketId = st.activeTicketId || '';
         freeTally = { label: '', target: 0, lockTarget: true, strokes: [], ...(st.freeTally || {}) };
         auditTally = st.auditTally || { itemId: '', strokes: [] };
@@ -1483,7 +1521,7 @@
     function ensureDefaultTicket() {
       if (!tickets.length) {
         const id = 'tk_' + Date.now();
-        tickets.push({ id, dir: 'OUT', docNo: String(whData.next_doc_num || ''), party: '', ref: '', items: [], activeItemId: '' });
+        tickets.push(normalizeTicket({ id, dir: 'OUT', docNo: String(whData.next_doc_num || '') }));
         activeTicketId = id; saveTallyState();
       } else if (!tickets.some((x) => x.id === activeTicketId)) activeTicketId = tickets[0].id;
     }
@@ -1501,15 +1539,60 @@
       vib(20);
       const maxDoc = tickets.reduce((m, tk) => Math.max(m, docNumInt(tk.docNo)), Number(whData.last_doc_num || 0));
       const id = 'tk_' + Date.now() + '_' + Math.floor(Math.random() * 99);
-      tickets.push({ id, dir: 'OUT', docNo: maxDoc > 0 ? String(maxDoc + 1) : '', party: '', ref: '', items: [], activeItemId: '' });
-      activeTicketId = id; saveTallyState(); renderTally();
+      tickets.push(normalizeTicket({ id, dir: 'OUT', docNo: maxDoc > 0 ? String(maxDoc + 1) : '' }));
+      activeTicketId = id; saveTallyState(); renderTally(true);
     }
 
-    function selectTicket(id) { vib(15); activeTicketId = id; saveTallyState(); renderTally(); }
-    function deleteActiveTicket() { vib(22); tickets = tickets.filter((x) => x.id !== activeTicketId); ensureDefaultTicket(); saveTallyState(); renderTally(); }
-    function toggleTicketDir() { const tk = getActiveTicket(); tk.dir = tk.dir === 'OUT' ? 'IN' : 'OUT'; vib(16); saveTallyState(); renderTally(); }
-    function updateTicketField(field, val) { const tk = getActiveTicket(); tk[field] = val; saveTallyState(); renderTicketBarOnly(); }
-    function toggleFreeLock() { freeTally.lockTarget = !freeTally.lockTarget; vib(16); saveTallyState(); renderTally(); }
+    function selectTicket(id) { vib(15); activeTicketId = id; saveTallyState(); renderTally(true); }
+    function deleteActiveTicket() { vib(22); tickets = tickets.filter((x) => x.id !== activeTicketId); ensureDefaultTicket(); saveTallyState(); renderTally(true); }
+    function toggleTicketDir() { const tk = getActiveTicket(); tk.dir = tk.dir === 'OUT' ? 'IN' : 'OUT'; vib(16); saveTallyState(); renderTally(true); }
+    function updateTicketField(field, val) { const tk = getActiveTicket(); tk[field] = val; saveTallyState(); if (field === 'docNo' || field === 'party') renderTicketBarOnly(); }
+    function toggleFreeLock() { freeTally.lockTarget = !freeTally.lockTarget; vib(16); saveTallyState(); renderTally(false); }
+
+    function renderTallyTicketForm(force = false) {
+      const mainRow = document.getElementById('tkMainRow');
+      const extraWrap = document.getElementById('tkExtraFields');
+      if (!mainRow || !extraWrap) return;
+
+      const tk = getActiveTicket();
+      const sig = `${tk.id}|${tk.dir}|${lang}|${JSON.stringify(formCfg)}`;
+      if (!force && sig === lastTkFormSig) return;
+      lastTkFormSig = sig;
+
+      const dirBtn = document.getElementById('btnTkDir');
+      if (dirBtn) {
+        dirBtn.textContent = tk.dir === 'OUT' ? t('tkDirOut') : t('tkDirIn');
+        dirBtn.style.color = tk.dir === 'OUT' ? '#fca5a5' : '#86efac';
+        dirBtn.style.borderColor = tk.dir === 'OUT' ? 'var(--rose)' : 'var(--emerald)';
+      }
+
+      if (tk.dir === 'OUT') {
+        mainRow.className = formCfg.outShowPad ? 'grid-3' : 'grid-2';
+        mainRow.innerHTML = `
+          <input type="text" class="inp sm mono" value="${esc(tk.docNo)}" placeholder="${esc(t('docPh'))}" oninput="updateTicketField('docNo',this.value)">
+          <input type="text" class="inp sm" value="${esc(tk.party)}" placeholder="${esc(t('partyOutPh'))}" oninput="updateTicketField('party',this.value)">
+          ${formCfg.outShowPad ? `<input type="text" class="inp sm" value="${esc(tk.pad)}" placeholder="${esc(t('refOutPh'))}" oninput="updateTicketField('pad',this.value)">` : ''}`;
+
+        const ex = [];
+        if (formCfg.outShowKg) ex.push(`<input type="number" class="inp sm mono" value="${esc(tk.kg)}" placeholder="${esc(t('kgPh'))}" oninput="updateTicketField('kg',this.value)">`);
+        if (formCfg.outShowDriver) ex.push(`<input type="text" class="inp sm" value="${esc(tk.driver)}" placeholder="${esc(t('driverPh'))}" oninput="updateTicketField('driver',this.value)">`);
+        if (formCfg.outShowPlate) ex.push(`<input type="text" class="inp sm" value="${esc(tk.plate)}" placeholder="${esc(t('platePh'))}" oninput="updateTicketField('plate',this.value)">`);
+        if (formCfg.outShowNote) ex.push(`<input type="text" class="inp sm" value="${esc(tk.note)}" placeholder="${esc(t('notePh'))}" oninput="updateTicketField('note',this.value)">`);
+        extraWrap.innerHTML = ex.join('');
+      } else {
+        mainRow.className = 'grid-3';
+        mainRow.innerHTML = `
+          <input type="text" class="inp sm" value="${esc(tk.party)}" placeholder="${esc(t('partyInPh'))}" oninput="updateTicketField('party',this.value)">
+          <input type="text" class="inp sm" value="${esc(tk.driver)}" placeholder="${esc(t('driverPh'))}" oninput="updateTicketField('driver',this.value)">
+          <input type="text" class="inp sm" value="${esc(tk.plate)}" placeholder="${esc(t('platePh'))}" oninput="updateTicketField('plate',this.value)">`;
+
+        const ex = [];
+        if (formCfg.inShowDocNo) ex.push(`<input type="text" class="inp sm mono" value="${esc(tk.docNo)}" placeholder="${esc(t('docPh'))}" oninput="updateTicketField('docNo',this.value)">`);
+        if (formCfg.inShowKg) ex.push(`<input type="number" class="inp sm mono" value="${esc(tk.kg)}" placeholder="${esc(t('kgPh'))}" oninput="updateTicketField('kg',this.value)">`);
+        if (formCfg.inShowNote) ex.push(`<input type="text" class="inp sm" value="${esc(tk.note)}" placeholder="${esc(t('notePh'))}" oninput="updateTicketField('note',this.value)">`);
+        extraWrap.innerHTML = ex.join('');
+      }
+    }
 
     function openInTally(itemId) {
       vib(18);
@@ -1542,7 +1625,7 @@
           </div>
         </div>
         <div class="sub-card">${listHtml}</div>`,
-        `<button type="button" class="btn primary" style="grid-column:span 2;" onclick="closeMainModal();renderTally();">${esc(t('ok'))}</button>`);
+        `<button type="button" class="btn primary" style="grid-column:span 2;" onclick="closeMainModal();renderTally(false);">${esc(t('ok'))}</button>`);
     }
 
     function filterTkItemSelect(q) {
@@ -1572,9 +1655,9 @@
       saveTallyState(); openTicketAddItemModal();
     }
 
-    function selectTicketItem(itemId) { const tk = getActiveTicket(); tk.activeItemId = itemId; vib(15); saveTallyState(); renderTally(); }
-    function setTallyTab(tab) { tallyTab = tab; vib(16); saveTallyState(); renderTally(); }
-    function onAuditItemChange() { auditTally.itemId = document.getElementById('selAuditItem').value; auditTally.strokes = []; saveTallyState(); renderTally(); }
+    function selectTicketItem(itemId) { const tk = getActiveTicket(); tk.activeItemId = itemId; vib(15); saveTallyState(); renderTally(false); }
+    function setTallyTab(tab) { tallyTab = tab; vib(16); saveTallyState(); renderTally(true); }
+    function onAuditItemChange() { auditTally.itemId = document.getElementById('selAuditItem').value; auditTally.strokes = []; saveTallyState(); renderTally(false); }
 
     function getActiveStrokeContext() {
       if (tallyTab === 'FREE') {
@@ -1694,17 +1777,17 @@
         .filter((x) => x.qty > 0);
       if (!payloadItems.length) { showToast(t('errNeedCount')); return; }
 
-      const refFormatted = tk.dir === 'OUT' ? formatPadRef(tk.ref) : (tk.ref.trim() || '-');
-      submitGenericDocument(tk.dir, tk.docNo.trim(), tk.party.trim(), refFormatted, payloadItems, () => {
+      const hdr = buildHeaderPayload(tk.dir, tk);
+      submitGenericDocument(tk.dir, hdr.docNo, hdr.party, hdr.ref, payloadItems, () => {
         tickets = tickets.filter((x) => x.id !== tk.id);
-        ensureDefaultTicket(); saveTallyState(); renderTally();
+        ensureDefaultTicket(); saveTallyState(); renderTally(true);
       }, btnEl);
     }
 
     function renderTicketBarOnly() {
       const bar = document.getElementById('ticketBar');
       bar.innerHTML = tickets.map((tk, i) => {
-        const label = tk.docNo ? `#${tk.docNo}` : `${t('tkShort')} ${i + 1}`;
+        const label = (tk.dir === 'OUT' && tk.docNo) ? `#${tk.docNo}` : `${t('tkShort')} ${i + 1}`;
         const sub = tk.party ? ` · ${tk.party.slice(0, 8)}` : '';
         return `<button type="button" class="tk-tab ${tk.id === activeTicketId ? 'active' : ''}" onclick="selectTicket('${tk.id}')">🚛 ${esc(label + sub)}</button>`;
       }).join('') + `<button type="button" class="tk-tab add" onclick="addNewTicket()">+ ${esc(t('tkNew'))}</button>`;
@@ -1722,7 +1805,7 @@
       }).join('') + `<button type="button" class="tk-pill add" onclick="openTicketAddItemModal()">+ ${esc(t('tkAddItem'))}</button>`;
     }
 
-    function renderTally() {
+    function renderTally(forceForm = false) {
       document.getElementById('btnTTicket').className = 'seg-btn' + (tallyTab === 'TICKET' ? ' teal' : '');
       document.getElementById('btnTFree').className = 'seg-btn' + (tallyTab === 'FREE' ? ' in' : '');
       document.getElementById('btnTAudit').className = 'seg-btn' + (tallyTab === 'AUDIT' ? ' adj' : '');
@@ -1731,18 +1814,8 @@
       document.getElementById('tallyAuditArea').style.display = tallyTab === 'AUDIT' ? 'block' : 'none';
 
       if (tallyTab === 'TICKET') {
-        const tk = getActiveTicket();
         renderTicketBarOnly();
-        const dirBtn = document.getElementById('btnTkDir');
-        dirBtn.textContent = tk.dir === 'OUT' ? t('tkDirOut') : t('tkDirIn');
-        dirBtn.style.color = tk.dir === 'OUT' ? '#fca5a5' : '#86efac';
-        dirBtn.style.borderColor = tk.dir === 'OUT' ? 'var(--rose)' : 'var(--emerald)';
-        if (document.activeElement !== document.getElementById('inpTkDoc')) document.getElementById('inpTkDoc').value = tk.docNo || '';
-        if (document.activeElement !== document.getElementById('inpTkParty')) document.getElementById('inpTkParty').value = tk.party || '';
-        if (document.activeElement !== document.getElementById('inpTkRef')) document.getElementById('inpTkRef').value = tk.ref || '';
-        document.getElementById('inpTkDoc').placeholder = t('docPh');
-        document.getElementById('inpTkParty').placeholder = tk.dir === 'OUT' ? t('partyOutPh') : t('partyInPh');
-        document.getElementById('inpTkRef').placeholder = tk.dir === 'OUT' ? t('refOutPh') : t('platePh');
+        renderTallyTicketForm(forceForm);
         renderTicketItemsStrip();
       } else if (tallyTab === 'FREE') {
         document.getElementById('inpFreeLabel').value = freeTally.label || '';
@@ -1763,7 +1836,7 @@
       document.getElementById('lblCarryVal').textContent = `1 = ${carryMult}`;
       const isP = PRESETS.includes(carryMult);
       document.getElementById('presetGrid').innerHTML =
-        PRESETS.map((n) => `<button type="button" class="preset-btn ${carryMult === n ? 'active' : ''}" onclick="carryMult=${n};vib(15);saveTallyState();renderTally();">+${n}</button>`).join('') +
+        PRESETS.map((n) => `<button type="button" class="preset-btn ${carryMult === n ? 'active' : ''}" onclick="carryMult=${n};vib(15);saveTallyState();renderTally(false);">+${n}</button>`).join('') +
         `<button type="button" class="preset-btn custom ${!isP ? 'active' : ''}" onclick="openNumModal('custom')">${!isP ? '+' + carryMult : esc(t('other'))}</button>`;
 
       document.getElementById('btnTCommit').textContent =
@@ -1843,10 +1916,10 @@
         const v = Math.floor(Number(inp.value || 0));
         if (v <= 0) return;
         closeMainModal();
-        if (mode === 'custom') { carryMult = v; saveTallyState(); renderTally(); } else addTallyStroke(v);
+        if (mode === 'custom') { carryMult = v; saveTallyState(); renderTally(false); } else addTallyStroke(v);
       };
     }
-    // ==================== የደህንነት ፒን / ፓስወርድ ማረጋገጫ (v8) ====================
+    // ==================== የደህንነት ፒን / ፓስወርድ ማረጋገጫ (v9) ====================
     function promptSecurityVerify(requireAdmin, onAuthorized) {
       vib(20);
       const msg = requireAdmin ? t('authVerifyAdminMsg') : t('authVerifyMsg');
@@ -1879,7 +1952,6 @@
               actor = { full_name: r.actor_name || session?.user?.full_name || '', role: r.role || '' };
             }
           } catch {
-            // ዳታቤዙ ላይ rpc_verify_action_credential ገና ካልተጫነ በተጠባባቂ መንገድ ማረጋገጥ
             try {
               if (/^\d{4,6}$/.test(val)) {
                 const r1 = await callRpc('rpc_login', { p_org_code: session?.organization?.code || '', p_pin: val });
@@ -1933,7 +2005,7 @@
       updateActionToggleBtns();
     }
 
-    // ==================== ገጽ 3: ዕለታዊ (OPENING ጸድቶ + 1 ረድፍ VOID + Hard Delete) ====================
+    // ==================== ገጽ 3: ዕለታዊ ====================
     function normalizeDailyList(rows, includeOpening = false) {
       const seenVoidDoc = new Set();
       const cleaned = [];
@@ -3412,7 +3484,7 @@
       document.getElementById(nav[name]).classList.add('active');
       selectedPdfIds = {}; updatePdfBar();
       document.getElementById('submitDock').style.display = (name === 'entry' && basket.length) ? 'flex' : 'none';
-      if (name === 'tally') { ensureWakeLock(); renderTally(); }
+      if (name === 'tally') { ensureWakeLock(); renderTally(true); }
       if (name === 'daily') loadDaily(true);
       if (name === 'stock') loadStock();
       if (name === 'map') renderMap();
@@ -3421,7 +3493,7 @@
     function toggleLang() {
       lang = (lang === 'am') ? 'en' : 'am'; localStorage.setItem(LANG_KEY, lang); vib(18);
       renderStaticLabels(); renderDynamicFormFields();
-      if (session) { renderDrawerMenu(); renderTiles(); renderBasket(); renderTally(); renderDaily(); renderStock(); renderMap(); }
+      if (session) { renderDrawerMenu(); renderTiles(); renderBasket(); renderTally(true); renderDaily(); renderStock(); renderMap(); }
     }
 
     function renderStaticLabels() {
@@ -3505,467 +3577,3 @@
   </script>
 </body>
 </html>
-<!DOCTYPE html>
-<html lang="am" id="docRoot">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>መጋዘን</title>
-  <link rel="manifest" href="./manifest.json">
-  <link rel="icon" type="image/svg+xml" href="./icon.svg">
-  <meta name="theme-color" content="#060a12">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <style>
-    :root {
-      --bg: #060a12; --surface: #0f172a; --surface-deep: #090f1d;
-      --border: #1e293b; --border-strong: #334155;
-      --text: #f8fafc; --muted: #94a3b8;
-      --primary: #0ea5e9; --teal: #14b8a6; --teal-dark: #042f2e;
-      --emerald: #10b981; --amber: #f59e0b; --rose: #ef4444;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; user-select: none; }
-    input, select, textarea { user-select: auto; }
-    html, body { height: 100%; width: 100%; background: var(--bg); color: var(--text); overflow: hidden; }
-    button { transition: transform 0.08s ease, opacity 0.12s ease; }
-    button:active:not(:disabled) { transform: scale(0.95); }
-    button:disabled, .btn-busy { opacity: 0.5 !important; pointer-events: none !important; }
-
-    /* መግቢያ */
-    .gate { position: fixed; inset: 0; z-index: 900; background: radial-gradient(circle at top, #172554 0%, #060a12 72%); display: flex; align-items: center; justify-content: center; padding: 14px; }
-    .gate-card { width: 100%; max-width: 360px; background: rgba(15, 23, 42, 0.95); border: 1px solid var(--border-strong); border-radius: 22px; padding: 22px 18px; display: flex; flex-direction: column; gap: 11px; box-shadow: 0 24px 48px rgba(0,0,0,0.75); }
-    .gate-mark { width: 54px; height: 54px; margin: 0 auto; border-radius: 15px; border: 2px solid var(--teal); background: var(--surface-deep); color: var(--teal); font-size: 20px; font-weight: 900; display: flex; align-items: center; justify-content: center; }
-    .gate-title { text-align: center; font-size: 16px; font-weight: 900; }
-    .gate-pin { height: 46px; text-align: center; font-size: 22px; letter-spacing: 8px; -webkit-text-security: disc; }
-
-    /* ዋና ቅርፊት */
-    .shell { max-width: 640px; height: 100vh; height: 100dvh; margin: 0 auto; display: none; flex-direction: column; padding: 6px 6px 0; position: relative; overflow: hidden; }
-    .topbar { height: 44px; display: flex; align-items: center; gap: 6px; background: var(--surface); border: 1px solid var(--border-strong); border-radius: 12px; padding: 0 7px; margin-bottom: 6px; flex-shrink: 0; }
-    .icon-btn { width: 32px; height: 30px; border-radius: 8px; border: 1px solid var(--border-strong); background: var(--surface-deep); color: var(--primary); font-size: 13.5px; font-weight: 900; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .icon-btn.on { background: rgba(14,165,233,0.25); border-color: var(--primary); color: #fff; }
-    .brand-box { display: flex; flex-direction: column; min-width: 0; flex-shrink: 1; line-height: 1.18; }
-    .brand-name { font-size: 12px; font-weight: 900; letter-spacing: 0.2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .brand-sub { font-size: 8.5px; font-weight: 800; color: var(--primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .wh-sel { margin-left: auto; max-width: 136px; height: 30px; padding: 0 6px; border-radius: 8px; border: 1px solid var(--primary); background: var(--surface-deep); color: var(--primary); font-size: 11px; font-weight: 900; outline: none; }
-    .sync-pill { display: none; height: 26px; padding: 0 7px; border-radius: 13px; border: 1px solid var(--amber); background: rgba(245,158,11,0.18); color: #fde68a; font-size: 10px; font-weight: 900; cursor: pointer; flex-shrink: 0; }
-
-    /* ጎን ሜኑ */
-    .drawer-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.76); backdrop-filter: blur(4px); z-index: 600; display: none; }
-    .drawer { position: fixed; top: 0; left: -295px; width: 285px; height: 100%; background: #070b14; border-right: 1px solid var(--border-strong); z-index: 601; transition: left 0.22s ease; display: flex; flex-direction: column; padding: 14px 12px; gap: 8px; }
-    .drawer.open { left: 0; }
-    .drawer-head { display: flex; justify-content: space-between; align-items: center; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
-    .drawer-list { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 4px; }
-    .drawer-item { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 11px 10px; border-radius: 10px; background: transparent; border: none; color: var(--text); font-size: 12.5px; font-weight: 800; text-align: left; cursor: pointer; width: 100%; }
-    .drawer-item:active { background: var(--surface); color: var(--teal); }
-    .badge-cnt { background: var(--rose); color: #fff; font-size: 10px; font-weight: 900; padding: 1px 6px; border-radius: 10px; }
-
-    /* የጋራ ክፍሎች */
-    .view { display: none; flex: 1; min-height: 0; flex-direction: column; overflow: hidden; }
-    .view.active { display: flex; }
-    .seg { display: flex; gap: 5px; margin-bottom: 5px; flex-shrink: 0; }
-    .seg-btn { flex: 1; height: 33px; border-radius: 10px; border: 1px solid var(--border-strong); background: var(--surface); color: var(--muted); font-size: 11px; font-weight: 900; cursor: pointer; }
-    .seg-btn.out { background: #3b0a0a; border-color: var(--rose); color: #fca5a5; }
-    .seg-btn.in { background: #052e16; border-color: var(--emerald); color: #86efac; }
-    .seg-btn.adj { background: #172554; border-color: var(--primary); color: #7dd3fc; }
-    .seg-btn.teal { background: var(--teal-dark); border-color: var(--teal); color: #99f6e4; }
-
-    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 11px; padding: 6px; margin-bottom: 5px; flex-shrink: 0; }
-    .inp, .sel, .txtarea { width: 100%; height: 34px; padding: 0 8px; border-radius: 8px; border: 1px solid var(--border-strong); background: var(--surface-deep); color: var(--text); font-size: 12px; font-weight: 800; outline: none; }
-    .txtarea { height: 120px; padding: 8px; resize: vertical; font-family: ui-monospace, monospace; font-size: 11px; }
-    .inp:focus, .sel:focus, .txtarea:focus { border-color: var(--teal); }
-    .inp.mono { font-family: ui-monospace, monospace; text-align: center; color: var(--primary); }
-    .inp.sm { height: 31px; font-size: 11.5px; padding: 0 6px; }
-    .grid-3 { display: grid; grid-template-columns: 1.15fr 1fr 0.95fr; gap: 5px; }
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
-    .doc-combo { display: flex; border: 1.5px solid var(--primary); border-radius: 8px; overflow: hidden; height: 34px; background: var(--surface-deep); }
-    .doc-combo input { border: none; border-radius: 0; flex: 1; min-width: 0; text-align: center; color: var(--primary); font-family: ui-monospace, monospace; }
-    .btn-void-mini { border: none; border-left: 1px solid #7f1d1d; background: #450a0a; color: #fca5a5; padding: 0 7px; font-size: 9.5px; font-weight: 900; cursor: pointer; display: inline-flex; align-items: center; }
-    .extra-fields { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 5px; }
-    .extra-fields:empty { display: none; margin-top: 0; }
-    .extra-fields > * { flex: 1 1 100px; }
-
-    /* ገጽ 1: መመዝገቢያ */
-    .quick-row { display: grid; grid-template-columns: 1fr 68px 40px; gap: 5px; margin-bottom: 6px; flex-shrink: 0; }
-    .btn-ok-sq { height: 34px; border: none; border-radius: 8px; background: var(--emerald); color: #052e16; font-size: 17px; font-weight: 900; cursor: pointer; }
-    .tiles { flex: 1 1 auto; min-height: 90px; overflow-y: auto; -webkit-overflow-scrolling: touch; display: grid; grid-template-columns: repeat(2, 1fr); align-content: start; gap: 5px; padding-bottom: 70px; }
-    .tiles.has-basket { padding-bottom: 8px; }
-    .tile { background: var(--surface-deep); border: 1px solid var(--border-strong); border-radius: 10px; padding: 7px 8px; cursor: pointer; display: flex; flex-direction: column; gap: 3px; }
-    .tile.picked { border-color: var(--emerald); background: rgba(6, 78, 59, 0.34); }
-    .tile-top { display: flex; justify-content: space-between; gap: 4px; align-items: center; }
-    .tile-name { font-size: 12px; font-weight: 900; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .tile-bal { font-size: 11.5px; font-weight: 900; color: var(--emerald); font-family: ui-monospace, monospace; }
-    .tile-bal.zero { color: var(--amber); }
-    .tile-bot { display: flex; justify-content: space-between; align-items: center; font-size: 9.5px; color: var(--muted); font-weight: 800; }
-    .tile-cnt-btn { padding: 2px 6px; border-radius: 6px; border: 1px solid var(--teal); background: rgba(20,184,166,0.14); color: var(--teal); font-size: 9.5px; font-weight: 900; cursor: pointer; }
-
-    /* ቅርጫት */
-    .basket-wrap { display: none; flex: 0 0 auto; max-height: 32vh; flex-direction: column; margin-top: auto; margin-bottom: 110px; padding-top: 4px; }
-    .basket-list { overflow-y: auto; -webkit-overflow-scrolling: touch; display: flex; flex-direction: column; gap: 5px; }
-    .b-row { height: 42px; background: rgba(15, 23, 42, 0.86); border: 1.5px solid rgba(56, 189, 248, 0.38); border-radius: 21px; padding: 4px 8px 4px 6px; display: flex; align-items: center; justify-content: space-between; gap: 6px; backdrop-filter: blur(6px); }
-    .b-row.dragging { border-color: var(--teal); background: rgba(20, 184, 166, 0.28); transform: scale(1.02); }
-    .b-drag { min-width: 28px; height: 28px; border-radius: 14px; background: var(--primary); color: #fff; font-size: 11.5px; font-weight: 900; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; touch-action: none; cursor: grab; }
-    .b-name { flex: 1; min-width: 0; font-size: 12px; font-weight: 900; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .b-qty { width: 60px; height: 29px; border-radius: 14px; border: 1.5px solid var(--primary); background: var(--bg); color: #fff; text-align: center; font-size: 12.5px; font-weight: 900; }
-    .b-del { width: 26px; height: 26px; border-radius: 50%; border: none; background: rgba(239, 68, 68, 0.2); color: #fca5a5; font-weight: 900; cursor: pointer; }
-
-    .dock { position: fixed; bottom: 60px; left: 50%; transform: translateX(-50%); width: calc(100% - 14px); max-width: 626px; height: 44px; background: rgba(15, 23, 42, 0.92); border: 1.5px solid rgba(56, 189, 248, 0.45); border-radius: 22px; padding: 4px 6px 4px 12px; display: none; align-items: center; justify-content: space-between; gap: 6px; z-index: 40; backdrop-filter: blur(8px); }
-    .dock-actions { display: flex; align-items: center; gap: 5px; flex-shrink: 0; }
-    .dock-btn { height: 34px; padding: 0 11px; border: none; border-radius: 17px; font-size: 11px; font-weight: 900; cursor: pointer; white-space: nowrap; }
-    .dock-btn.tally { background: var(--teal-dark); border: 1px solid var(--teal); color: #99f6e4; }
-    .dock-btn.out { background: var(--rose); color: #fff; }
-    .dock-btn.in { background: var(--emerald); color: #052e16; }
-
-    /* ገጽ 2: ቆጠራ */
-    .ticket-bar { display: flex; gap: 5px; overflow-x: auto; margin-bottom: 5px; flex-shrink: 0; padding-bottom: 2px; }
-    .tk-tab { height: 30px; padding: 0 10px; border-radius: 15px; border: 1px solid var(--border-strong); background: var(--surface); color: var(--muted); font-size: 11px; font-weight: 900; cursor: pointer; white-space: nowrap; display: inline-flex; align-items: center; gap: 5px; flex-shrink: 0; }
-    .tk-tab.active { background: #172554; border-color: var(--primary); color: #fff; }
-    .tk-tab.add { border-style: dashed; border-color: var(--teal); color: var(--teal); }
-    .tk-items { display: flex; gap: 5px; overflow-x: auto; margin-bottom: 5px; flex-shrink: 0; padding-bottom: 2px; }
-    .tk-pill { height: 32px; padding: 0 9px; border-radius: 9px; border: 1.5px solid var(--border-strong); background: var(--surface-deep); color: var(--text); font-size: 11px; font-weight: 900; cursor: pointer; white-space: nowrap; display: inline-flex; align-items: center; gap: 5px; flex-shrink: 0; }
-    .tk-pill.active { border-color: var(--teal); background: rgba(20,184,166,0.22); color: #99f6e4; }
-    .tk-pill.done { border-color: var(--emerald); background: rgba(16,185,129,0.2); color: #86efac; }
-    .tk-pill.add { border-style: dashed; border-color: var(--amber); color: var(--amber); }
-
-    .preset-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px; }
-    .preset-btn { height: 31px; border-radius: 8px; border: 1px solid var(--border-strong); background: var(--surface-deep); color: var(--text); font-family: ui-monospace, monospace; font-size: 11px; font-weight: 900; cursor: pointer; }
-    .preset-btn.active { background: var(--teal); border-color: #5eead4; color: var(--teal-dark); }
-    .preset-btn.custom { font-family: inherit; font-size: 10px; color: var(--amber); }
-    .alert-box { display: none; padding: 6px 10px; border-radius: 10px; text-align: center; font-size: 11px; font-weight: 900; margin-bottom: 5px; flex-shrink: 0; }
-    .alert-box.warn { display: block; background: rgba(245,158,11,0.22); border: 1.5px solid var(--amber); color: #fde68a; }
-    .alert-box.stop { display: block; background: var(--emerald); color: #022c22; }
-    .alert-box.over { display: block; background: rgba(14,165,233,0.18); border: 1.5px solid var(--primary); color: #7dd3fc; }
-    .tally-pad { flex: 1; min-height: 0; background: var(--surface-deep); border: 2px dashed rgba(20,184,166,0.45); border-radius: 16px; display: flex; flex-direction: column; overflow: hidden; cursor: pointer; touch-action: pan-y; margin-bottom: 5px; }
-    .tally-pad.flash { border-color: var(--emerald); background: rgba(16,185,129,0.08); }
-    .tally-pad.near { border-color: var(--amber); background: rgba(245,158,11,0.08); }
-    .tally-pad.done { border-style: solid; border-color: var(--emerald); }
-    .tally-canvas { flex: 1; overflow-y: auto; padding: 10px; display: flex; flex-wrap: wrap; align-content: flex-start; gap: 6px 10px; }
-    .t-grp { position: relative; width: 42px; height: 40px; display: inline-flex; align-items: center; justify-content: center; }
-    .t-bar { width: 3.5px; height: 30px; background: var(--emerald); margin: 0 2.5px; border-radius: 2px; }
-    .t-bar.odd { background: var(--amber); }
-    .t-slash { position: absolute; width: 44px; height: 4px; background: var(--amber); border-radius: 2px; transform: rotate(-28deg); }
-    .anim-b { animation: pBar 0.12s ease-out; }
-    .anim-s { animation: pSlash 0.14s ease-out; }
-    @keyframes pBar { from { transform: scaleY(0.3); opacity: 0.3; } to { transform: scaleY(1); opacity: 1; } }
-    @keyframes pSlash { from { transform: rotate(-28deg) scaleX(0.2); opacity: 0.3; } to { transform: rotate(-28deg) scaleX(1); opacity: 1; } }
-    .t-stats { display: grid; grid-template-columns: 1fr 0.8fr 1fr; background: rgba(15,23,42,0.95); border-top: 1px solid var(--border); padding: 6px 12px; flex-shrink: 0; }
-    .t-stat { display: flex; flex-direction: column; }
-    .t-stat.c { align-items: center; }
-    .t-stat.r { align-items: flex-end; }
-    .t-lbl { font-size: 9px; font-weight: 800; color: var(--muted); }
-    .t-num { font-family: ui-monospace, monospace; font-size: 21px; font-weight: 900; line-height: 1.1; }
-    .t-actions { display: grid; grid-template-columns: 0.75fr 0.75fr 0.75fr 1.75fr; gap: 5px; margin-bottom: 62px; flex-shrink: 0; }
-    .t-btn { height: 41px; border-radius: 11px; border: 1px solid var(--border-strong); background: var(--surface); color: var(--text); font-size: 10.5px; font-weight: 900; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-    .t-btn.commit { background: var(--teal); border-color: #5eead4; color: var(--teal-dark); font-size: 11.5px; }
-
-    /* ሠንጠረዦች */
-    .metrics { display: flex; justify-content: space-around; background: var(--surface-deep); border: 1px solid var(--border); border-radius: 7px; padding: 4px; margin-top: 5px; font-size: 10.5px; font-weight: 900; }
-    .tbl-wrap { flex: 1; min-height: 0; overflow: auto; background: var(--surface); border: 1px solid var(--border-strong); border-radius: 10px; margin-bottom: 62px; }
-    table.tbl { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 11px; }
-    table.tbl th { position: sticky; top: 0; z-index: 5; background: var(--surface-deep); color: var(--primary); padding: 7px 4px; border-bottom: 1.5px solid var(--border-strong); border-right: 1px solid var(--border); font-size: 10px; font-weight: 900; white-space: nowrap; }
-    table.tbl td { padding: 6px 5px; border-bottom: 1px solid var(--border); border-right: 1px solid var(--border); font-weight: 800; white-space: nowrap; }
-    tr.r-in { background: rgba(16,185,129,0.14); color: #a7f3d0; }
-    tr.r-void { background: rgba(239,68,68,0.18); color: #fca5a5; }
-    tr.r-adj { background: rgba(14,165,233,0.16); color: #bae6fd; }
-    tr.r-zero { background: rgba(245,158,11,0.22); color: #fde68a; }
-    tr.r-cat { background: #143323; color: #6ee7b7; cursor: pointer; }
-    tr.r-cat.cat-sel { background: #0369a1 !important; color: #fff !important; }
-    tr.r-sel { background: rgba(14,165,233,0.34) !important; color: #7dd3fc !important; }
-    tr.r-sel td:first-child { border-left: 3px solid var(--emerald); }
-    tr.r-sp td { height: 8px; padding: 0; background: var(--bg); border-left: none; border-right: none; }
-    tr.r-ltz-sp td { height: 6px; padding: 0; background: rgba(6,10,18,0.65); border-left: none; border-right: none; }
-    .act-pair { display: inline-flex; gap: 4px; align-items: center; justify-content: center; }
-
-    /* ተንሳፋፊ የፒዲኤፍ አሞሌ */
-    .pdf-bar { position: fixed; bottom: 60px; left: 50%; transform: translateX(-50%); width: calc(100% - 14px); max-width: 626px; height: 44px; background: rgba(6,78,59,0.92); border: 1.5px solid var(--emerald); border-radius: 22px; padding: 4px 8px; display: none; align-items: center; justify-content: space-between; gap: 5px; z-index: 45; backdrop-filter: blur(8px); }
-    .pdf-pill { height: 30px; padding: 0 9px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.22); background: rgba(15,23,42,0.84); color: #fff; font-size: 10.5px; font-weight: 900; cursor: pointer; white-space: nowrap; }
-    .pdf-send { height: 32px; padding: 0 11px; border-radius: 16px; border: none; background: var(--emerald); color: #052e16; font-size: 11px; font-weight: 900; cursor: pointer; white-space: nowrap; }
-
-    /* ካርታ */
-    .rack-tabs { display: flex; gap: 5px; overflow-x: auto; margin-bottom: 6px; flex-shrink: 0; }
-    .rack-tab { min-width: 72px; height: 32px; padding: 0 10px; border-radius: 8px; border: 1px solid var(--border-strong); background: var(--surface-deep); color: var(--muted); font-size: 11px; font-weight: 900; cursor: pointer; white-space: nowrap; }
-    .rack-tab.active { background: var(--primary); color: #fff; border-color: #7dd3fc; }
-    .rack-wrap { flex: 1; overflow: auto; border: 1px solid var(--border-strong); border-radius: 10px; padding: 8px; margin-bottom: 62px; }
-    .rack-grid { display: grid; gap: 5px; min-width: 280px; }
-    .bin { min-height: 54px; border-radius: 8px; border: 1px solid var(--border-strong); background: var(--surface-deep); padding: 4px; text-align: center; display: flex; flex-direction: column; justify-content: center; gap: 2px; cursor: pointer; }
-    .bin.used { background: #064e3b; border-color: var(--emerald); }
-    .bin.hl { border: 2px dashed var(--amber); background: #451a03; }
-    .bin.sel { border: 2px solid var(--primary); background: #0369a1; }
-    .bin-id { font-size: 9.5px; font-weight: 900; color: var(--primary); }
-    .bin-it { font-size: 8.5px; font-weight: 800; word-break: break-word; }
-
-    /* የታችኛው አውራ ጣት ዳሰሳ */
-    .bottom-nav { position: fixed; bottom: 6px; left: 50%; transform: translateX(-50%); width: calc(100% - 14px); max-width: 626px; height: 50px; background: rgba(15,23,42,0.78); border: 1px solid rgba(255,255,255,0.22); border-radius: 25px; display: flex; align-items: center; padding: 3px 4px; z-index: 50; backdrop-filter: blur(8px); }
-    .nav-item { flex: 1; height: 42px; border-radius: 21px; border: none; background: transparent; color: var(--muted); font-size: 10px; font-weight: 900; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; }
-    .nav-item .ico { font-size: 15px; line-height: 1; }
-    .nav-item.active { background: rgba(14,165,233,0.45); color: #fff; border: 1px solid rgba(56,189,248,0.7); }
-
-    /* ሞዳል እና ማሳወቂያ */
-    .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(4px); display: none; align-items: flex-end; justify-content: center; padding: 10px; z-index: 800; }
-    .modal-bg.open { display: flex; }
-    .modal-card { width: 100%; max-width: 440px; max-height: 88vh; background: var(--surface); border: 1px solid var(--border-strong); border-radius: 20px; padding: 14px; display: flex; flex-direction: column; gap: 9px; }
-    .modal-head { display: flex; justify-content: space-between; align-items: center; font-size: 13.5px; font-weight: 900; color: var(--teal); }
-    .modal-body { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
-    .modal-foot { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; padding-top: 6px; border-top: 1px solid var(--border); }
-    .btn { height: 40px; border-radius: 10px; border: none; font-size: 12px; font-weight: 900; cursor: pointer; padding: 0 12px; color: #fff; }
-    .btn.teal { background: var(--teal); color: var(--teal-dark); }
-    .btn.primary { background: var(--primary); }
-    .btn.danger { background: var(--rose); }
-    .btn.hard-del { background: #7f1d1d; border: 1px solid var(--rose); color: #fecaca; }
-    .btn.muted { background: #1e293b; color: var(--text); }
-    .sub-card { background: var(--surface-deep); border: 1px solid var(--border); border-radius: 10px; padding: 9px; display: flex; flex-direction: column; gap: 6px; }
-    .lbl-sm { font-size: 10px; font-weight: 900; color: var(--muted); }
-    .chk-row { display: flex; align-items: center; gap: 7px; font-size: 11.5px; font-weight: 800; cursor: pointer; }
-    .ev-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
-    .toast { position: fixed; top: 14px; left: 50%; transform: translateX(-50%); background: #042f2e; border: 1px solid var(--teal); color: #99f6e4; padding: 9px 14px; border-radius: 12px; font-size: 12px; font-weight: 900; z-index: 999; display: flex; align-items: center; gap: 10px; box-shadow: 0 12px 28px rgba(0,0,0,0.7); max-width: 92vw; }
-    .toast-btn { background: var(--amber); color: #000; border: none; border-radius: 7px; padding: 4px 8px; font-size: 11px; font-weight: 900; cursor: pointer; }
-    video.qr-video { width: 100%; border-radius: 12px; background: #000; max-height: 260px; object-fit: cover; }
-
-    /* ባለገጽ ፒዲኤፍ መሳያ መድረክ */
-    #pdfStage { position: fixed; left: -14000px; top: 0; background: #fff; color: #000; font-family: system-ui, Arial, sans-serif; }
-    .pdf-page-box { background: #ffffff; color: #0f172a; display: flex; flex-direction: column; box-sizing: border-box; overflow: hidden; position: relative; }
-    .pdf-page-body { flex: 1; overflow: hidden; }
-    .pdf-page-foot { margin-top: auto; padding-top: 6px; }
-    @media (min-width: 640px) { .modal-bg { align-items: center; } }
-  </style>
-</head>
-<body>
-
-  <!-- መግቢያ -->
-  <div id="loginGate" class="gate">
-    <div class="gate-card">
-      <div class="gate-mark" id="gateMark">መ</div>
-      <div class="gate-title" id="lblGateTitle"></div>
-      <div class="seg" style="margin-bottom:2px;">
-        <button type="button" id="btnAuthEmail" class="seg-btn teal" onclick="setAuthMode('EMAIL')"></button>
-        <button type="button" id="btnAuthPin" class="seg-btn" onclick="setAuthMode('PIN')"></button>
-      </div>
-      <div id="authEmailBox" style="display:flex;flex-direction:column;gap:10px;">
-        <input type="email" id="inpLoginEmail" class="inp" style="height:42px;" autocomplete="email">
-        <input type="password" id="inpLoginPass" class="inp" style="height:42px;" autocomplete="current-password" onkeydown="if(event.key==='Enter') doLogin()">
-      </div>
-      <div id="authPinBox" style="display:none;flex-direction:column;gap:10px;">
-        <input type="text" id="inpOrgCode" class="inp mono" style="height:42px;text-transform:uppercase;" autocomplete="organization">
-        <input type="password" id="inpLoginPin" class="inp gate-pin" maxlength="6" inputmode="numeric" placeholder="••••••" onkeydown="if(event.key==='Enter') doLogin()">
-      </div>
-      <button type="button" class="btn teal" id="btnLoginSubmit" onclick="doLogin()"></button>
-      <div id="loginErr" style="color:var(--rose);font-size:11.5px;font-weight:900;text-align:center;"></div>
-      <button type="button" class="btn muted" style="height:34px;font-size:11px;" id="btnGateLang" onclick="toggleLang()"></button>
-    </div>
-  </div>
-
-  <!-- ጎን ሜኑ -->
-  <div id="drawerBg" class="drawer-bg" onclick="closeDrawer()"></div>
-  <aside id="drawer" class="drawer">
-    <div class="drawer-head">
-      <span id="drawerBrand" style="font-size:13px;font-weight:900;color:var(--teal);"></span>
-      <button type="button" class="icon-btn" onclick="closeDrawer()">✕</button>
-    </div>
-    <div class="drawer-list" id="drawerList"></div>
-    <div style="border-top:1px solid var(--border);padding-top:10px;display:flex;flex-direction:column;gap:7px;">
-      <button type="button" id="btnInstallApp" class="btn primary" style="display:none;height:36px;" onclick="triggerPwaInstall()"></button>
-      <div style="display:flex;justify-content:space-between;align-items:center;">
-        <span id="drawerUserInfo" style="font-size:11px;font-weight:800;color:var(--muted);"></span>
-        <span style="font-size:10px;font-weight:900;color:var(--teal);opacity:0.8;">v9</span>
-      </div>
-      <button type="button" class="btn danger" id="btnLogout" onclick="doLogout()"></button>
-    </div>
-  </aside>
-
-  <!-- ዋና መተግበሪያ -->
-  <div id="appShell" class="shell">
-    <header class="topbar">
-      <button type="button" class="icon-btn" onclick="openDrawer()">☰</button>
-      <div class="brand-box">
-        <span class="brand-name" id="topBrand"></span>
-        <span class="brand-sub" id="topOrgSub"></span>
-      </div>
-      <button type="button" id="syncPill" class="sync-pill" onclick="syncOfflineQueue()"></button>
-      <select id="selWarehouse" class="wh-sel" onchange="switchWarehouse(this.value)"></select>
-      <button type="button" class="icon-btn" style="width:auto;padding:0 7px;font-size:10px;" id="btnTopLang" onclick="toggleLang()"></button>
-    </header>
-
-    <!-- ገጽ 1: መመዝገቢያ -->
-    <section id="viewEntry" class="view active">
-      <div class="seg">
-        <button type="button" id="btnModeOut" class="seg-btn out" onclick="setEntryMode('OUT')"></button>
-        <button type="button" id="btnModeIn" class="seg-btn" onclick="setEntryMode('IN')"></button>
-      </div>
-      <div class="card">
-        <div id="entryOutForm">
-          <div id="outMainRow" class="grid-3">
-            <div class="doc-combo">
-              <input type="text" id="inpDocNo" onfocus="checkDocSilently()">
-              <button type="button" id="btnVoidMini" class="btn-void-mini" onclick="promptDirectVoid()"></button>
-            </div>
-            <input type="text" id="inpParty" class="inp">
-            <input type="text" id="inpRef" class="inp">
-          </div>
-          <div id="outExtraFields" class="extra-fields"></div>
-        </div>
-        <div id="entryInForm" style="display:none;">
-          <div class="grid-3">
-            <input type="text" id="inpInSupplier" class="inp">
-            <input type="text" id="inpInDriver" class="inp">
-            <input type="text" id="inpInPlate" class="inp">
-          </div>
-          <div id="inExtraFields" class="extra-fields"></div>
-        </div>
-      </div>
-
-      <div class="quick-row">
-        <input type="text" id="inpSearch" class="inp" oninput="onSmartDimInput(this); renderTiles()" onkeydown="if(event.key==='Enter') quickAdd()">
-        <input type="number" id="inpQuickQty" class="inp mono" min="1" inputmode="numeric" onkeydown="if(event.key==='Enter') quickAdd()">
-        <button type="button" id="btnQuickAdd" class="btn-ok-sq" onclick="quickAdd()">✓</button>
-      </div>
-      <div id="tilesGrid" class="tiles"></div>
-      <div id="basketWrap" class="basket-wrap"><div id="basketList" class="basket-list"></div></div>
-      <div id="submitDock" class="dock">
-        <span id="lblDockTot" style="font-size:11px;font-weight:900;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"></span>
-        <div class="dock-actions">
-          <button type="button" id="btnSendToTally" class="dock-btn tally" onclick="sendBasketToTally()"></button>
-          <button type="button" id="btnCommitDoc" class="dock-btn out" onclick="handleDocumentSubmit(this)"></button>
-        </div>
-      </div>
-    </section>
-
-    <!-- ገጽ 2: ቆጠራ (ከመመዝገቢያ ቅጽ ጋር 100% የተዛመደ) -->
-    <section id="viewTally" class="view">
-      <div class="seg">
-        <button type="button" id="btnTTicket" class="seg-btn teal" onclick="setTallyTab('TICKET')"></button>
-        <button type="button" id="btnTFree" class="seg-btn" onclick="setTallyTab('FREE')"></button>
-        <button type="button" id="btnTAudit" class="seg-btn" onclick="setTallyTab('AUDIT')"></button>
-      </div>
-
-      <div id="tallyTicketArea">
-        <div id="ticketBar" class="ticket-bar"></div>
-        <div class="card" style="padding:5px;">
-          <div style="display:grid;grid-template-columns:auto 1fr auto;gap:4px;align-items:center;">
-            <button type="button" id="btnTkDir" class="icon-btn" style="width:auto;padding:0 7px;font-size:10px;height:31px;" onclick="toggleTicketDir()"></button>
-            <div id="tkMainRow" class="grid-3"></div>
-            <button type="button" class="icon-btn" style="width:28px;height:31px;color:var(--rose);" onclick="deleteActiveTicket()">✕</button>
-          </div>
-          <div id="tkExtraFields" class="extra-fields"></div>
-        </div>
-        <div id="ticketItemsStrip" class="tk-items"></div>
-      </div>
-
-      <div id="tallyFreeArea" style="display:none;margin-bottom:5px;flex-shrink:0;">
-        <div style="display:grid;grid-template-columns:1fr 0.9fr auto;gap:5px;">
-          <input type="text" id="inpFreeLabel" class="inp" oninput="freeTally.label=this.value;saveTallyState()">
-          <input type="number" id="inpFreeTarget" class="inp mono" min="0" inputmode="numeric" oninput="freeTally.target=Math.max(0,Math.floor(Number(this.value||0)));saveTallyState();renderTallyStats()">
-          <button type="button" id="btnFreeLock" class="icon-btn" style="width:36px;height:34px;" onclick="toggleFreeLock()">🔒</button>
-        </div>
-      </div>
-
-      <div id="tallyAuditArea" style="display:none;margin-bottom:5px;flex-shrink:0;">
-        <div class="grid-2">
-          <select id="selAuditItem" class="sel" onchange="onAuditItemChange()"></select>
-          <input type="number" id="inpAuditSys" class="inp mono" readonly>
-        </div>
-      </div>
-
-      <div class="card" style="padding:5px;">
-        <div style="display:flex;justify-content:space-between;font-size:10px;font-weight:800;color:var(--muted);margin-bottom:4px;">
-          <span id="lblPerCarry"></span>
-          <span id="lblCarryVal" style="color:var(--teal);font-family:ui-monospace,monospace;"></span>
-        </div>
-        <div id="presetGrid" class="preset-grid"></div>
-      </div>
-
-      <div id="tallyAlert" class="alert-box"></div>
-      <div id="tallyPad" class="tally-pad">
-        <div id="tallyCanvas" class="tally-canvas"></div>
-        <div class="t-stats">
-          <div class="t-stat"><span class="t-lbl" id="lblTCounted"></span><span class="t-num" id="valTCounted">0</span></div>
-          <div class="t-stat c"><span class="t-lbl" id="lblTStrokes"></span><span class="t-num" style="font-size:18px;color:var(--teal);" id="valTStrokes">0</span></div>
-          <div class="t-stat r"><span class="t-lbl" id="lblTRight"></span><span class="t-num" style="color:var(--amber);" id="valTRight">∞</span></div>
-        </div>
-      </div>
-      <div class="t-actions">
-        <button type="button" class="t-btn" style="color:#fca5a5;" onclick="undoTally()"><span>↩️</span><span id="lblTUndo"></span></button>
-        <button type="button" class="t-btn" style="color:var(--amber);" onclick="openNumModal('odd')"><span>➕</span><span id="lblTOdd"></span></button>
-        <button type="button" class="t-btn" onclick="clearTallyUndoable()"><span>🧹</span><span id="lblTClear"></span></button>
-        <button type="button" class="t-btn commit" id="btnTCommit" onclick="commitTally(this)"></button>
-      </div>
-    </section>
-
-    <!-- ገጽ 3: ዕለታዊ -->
-    <section id="viewDaily" class="view">
-      <div class="card">
-        <div style="display:grid;grid-template-columns:1fr auto auto auto auto;gap:4px;">
-          <input type="text" id="inpDailySearch" class="inp" oninput="onSmartDimInput(this); renderDaily()">
-          <button type="button" id="btnDailySort" class="icon-btn" style="width:auto;padding:0 7px;font-size:10.5px;" onclick="toggleDailySort()">#</button>
-          <button type="button" id="btnZeroOnly" class="icon-btn" style="width:auto;padding:0 8px;color:var(--amber);" onclick="toggleZeroFilter()">0</button>
-          <button type="button" id="btnDailyActToggle" class="icon-btn on" style="width:30px;" onclick="toggleActionsCol('daily')">⚙️</button>
-          <button type="button" id="btnDailyPdf" class="icon-btn" style="width:auto;padding:0 8px;font-size:10.5px;color:var(--teal);" onclick="openDailyPdfChoice()"></button>
-        </div>
-        <div class="metrics" id="dailyMetrics"></div>
-      </div>
-      <div id="dailyTblWrap" class="tbl-wrap"><table class="tbl"><thead id="dailyHead"></thead><tbody id="dailyBody"></tbody></table></div>
-    </section>
-
-    <!-- ገጽ 4: ስቶክ -->
-    <section id="viewStock" class="view">
-      <div class="seg">
-        <button type="button" id="btnPWeek" class="seg-btn teal" onclick="setStockPeriod('WEEK')"></button>
-        <button type="button" id="btnPLastWeek" class="seg-btn" onclick="setStockPeriod('LAST_WEEK')"></button>
-        <button type="button" id="btnPMonth" class="seg-btn" onclick="setStockPeriod('MONTH')"></button>
-        <button type="button" id="btnPAll" class="seg-btn" onclick="setStockPeriod('ALL')"></button>
-      </div>
-      <div class="card" style="display:flex;gap:5px;">
-        <input type="text" id="inpStockSearch" class="inp" style="flex:1;" oninput="onSmartDimInput(this); renderStock()">
-        <button type="button" id="btnStockActToggle" class="icon-btn on" style="width:30px;" onclick="toggleActionsCol('stock')">⚙️</button>
-        <button type="button" id="btnStockPdf" class="icon-btn" style="width:auto;padding:0 8px;font-size:10.5px;color:var(--teal);" onclick="openStockPdfChoice()"></button>
-      </div>
-      <div id="stockTblWrap" class="tbl-wrap"><table class="tbl"><thead id="stockHead"></thead><tbody id="stockBody"></tbody></table></div>
-    </section>
-
-    <!-- ገጽ 5: ካርታ -->
-    <section id="viewMap" class="view">
-      <div class="card" style="display:flex;gap:5px;">
-        <input type="text" id="inpMapSearch" class="inp" style="flex:1;" oninput="onSmartDimInput(this); renderMap()">
-        <button type="button" class="icon-btn" style="width:auto;padding:0 8px;color:var(--teal);" onclick="openQrScanner()">📷</button>
-        <button type="button" id="btnBulkMap" class="icon-btn" style="width:auto;padding:0 8px;" onclick="toggleBulkMap()">☑️</button>
-        <button type="button" id="btnBulkAssign" class="icon-btn" style="display:none;width:auto;padding:0 8px;background:var(--emerald);color:#052e16;" onclick="openBinModal(null)"></button>
-      </div>
-      <div id="rackTabs" class="rack-tabs"></div>
-      <div class="rack-wrap"><div id="rackGrid" class="rack-grid"></div></div>
-    </section>
-
-    <!-- ተንሳፋፊ የፒዲኤፍ አሞሌ -->
-    <div id="pdfBar" class="pdf-bar">
-      <button type="button" class="pdf-pill" id="btnPdfClear" onclick="clearPdfSelection()"></button>
-      <div style="display:flex;gap:4px;">
-        <button type="button" class="pdf-pill" id="btnPdfDownload" onclick="runSelectedPdf('download', this)"></button>
-        <button type="button" class="pdf-pill" id="btnPdfShare" onclick="runSelectedPdf('share', this)"></button>
-        <button type="button" class="pdf-send" id="btnPdfSend" onclick="openSelectedSendPicker()"></button>
-      </div>
-    </div>
-
-    <!-- የታችኛው አውራ ጣት ዳሰሳ -->
-    <nav class="bottom-nav">
-      <button type="button" class="nav-item active" id="navEntry" onclick="switchView('entry')"><span class="ico">📝</span><span id="lblNavEntry"></span></button>
-      <button type="button" class="nav-item" id="navTally" onclick="switchView('tally')"><span class="ico">🧮</span><span id="lblNavTally"></span></button>
-      <button type="button" class="nav-item" id="navDaily" onclick="switchView('daily')"><span class="ico">📋</span><span id="lblNavDaily"></span></button>
-      <button type="button" class="nav-item" id="navStock" onclick="switchView('stock')"><span class="ico">📊</span><span id="lblNavStock"></span></button>
-      <button type="button" class="nav-item" id="navMap" onclick="switchView('map')"><span class="ico">🗺️</span><span id="lblNavMap"></span></button>
-    </nav>
-  </div>
-
-  <!-- ሁለገብ ሞዳል -->
-  <div id="mainModal" class="modal-bg" onclick="if(event.target===this) closeMainModal()">
-    <div class="modal-card">
-      <div class="modal-head">
-        <span id="modalTitle"></span>
-        <button type="button" class="icon-btn" onclick="closeMainModal()">✕</button>
-      </div>
-      <div id="modalBody" class="modal-body"></div>
-      <div id="modalFoot" class="modal-foot"></div>
-    </div>
-  </div>
-
-  <div id="pdfStage"></div>
-
-  <script>
