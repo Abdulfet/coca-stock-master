@@ -22,6 +22,9 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; user-select: none; }
     input, select, textarea { user-select: auto; }
     html, body { height: 100%; width: 100%; background: var(--bg); color: var(--text); overflow: hidden; }
+    button { transition: transform 0.08s ease, opacity 0.12s ease; }
+    button:active:not(:disabled) { transform: scale(0.95); }
+    button:disabled, .btn-busy { opacity: 0.5 !important; pointer-events: none !important; }
 
     /* መግቢያ */
     .gate { position: fixed; inset: 0; z-index: 900; background: radial-gradient(circle at top, #172554 0%, #060a12 72%); display: flex; align-items: center; justify-content: center; padding: 14px; }
@@ -32,12 +35,13 @@
 
     /* ዋና ቅርፊት */
     .shell { max-width: 640px; height: 100vh; height: 100dvh; margin: 0 auto; display: none; flex-direction: column; padding: 6px 6px 0; position: relative; overflow: hidden; }
-    .topbar { height: 42px; display: flex; align-items: center; gap: 6px; background: var(--surface); border: 1px solid var(--border-strong); border-radius: 12px; padding: 0 7px; margin-bottom: 6px; flex-shrink: 0; }
-    .icon-btn { width: 32px; height: 30px; border-radius: 8px; border: 1px solid var(--border-strong); background: var(--surface-deep); color: var(--primary); font-size: 14px; font-weight: 900; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .brand-box { display: flex; flex-direction: column; min-width: 0; flex-shrink: 1; }
-    .brand-name { font-size: 11.5px; font-weight: 900; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .brand-sub { font-size: 8.5px; font-weight: 800; color: var(--teal); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .wh-sel { margin-left: auto; max-width: 138px; height: 30px; padding: 0 6px; border-radius: 8px; border: 1px solid var(--primary); background: var(--surface-deep); color: var(--primary); font-size: 11px; font-weight: 900; outline: none; }
+    .topbar { height: 44px; display: flex; align-items: center; gap: 6px; background: var(--surface); border: 1px solid var(--border-strong); border-radius: 12px; padding: 0 7px; margin-bottom: 6px; flex-shrink: 0; }
+    .icon-btn { width: 32px; height: 30px; border-radius: 8px; border: 1px solid var(--border-strong); background: var(--surface-deep); color: var(--primary); font-size: 13.5px; font-weight: 900; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .icon-btn.on { background: rgba(14,165,233,0.25); border-color: var(--primary); color: #fff; }
+    .brand-box { display: flex; flex-direction: column; min-width: 0; flex-shrink: 1; line-height: 1.18; }
+    .brand-name { font-size: 12px; font-weight: 900; letter-spacing: 0.2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .brand-sub { font-size: 8.5px; font-weight: 800; color: var(--primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .wh-sel { margin-left: auto; max-width: 136px; height: 30px; padding: 0 6px; border-radius: 8px; border: 1px solid var(--primary); background: var(--surface-deep); color: var(--primary); font-size: 11px; font-weight: 900; outline: none; }
     .sync-pill { display: none; height: 26px; padding: 0 7px; border-radius: 13px; border: 1px solid var(--amber); background: rgba(245,158,11,0.18); color: #fde68a; font-size: 10px; font-weight: 900; cursor: pointer; flex-shrink: 0; }
 
     /* ጎን ሜኑ */
@@ -97,8 +101,10 @@
     .b-qty { width: 60px; height: 29px; border-radius: 14px; border: 1.5px solid var(--primary); background: var(--bg); color: #fff; text-align: center; font-size: 12.5px; font-weight: 900; }
     .b-del { width: 26px; height: 26px; border-radius: 50%; border: none; background: rgba(239, 68, 68, 0.2); color: #fca5a5; font-weight: 900; cursor: pointer; }
 
-    .dock { position: fixed; bottom: 60px; left: 50%; transform: translateX(-50%); width: calc(100% - 14px); max-width: 626px; height: 44px; background: rgba(15, 23, 42, 0.9); border: 1.5px solid rgba(56, 189, 248, 0.45); border-radius: 22px; padding: 4px 6px 4px 14px; display: none; align-items: center; justify-content: space-between; z-index: 40; backdrop-filter: blur(8px); }
-    .dock-btn { height: 34px; padding: 0 15px; border: none; border-radius: 17px; font-size: 12px; font-weight: 900; cursor: pointer; }
+    .dock { position: fixed; bottom: 60px; left: 50%; transform: translateX(-50%); width: calc(100% - 14px); max-width: 626px; height: 44px; background: rgba(15, 23, 42, 0.92); border: 1.5px solid rgba(56, 189, 248, 0.45); border-radius: 22px; padding: 4px 6px 4px 12px; display: none; align-items: center; justify-content: space-between; gap: 6px; z-index: 40; backdrop-filter: blur(8px); }
+    .dock-actions { display: flex; align-items: center; gap: 5px; flex-shrink: 0; }
+    .dock-btn { height: 34px; padding: 0 11px; border: none; border-radius: 17px; font-size: 11px; font-weight: 900; cursor: pointer; white-space: nowrap; }
+    .dock-btn.tally { background: var(--teal-dark); border: 1px solid var(--teal); color: #99f6e4; }
     .dock-btn.out { background: var(--rose); color: #fff; }
     .dock-btn.in { background: var(--emerald); color: #052e16; }
 
@@ -149,20 +155,22 @@
     .tbl-wrap { flex: 1; min-height: 0; overflow: auto; background: var(--surface); border: 1px solid var(--border-strong); border-radius: 10px; margin-bottom: 62px; }
     table.tbl { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 11px; }
     table.tbl th { position: sticky; top: 0; z-index: 5; background: var(--surface-deep); color: var(--primary); padding: 7px 4px; border-bottom: 1.5px solid var(--border-strong); border-right: 1px solid var(--border); font-size: 10px; font-weight: 900; white-space: nowrap; }
-    table.tbl td { padding: 6px 4px; border-bottom: 1px solid var(--border); border-right: 1px solid var(--border); font-weight: 800; white-space: nowrap; }
+    table.tbl td { padding: 6px 5px; border-bottom: 1px solid var(--border); border-right: 1px solid var(--border); font-weight: 800; white-space: nowrap; }
     tr.r-in { background: rgba(16,185,129,0.14); color: #a7f3d0; }
     tr.r-void { background: rgba(239,68,68,0.18); color: #fca5a5; }
     tr.r-adj { background: rgba(14,165,233,0.16); color: #bae6fd; }
     tr.r-zero { background: rgba(245,158,11,0.22); color: #fde68a; }
-    tr.r-cat { background: #143323; color: #6ee7b7; }
+    tr.r-cat { background: #143323; color: #6ee7b7; cursor: pointer; }
+    tr.r-cat.cat-sel { background: #0369a1 !important; color: #fff !important; }
     tr.r-sel { background: rgba(14,165,233,0.34) !important; color: #7dd3fc !important; }
     tr.r-sel td:first-child { border-left: 3px solid var(--emerald); }
-    tr.r-sp td { height: 7px; padding: 0; background: var(--bg); border-left: none; border-right: none; }
+    tr.r-sp td { height: 8px; padding: 0; background: var(--bg); border-left: none; border-right: none; }
+    tr.r-ltz-sp td { height: 6px; padding: 0; background: rgba(6,10,18,0.65); border-left: none; border-right: none; }
 
     /* ተንሳፋፊ የፒዲኤፍ አሞሌ */
-    .pdf-bar { position: fixed; bottom: 60px; left: 50%; transform: translateX(-50%); width: calc(100% - 14px); max-width: 626px; height: 42px; background: rgba(6,78,59,0.9); border: 1.5px solid var(--emerald); border-radius: 21px; padding: 4px 8px; display: none; align-items: center; justify-content: space-between; gap: 6px; z-index: 45; backdrop-filter: blur(8px); }
-    .pdf-pill { height: 30px; padding: 0 10px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.22); background: rgba(15,23,42,0.82); color: #fff; font-size: 11px; font-weight: 900; cursor: pointer; }
-    .pdf-send { height: 32px; padding: 0 12px; border-radius: 16px; border: none; background: var(--emerald); color: #052e16; font-size: 11px; font-weight: 900; cursor: pointer; }
+    .pdf-bar { position: fixed; bottom: 60px; left: 50%; transform: translateX(-50%); width: calc(100% - 14px); max-width: 626px; height: 44px; background: rgba(6,78,59,0.92); border: 1.5px solid var(--emerald); border-radius: 22px; padding: 4px 8px; display: none; align-items: center; justify-content: space-between; gap: 5px; z-index: 45; backdrop-filter: blur(8px); }
+    .pdf-pill { height: 30px; padding: 0 9px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.22); background: rgba(15,23,42,0.84); color: #fff; font-size: 10.5px; font-weight: 900; cursor: pointer; white-space: nowrap; }
+    .pdf-send { height: 32px; padding: 0 11px; border-radius: 16px; border: none; background: var(--emerald); color: #052e16; font-size: 11px; font-weight: 900; cursor: pointer; white-space: nowrap; }
 
     /* ካርታ */
     .rack-tabs { display: flex; gap: 5px; overflow-x: auto; margin-bottom: 6px; flex-shrink: 0; }
@@ -266,7 +274,6 @@
         <button type="button" id="btnModeIn" class="seg-btn" onclick="setEntryMode('IN')"></button>
       </div>
       <div class="card">
-        <!-- ወጪ (OUT) ቅጽ — ንጹህ ሳጥን ያለ ቋሚ ፓድ ምልክት -->
         <div id="entryOutForm">
           <div id="outMainRow" class="grid-3">
             <div class="doc-combo">
@@ -278,7 +285,6 @@
           </div>
           <div id="outExtraFields" class="extra-fields"></div>
         </div>
-        <!-- ገቢ (IN) ቅጽ -->
         <div id="entryInForm" style="display:none;">
           <div class="grid-3">
             <input type="text" id="inpInSupplier" class="inp">
@@ -290,15 +296,18 @@
       </div>
 
       <div class="quick-row">
-        <input type="text" id="inpSearch" class="inp" oninput="renderTiles()" onkeydown="if(event.key==='Enter') quickAdd()">
+        <input type="text" id="inpSearch" class="inp" oninput="onSmartDimInput(this); renderTiles()" onkeydown="if(event.key==='Enter') quickAdd()">
         <input type="number" id="inpQuickQty" class="inp mono" min="1" inputmode="numeric" onkeydown="if(event.key==='Enter') quickAdd()">
-        <button type="button" class="btn-ok-sq" onclick="quickAdd()">✓</button>
+        <button type="button" id="btnQuickAdd" class="btn-ok-sq" onclick="quickAdd()">✓</button>
       </div>
       <div id="tilesGrid" class="tiles"></div>
       <div id="basketWrap" class="basket-wrap"><div id="basketList" class="basket-list"></div></div>
       <div id="submitDock" class="dock">
-        <span id="lblDockTot" style="font-size:11.5px;font-weight:900;"></span>
-        <button type="button" id="btnCommitDoc" class="dock-btn out" onclick="handleDocumentSubmit()"></button>
+        <span id="lblDockTot" style="font-size:11px;font-weight:900;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"></span>
+        <div class="dock-actions">
+          <button type="button" id="btnSendToTally" class="dock-btn tally" onclick="sendBasketToTally()"></button>
+          <button type="button" id="btnCommitDoc" class="dock-btn out" onclick="handleDocumentSubmit(this)"></button>
+        </div>
       </div>
     </section>
 
@@ -360,22 +369,23 @@
         <button type="button" class="t-btn" style="color:#fca5a5;" onclick="undoTally()"><span>↩️</span><span id="lblTUndo"></span></button>
         <button type="button" class="t-btn" style="color:var(--amber);" onclick="openNumModal('odd')"><span>➕</span><span id="lblTOdd"></span></button>
         <button type="button" class="t-btn" onclick="clearTallyUndoable()"><span>🧹</span><span id="lblTClear"></span></button>
-        <button type="button" class="t-btn commit" id="btnTCommit" onclick="commitTally()"></button>
+        <button type="button" class="t-btn commit" id="btnTCommit" onclick="commitTally(this)"></button>
       </div>
     </section>
 
     <!-- ገጽ 3: ዕለታዊ -->
     <section id="viewDaily" class="view">
       <div class="card">
-        <div style="display:grid;grid-template-columns:1fr auto auto auto;gap:5px;">
-          <input type="text" id="inpDailySearch" class="inp" oninput="renderDaily()">
+        <div style="display:grid;grid-template-columns:1fr auto auto auto auto;gap:4px;">
+          <input type="text" id="inpDailySearch" class="inp" oninput="onSmartDimInput(this); renderDaily()">
           <button type="button" id="btnDailySort" class="icon-btn" style="width:auto;padding:0 7px;font-size:10.5px;" onclick="toggleDailySort()">#</button>
           <button type="button" id="btnZeroOnly" class="icon-btn" style="width:auto;padding:0 8px;color:var(--amber);" onclick="toggleZeroFilter()">0</button>
+          <button type="button" id="btnDailyActToggle" class="icon-btn on" style="width:30px;" onclick="toggleActionsCol('daily')">⚙️</button>
           <button type="button" id="btnDailyPdf" class="icon-btn" style="width:auto;padding:0 8px;font-size:10.5px;color:var(--teal);" onclick="openDailyPdfChoice()"></button>
         </div>
         <div class="metrics" id="dailyMetrics"></div>
       </div>
-      <div class="tbl-wrap"><table class="tbl"><thead id="dailyHead"></thead><tbody id="dailyBody"></tbody></table></div>
+      <div id="dailyTblWrap" class="tbl-wrap"><table class="tbl"><thead id="dailyHead"></thead><tbody id="dailyBody"></tbody></table></div>
     </section>
 
     <!-- ገጽ 4: ስቶክ -->
@@ -387,16 +397,17 @@
         <button type="button" id="btnPAll" class="seg-btn" onclick="setStockPeriod('ALL')"></button>
       </div>
       <div class="card" style="display:flex;gap:5px;">
-        <input type="text" id="inpStockSearch" class="inp" style="flex:1;" oninput="renderStock()">
-        <button type="button" id="btnStockPdf" class="icon-btn" style="width:auto;padding:0 8px;font-size:10.5px;color:var(--teal);" onclick="exportCurrentViewPdf(true)"></button>
+        <input type="text" id="inpStockSearch" class="inp" style="flex:1;" oninput="onSmartDimInput(this); renderStock()">
+        <button type="button" id="btnStockActToggle" class="icon-btn on" style="width:30px;" onclick="toggleActionsCol('stock')">⚙️</button>
+        <button type="button" id="btnStockPdf" class="icon-btn" style="width:auto;padding:0 8px;font-size:10.5px;color:var(--teal);" onclick="exportCurrentViewPdf(true, this)"></button>
       </div>
-      <div class="tbl-wrap"><table class="tbl"><thead id="stockHead"></thead><tbody id="stockBody"></tbody></table></div>
+      <div id="stockTblWrap" class="tbl-wrap"><table class="tbl"><thead id="stockHead"></thead><tbody id="stockBody"></tbody></table></div>
     </section>
 
     <!-- ገጽ 5: ካርታ -->
     <section id="viewMap" class="view">
       <div class="card" style="display:flex;gap:5px;">
-        <input type="text" id="inpMapSearch" class="inp" style="flex:1;" oninput="renderMap()">
+        <input type="text" id="inpMapSearch" class="inp" style="flex:1;" oninput="onSmartDimInput(this); renderMap()">
         <button type="button" class="icon-btn" style="width:auto;padding:0 8px;color:var(--teal);" onclick="openQrScanner()">📷</button>
         <button type="button" id="btnBulkMap" class="icon-btn" style="width:auto;padding:0 8px;" onclick="toggleBulkMap()">☑️</button>
         <button type="button" id="btnBulkAssign" class="icon-btn" style="display:none;width:auto;padding:0 8px;background:var(--emerald);color:#052e16;" onclick="openBinModal(null)"></button>
@@ -405,12 +416,13 @@
       <div class="rack-wrap"><div id="rackGrid" class="rack-grid"></div></div>
     </section>
 
-    <!-- ተንሳፋፊ የፒዲኤፍ አሞሌ -->
+    <!-- ተንሳፋፊ የፒዲኤፍ አሞሌ (አውርድ / አጋራ / ላክ) -->
     <div id="pdfBar" class="pdf-bar">
       <button type="button" class="pdf-pill" id="btnPdfClear" onclick="clearPdfSelection()"></button>
-      <div style="display:flex;gap:5px;">
-        <button type="button" class="pdf-pill" id="btnPdfDownload" onclick="runSelectedPdf(false)"></button>
-        <button type="button" class="pdf-send" id="btnPdfSend" onclick="runSelectedPdf(true)"></button>
+      <div style="display:flex;gap:4px;">
+        <button type="button" class="pdf-pill" id="btnPdfDownload" onclick="runSelectedPdf('download', this)"></button>
+        <button type="button" class="pdf-pill" id="btnPdfShare" onclick="runSelectedPdf('share', this)"></button>
+        <button type="button" class="pdf-send" id="btnPdfSend" onclick="runSelectedPdf('bot', this)"></button>
       </div>
     </div>
 
@@ -446,10 +458,11 @@
     const SESSION_KEY = 'erp_session_v4';
     const QUEUE_KEY = 'erp_offline_queue_v4';
     const LANG_KEY = 'erp_lang_v4';
-    const BRAND_OVERRIDE_KEY = 'erp_brand_overrides_v4';
+    const BRAND_CFG_KEY = 'erp_brand_cfg_v5';
     const TALLY_STATE_KEY = 'erp_tally_state_v5';
     const FORM_CFG_KEY = 'erp_form_cfg_v2';
     const PDF_CFG_KEY = 'erp_pdf_cfg_v1';
+    const UI_CFG_KEY = 'erp_ui_cfg_v1';
     const PRESETS = [1, 2, 3, 5, 10, 15, 20];
 
     const DEFAULT_FORM_CFG = {
@@ -465,10 +478,10 @@
     };
 
     const DEFAULT_PDF_CFG = {
-      mode: 'MOBILE_FIT', // MOBILE_FIT | A4_P | A4_L | CUSTOM
+      mode: 'MOBILE_FIT',
       widthMm: 210,
       heightMm: 297,
-      fontSize: 'md', // sm | md | lg
+      fontSize: 'md',
       headerSub: '',
       footerNote: '',
       showSign: false,
@@ -479,9 +492,14 @@
       stockShowZero: false,
     };
 
+    const DEFAULT_UI_CFG = {
+      showDailyActions: true,
+      showStockActions: true,
+    };
+
     const I18N = {
       am: {
-        defaultBrand: 'መጋዘን', gateMark: 'መ', gateTitle: 'ወደ ሲስተም ግባ',
+        defaultBrand: 'መጋዘን', defaultSub: 'የመጋዘን አስተዳደር', gateMark: 'መ', gateTitle: 'ወደ ሲስተም ግባ',
         authPin: 'ኮድ እና ፒን', authEmail: 'ኢሜል እና ፓስወርድ',
         orgCodePh: 'የድርጅት ኮድ', emailPh: 'ኢሜል አድራሻ', passPh: 'ፓስወርድ',
         loginBtn: 'ግባ', langSwitch: 'እንግሊዝኛ', langShort: 'እንግሊዝኛ', logout: 'ውጣ', installApp: '📲 አፑን ጫን',
@@ -493,9 +511,10 @@
         tkNoItems: 'ዕቃ ለመቁጠር ከላይ «+ ዕቃ ጨምር» ይጫኑ',
         freeLabelPh: 'ማስታወሻ (አማራጭ)', freeTargetPh: 'ዒላማ ብዛት',
         postDirect: 'ቀጥታ መዝግብ', sendEntry: 'ወደ መመዝገቢያ', applyAdj: 'ማስተካከያ ላክ',
+        btnToTally: '🧮 ቆጠራ', sentToTally: 'ወደ ቆጠራ ገጽ ተልኳል — ተራ ይዟል',
         docPh: 'ሰነድ ቁ.', partyOutPh: 'ደንበኛ', partyInPh: 'አቅራቢ', driverPh: 'ሹፌር', platePh: 'ታርጋ ቁጥር',
         refOutPh: 'ፓድ ቁ.', padPrefix: 'ፓድ ቁ.', kgUnit: 'ኪ.ግ', kgPh: 'ክብደት (ኪ.ግ)', notePh: 'ማስታወሻ',
-        searchPh: 'ዕቃ ፈልግ...', qtyPh: 'ብዛት', dailySearchPh: 'ሰነድ፣ ዕቃ፣ ደንበኛ ወይም ቀን ፈልግ...',
+        searchPh: 'ዕቃ ፈልግ... (32rx0.8 ➔ 32Ø×0.8)', qtyPh: 'ብዛት', dailySearchPh: 'ሰነድ፣ ዕቃ፣ ደንበኛ ወይም ቀን ፈልግ...',
         stockSearchPh: 'ዕቃ ወይም ካቴጎሪ ፈልግ...', mapSearchPh: 'በካርታው ላይ ዕቃ ፈልግ...',
         countBtn: 'ቁጠር', perCarry: 'በአንድ ሸክም', other: 'ሌላ',
         counted: 'የተቆጠረ', strokes: 'ጭረት', remaining: 'ቀሪ', diff: 'ልዩነት',
@@ -507,10 +526,10 @@
         oddWarn: (r) => `🔔 ጎዶሎ፦ ${r} ፍሬ ብቻ ቀረ!`,
         overWarn: (d) => `ከግቡ +${d} ትርፍ ተገኝቷል`, shortWarn: (d) => `-${d} ጉድለት አለ`,
         exactMatch: 'ከሲስተም ቀሪ ጋር እኩል ነው',
-        dockTot: (c, q) => `ድምር፦ ${c} ዓይነት (${q} ፍሬ)`,
-        dCols: ['ሰነድ', 'ዕቃ', 'መነሻ', 'ገቢ', 'ወጪ', 'ቀሪ', 'ደንበኛ / ምክንያት', 'ፓድ / ታርጋ', 'ቀን', 'እርምጃ'],
+        dockTot: (c, q) => `${c} ዓይነት (${q})`,
+        dCols: ['ሰነድ', 'ዕቃ', 'መነሻ', 'ገቢ', 'ወጪ', 'ቀሪ', 'ደንበኛ / ምክንያት', 'ፓድ / ታርጋ', 'ቀን', '⚙️'],
         dPdfMap: { doc: 'የሰነድ ቁጥር', item: 'የዕቃው አይነት', open: 'ያለው ብዛት', inq: 'የገባ', outq: 'የወጣ', bal: 'ቀሪ', party: 'ደንበኛ / አቅራቢ', ref: 'ፓድ / ታርጋ', date: 'ቀን' },
-        sCols: ['ዕቃ', 'መነሻ', 'ገቢ', 'ወጪ', 'ማስተካከያ', 'ቀሪ'],
+        sCols: ['ረድፍ', 'የዕቃው አይነት', 'መነሻ', 'የገባ', 'የወጣ', 'ቀሪ', '⚙️'],
         sPdfMap: { item: 'የዕቃ አይነት', open: 'መነሻ', inq: 'የገባ (+)', outq: 'የወጣ (-)', adj: 'ማስተካከያ', bal: 'ቀሪ' },
         pdfDailySub: 'ዕለታዊ ሪፖርት', pdfTodaySub: 'የዛሬው ዕለታዊ ሪፖርት', pdfStockSub: 'ማስተር ስቶክ ሪፖርት',
         pdfChoiceTitle: 'ዕለታዊ ፒዲኤፍ ምርጫ', pdfTodayBtn: 'የዛሬው ብቻ', pdfFullBtn: 'ሙሉ ታሪክ',
@@ -519,10 +538,17 @@
         pdfRowsCount: (n) => `የተመዘገቡ፦ ${n} ረድፍ`,
         pdfStockTot: (n) => `ጠቅላላ (${n} ዓይነት)`,
         pdfSignPrep: 'ያዘጋጀው፦ ___________________', pdfSignApp: 'ያረጋገጠው፦ ___________________',
-        mOrgs: 'ድርጅቶች', mBrand: 'የድርጅት ስም', mFormCfg: 'የቅጽ ቅንብሮች', mPdfCfg: 'የፒዲኤፍ ቅንብሮች',
-        mBranches: 'ቅርንጫፎች', mStaff: 'ሰራተኞች እና ፈቃድ',
+        mOrgs: 'ድርጅቶች', mBrand: 'የድርጅት ስም እና መግለጫ', mFormCfg: 'የቅጽ ቅንብሮች', mPdfCfg: 'የፒዲኤፍ ቅንብሮች',
+        mBranches: 'መጋዘኖች / ቅርንጫፎች', mStaff: 'ሰራተኞች እና ፈቃድ',
         mChannels: 'የመገናኛ አድራሻዎች', mCatalog: 'ዕቃዎች እና ካቴጎሪ', mRacks: 'መደርደሪያዎች',
         mApprovals: 'የማስተካከያ ጥያቄዎች', mRisk: 'የስጋት ኦዲት ላክ', mPin: 'ፒን ቀይር',
+        brandAmSec: 'በአማርኛ', brandEnSec: 'በእንግሊዝኛ (English)',
+        phBrandTitle: 'የድርጅት ስም', phBrandSub: 'መግለጫ / መፈክር (ለምሳሌ፦ ትክክለኛ የብረት መፍትሄ)',
+        editBranchTitle: 'የመጋዘን ስም ማስተካከያ', editItemTitle: 'የዕቃ ማስተካከያ',
+        itemCatLbl: 'ካቴጎሪ', itemDelBtn: 'ዕቃውን አጥፋ', itemAdjHint: 'ቀሪ ለማስተካከል በቆጠራ → ስቶክ ማስተካከያ ይጠቀሙ',
+        authVerifyTitle: 'የደህንነት ማረጋገጫ',
+        authVerifyMsg: 'ይህን እርምጃ ለማስፈጸም የራስዎን (ወይም የአድሚን) ፒን / ፓስወርድ ያስገቡ፦',
+        authVerifyPh: 'ፒን ወይም ፓስወርድ', authVerifyWrong: 'የተሳሳተ ፒን ወይም ፓስወርድ',
         cfgOutHead: 'የወጪ ቅጽ አማራጮች', cfgInHead: 'የገቢ ቅጽ አማራጮች',
         cfgAutoPad: 'በፓድ ቁጥር ላይ «ፓድ ቁ.» በራሱ ይጨምር', cfgShowPad: 'ፓድ ቁጥር አሳይ', cfgShowKg: 'ክብደት (ኪ.ግ) አሳይ',
         cfgShowDriver: 'ሹፌር አሳይ', cfgShowPlate: 'ታርጋ ቁጥር አሳይ', cfgShowNote: 'ማስታወሻ አሳይ', cfgInDocNo: 'በገቢ ላይ የሰነድ ቁጥር አሳይ',
@@ -531,14 +557,13 @@
         pdfHeaderSubPh: 'ተጨማሪ የራስጌ መግለጫ (አማራጭ)', pdfFooterNotePh: 'የግርጌ ማስታወሻ (አማራጭ)',
         pdfChkSign: 'የፊርማ መስመር አሳይ', pdfChkOpen: 'መነሻ ብዛት አሳይ', pdfChkParty: 'ደንበኛ / አቅራቢ አሳይ',
         pdfChkRef: 'ፓድ / ታርጋ አሳይ', pdfChkDate: 'ቀን አሳይ', pdfChkZero: 'በስቶክ ላይ 0 የሆኑትንም አሳይ',
-        phBrandTitle: 'የድርጅትዎ መጠሪያ ስም',
         quickNewTitle: 'አዲስ ዕቃ መዝግብ', quickNewAsk: (n) => `«${n}» በዝርዝር ውስጥ የለም። እንደ አዲስ ዕቃ ተመዝግቦ ወደ ቅርጫት ይግባ?`,
         bulkTitle: 'በጅምላ አስገባ (Excel / Sheets)',
         bulkHint: 'ከSheets አምድ A እና B ን ኮፒ አድርገው ይለጥፉ (የካቴጎሪ ርዕሶችን በራሱ ይለያል)',
         bulkBtn: 'በጅምላ አስገባ', bulkDone: (n) => `${n} አዳዲስ ዕቃዎች ገብተዋል`,
         save: 'አስቀምጥ', close: 'ዝጋ', cancel: 'ተው', ok: 'አጽድቅ', del: 'አጥፋ', add: 'ጨምር',
         emptySlot: 'ባዶ', assignBtn: 'መድብ', clearSlot: 'ሳጥን አጽዳ', appendSlot: 'ከነባሩ ሳይጠፋ ጨምር',
-        pdfClear: 'አጽዳ', pdfDown: 'አውርድ', pdfSend: 'ላክ',
+        pdfClear: 'አጽዳ', pdfDown: 'አውርድ', pdfShare: 'አጋራ', pdfSend: 'ላክ',
         savedOk: 'በተሳካ ሁኔታ ተመዝግቧል', offlineSaved: 'ኢንተርኔት የለም — ስልኩ ላይ ተቀምጧል',
         syncNow: (n) => `ላክ (${n})`, syncedOk: 'ሁሉም የተጠራቀሙ ሰነዶች ተልከዋል',
         errPin: 'የተሳሳተ መለያ ወይም ሚስጥር ቁጥር', errStock: 'በቂ ስቶክ የለም', errNeedDoc: 'የሰነድ ቁጥር ያስገቡ', errNeedCount: 'ቢያንስ አንድ ዕቃ ይቁጠሩ',
@@ -550,19 +575,20 @@
         editDocTitle: 'ሰነድ ማስተካከያ / ቅያሬ / መጨመሪያ', addForgotten: 'የተረሳ ዕቃ ጨምር',
         voidDocBtn: 'ሙሉ ሰነዱን የተበላሸ አድርግ', unvoidAsk: 'ይህን የተበላሸ ሰነድ እንደገና ወደ ንቁ ይመልሱት?',
         testBtn: 'ሞክር', webhookBtn: 'ቁልፍ አገናኝ', approve: 'አጽድቅ', reject: 'ሰርዝ',
-        phOrgCode: 'የድርጅት ኮድ', phOrgName: 'የድርጅት ስም', phBrName: 'የቅርንጫፍ ስም', phBrCode: 'የቅርንጫፍ ኮድ',
+        phOrgCode: 'የድርጅት ኮድ', phOrgName: 'የድርጅት ስም', phBrName: 'የመጋዘን ስም', phBrCode: 'የመጋዘን ኮድ',
         phAdmName: 'የአድሚን ስም', phPin: 'ፒን ኮድ', phOldPin: 'የአሁኑ ፒን', phNewPin: 'አዲሱ ፒን',
         phStaffName: 'የሰራተኛ ስም', roleStaff: 'ሰራተኛ', roleOrgAdm: 'የድርጅት አድሚን', roleSuper: 'ዋና ባለቤት',
         chTg: 'ቴሌግራም', chWa: 'ዋትሳፕ', chSms: 'ኤስኤምኤስ', chWh: 'ዌብሁክ', chAllBranches: 'ለመላው ድርጅት',
         phChLabel: 'መለያ ስም', phChTarget: 'የቻት መለያ / ስልክ ቁጥር / አድራሻ',
         phChCred1: 'ሚስጥራዊ ቁልፍ / ቶከን', phChCred2: 'የስልክ መለያ / ላኪ ስም',
-        phCatName: 'አዲስ ካቴጎሪ ስም', phItemName: 'የዕቃ ስም', phOpening: 'መነሻ ብዛት',
+        phCatName: 'አዲስ ካቴጎሪ ስም', phItemName: 'የዕቃ ስም (32rx0.8 ➔ 32Ø×0.8)', phOpening: 'መነሻ ብዛት',
         phRackCode: 'ኮድ', phRackName: 'የመደርደሪያ ስም', phRackCols: 'ወደ ጎን (አምድ)', phRackRows: 'ወደ ላይ (ረድፍ)',
-        voidLabel: 'የተበላሸ', metricVoid: 'የተበላሸ', pdfLoading: 'ፒዲኤፍ በመጫን ላይ...', pdfLocal: 'ስልኩ ላይ ወርዷል',
-        errGeneric: 'ስህተት ተፈጥሯል', noItems: 'ምንም መረጃ የለም', sortDoc: 'በሰነድ ቁጥር', sortTime: 'በጊዜ'
+        voidLabel: 'የተበላሸ', metricVoid: 'የተበላሸ', pdfLoading: 'ፒዲኤፍ በመዘጋጀት ላይ...', pdfLocal: 'ስልኩ ላይ ወርዷል',
+        errGeneric: 'ስህተት ተፈጥሯል', noItems: 'ምንም መረጃ የለም', sortDoc: 'በሰነድ ቁጥር', sortTime: 'በጊዜ',
+        actShown: 'የእርምጃ (⚙️) አምድ በርቷል', actHidden: 'የእርምጃ (⚙️) አምድ ጠፍቷል', busyTxt: 'በመላክ ላይ...'
       },
       en: {
-        defaultBrand: 'Warehouse', gateMark: 'W', gateTitle: 'Sign In',
+        defaultBrand: 'Warehouse', defaultSub: 'Inventory System', gateMark: 'W', gateTitle: 'Sign In',
         authPin: 'Code & PIN', authEmail: 'Email & Password',
         orgCodePh: 'Organization Code', emailPh: 'Email Address', passPh: 'Password',
         loginBtn: 'Sign In', langSwitch: 'Amharic', langShort: 'Amharic', logout: 'Sign Out', installApp: '📲 Install App',
@@ -574,9 +600,10 @@
         tkNoItems: 'Tap "+ Add Item" above to load items',
         freeLabelPh: 'Note (optional)', freeTargetPh: 'Target Qty',
         postDirect: 'Post Directly', sendEntry: 'Copy to Entry', applyAdj: 'Submit Adjustment',
+        btnToTally: '🧮 Tally', sentToTally: 'Queued in Tally screen',
         docPh: 'Doc No.', partyOutPh: 'Customer', partyInPh: 'Supplier', driverPh: 'Driver', platePh: 'Plate No.',
         refOutPh: 'Pad No.', padPrefix: 'Pad No.', kgUnit: 'kg', kgPh: 'Weight (kg)', notePh: 'Note',
-        searchPh: 'Search item...', qtyPh: 'Qty', dailySearchPh: 'Search doc, item, party, date...',
+        searchPh: 'Search item... (32rx0.8 ➔ 32Ø×0.8)', qtyPh: 'Qty', dailySearchPh: 'Search doc, item, party, date...',
         stockSearchPh: 'Search item or category...', mapSearchPh: 'Find item on map...',
         countBtn: 'Count', perCarry: 'Per load', other: 'Other',
         counted: 'Counted', strokes: 'Strokes', remaining: 'Left', diff: 'Variance',
@@ -588,10 +615,10 @@
         oddWarn: (r) => `🔔 Odd: only ${r} pcs left!`,
         overWarn: (d) => `Surplus: +${d}`, shortWarn: (d) => `Shortage: -${d}`,
         exactMatch: 'Matches system balance',
-        dockTot: (c, q) => `Total: ${c} items (${q} pcs)`,
-        dCols: ['Doc', 'Item', 'Open', 'In', 'Out', 'Bal', 'Party / Reason', 'Pad / Plate', 'Date', 'Action'],
+        dockTot: (c, q) => `${c} items (${q})`,
+        dCols: ['Doc', 'Item', 'Open', 'In', 'Out', 'Bal', 'Party / Reason', 'Pad / Plate', 'Date', '⚙️'],
         dPdfMap: { doc: 'Doc No.', item: 'Item Name', open: 'Opening', inq: 'In', outq: 'Out', bal: 'Balance', party: 'Party', ref: 'Pad / Plate', date: 'Date' },
-        sCols: ['Item', 'Open', 'In', 'Out', 'Adj', 'Bal'],
+        sCols: ['Row', 'Item Name', 'Open', 'In', 'Out', 'Bal', '⚙️'],
         sPdfMap: { item: 'Item Name', open: 'Opening', inq: 'In (+)', outq: 'Out (-)', adj: 'Adj', bal: 'Balance' },
         pdfDailySub: 'Daily Report', pdfTodaySub: "Today's Daily Report", pdfStockSub: 'Master Stock Report',
         pdfChoiceTitle: 'Daily PDF Options', pdfTodayBtn: 'Today Only', pdfFullBtn: 'Full History',
@@ -600,10 +627,17 @@
         pdfRowsCount: (n) => `Recorded Lines: ${n}`,
         pdfStockTot: (n) => `Total (${n} items)`,
         pdfSignPrep: 'Prepared by: ___________________', pdfSignApp: 'Approved by: ___________________',
-        mOrgs: 'Organizations', mBrand: 'Organization Name', mFormCfg: 'Form Fields Settings', mPdfCfg: 'PDF Settings',
-        mBranches: 'Branches', mStaff: 'Staff & Access',
+        mOrgs: 'Organizations', mBrand: 'Organization Name & Tagline', mFormCfg: 'Form Fields Settings', mPdfCfg: 'PDF Settings',
+        mBranches: 'Warehouses / Branches', mStaff: 'Staff & Access',
         mChannels: 'Notification Channels', mCatalog: 'Items & Categories', mRacks: 'Racks',
         mApprovals: 'Pending Adjustments', mRisk: 'Send Risk Audit', mPin: 'Change PIN',
+        brandAmSec: 'Amharic', brandEnSec: 'English',
+        phBrandTitle: 'Organization Name', phBrandSub: 'Tagline (e.g. PRECISION METAL SOLUTION)',
+        editBranchTitle: 'Rename Warehouse', editItemTitle: 'Edit Item',
+        itemCatLbl: 'Category', itemDelBtn: 'Delete Item', itemAdjHint: 'Use Tally → Stock Audit to adjust stock balance',
+        authVerifyTitle: 'Security Verification',
+        authVerifyMsg: 'Enter your (or Admin) PIN / Password to confirm this action:',
+        authVerifyPh: 'PIN or Password', authVerifyWrong: 'Invalid PIN or Password',
         cfgOutHead: 'Issue (OUT) Fields', cfgInHead: 'Receive (IN) Fields',
         cfgAutoPad: 'Auto-prepend "Pad No." on save & display', cfgShowPad: 'Show Pad No.', cfgShowKg: 'Show Weight (kg)',
         cfgShowDriver: 'Show Driver', cfgShowPlate: 'Show Plate No.', cfgShowNote: 'Show Note', cfgInDocNo: 'Show Doc No. on Receive',
@@ -612,14 +646,13 @@
         pdfHeaderSubPh: 'Custom Header Subtitle (optional)', pdfFooterNotePh: 'Custom Footer Note (optional)',
         pdfChkSign: 'Show Signature Line', pdfChkOpen: 'Show Opening Qty', pdfChkParty: 'Show Party / Customer',
         pdfChkRef: 'Show Pad / Plate', pdfChkDate: 'Show Date', pdfChkZero: 'Include Zero-Stock Items',
-        phBrandTitle: 'Your Organization Display Name',
         quickNewTitle: 'Register New Item', quickNewAsk: (n) => `"${n}" is not in catalog. Register as new item and add to basket?`,
         bulkTitle: 'Bulk Import (Excel / Sheets)',
         bulkHint: 'Copy Columns A & B from Sheets and paste here (Category headers are auto-detected)',
         bulkBtn: 'Bulk Import', bulkDone: (n) => `Imported ${n} new items`,
         save: 'Save', close: 'Close', cancel: 'Cancel', ok: 'Confirm', del: 'Delete', add: 'Add',
         emptySlot: 'Empty', assignBtn: 'Assign', clearSlot: 'Clear Slot', appendSlot: 'Keep existing slots',
-        pdfClear: 'Clear', pdfDown: 'Download', pdfSend: 'Send',
+        pdfClear: 'Clear', pdfDown: 'Download', pdfShare: 'Share', pdfSend: 'Send',
         savedOk: 'Saved successfully', offlineSaved: 'Offline — queued on device',
         syncNow: (n) => `Sync (${n})`, syncedOk: 'Offline queue synced',
         errPin: 'Invalid credentials', errStock: 'Insufficient stock', errNeedDoc: 'Enter document number', errNeedCount: 'Count at least one item first',
@@ -631,16 +664,17 @@
         editDocTitle: 'Edit / Swap / Add Item', addForgotten: 'Add Forgotten Item',
         voidDocBtn: 'Void Entire Document', unvoidAsk: 'Restore this voided document back to Active?',
         testBtn: 'Test', webhookBtn: 'Link Bot', approve: 'Approve', reject: 'Reject',
-        phOrgCode: 'Org Code', phOrgName: 'Organization Name', phBrName: 'Branch Name', phBrCode: 'Branch Code',
+        phOrgCode: 'Org Code', phOrgName: 'Organization Name', phBrName: 'Warehouse Name', phBrCode: 'Warehouse Code',
         phAdmName: 'Admin Name', phPin: 'PIN Code', phOldPin: 'Current PIN', phNewPin: 'New PIN',
         phStaffName: 'Staff Name', roleStaff: 'Staff', roleOrgAdm: 'Org Admin', roleSuper: 'Super Admin',
         chTg: 'Telegram', chWa: 'WhatsApp', chSms: 'SMS', chWh: 'Webhook', chAllBranches: 'All Branches',
         phChLabel: 'Channel Label', phChTarget: 'Chat ID / Phone / URL',
         phChCred1: 'Bot Token / API Key', phChCred2: 'Phone Number ID / Sender ID',
-        phCatName: 'New Category Name', phItemName: 'Item Name', phOpening: 'Opening Qty',
+        phCatName: 'New Category Name', phItemName: 'Item Name (32rx0.8 ➔ 32Ø×0.8)', phOpening: 'Opening Qty',
         phRackCode: 'Code', phRackName: 'Rack Name', phRackCols: 'Columns', phRackRows: 'Rows',
-        voidLabel: 'Void', metricVoid: 'Void', pdfLoading: 'PDF engine loading...', pdfLocal: 'Downloaded locally',
-        errGeneric: 'Operation failed', noItems: 'No records found', sortDoc: 'By Doc No', sortTime: 'By Time'
+        voidLabel: 'Void', metricVoid: 'Void', pdfLoading: 'Preparing PDF...', pdfLocal: 'Downloaded locally',
+        errGeneric: 'Operation failed', noItems: 'No records found', sortDoc: 'By Doc No', sortTime: 'By Time',
+        actShown: 'Action (⚙️) column shown', actHidden: 'Action (⚙️) column hidden', busyTxt: 'Sending...'
       }
     };
 
@@ -649,6 +683,7 @@
     let session = loadJson(SESSION_KEY, null);
     let formCfg = { ...DEFAULT_FORM_CFG, ...loadJson(FORM_CFG_KEY, {}) };
     let pdfCfg = { ...DEFAULT_PDF_CFG, ...loadJson(PDF_CFG_KEY, {}) };
+    let uiCfg = { ...DEFAULT_UI_CFG, ...loadJson(UI_CFG_KEY, {}) };
     let currentWhId = '';
     let whData = { warehouse: {}, items: [], categories: [], racks: [], slot_map: {}, last_doc_num: 0, next_doc_num: 1, pending_adjustments_count: 0, is_branch_admin: false, is_org_admin: false, org_warehouses: [] };
     let entryMode = 'OUT';
@@ -683,14 +718,86 @@
     let deferredInstallPrompt = null;
     let editVoidIds = [];
     let editAppendList = [];
+    let isBusyAction = false;
 
     function t(k) { return I18N[lang][k]; }
     function esc(s) { return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-    function vib(p) { if (navigator.vibrate) navigator.vibrate(p); }
+    function vib(p = 18) { try { if (navigator.vibrate) navigator.vibrate(p); } catch {} }
     function loadJson(k, def) { try { const r = localStorage.getItem(k); return r ? JSON.parse(r) : def; } catch { return def; } }
     function saveJson(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
     function roleLabel(r) { return r === 'SUPER_ADMIN' ? t('roleSuper') : (r === 'ORG_ADMIN' ? t('roleOrgAdm') : t('roleStaff')); }
     function docNumInt(v) { const m = String(v || '').match(/\d+/); return m ? parseInt(m[0], 10) : 0; }
+
+    // ድርብ-ንካ መከላከያ እና ንዝረት ለሁሉም አስፈላጊ ቁልፎች
+    async function withBusy(btnEl, fn) {
+      if (isBusyAction) return;
+      vib(24);
+      isBusyAction = true;
+      const prevTxt = btnEl ? btnEl.textContent : '';
+      if (btnEl) { btnEl.disabled = true; btnEl.classList.add('btn-busy'); btnEl.textContent = '...'; }
+      try {
+        return await fn();
+      } finally {
+        isBusyAction = false;
+        if (btnEl) { btnEl.disabled = false; btnEl.classList.remove('btn-busy'); if (btnEl.textContent === '...') btnEl.textContent = prevTxt; }
+      }
+    }
+
+    // የኪቦርድ ፈጣን አቋራጮች፦ 32rx0.8 -> 32Ø×0.8 | © -> Ø | x / * -> ×
+    function formatSmartDim(val) {
+      let s = String(val || '');
+      s = s.replace(/©/g, 'Ø');
+      s = s.replace(/(\d(?:\.\d+)?)\s*[rR](?=$|\s|[xX*×])/g, '$1Ø');
+      s = s.replace(/(\d|Ø|[LTZD])\s*[xX*]\s*(?=\d|\.)/g, '$1×');
+      s = s.replace(/(\d|Ø)\s*[xX*](?=$|\s)/g, '$1×');
+      return s;
+    }
+
+    function onSmartDimInput(el) {
+      const oldVal = el.value;
+      const newVal = formatSmartDim(oldVal);
+      if (newVal !== oldVal) {
+        const pos = el.selectionStart || newVal.length;
+        const diff = newVal.length - oldVal.length;
+        el.value = newVal;
+        try { el.setSelectionRange(Math.max(0, pos + diff), Math.max(0, pos + diff)); } catch {}
+      }
+    }
+
+    // የLTZ ልዩ ቅደም ተከተል (28/38/48 -> ውፍረት -> L, T, Z) እና የተፈጥሮ ቁጥር አደራደር
+    function parseLtzInfo(name) {
+      const m = String(name || '').trim().match(/^(\d+(?:\.\d+)?)\s*([LTZ])\s*[×x*]\s*(\d+(?:\.\d+)?)/i);
+      if (!m) return null;
+      const letterRank = { L: 1, T: 2, Z: 3 }[m[2].toUpperCase()] || 9;
+      return { size: parseFloat(m[1]), thick: parseFloat(m[3]), letterRank, groupKey: `${m[1]}_${m[3]}` };
+    }
+
+    function naturalTokens(str) {
+      return String(str || '').toLowerCase().match(/(\d+(?:\.\d+)?|\D+)/g) || [];
+    }
+
+    function compareItemsSmart(aName, bName, catName = '') {
+      const isLtzCat = /ltz/i.test(catName);
+      const la = parseLtzInfo(aName), lb = parseLtzInfo(bName);
+      if (isLtzCat || (la && lb)) {
+        if (la && lb) {
+          if (la.size !== lb.size) return la.size - lb.size;
+          if (la.thick !== lb.thick) return la.thick - lb.thick;
+          if (la.letterRank !== lb.letterRank) return la.letterRank - lb.letterRank;
+        } else if (la) return -1;
+        else if (lb) return 1;
+      }
+      const ta = naturalTokens(aName), tb = naturalTokens(bName);
+      const len = Math.max(ta.length, tb.length);
+      for (let i = 0; i < len; i++) {
+        if (ta[i] === undefined) return -1;
+        if (tb[i] === undefined) return 1;
+        const na = parseFloat(ta[i]), nb = parseFloat(tb[i]);
+        if (!isNaN(na) && !isNaN(nb)) { if (na !== nb) return na - nb; }
+        else { const c = ta[i].localeCompare(tb[i]); if (c !== 0) return c; }
+      }
+      return 0;
+    }
 
     function stripPadPrefix(val) {
       return String(val || '').trim().replace(/^(ፓድ\s*ቁ\.?\s*|ፓድ\s+|pad\s*no\.?\s*|pad\s+)/i, '').trim();
@@ -711,6 +818,33 @@
       return s;
     }
 
+    // ሁለት ቋንቋ የድርጅት ስም እና መግለጫ
+    function getBrandCfgMap() { return loadJson(BRAND_CFG_KEY, {}); }
+    function getCurrentOrgBrandObj() {
+      const orgId = whData.warehouse?.organization_id || session?.organization?.id || 'default';
+      const orgCode = (session?.organization?.code || '').toUpperCase();
+      const map = getBrandCfgMap();
+      const saved = map[orgId] || {};
+      const dbName = whData.warehouse?.brand_title || session?.organization?.brand_title || session?.organization?.name || '';
+      const dbTag = whData.warehouse?.tagline || session?.organization?.tagline || '';
+      const isSharp = orgCode === 'SHARP' || /ሻርፕ|sharp/i.test(dbName);
+      return {
+        amName: saved.amName || (isSharp ? 'ሻርፕ ሜታል' : (dbName || t('defaultBrand'))),
+        amSub: saved.amSub || (isSharp ? 'ትክክለኛ የብረት መፍትሄ' : (dbTag || t('defaultSub'))),
+        enName: saved.enName || (isSharp ? 'SHARP METAL' : (dbName || 'Warehouse')),
+        enSub: saved.enSub || (isSharp ? 'PRECISION METAL SOLUTION' : (dbTag || 'Inventory System')),
+      };
+    }
+    function getActiveBrand() { const b = getCurrentOrgBrandObj(); return lang === 'en' ? b.enName : b.amName; }
+    function getActiveTagline() { const b = getCurrentOrgBrandObj(); return lang === 'en' ? b.enSub : b.amSub; }
+    function applyBrandDisplay() {
+      const brand = getActiveBrand(), sub = getActiveTagline();
+      document.title = brand;
+      document.getElementById('topBrand').textContent = brand;
+      document.getElementById('topOrgSub').textContent = sub;
+      document.getElementById('drawerBrand').textContent = brand;
+    }
+
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault(); deferredInstallPrompt = e;
       const b = document.getElementById('btnInstallApp');
@@ -718,23 +852,10 @@
     });
 
     async function triggerPwaInstall() {
+      vib(20);
       if (!deferredInstallPrompt) return;
       deferredInstallPrompt.prompt(); await deferredInstallPrompt.userChoice;
       deferredInstallPrompt = null; document.getElementById('btnInstallApp').style.display = 'none';
-    }
-
-    function getBrandOverrides() { return loadJson(BRAND_OVERRIDE_KEY, {}); }
-    function getActiveBrand() {
-      const ov = getBrandOverrides();
-      const whId = whData.warehouse?.id || currentWhId;
-      const orgId = whData.warehouse?.organization_id || session?.organization?.id || '';
-      return ov[whId] || ov[orgId] || whData.warehouse?.brand_title || session?.organization?.brand_title || session?.organization?.name || t('defaultBrand');
-    }
-    function applyBrandDisplay() {
-      const brand = getActiveBrand();
-      document.title = brand;
-      document.getElementById('topBrand').textContent = brand;
-      document.getElementById('drawerBrand').textContent = brand;
     }
 
     function playTone(f, d, type = 'sine', vol = 0.12) {
@@ -760,7 +881,7 @@
       if (undoCb) {
         const b = document.createElement('button');
         b.className = 'toast-btn'; b.textContent = t('undo');
-        b.onclick = () => { el.remove(); undoCb(); };
+        b.onclick = () => { vib(18); el.remove(); undoCb(); };
         el.appendChild(b);
       }
       document.body.appendChild(el);
@@ -799,6 +920,7 @@
     async function syncOfflineQueue() {
       const q = getOfflineQueue();
       if (!q.length || !navigator.onLine || !session?.token) return;
+      vib(20);
       const remaining = []; let synced = 0;
       for (const job of q) {
         try {
@@ -827,28 +949,32 @@
     }
 
     async function doLogin() {
-      const errEl = document.getElementById('loginErr');
-      errEl.textContent = '...';
-      try {
-        let res;
-        if (authMode === 'EMAIL') {
-          const email = document.getElementById('inpLoginEmail').value.trim().toLowerCase();
-          const pass = document.getElementById('inpLoginPass').value;
-          if (!email || !pass) { errEl.textContent = t('errPin'); return; }
-          res = await callRpc('rpc_login_email', { p_email: email, p_password: pass });
-        } else {
-          const orgCode = document.getElementById('inpOrgCode').value.trim().toUpperCase();
-          const pin = document.getElementById('inpLoginPin').value.trim();
-          if (!pin) { errEl.textContent = t('errPin'); return; }
-          res = await callRpc('rpc_login', { p_org_code: orgCode, p_pin: pin });
-        }
-        if (!res || !res.success) { errEl.textContent = t('errPin'); return; }
-        session = res; saveJson(SESSION_KEY, session); errEl.textContent = '';
-        enterApp();
-      } catch { errEl.textContent = t('errGeneric'); }
+      const btn = document.getElementById('btnLoginSubmit');
+      await withBusy(btn, async () => {
+        const errEl = document.getElementById('loginErr');
+        errEl.textContent = '...';
+        try {
+          let res;
+          if (authMode === 'EMAIL') {
+            const email = document.getElementById('inpLoginEmail').value.trim().toLowerCase();
+            const pass = document.getElementById('inpLoginPass').value;
+            if (!email || !pass) { errEl.textContent = t('errPin'); return; }
+            res = await callRpc('rpc_login_email', { p_email: email, p_password: pass });
+          } else {
+            const orgCode = document.getElementById('inpOrgCode').value.trim().toUpperCase();
+            const pin = document.getElementById('inpLoginPin').value.trim();
+            if (!pin) { errEl.textContent = t('errPin'); return; }
+            res = await callRpc('rpc_login', { p_org_code: orgCode, p_pin: pin });
+          }
+          if (!res || !res.success) { errEl.textContent = t('errPin'); return; }
+          session = res; saveJson(SESSION_KEY, session); errEl.textContent = '';
+          enterApp();
+        } catch { errEl.textContent = t('errGeneric'); }
+      });
     }
 
     async function doLogout() {
+      vib(25);
       if (session?.token) callRpc('rpc_logout', { p_token: session.token }).catch(() => {});
       session = null; basket = []; dailyRows = []; stockRows = [];
       localStorage.removeItem(SESSION_KEY);
@@ -875,6 +1001,7 @@
       if (currentWhId) loadWarehouseData(currentWhId);
       renderStaticLabels();
       renderDynamicFormFields();
+      updateActionToggleBtns();
       updateSyncPill();
       syncOfflineQueue();
     }
@@ -889,9 +1016,7 @@
         if (res.org_warehouses && res.org_warehouses.length) {
           populateWarehouseSelector(res.org_warehouses.filter((w) => w.is_active !== false));
         }
-        const w = res.warehouse || {};
         applyBrandDisplay();
-        document.getElementById('topOrgSub').textContent = w.name || '';
         document.getElementById('drawerUserInfo').textContent = `${session.user.full_name} (${roleLabel(session.user.role)})`;
         if (entryMode === 'OUT') document.getElementById('inpDocNo').value = String(res.next_doc_num || 1);
         if (!auditTally.itemId && res.items.length) auditTally.itemId = res.items[0].id;
@@ -906,7 +1031,7 @@
 
     function switchWarehouse(id) { vib(18); basket = []; loadWarehouseData(id); }
 
-    // ==================== ገጽ 1: መመዝገቢያ እና ተለዋዋጭ ቅጽ ====================
+    // ==================== ገጽ 1: መመዝገቢያ ====================
     function renderDynamicFormFields() {
       const refInp = document.getElementById('inpRef');
       const mainRow = document.getElementById('outMainRow');
@@ -928,7 +1053,7 @@
     }
 
     function setEntryMode(m) {
-      entryMode = m; vib(16);
+      entryMode = m; vib(18);
       document.getElementById('btnModeOut').className = 'seg-btn' + (m === 'OUT' ? ' out' : '');
       document.getElementById('btnModeIn').className = 'seg-btn' + (m === 'IN' ? ' in' : '');
       document.getElementById('entryOutForm').style.display = m === 'OUT' ? 'block' : 'none';
@@ -941,7 +1066,12 @@
       const q = document.getElementById('inpSearch').value.trim().toLowerCase();
       const picked = {}; basket.forEach((b) => { picked[b.item_id] = b.qty; });
       const grid = document.getElementById('tilesGrid');
-      const filtered = (whData.items || []).filter((it) => !q || it.name.toLowerCase().includes(q) || (it.category_name || '').toLowerCase().includes(q));
+      const sorted = (whData.items || []).slice().sort((a, b) => {
+        const ca = (a.category_name || '').localeCompare(b.category_name || '');
+        if (ca !== 0) return ca;
+        return compareItemsSmart(a.name, b.name, a.category_name || '');
+      });
+      const filtered = sorted.filter((it) => !q || it.name.toLowerCase().includes(q) || (it.category_name || '').toLowerCase().includes(q));
       if (!filtered.length) {
         grid.innerHTML = `<div style="grid-column:span 2;text-align:center;padding:18px;color:var(--muted);font-weight:800;">${esc(t('noItems'))}</div>`;
         return;
@@ -968,14 +1098,15 @@
     }
 
     function quickAdd() {
-      const rawName = document.getElementById('inpSearch').value.trim();
+      vib(18);
+      const rawName = formatSmartDim(document.getElementById('inpSearch').value.trim());
       const q = rawName.toLowerCase();
       const qty = Math.floor(Number(document.getElementById('inpQuickQty').value || 0));
       if (!rawName || qty <= 0) return;
 
       const it = (whData.items || []).find((x) => x.name.toLowerCase() === q) || (whData.items || []).find((x) => x.name.toLowerCase().includes(q));
       if (!it) {
-        const cats = whData.categories || [];
+        const cats = (whData.categories || []).slice().sort((a, b) => a.name.localeCompare(b.name));
         openMainModal(t('quickNewTitle'), `
           <div class="sub-card" style="font-size:12px;font-weight:800;">
             <div>${esc(t('quickNewAsk')(rawName))}</div>
@@ -984,19 +1115,21 @@
           `<button type="button" class="btn muted" onclick="closeMainModal()">${esc(t('cancel'))}</button>
            <button type="button" class="btn teal" id="btnQNewGo">${esc(t('add'))}</button>`);
         document.getElementById('btnQNewGo').onclick = async () => {
-          const catId = document.getElementById('qNewCat').value;
-          const res = await callRpc('rpc_manage_catalog', {
-            p_token: session.token, p_warehouse_id: currentWhId, p_action: 'UPSERT_ITEM',
-            p_payload: { name: rawName, category_id: catId, opening_qty: 0 },
+          await withBusy(document.getElementById('btnQNewGo'), async () => {
+            const catId = document.getElementById('qNewCat').value;
+            const res = await callRpc('rpc_manage_catalog', {
+              p_token: session.token, p_warehouse_id: currentWhId, p_action: 'UPSERT_ITEM',
+              p_payload: { name: rawName, category_id: catId, opening_qty: 0 },
+            });
+            closeMainModal();
+            if (res.success && res.item_id) {
+              await loadWarehouseData(currentWhId);
+              addToBasket(res.item_id, rawName, qty, null);
+              document.getElementById('inpSearch').value = '';
+              document.getElementById('inpQuickQty').value = '';
+              showToast(t('savedOk'));
+            } else showToast(t('errGeneric'));
           });
-          closeMainModal();
-          if (res.success && res.item_id) {
-            await loadWarehouseData(currentWhId);
-            addToBasket(res.item_id, rawName, qty, null);
-            document.getElementById('inpSearch').value = '';
-            document.getElementById('inpQuickQty').value = '';
-            showToast(t('savedOk'));
-          } else showToast(t('errGeneric'));
         };
         return;
       }
@@ -1052,6 +1185,7 @@
     function updateDockTot() {
       const tot = basket.reduce((s, b) => s + Number(b.qty || 0), 0);
       document.getElementById('lblDockTot').textContent = t('dockTot')(basket.length, tot.toLocaleString());
+      document.getElementById('btnSendToTally').textContent = t('btnToTally');
       const btn = document.getElementById('btnCommitDoc');
       btn.className = 'dock-btn ' + (entryMode === 'OUT' ? 'out' : 'in');
       btn.textContent = entryMode === 'OUT' ? t('submitOut') : t('submitIn');
@@ -1089,38 +1223,7 @@
       window.addEventListener('pointerup', onUp);
     }
 
-    async function checkDocSilently() {
-      if (!navigator.onLine || !currentWhId || entryMode !== 'OUT') return;
-      try {
-        const r = await callRpc('rpc_check_doc_sequence', { p_token: session.token, p_warehouse_id: currentWhId });
-        if (r.success) {
-          whData.last_doc_num = r.last_doc_num; whData.next_doc_num = r.next_doc_num;
-          const inp = document.getElementById('inpDocNo');
-          if (!inp.value.trim()) inp.value = String(r.next_doc_num);
-        }
-      } catch {}
-    }
-
-    async function submitGenericDocument(docType, docNo, party, ref, itemsPayload, onSuccess) {
-      if (!itemsPayload.length) { showToast(t('errNeedCount')); return; }
-      if (docType === 'OUT' && !docNo) { showToast(t('errNeedDoc')); return; }
-
-      if (docType === 'OUT' && navigator.onLine) {
-        const chk = await callRpc('rpc_check_doc_sequence', { p_token: session.token, p_warehouse_id: currentWhId, p_doc_no: docNo });
-        if (chk.is_duplicate) {
-          openDuplicateModal(docNo, chk.existing, (adminPin) => executePostDocument(docType, docNo, party, ref, itemsPayload, null, adminPin, onSuccess));
-          return;
-        }
-        const nVal = Number(docNo);
-        if (whData.last_doc_num > 0 && nVal > whData.next_doc_num && !/^\d+-\d+$/.test(docNo)) {
-          openSeqJumpModal(docNo, whData.next_doc_num, (voidRange) => executePostDocument(docType, docNo, party, ref, itemsPayload, voidRange, null, onSuccess));
-          return;
-        }
-      }
-      executePostDocument(docType, docNo, party, ref, itemsPayload, null, null, onSuccess);
-    }
-
-    function handleDocumentSubmit() {
+    function readEntryHeader() {
       let docNo = '', party = '', ref = '';
       if (entryMode === 'OUT') {
         docNo = document.getElementById('inpDocNo').value.trim();
@@ -1152,16 +1255,77 @@
         if (nt) parts.push(nt);
         ref = parts.join(' | ') || '-';
       }
+      return { docNo, party, ref };
+    }
 
-      submitGenericDocument(
-        entryMode, docNo, party, ref,
-        basket.map((b) => ({ item_id: b.item_id, qty: b.qty, tally_proof: b.tally_proof || null })),
-        () => {
-          basket = [];
-          ['inpParty','inpRef','inpOutKg','inpOutDriver','inpOutPlate','inpOutNote','inpInSupplier','inpInDriver','inpInPlate','inpInDocNo','inpInKg','inpInNote'].forEach((id) => {
-            const el = document.getElementById(id); if (el) el.value = '';
-          });
+    function clearEntryInputs() {
+      basket = [];
+      ['inpParty','inpRef','inpOutKg','inpOutDriver','inpOutPlate','inpOutNote','inpInSupplier','inpInDriver','inpInPlate','inpInDocNo','inpInKg','inpInNote'].forEach((id) => {
+        const el = document.getElementById(id); if (el) el.value = '';
+      });
+      renderBasket(); renderTiles();
+    }
+
+    // ከመመዝገቢያ ወደ ቆጠራ ተራ መላኪያ (Optional Tally Queue)
+    function sendBasketToTally() {
+      if (!basket.length) return;
+      vib([25, 20, 30]);
+      const hdr = readEntryHeader();
+      const id = 'tk_' + Date.now() + '_' + Math.floor(Math.random() * 99);
+      const tkItems = basket.map((b) => ({ item_id: b.item_id, name: b.name, target: Number(b.qty || 0), strokes: [] }));
+      tickets.push({
+        id, dir: entryMode, docNo: hdr.docNo, party: hdr.party,
+        ref: entryMode === 'OUT' ? stripPadPrefix(hdr.ref) : hdr.ref,
+        items: tkItems, activeItemId: tkItems[0]?.item_id || '',
+      });
+      activeTicketId = id;
+      tallyTab = 'TICKET';
+      saveTallyState();
+      clearEntryInputs();
+      showToast(t('sentToTally'));
+      switchView('tally');
+    }
+
+    async function checkDocSilently() {
+      if (!navigator.onLine || !currentWhId || entryMode !== 'OUT') return;
+      try {
+        const r = await callRpc('rpc_check_doc_sequence', { p_token: session.token, p_warehouse_id: currentWhId });
+        if (r.success) {
+          whData.last_doc_num = r.last_doc_num; whData.next_doc_num = r.next_doc_num;
+          const inp = document.getElementById('inpDocNo');
+          if (!inp.value.trim()) inp.value = String(r.next_doc_num);
         }
+      } catch {}
+    }
+
+    async function submitGenericDocument(docType, docNo, party, ref, itemsPayload, onSuccess, btnEl = null) {
+      if (!itemsPayload.length) { showToast(t('errNeedCount')); return; }
+      if (docType === 'OUT' && !docNo) { showToast(t('errNeedDoc')); return; }
+
+      await withBusy(btnEl, async () => {
+        if (docType === 'OUT' && navigator.onLine) {
+          const chk = await callRpc('rpc_check_doc_sequence', { p_token: session.token, p_warehouse_id: currentWhId, p_doc_no: docNo });
+          if (chk.is_duplicate) {
+            openDuplicateModal(docNo, chk.existing, (adminPin) => executePostDocument(docType, docNo, party, ref, itemsPayload, null, adminPin, onSuccess));
+            return;
+          }
+          const nVal = Number(docNo);
+          if (whData.last_doc_num > 0 && nVal > whData.next_doc_num && !/^\d+-\d+$/.test(docNo)) {
+            openSeqJumpModal(docNo, whData.next_doc_num, (voidRange) => executePostDocument(docType, docNo, party, ref, itemsPayload, voidRange, null, onSuccess));
+            return;
+          }
+        }
+        await executePostDocument(docType, docNo, party, ref, itemsPayload, null, null, onSuccess);
+      });
+    }
+
+    function handleDocumentSubmit(btnEl) {
+      const hdr = readEntryHeader();
+      submitGenericDocument(
+        entryMode, hdr.docNo, hdr.party, hdr.ref,
+        basket.map((b) => ({ item_id: b.item_id, qty: b.qty, tally_proof: b.tally_proof || null })),
+        () => clearEntryInputs(),
+        btnEl
       );
     }
 
@@ -1233,6 +1397,7 @@
     }
 
     function promptDirectVoid() {
+      vib(18);
       const docNo = document.getElementById('inpDocNo').value.trim();
       if (!docNo) { showToast(t('errNeedDoc')); return; }
       openMainModal(t('voidLabel'), `<div class="sub-card" style="font-weight:900;text-align:center;">#${esc(docNo)} ➔ ${esc(t('voidLabel'))}</div>`,
@@ -1243,12 +1408,14 @@
 
     async function executeDirectVoid(docNo) {
       closeMainModal();
-      const res = await callRpc('rpc_post_document', {
-        p_token: session.token, p_warehouse_id: currentWhId, p_doc_type: 'VOID',
-        p_doc_no: docNo, p_party_name: t('voidLabel'), p_ref_no: '-', p_items: [],
-        p_idempotency_key: (crypto.randomUUID ? crypto.randomUUID() : 'v_' + Date.now()),
+      await withBusy(null, async () => {
+        const res = await callRpc('rpc_post_document', {
+          p_token: session.token, p_warehouse_id: currentWhId, p_doc_type: 'VOID',
+          p_doc_no: docNo, p_party_name: t('voidLabel'), p_ref_no: '-', p_items: [],
+          p_idempotency_key: (crypto.randomUUID ? crypto.randomUUID() : 'v_' + Date.now()),
+        });
+        if (res.success) { showToast(t('savedOk')); loadWarehouseData(currentWhId); } else showToast(t('errGeneric'));
       });
-      if (res.success) { showToast(t('savedOk')); loadWarehouseData(currentWhId); } else showToast(t('errGeneric'));
     }
 
     // ==================== ገጽ 2: ቆጠራ ====================
@@ -1298,6 +1465,7 @@
     function toggleFreeLock() { freeTally.lockTarget = !freeTally.lockTarget; vib(16); saveTallyState(); renderTally(); }
 
     function openInTally(itemId) {
+      vib(18);
       const it = (whData.items || []).find((x) => x.id === itemId);
       if (!it) return;
       tallyTab = 'TICKET';
@@ -1307,8 +1475,10 @@
     }
 
     function openTicketAddItemModal() {
+      vib(16);
       const tk = getActiveTicket();
-      const itemOpts = (whData.items || []).map((it) => `<option value="${it.id}">${esc(it.name)} (${it.stock})</option>`).join('');
+      const sorted = (whData.items || []).slice().sort((a, b) => compareItemsSmart(a.name, b.name, a.category_name || ''));
+      const itemOpts = sorted.map((it) => `<option value="${it.id}">${esc(it.name)} (${it.stock})</option>`).join('');
       const listHtml = tk.items.map((x) => `
         <div style="display:flex;justify-content:space-between;align-items:center;font-size:11.5px;font-weight:800;padding:4px 0;border-bottom:1px solid var(--border);">
           <span>${esc(x.name)} ${x.target > 0 ? `<b style="color:var(--teal);">(${x.target})</b>` : ''}</span>
@@ -1317,7 +1487,7 @@
 
       openMainModal(t('tkAddModalTitle'), `
         <div class="sub-card">
-          <input type="text" id="tkModFilter" class="inp" placeholder="${esc(t('searchPh'))}" oninput="filterTkItemSelect(this.value)">
+          <input type="text" id="tkModFilter" class="inp" placeholder="${esc(t('searchPh'))}" oninput="onSmartDimInput(this); filterTkItemSelect(this.value)">
           <select id="tkModSel" class="sel">${itemOpts}</select>
           <div class="grid-2">
             <input type="number" id="tkModTarget" class="inp mono" min="0" inputmode="numeric" placeholder="${esc(t('tkTargetPh'))}">
@@ -1332,6 +1502,7 @@
       const clean = q.trim().toLowerCase();
       document.getElementById('tkModSel').innerHTML = (whData.items || [])
         .filter((it) => !clean || it.name.toLowerCase().includes(clean))
+        .sort((a, b) => compareItemsSmart(a.name, b.name, a.category_name || ''))
         .map((it) => `<option value="${it.id}">${esc(it.name)} (${it.stock})</option>`).join('');
     }
 
@@ -1347,6 +1518,7 @@
     }
 
     function removeTicketItem(itemId) {
+      vib(16);
       const tk = getActiveTicket();
       tk.items = tk.items.filter((x) => x.item_id !== itemId);
       if (tk.activeItemId === itemId) tk.activeItemId = tk.items[0]?.item_id || '';
@@ -1441,8 +1613,9 @@
       });
     }
 
-    async function commitTally() {
+    async function commitTally(btnEl) {
       if (tallyTab === 'FREE') {
+        vib(20);
         const tot = sumStrokes(freeTally.strokes);
         if (tot <= 0) return;
         document.getElementById('inpQuickQty').value = String(tot);
@@ -1450,19 +1623,22 @@
       }
 
       if (tallyTab === 'AUDIT') {
-        const it = (whData.items || []).find((x) => x.id === auditTally.itemId);
-        if (!it) return;
-        const total = sumStrokes(auditTally.strokes);
-        const res = await callRpc('rpc_submit_adjustment', {
-          p_token: session.token, p_warehouse_id: currentWhId, p_item_id: it.id, p_counted_qty: total,
-          p_reason: total > it.stock ? t('adjPlusReason') : t('adjMinusReason'),
-          p_tally_proof: { mode: 'AUDIT', strokes: auditTally.strokes },
+        await withBusy(btnEl, async () => {
+          const it = (whData.items || []).find((x) => x.id === auditTally.itemId);
+          if (!it) return;
+          const total = sumStrokes(auditTally.strokes);
+          const res = await callRpc('rpc_submit_adjustment', {
+            p_token: session.token, p_warehouse_id: currentWhId, p_item_id: it.id, p_counted_qty: total,
+            p_reason: total > it.stock ? t('adjPlusReason') : t('adjMinusReason'),
+            p_tally_proof: { mode: 'AUDIT', strokes: auditTally.strokes },
+          });
+          if (!res.success) { showToast(t('errGeneric')); return; }
+          callBot({ action: 'notify_adjustment', warehouse_id: currentWhId, adjustment_id: res.adjustment_id }).catch(() => {});
+          auditTally.strokes = []; saveTallyState();
+          showToast(res.status === 'APPROVED' ? t('adjApproved') : t('adjPending'));
+          loadWarehouseData(currentWhId);
         });
-        if (!res.success) { showToast(t('errGeneric')); return; }
-        callBot({ action: 'notify_adjustment', warehouse_id: currentWhId, adjustment_id: res.adjustment_id }).catch(() => {});
-        auditTally.strokes = []; saveTallyState();
-        showToast(res.status === 'APPROVED' ? t('adjApproved') : t('adjPending'));
-        loadWarehouseData(currentWhId); return;
+        return;
       }
 
       const tk = getActiveTicket();
@@ -1475,7 +1651,7 @@
       submitGenericDocument(tk.dir, tk.docNo.trim(), tk.party.trim(), refFormatted, payloadItems, () => {
         tickets = tickets.filter((x) => x.id !== tk.id);
         ensureDefaultTicket(); saveTallyState(); renderTally();
-      });
+      }, btnEl);
     }
 
     function renderTicketBarOnly() {
@@ -1531,7 +1707,8 @@
         lk.style.borderColor = freeTally.lockTarget ? 'var(--teal)' : 'var(--border-strong)';
       } else {
         const sel = document.getElementById('selAuditItem');
-        sel.innerHTML = (whData.items || []).map((it) => `<option value="${it.id}" ${it.id === auditTally.itemId ? 'selected' : ''}>${esc(it.name)} (${it.stock})</option>`).join('');
+        const sorted = (whData.items || []).slice().sort((a, b) => compareItemsSmart(a.name, b.name, a.category_name || ''));
+        sel.innerHTML = sorted.map((it) => `<option value="${it.id}" ${it.id === auditTally.itemId ? 'selected' : ''}>${esc(it.name)} (${it.stock})</option>`).join('');
         const it = (whData.items || []).find((x) => x.id === auditTally.itemId);
         document.getElementById('inpAuditSys').value = it ? it.stock : 0;
       }
@@ -1609,6 +1786,7 @@
     }
 
     function openNumModal(mode) {
+      vib(16);
       openMainModal(mode === 'custom' ? t('perCarry') : t('odd'),
         `<input type="number" id="inpNumMod" class="inp mono" style="height:46px;font-size:20px;" min="1" inputmode="numeric" value="${mode === 'custom' ? carryMult : ''}">`,
         `<button type="button" class="btn muted" onclick="closeMainModal()">${esc(t('cancel'))}</button>
@@ -1621,40 +1799,126 @@
         if (mode === 'custom') { carryMult = v; saveTallyState(); renderTally(); } else addTallyStroke(v);
       };
     }
+    // ==================== የደህንነት ፒን / ፓስወርድ ማረጋገጫ ====================
+    function promptSecurityVerify(requireAdmin, onAuthorized) {
+      vib(20);
+      openMainModal(t('authVerifyTitle'), `
+        <div class="sub-card" style="font-size:12px;font-weight:800;">
+          <div>${esc(t('authVerifyMsg'))}</div>
+          <input type="password" id="inpSecCred" class="inp mono" style="height:42px;font-size:16px;" placeholder="${esc(t('authVerifyPh'))}" onkeydown="if(event.key==='Enter') document.getElementById('btnSecGo').click()">
+          <div id="secErr" style="color:var(--rose);font-size:11px;font-weight:900;text-align:center;"></div>
+        </div>`,
+        `<button type="button" class="btn muted" onclick="closeMainModal()">${esc(t('cancel'))}</button>
+         <button type="button" class="btn teal" id="btnSecGo">${esc(t('ok'))}</button>`);
 
-    // ==================== ገጽ 3: ዕለታዊ ====================
-    function getSortedDailyRows(rows, ascendingDoc = false) {
-      if (dailySort === 'TIME' && !ascendingDoc) return rows;
+      setTimeout(() => document.getElementById('inpSecCred')?.focus(), 50);
+      document.getElementById('btnSecGo').onclick = async () => {
+        const btn = document.getElementById('btnSecGo');
+        const val = document.getElementById('inpSecCred').value.trim();
+        const errEl = document.getElementById('secErr');
+        if (!val) { errEl.textContent = t('authVerifyWrong'); return; }
+
+        await withBusy(btn, async () => {
+          let verifiedUser = null;
+          try {
+            if (/^\d{4,6}$/.test(val)) {
+              const r = await callRpc('rpc_login', { p_org_code: session?.organization?.code || '', p_pin: val });
+              if (r?.success) {
+                verifiedUser = r.user;
+                callRpc('rpc_logout', { p_token: r.token }).catch(() => {});
+              }
+            }
+            if (!verifiedUser && session?.user?.email) {
+              const r2 = await callRpc('rpc_login_email', { p_email: session.user.email, p_password: val });
+              if (r2?.success) {
+                verifiedUser = r2.user;
+                callRpc('rpc_logout', { p_token: r2.token }).catch(() => {});
+              }
+            }
+          } catch {}
+
+          if (!verifiedUser) { errEl.textContent = t('authVerifyWrong'); vib([60, 40, 60]); return; }
+          const isAdm = verifiedUser.role === 'SUPER_ADMIN' || verifiedUser.role === 'ORG_ADMIN';
+          if (requireAdmin && !isAdm) { errEl.textContent = t('authVerifyWrong'); vib([60, 40, 60]); return; }
+
+          closeMainModal();
+          await onAuthorized(verifiedUser);
+        });
+      };
+    }
+
+    // ==================== የእርምጃ (⚙️) አምድ ማብሪያ / ማጥፊያ ====================
+    function updateActionToggleBtns() {
+      const dBtn = document.getElementById('btnDailyActToggle');
+      const sBtn = document.getElementById('btnStockActToggle');
+      if (dBtn) dBtn.className = 'icon-btn' + (uiCfg.showDailyActions ? ' on' : '');
+      if (sBtn) sBtn.className = 'icon-btn' + (uiCfg.showStockActions ? ' on' : '');
+    }
+
+    function toggleActionsCol(which) {
+      vib(18);
+      if (which === 'daily') {
+        uiCfg.showDailyActions = !uiCfg.showDailyActions;
+        showToast(uiCfg.showDailyActions ? t('actShown') : t('actHidden'));
+        renderDaily();
+      } else {
+        uiCfg.showStockActions = !uiCfg.showStockActions;
+        showToast(uiCfg.showStockActions ? t('actShown') : t('actHidden'));
+        renderStock();
+      }
+      saveJson(UI_CFG_KEY, uiCfg);
+      updateActionToggleBtns();
+    }
+
+    // ==================== ገጽ 3: ዕለታዊ (ከላይ የቆዩ ➔ ከታች አዳዲስ) ====================
+    function getSortedDailyRows(rows, forceDocAsc = false) {
       const groups = [], map = new Map();
       rows.forEach((r) => {
         const key = String(r.document_id || r.ledger_id);
         if (!map.has(key)) {
-          const g = { docNum: docNumInt(r.doc_no), docStr: String(r.doc_no || ''), lines: [] };
+          const g = { docNum: docNumInt(r.doc_no), docStr: String(r.doc_no || ''), isOpen: String(r.doc_no || '').toUpperCase() === 'OPENING', lines: [] };
           map.set(key, g); groups.push(g);
         }
         map.get(key).lines.push(r);
       });
-      groups.sort((a, b) => {
-        if (a.docNum !== b.docNum) return ascendingDoc ? (a.docNum - b.docNum) : (b.docNum - a.docNum);
-        return ascendingDoc ? a.docStr.localeCompare(b.docStr) : b.docStr.localeCompare(a.docStr);
-      });
-      const out = []; groups.forEach((g) => g.lines.forEach((l) => out.push(l)));
+
+      if (dailySort === 'TIME' && !forceDocAsc) {
+        // ዳታቤዙ አዲሱን ከላይ ስለሚልክ ገልብጠን የቆዩትን ከላይ፣ አዳዲሶቹን ከታች እናደርጋለን
+        groups.reverse();
+      } else {
+        groups.sort((a, b) => {
+          if (a.isOpen !== b.isOpen) return a.isOpen ? -1 : 1;
+          if (a.docNum !== b.docNum) return a.docNum - b.docNum;
+          return a.docStr.localeCompare(b.docStr);
+        });
+      }
+
+      const out = [];
+      groups.forEach((g) => g.lines.forEach((l) => out.push(l)));
       return out;
     }
 
     function toggleDailySort() {
-      dailySort = dailySort === 'DOC' ? 'TIME' : 'DOC'; vib(16);
+      dailySort = dailySort === 'DOC' ? 'TIME' : 'DOC'; vib(18);
       document.getElementById('btnDailySort').textContent = dailySort === 'DOC' ? '#' : '🕒';
-      showToast(dailySort === 'DOC' ? t('sortDoc') : t('sortTime')); renderDaily();
+      showToast(dailySort === 'DOC' ? t('sortDoc') : t('sortTime'));
+      renderDaily();
     }
 
-    async function loadDaily() {
+    async function loadDaily(scrollBottom = true) {
       const res = await callRpc('rpc_get_daily_ledger', { p_token: session.token, p_warehouse_id: currentWhId });
-      if (res.success) { dailyRows = res.rows || []; renderDaily(); }
+      if (res.success) {
+        dailyRows = res.rows || [];
+        renderDaily();
+        if (scrollBottom) {
+          const wrap = document.getElementById('dailyTblWrap');
+          if (wrap) requestAnimationFrame(() => { wrap.scrollTop = wrap.scrollHeight; });
+        }
+      }
     }
 
     function toggleZeroFilter() {
-      zeroFilter = !zeroFilter; vib(16);
+      zeroFilter = !zeroFilter; vib(18);
       document.getElementById('btnZeroOnly').style.background = zeroFilter ? 'var(--amber)' : 'var(--surface-deep)';
       document.getElementById('btnZeroOnly').style.color = zeroFilter ? '#000' : 'var(--amber)';
       renderDaily();
@@ -1662,7 +1926,11 @@
 
     function renderDaily() {
       const q = document.getElementById('inpDailySearch').value.trim().toLowerCase();
-      document.getElementById('dailyHead').innerHTML = `<tr>${t('dCols').map((c) => `<th>${esc(c)}</th>`).join('')}</tr>`;
+      const showAct = Boolean(uiCfg.showDailyActions);
+      const cols = showAct ? t('dCols') : t('dCols').slice(0, -1);
+      const colSpan = cols.length;
+      document.getElementById('dailyHead').innerHTML = `<tr>${cols.map((c) => `<th>${esc(c)}</th>`).join('')}</tr>`;
+
       let inT = 0, outT = 0, vCnt = 0, lastDoc = null;
       const html = [];
       const ordered = getSortedDailyRows(dailyRows, false);
@@ -1673,7 +1941,7 @@
         const txt = `${r.doc_no} ${r.item_name} ${r.party_name} ${r.ref_no} ${r.date_str}`.toLowerCase();
         if (q && !txt.includes(q)) return;
 
-        if (!q && lastDoc && lastDoc !== r.document_id) html.push('<tr class="r-sp"><td colspan="10"></td></tr>');
+        if (!q && lastDoc && lastDoc !== r.document_id) html.push(`<tr class="r-sp"><td colspan="${colSpan}"></td></tr>`);
         const same = (!q && lastDoc === r.document_id); lastDoc = r.document_id;
 
         const isVoid = r.status === 'VOIDED' || r.is_voided || r.doc_type === 'VOID';
@@ -1683,13 +1951,17 @@
         const isSel = pdfSelectType === 'daily' && Boolean(selectedPdfIds[selKey]);
         const cls = isSel ? 'r-sel' : (isVoid ? 'r-void' : (r.doc_type === 'IN' ? 'r-in' : (r.doc_type === 'ADJ' ? 'r-adj' : (r.is_zero_stock ? 'r-zero' : ''))));
 
-        let actionCell = '';
-        if (!same) {
-          if (isVoid && isBrAdm && r.doc_type !== 'VOID') {
-            actionCell = `<button type="button" class="icon-btn" style="width:auto;padding:0 6px;height:24px;font-size:10px;color:var(--emerald);border-color:var(--emerald);" onclick="event.stopPropagation();promptUnvoidDoc('${r.document_id}','${esc(r.doc_no)}')">↩ ${esc(t('unvoidShort'))}</button>`;
-          } else if (r.can_edit && !isVoid) {
-            actionCell = `<button type="button" class="icon-btn" style="width:26px;height:24px;font-size:11px;" onclick="event.stopPropagation();openEditDocModal('${r.document_id}')">⚙️</button>`;
+        let actionTd = '';
+        if (showAct) {
+          let actionBtn = '';
+          if (!same) {
+            if (isVoid && isBrAdm && r.doc_type !== 'VOID') {
+              actionBtn = `<button type="button" class="icon-btn" style="width:auto;padding:0 6px;height:24px;font-size:10px;color:var(--emerald);border-color:var(--emerald);" onclick="event.stopPropagation();promptUnvoidDoc('${r.document_id}','${esc(r.doc_no)}')">↩ ${esc(t('unvoidShort'))}</button>`;
+            } else if (r.can_edit && !isVoid) {
+              actionBtn = `<button type="button" class="icon-btn" style="width:26px;height:24px;font-size:11px;" onclick="event.stopPropagation();openEditDocModal('${r.document_id}')">⚙️</button>`;
+            }
           }
+          actionTd = `<td style="text-align:center;">${actionBtn}</td>`;
         }
 
         html.push(`
@@ -1703,33 +1975,38 @@
             <td>${esc(same ? '↳' : r.party_name)}</td>
             <td>${esc(same ? '↳' : displayRef(r.ref_no, r.doc_type))}</td>
             <td>${esc(same ? '↳' : r.date_str)}</td>
-            <td style="text-align:center;">${actionCell}</td>
+            ${actionTd}
           </tr>`);
       });
 
-      document.getElementById('dailyBody').innerHTML = html.length ? html.join('') : `<tr><td colspan="10" style="text-align:center;padding:16px;color:var(--muted);">${esc(t('noItems'))}</td></tr>`;
+      document.getElementById('dailyBody').innerHTML = html.length ? html.join('') : `<tr><td colspan="${colSpan}" style="text-align:center;padding:16px;color:var(--muted);">${esc(t('noItems'))}</td></tr>`;
       document.getElementById('dailyMetrics').innerHTML =
         `<span style="color:var(--emerald);">+${inT.toLocaleString()}</span><span style="color:var(--rose);">-${outT.toLocaleString()}</span><span style="color:var(--amber);">${esc(t('metricVoid'))}: ${vCnt}</span>`;
     }
 
     function promptUnvoidDoc(docId, docNo) {
+      vib(18);
       openMainModal(`↩ ${t('unvoidShort')} #${docNo}`, `<div class="sub-card" style="font-size:12px;font-weight:800;">${esc(t('unvoidAsk'))}</div>`,
         `<button type="button" class="btn muted" onclick="closeMainModal()">${esc(t('cancel'))}</button>
-         <button type="button" class="btn teal" onclick="executeUnvoidDoc('${docId}')">${esc(t('ok'))}</button>`);
+         <button type="button" class="btn teal" onclick="verifyAndUnvoid('${docId}')">${esc(t('ok'))}</button>`);
     }
 
-    async function executeUnvoidDoc(docId) {
-      const res = await callRpc('rpc_unvoid_document', { p_token: session.token, p_document_id: docId });
-      if (!res.success) { showToast(res.error === 'INSUFFICIENT_STOCK' ? t('errStock') : t('errGeneric')); return; }
-      closeMainModal(); showToast(t('savedOk')); loadWarehouseData(currentWhId); loadDaily();
+    function verifyAndUnvoid(docId) {
+      promptSecurityVerify(true, async () => {
+        const res = await callRpc('rpc_unvoid_document', { p_token: session.token, p_document_id: docId });
+        if (!res.success) { showToast(res.error === 'INSUFFICIENT_STOCK' ? t('errStock') : t('errGeneric')); return; }
+        showToast(t('savedOk')); loadWarehouseData(currentWhId); loadDaily(false);
+      });
     }
 
     function openEditDocModal(docId) {
+      vib(18);
       const lines = dailyRows.filter((r) => r.document_id === docId && !r.is_voided);
       if (!lines.length) return;
       editVoidIds = []; editAppendList = [];
       const head = lines[0];
-      const allOpts = (selId) => (whData.items || []).map((it) => `<option value="${it.id}" ${it.id === selId ? 'selected' : ''}>${esc(it.name)}</option>`).join('');
+      const sortedItems = (whData.items || []).slice().sort((a, b) => compareItemsSmart(a.name, b.name, a.category_name || ''));
+      const allOpts = (selId) => sortedItems.map((it) => `<option value="${it.id}" ${it.id === selId ? 'selected' : ''}>${esc(it.name)}</option>`).join('');
 
       const rowsHtml = lines.map((l) => `
         <div class="ed-line-row" data-lid="${l.ledger_id}" style="display:grid;grid-template-columns:1fr 64px 28px;gap:4px;align-items:center;">
@@ -1756,9 +2033,9 @@
           </div>
           <div id="edAppendedWrap" style="display:flex;flex-direction:column;gap:4px;"></div>
         </div>
-        <button type="button" class="btn danger" onclick="executeVoidDoc('${docId}')">${esc(t('voidDocBtn'))}</button>`,
+        <button type="button" class="btn danger" onclick="verifyAndVoidDoc('${docId}')">${esc(t('voidDocBtn'))}</button>`,
         `<button type="button" class="btn muted" onclick="closeMainModal()">${esc(t('cancel'))}</button>
-         <button type="button" class="btn teal" onclick="saveEditDoc('${docId}','${head.doc_type}')">${esc(t('save'))}</button>`);
+         <button type="button" class="btn teal" onclick="prepareSaveEditDoc('${docId}','${head.doc_type}')">${esc(t('save'))}</button>`);
     }
 
     function markLineVoid(btnEl, lid) {
@@ -1769,6 +2046,7 @@
     }
 
     function appendEditLine() {
+      vib(16);
       const sel = document.getElementById('edNewItemSel');
       const qty = Math.floor(Number(document.getElementById('edNewItemQty').value || 0));
       if (!sel.value || qty <= 0) return;
@@ -1782,7 +2060,7 @@
         </div>`).join('');
     }
 
-    async function saveEditDoc(docId, docType) {
+    function prepareSaveEditDoc(docId, docType) {
       const updates = Array.from(document.querySelectorAll('#edLinesWrap .ed-line-row'))
         .filter((row) => !editVoidIds.includes(Number(row.dataset.lid)))
         .map((row) => ({
@@ -1790,29 +2068,35 @@
           item_id: row.querySelector('.ed-item-sel').value,
           qty: Math.max(1, Number(row.querySelector('.ed-qty-inp').value || 1)),
         }));
+      const newDocNo = document.getElementById('edDocNo').value.trim();
+      const newParty = document.getElementById('edParty').value.trim();
       const rawRef = document.getElementById('edRef').value.trim();
       const newRef = docType === 'OUT' ? formatPadRef(rawRef) : rawRef;
+      const appendCopy = editAppendList.map((x) => ({ item_id: x.item_id, qty: x.qty }));
+      const voidCopy = editVoidIds.slice();
 
-      const res = await callRpc('rpc_edit_document', {
-        p_token: session.token, p_document_id: docId,
-        p_new_doc_no: document.getElementById('edDocNo').value.trim(),
-        p_new_party: document.getElementById('edParty').value.trim(),
-        p_new_ref: newRef,
-        p_line_updates: updates,
-        p_append_items: editAppendList.map((x) => ({ item_id: x.item_id, qty: x.qty })),
-        p_void_ledger_ids: editVoidIds,
+      promptSecurityVerify(voidCopy.length > 0, async () => {
+        const res = await callRpc('rpc_edit_document', {
+          p_token: session.token, p_document_id: docId,
+          p_new_doc_no: newDocNo, p_new_party: newParty, p_new_ref: newRef,
+          p_line_updates: updates, p_append_items: appendCopy, p_void_ledger_ids: voidCopy,
+        });
+        if (!res.success) { showToast(res.error === 'INSUFFICIENT_STOCK' ? t('errStock') : t('errGeneric')); return; }
+        showToast(t('savedOk')); loadWarehouseData(currentWhId); loadDaily(false);
       });
-      if (!res.success) { showToast(res.error === 'INSUFFICIENT_STOCK' ? t('errStock') : t('errGeneric')); return; }
-      closeMainModal(); showToast(t('savedOk')); loadWarehouseData(currentWhId); loadDaily();
     }
 
-    async function executeVoidDoc(docId) {
-      const res = await callRpc('rpc_void_document', { p_token: session.token, p_document_id: docId });
-      if (!res.success) { showToast(t('errGeneric')); return; }
-      closeMainModal(); showToast(t('savedOk')); loadWarehouseData(currentWhId); loadDaily();
+    function verifyAndVoidDoc(docId) {
+      promptSecurityVerify(false, async () => {
+        const res = await callRpc('rpc_void_document', { p_token: session.token, p_document_id: docId });
+        if (!res.success) { showToast(t('errGeneric')); return; }
+        showToast(t('savedOk')); loadWarehouseData(currentWhId); loadDaily(false);
+      });
     }
 
-    // ==================== ገጽ 4: ስቶክ እና ያልተቆረጠ ሊበጅ የሚችል ፒዲኤፍ ====================
+    // ==================== ገጽ 4: ስቶክ (ፊደል ቅደም ተከተል + LTZ + ካቴጎሪ ምርጫ + ማስተካከያ) ====================
+    let renderedStockGroups = [];
+
     function getPeriodBounds(p) {
       const now = new Date(), end = new Date(); let start = new Date(0);
       if (p === 'WEEK') { const d = new Date(now); const day = d.getDay() || 7; d.setHours(0,0,0,0); d.setDate(d.getDate() - (day - 1)); start = d; }
@@ -1821,7 +2105,7 @@
       return { start: start.toISOString(), end: end.toISOString() };
     }
 
-    function setStockPeriod(p) { stockPeriod = p; vib(16); loadStock(); }
+    function setStockPeriod(p) { stockPeriod = p; vib(18); loadStock(); }
 
     async function loadStock() {
       ['WEEK','LAST_WEEK','MONTH','ALL'].forEach((k) => {
@@ -1833,33 +2117,137 @@
       if (res.success) { stockRows = res.rows || []; renderStock(); }
     }
 
-    function renderStock() {
-      const q = document.getElementById('inpStockSearch').value.trim().toLowerCase();
-      document.getElementById('stockHead').innerHTML = `<tr>${t('sCols').map((c) => `<th>${esc(c)}</th>`).join('')}</tr>`;
+    function buildOrderedStockGroups(sourceRows, queryText = '') {
+      const q = queryText.trim().toLowerCase();
       const byCat = {};
-      stockRows.forEach((r) => {
-        if (q && !r.item_name.toLowerCase().includes(q) && !r.category_name.toLowerCase().includes(q)) return;
-        if (!byCat[r.category_name]) byCat[r.category_name] = [];
-        byCat[r.category_name].push(r);
+      sourceRows.forEach((r) => {
+        const cat = (r.category_name || 'ጠቅላላ').trim();
+        if (q && !r.item_name.toLowerCase().includes(q) && !cat.toLowerCase().includes(q)) return;
+        if (!byCat[cat]) byCat[cat] = [];
+        byCat[cat].push(r);
       });
+      return Object.keys(byCat)
+        .sort((a, b) => a.localeCompare(b))
+        .map((cat) => ({
+          cat,
+          items: byCat[cat].slice().sort((a, b) => compareItemsSmart(a.item_name, b.item_name, cat)),
+        }));
+    }
+
+    function renderStock() {
+      const q = document.getElementById('inpStockSearch').value;
+      const showAct = Boolean(uiCfg.showStockActions);
+      const cols = showAct ? t('sCols') : t('sCols').slice(0, -1);
+      const colSpan = cols.length;
+      document.getElementById('stockHead').innerHTML = `<tr>${cols.map((c) => `<th>${esc(c)}</th>`).join('')}</tr>`;
+
+      renderedStockGroups = buildOrderedStockGroups(stockRows, q);
+      const isBrAdm = whData.is_branch_admin || whData.is_org_admin || session?.user?.role === 'SUPER_ADMIN';
       const html = [];
-      Object.keys(byCat).forEach((cat) => {
-        html.push(`<tr class="r-cat"><td colspan="6">📁 ${esc(cat)}</td></tr>`);
-        byCat[cat].forEach((r) => {
+      let rowNum = 2;
+
+      renderedStockGroups.forEach((grp, gIdx) => {
+        if (gIdx > 0) {
+          html.push(`<tr class="r-sp"><td colspan="${colSpan}"></td></tr>`);
+          rowNum++;
+        }
+        const allSelected = grp.items.length > 0 && pdfSelectType === 'stock' && grp.items.every((it) => Boolean(selectedPdfIds[it.item_id]));
+        const catRowNum = rowNum++;
+        html.push(`
+          <tr class="r-cat ${allSelected ? 'cat-sel' : ''}" onclick="togglePdfCategory(${gIdx})">
+            <td style="text-align:center;color:var(--muted);">${catRowNum}</td>
+            <td colspan="${colSpan - (showAct ? 2 : 1)}">📁 ${esc(grp.cat)} <small style="opacity:0.75;">(${grp.items.length})</small></td>
+            ${showAct ? `<td style="text-align:center;"><span style="opacity:0.65;">${allSelected ? '☑️' : '📄'}</span></td>` : ''}
+          </tr>`);
+
+        let prevLtzKey = null;
+        grp.items.forEach((r) => {
+          const ltz = parseLtzInfo(r.item_name);
+          if (ltz && prevLtzKey && ltz.groupKey !== prevLtzKey) {
+            html.push(`<tr class="r-ltz-sp"><td colspan="${colSpan}"></td></tr>`);
+            rowNum++;
+          }
+          prevLtzKey = ltz ? ltz.groupKey : null;
+
+          const curRow = rowNum++;
           const isSel = pdfSelectType === 'stock' && Boolean(selectedPdfIds[r.item_id]);
-          const adjTxt = r.adj_net_qty === 0 ? '0' : (r.adj_net_qty > 0 ? `+${r.adj_net_qty}` : String(r.adj_net_qty));
+          const actTd = showAct
+            ? `<td style="text-align:center;">${isBrAdm ? `<button type="button" class="icon-btn" style="width:26px;height:24px;font-size:11px;" onclick="event.stopPropagation();openEditStockItemModal('${r.item_id}')">⚙️</button>` : ''}</td>`
+            : '';
+
           html.push(`
             <tr class="${isSel ? 'r-sel' : (r.closing_qty === 0 ? 'r-zero' : '')}" onclick="togglePdfRow('stock','${r.item_id}',this)">
+              <td style="text-align:center;color:var(--muted);">${curRow}</td>
               <td>${esc(r.item_name)}</td>
-              <td>${Number(r.opening_qty).toLocaleString()}</td>
-              <td style="color:var(--emerald);">+${Number(r.in_qty).toLocaleString()}</td>
-              <td style="color:var(--rose);">-${Number(r.out_qty).toLocaleString()}</td>
-              <td style="color:var(--primary);">${adjTxt}</td>
-              <td><b>${Number(r.closing_qty).toLocaleString()}</b></td>
+              <td style="text-align:center;">${Number(r.opening_qty).toLocaleString()}</td>
+              <td style="text-align:center;color:var(--emerald);">+${Number(r.in_qty).toLocaleString()}</td>
+              <td style="text-align:center;color:var(--rose);">-${Number(r.out_qty).toLocaleString()}</td>
+              <td style="text-align:center;"><b>${Number(r.closing_qty).toLocaleString()}</b></td>
+              ${actTd}
             </tr>`);
         });
       });
-      document.getElementById('stockBody').innerHTML = html.length ? html.join('') : `<tr><td colspan="6" style="text-align:center;padding:16px;color:var(--muted);">${esc(t('noItems'))}</td></tr>`;
+
+      document.getElementById('stockBody').innerHTML = html.length ? html.join('') : `<tr><td colspan="${colSpan}" style="text-align:center;padding:16px;color:var(--muted);">${esc(t('noItems'))}</td></tr>`;
+    }
+
+    // ካቴጎሪ ርዕስ ሲነካ ሁሉንም የካቴጎሪውን ዕቃዎች ለፒዲኤፍ መምረጥ
+    function togglePdfCategory(gIdx) {
+      const grp = renderedStockGroups[gIdx];
+      if (!grp || !grp.items.length) return;
+      vib(24);
+      if (pdfSelectType !== 'stock') { selectedPdfIds = {}; pdfSelectType = 'stock'; }
+      const allSel = grp.items.every((it) => Boolean(selectedPdfIds[it.item_id]));
+      grp.items.forEach((it) => {
+        if (allSel) delete selectedPdfIds[it.item_id];
+        else selectedPdfIds[it.item_id] = true;
+      });
+      updatePdfBar();
+      renderStock();
+    }
+
+    function openEditStockItemModal(itemId) {
+      vib(18);
+      const it = (whData.items || []).find((x) => x.id === itemId);
+      if (!it) return;
+      const cats = (whData.categories || []).slice().sort((a, b) => a.name.localeCompare(b.name));
+
+      openMainModal(t('editItemTitle'), `
+        <div class="sub-card">
+          <span class="lbl-sm">${esc(t('phItemName'))}</span>
+          <input id="edStItemName" class="inp" value="${esc(it.name)}" oninput="onSmartDimInput(this)">
+          <span class="lbl-sm">${esc(t('itemCatLbl'))}</span>
+          <select id="edStItemCat" class="sel">${cats.map((c) => `<option value="${c.id}" ${c.id === it.category_id ? 'selected' : ''}>${esc(c.name)}</option>`).join('')}</select>
+          <span class="lbl-sm" style="color:var(--teal);">${esc(t('itemAdjHint'))}</span>
+        </div>
+        <button type="button" class="btn danger" onclick="verifyDeleteStockItem('${itemId}')">🗑️ ${esc(t('itemDelBtn'))}</button>`,
+        `<button type="button" class="btn muted" onclick="closeMainModal()">${esc(t('cancel'))}</button>
+         <button type="button" class="btn teal" onclick="verifySaveStockItem('${itemId}')">${esc(t('save'))}</button>`);
+    }
+
+    function verifySaveStockItem(itemId) {
+      const newName = formatSmartDim(document.getElementById('edStItemName').value.trim());
+      const newCat = document.getElementById('edStItemCat').value;
+      if (!newName) return;
+      promptSecurityVerify(false, async () => {
+        const res = await callRpc('rpc_manage_catalog', {
+          p_token: session.token, p_warehouse_id: currentWhId, p_action: 'UPDATE_ITEM',
+          p_payload: { item_id: itemId, name: newName, category_id: newCat },
+        });
+        if (!res.success) { showToast(t('errGeneric')); return; }
+        showToast(t('savedOk')); await loadWarehouseData(currentWhId); loadStock();
+      });
+    }
+
+    function verifyDeleteStockItem(itemId) {
+      promptSecurityVerify(true, async () => {
+        const res = await callRpc('rpc_manage_catalog', {
+          p_token: session.token, p_warehouse_id: currentWhId, p_action: 'DELETE_ITEMS',
+          p_payload: { item_ids: [itemId] },
+        });
+        if (!res.success) { showToast(t('errGeneric')); return; }
+        showToast(t('savedOk')); await loadWarehouseData(currentWhId); loadStock();
+      });
     }
 
     function togglePdfRow(type, key, trEl) {
@@ -1870,202 +2258,237 @@
       updatePdfBar();
     }
 
-    function clearPdfSelection() { selectedPdfIds = {}; updatePdfBar(); if (pdfSelectType === 'daily') renderDaily(); else renderStock(); }
+    function clearPdfSelection() {
+      vib(16); selectedPdfIds = {}; updatePdfBar();
+      if (pdfSelectType === 'daily') renderDaily(); else renderStock();
+    }
+
     function updatePdfBar() {
       const cnt = Object.keys(selectedPdfIds).length;
       document.getElementById('pdfBar').style.display = cnt > 0 ? 'flex' : 'none';
       document.getElementById('btnPdfSend').textContent = `${t('pdfSend')} (${cnt})`;
     }
 
-    async function runSelectedPdf(sendToBot) {
+    async function runSelectedPdf(deliveryMode, btnEl) {
       const ids = Object.keys(selectedPdfIds);
       if (!ids.length) return;
-      await generateAndDeliverPdf(pdfSelectType === 'stock', ids, sendToBot, false);
+      await generateAndDeliverPdf(pdfSelectType === 'stock', ids, deliveryMode, false, btnEl);
       clearPdfSelection();
     }
 
     function openDailyPdfChoice() {
+      vib(18);
       openMainModal(t('pdfChoiceTitle'), `
         <div class="grid-2">
-          <button type="button" class="btn teal" onclick="closeMainModal();generateAndDeliverPdf(false,null,true,true)">${esc(t('pdfTodayBtn'))}</button>
-          <button type="button" class="btn primary" onclick="closeMainModal();generateAndDeliverPdf(false,null,true,false)">${esc(t('pdfFullBtn'))}</button>
+          <button type="button" class="btn teal" onclick="closeMainModal();generateAndDeliverPdf(false,null,'bot',true,this)">${esc(t('pdfTodayBtn'))}</button>
+          <button type="button" class="btn primary" onclick="closeMainModal();generateAndDeliverPdf(false,null,'bot',false,this)">${esc(t('pdfFullBtn'))}</button>
         </div>`,
         `<button type="button" class="btn muted" onclick="closeMainModal()">${esc(t('cancel'))}</button>
          <button type="button" class="btn muted" onclick="closeMainModal();openPdfCfgModal()">⚙️ ${esc(t('mPdfCfg'))}</button>`);
     }
 
-    async function exportCurrentViewPdf(isStock) { await generateAndDeliverPdf(isStock, null, true, false); }
+    async function exportCurrentViewPdf(isStock, btnEl) {
+      await generateAndDeliverPdf(isStock, null, 'bot', false, btnEl);
+    }
 
-    async function generateAndDeliverPdf(isStock, onlyIds, sendToBot, todayOnly = false) {
+    async function generateAndDeliverPdf(isStock, onlyIds, deliveryMode, todayOnly = false, btnEl = null) {
       if (!window.html2canvas || !window.jspdf) { showToast(t('pdfLoading')); return; }
-      const stage = document.getElementById('pdfStage');
-      const brand = getActiveBrand();
-      const dateStr = new Date().toLocaleDateString('en-GB');
-      const subTitle = pdfCfg.headerSub.trim() || (isStock ? t('pdfStockSub') : (todayOnly ? t('pdfTodaySub') : t('pdfDailySub')));
-      const title = `${brand} — ${subTitle} (${dateStr})`;
-      const fSize = pdfCfg.fontSize === 'sm' ? '10px' : (pdfCfg.fontSize === 'lg' ? '13.5px' : '11.5px');
-      const stagePx = pdfCfg.mode === 'A4_L' ? 1040 : 780;
-      stage.style.width = `${stagePx}px`;
 
-      let bodyHtml = '';
-      if (isStock) {
-        const list = onlyIds
-          ? stockRows.filter((r) => onlyIds.includes(r.item_id))
-          : stockRows.filter((r) => pdfCfg.stockShowZero || r.closing_qty > 0 || r.in_qty > 0 || r.out_qty > 0 || r.adj_net_qty !== 0);
-        const hasAdj = list.some((r) => Number(r.adj_net_qty || 0) !== 0);
-        const sm = t('sPdfMap');
-        const cols = [{ k: 'item', lbl: sm.item }];
-        if (pdfCfg.showOpening) cols.push({ k: 'open', lbl: sm.open });
-        cols.push({ k: 'inq', lbl: sm.inq }, { k: 'outq', lbl: sm.outq });
-        if (hasAdj) cols.push({ k: 'adj', lbl: sm.adj });
-        cols.push({ k: 'bal', lbl: sm.bal });
+      await withBusy(btnEl, async () => {
+        showToast(t('pdfLoading'));
+        const stage = document.getElementById('pdfStage');
+        const brand = getActiveBrand();
+        const dateStr = new Date().toLocaleDateString('en-GB');
+        const subTitle = pdfCfg.headerSub.trim() || (isStock ? t('pdfStockSub') : (todayOnly ? t('pdfTodaySub') : t('pdfDailySub')));
+        const title = `${brand} — ${subTitle} (${dateStr})`;
+        const fSize = pdfCfg.fontSize === 'sm' ? '10px' : (pdfCfg.fontSize === 'lg' ? '13.5px' : '11.5px');
+        const stagePx = pdfCfg.mode === 'A4_L' ? 1040 : 780;
+        stage.style.width = `${stagePx}px`;
 
-        let opT = 0, inT = 0, outT = 0, adjT = 0, clT = 0, lastCat = '';
-        const trs = list.map((r) => {
-          opT += Number(r.opening_qty); inT += Number(r.in_qty); outT += Number(r.out_qty); adjT += Number(r.adj_net_qty); clT += Number(r.closing_qty);
-          let catRow = '';
-          if (r.category_name !== lastCat) {
-            lastCat = r.category_name;
-            catRow = `<tr style="background:#1c4532;color:#fff;"><td colspan="${cols.length}" style="padding:6px 10px;font-weight:900;">${esc(lastCat)}</td></tr>`;
-          }
-          const lowLim = whData.warehouse?.low_limit || 20;
-          const bg = r.closing_qty === 0 ? '#f8d7da' : (r.closing_qty <= lowLim ? '#fff3cd' : '#ffffff');
-          const txtClr = r.closing_qty === 0 ? '#991b1b' : (r.closing_qty <= lowLim ? '#92400e' : '#0f172a');
-          const tds = cols.map((c) => {
-            if (c.k === 'item') return `<td style="padding:5px 10px;border:1px solid #cbd5e1;font-weight:800;">${esc(r.item_name)}</td>`;
-            if (c.k === 'open') return `<td style="padding:5px;border:1px solid #cbd5e1;text-align:center;font-weight:700;">${Number(r.opening_qty).toLocaleString()}</td>`;
-            if (c.k === 'inq') return `<td style="padding:5px;border:1px solid #cbd5e1;text-align:center;font-weight:700;">${Number(r.in_qty).toLocaleString()}</td>`;
-            if (c.k === 'outq') return `<td style="padding:5px;border:1px solid #cbd5e1;text-align:center;font-weight:700;">${Number(r.out_qty).toLocaleString()}</td>`;
-            if (c.k === 'adj') return `<td style="padding:5px;border:1px solid #cbd5e1;text-align:center;font-weight:700;">${Number(r.adj_net_qty).toLocaleString()}</td>`;
-            return `<td style="padding:5px;border:1px solid #cbd5e1;text-align:center;font-weight:900;">${Number(r.closing_qty).toLocaleString()}</td>`;
+        let bodyHtml = '';
+        if (isStock) {
+          const baseList = onlyIds
+            ? stockRows.filter((r) => onlyIds.includes(r.item_id))
+            : stockRows.filter((r) => pdfCfg.stockShowZero || r.closing_qty > 0 || r.in_qty > 0 || r.out_qty > 0 || r.adj_net_qty !== 0);
+          const groups = buildOrderedStockGroups(baseList, '');
+          const hasAdj = baseList.some((r) => Number(r.adj_net_qty || 0) !== 0);
+          const sm = t('sPdfMap');
+          const cols = [{ k: 'item', lbl: sm.item }];
+          if (pdfCfg.showOpening) cols.push({ k: 'open', lbl: sm.open });
+          cols.push({ k: 'inq', lbl: sm.inq }, { k: 'outq', lbl: sm.outq });
+          if (hasAdj) cols.push({ k: 'adj', lbl: sm.adj });
+          cols.push({ k: 'bal', lbl: sm.bal });
+
+          let opT = 0, inT = 0, outT = 0, adjT = 0, clT = 0, totalItems = 0;
+          const trArr = [];
+          groups.forEach((grp, gIdx) => {
+            if (gIdx > 0) trArr.push(`<tr style="background:#ffffff;"><td colspan="${cols.length}" style="height:8px;border:none;"></td></tr>`);
+            trArr.push(`<tr style="background:#1c4532;color:#fff;"><td colspan="${cols.length}" style="padding:6px 10px;font-weight:900;">${esc(grp.cat)}</td></tr>`);
+            let prevLtzKey = null;
+            grp.items.forEach((r) => {
+              const ltz = parseLtzInfo(r.item_name);
+              if (ltz && prevLtzKey && ltz.groupKey !== prevLtzKey) {
+                trArr.push(`<tr style="background:#f8fafc;"><td colspan="${cols.length}" style="height:5px;border-left:1px solid #cbd5e1;border-right:1px solid #cbd5e1;"></td></tr>`);
+              }
+              prevLtzKey = ltz ? ltz.groupKey : null;
+              totalItems++;
+              opT += Number(r.opening_qty); inT += Number(r.in_qty); outT += Number(r.out_qty); adjT += Number(r.adj_net_qty); clT += Number(r.closing_qty);
+              const lowLim = whData.warehouse?.low_limit || 20;
+              const bg = r.closing_qty === 0 ? '#f8d7da' : (r.closing_qty <= lowLim ? '#fff3cd' : '#ffffff');
+              const txtClr = r.closing_qty === 0 ? '#991b1b' : (r.closing_qty <= lowLim ? '#92400e' : '#0f172a');
+              const tds = cols.map((c) => {
+                if (c.k === 'item') return `<td style="padding:5px 10px;border:1px solid #cbd5e1;font-weight:800;">${esc(r.item_name)}</td>`;
+                if (c.k === 'open') return `<td style="padding:5px;border:1px solid #cbd5e1;text-align:center;font-weight:700;">${Number(r.opening_qty).toLocaleString()}</td>`;
+                if (c.k === 'inq') return `<td style="padding:5px;border:1px solid #cbd5e1;text-align:center;font-weight:700;">${Number(r.in_qty).toLocaleString()}</td>`;
+                if (c.k === 'outq') return `<td style="padding:5px;border:1px solid #cbd5e1;text-align:center;font-weight:700;">${Number(r.out_qty).toLocaleString()}</td>`;
+                if (c.k === 'adj') return `<td style="padding:5px;border:1px solid #cbd5e1;text-align:center;font-weight:700;">${Number(r.adj_net_qty).toLocaleString()}</td>`;
+                return `<td style="padding:5px;border:1px solid #cbd5e1;text-align:center;font-weight:900;">${Number(r.closing_qty).toLocaleString()}</td>`;
+              }).join('');
+              trArr.push(`<tr style="background:${bg};color:${txtClr};">${tds}</tr>`);
+            });
+          });
+
+          const footTds = cols.map((c) => {
+            if (c.k === 'item') return `<td style="padding:7px 10px;">${esc(t('pdfStockTot')(totalItems))}</td>`;
+            if (c.k === 'open') return `<td style="text-align:center;color:#fff;">${opT.toLocaleString()}</td>`;
+            if (c.k === 'inq') return `<td style="text-align:center;color:#86efac;">${inT.toLocaleString()}</td>`;
+            if (c.k === 'outq') return `<td style="text-align:center;color:#fca5a5;">${outT.toLocaleString()}</td>`;
+            if (c.k === 'adj') return `<td style="text-align:center;color:#7dd3fc;">${adjT.toLocaleString()}</td>`;
+            return `<td style="text-align:center;color:#fde047;">${clT.toLocaleString()}</td>`;
           }).join('');
-          return catRow + `<tr style="background:${bg};color:${txtClr};">${tds}</tr>`;
-        }).join('');
 
-        const footTds = cols.map((c) => {
-          if (c.k === 'item') return `<td style="padding:7px 10px;">${esc(t('pdfStockTot')(list.length))}</td>`;
-          if (c.k === 'open') return `<td style="text-align:center;color:#fff;">${opT.toLocaleString()}</td>`;
-          if (c.k === 'inq') return `<td style="text-align:center;color:#86efac;">${inT.toLocaleString()}</td>`;
-          if (c.k === 'outq') return `<td style="text-align:center;color:#fca5a5;">${outT.toLocaleString()}</td>`;
-          if (c.k === 'adj') return `<td style="text-align:center;color:#7dd3fc;">${adjT.toLocaleString()}</td>`;
-          return `<td style="text-align:center;color:#fde047;">${clT.toLocaleString()}</td>`;
-        }).join('');
+          bodyHtml = `<table style="width:100%;border-collapse:collapse;font-size:${fSize};">
+            <thead><tr style="background:#0f172a;color:#fff;">${cols.map((c) => `<th style="padding:7px;border:1px solid #334155;">${esc(c.lbl)}</th>`).join('')}</tr></thead>
+            <tbody>${trArr.join('') || `<tr><td colspan="${cols.length}" style="text-align:center;padding:18px;color:#64748b;">${esc(t('noItems'))}</td></tr>`}</tbody>
+            <tfoot><tr style="background:#0f172a;color:#38bdf8;font-weight:900;">${footTds}</tr></tfoot></table>`;
+        } else {
+          let rawList = onlyIds ? dailyRows.filter((r) => onlyIds.includes(String(r.ledger_id || r.document_id))) : dailyRows;
+          if (todayOnly) rawList = rawList.filter((r) => String(r.date_str || '').includes(dateStr));
+          const list = getSortedDailyRows(rawList, true);
+          const dm = t('dPdfMap');
+          const cols = [{ k: 'doc', lbl: dm.doc }, { k: 'item', lbl: dm.item }];
+          if (pdfCfg.showOpening) cols.push({ k: 'open', lbl: dm.open });
+          cols.push({ k: 'inq', lbl: dm.inq }, { k: 'outq', lbl: dm.outq }, { k: 'bal', lbl: dm.bal });
+          if (pdfCfg.showParty) cols.push({ k: 'party', lbl: dm.party });
+          if (pdfCfg.showRef) cols.push({ k: 'ref', lbl: dm.ref });
+          if (pdfCfg.showDate) cols.push({ k: 'date', lbl: dm.date });
 
-        bodyHtml = `<table style="width:100%;border-collapse:collapse;font-size:${fSize};">
-          <thead><tr style="background:#0f172a;color:#fff;">${cols.map((c) => `<th style="padding:7px;border:1px solid #334155;">${esc(c.lbl)}</th>`).join('')}</tr></thead>
-          <tbody>${trs || `<tr><td colspan="${cols.length}" style="text-align:center;padding:18px;color:#64748b;">${esc(t('noItems'))}</td></tr>`}</tbody>
-          <tfoot><tr style="background:#0f172a;color:#38bdf8;font-weight:900;">${footTds}</tr></tfoot></table>`;
-      } else {
-        let rawList = onlyIds ? dailyRows.filter((r) => onlyIds.includes(String(r.ledger_id || r.document_id))) : dailyRows;
-        if (todayOnly) rawList = rawList.filter((r) => String(r.date_str || '').includes(dateStr));
-        const list = getSortedDailyRows(rawList, true);
-        const dm = t('dPdfMap');
-        const cols = [{ k: 'doc', lbl: dm.doc }, { k: 'item', lbl: dm.item }];
-        if (pdfCfg.showOpening) cols.push({ k: 'open', lbl: dm.open });
-        cols.push({ k: 'inq', lbl: dm.inq }, { k: 'outq', lbl: dm.outq }, { k: 'bal', lbl: dm.bal });
-        if (pdfCfg.showParty) cols.push({ k: 'party', lbl: dm.party });
-        if (pdfCfg.showRef) cols.push({ k: 'ref', lbl: dm.ref });
-        if (pdfCfg.showDate) cols.push({ k: 'date', lbl: dm.date });
-
-        let lastDoc = null, inT = 0, outT = 0;
-        const trs = list.map((r) => {
-          let sp = '';
-          if (lastDoc && lastDoc !== r.document_id) sp = `<tr style="background:#f8fafc;"><td colspan="${cols.length}" style="height:5px;border-left:1px solid #cbd5e1;border-right:1px solid #cbd5e1;"></td></tr>`;
-          const same = lastDoc === r.document_id; lastDoc = r.document_id;
-          const isV = r.status === 'VOIDED' || r.is_voided || r.doc_type === 'VOID';
-          if (!isV) { inT += Number(r.qty_in || 0); outT += Number(r.qty_out || 0); }
-          const bg = isV ? '#f8d7da' : (r.doc_type === 'IN' ? '#d1fae5' : (r.doc_type === 'ADJ' ? '#dbeafe' : (r.is_zero_stock ? '#ffe599' : '#ffffff')));
-          const tds = cols.map((c) => {
-            if (c.k === 'doc') return `<td style="padding:5px 4px;border:1px solid #cbd5e1;text-align:center;font-weight:800;">${esc(same ? '↳' : r.doc_no)}</td>`;
-            if (c.k === 'item') return `<td style="padding:5px 8px;border:1px solid #cbd5e1;font-weight:800;">${esc(isV ? t('voidLabel') : r.item_name)}</td>`;
-            if (c.k === 'open') return `<td style="padding:5px 4px;border:1px solid #cbd5e1;text-align:center;font-weight:700;">${isV ? '-' : Number(r.opening_bal || 0).toLocaleString()}</td>`;
-            if (c.k === 'inq') return `<td style="padding:5px 4px;border:1px solid #cbd5e1;text-align:center;font-weight:700;">${r.qty_in ? Number(r.qty_in).toLocaleString() : ''}</td>`;
-            if (c.k === 'outq') return `<td style="padding:5px 4px;border:1px solid #cbd5e1;text-align:center;font-weight:700;">${r.qty_out ? Number(r.qty_out).toLocaleString() : ''}</td>`;
-            if (c.k === 'bal') return `<td style="padding:5px 4px;border:1px solid #cbd5e1;text-align:center;font-weight:900;">${isV ? '-' : Number(r.closing_bal || 0).toLocaleString()}</td>`;
-            if (c.k === 'party') return `<td style="padding:5px 6px;border:1px solid #cbd5e1;font-weight:700;">${esc(same ? '↳' : r.party_name)}</td>`;
-            if (c.k === 'ref') return `<td style="padding:5px 4px;border:1px solid #cbd5e1;text-align:center;font-weight:700;">${esc(same ? '↳' : displayRef(r.ref_no, r.doc_type))}</td>`;
-            return `<td style="padding:5px 4px;border:1px solid #cbd5e1;text-align:center;font-weight:700;">${esc(same ? '↳' : r.date_str)}</td>`;
+          let lastDoc = null, inT = 0, outT = 0;
+          const trs = list.map((r) => {
+            let sp = '';
+            if (lastDoc && lastDoc !== r.document_id) sp = `<tr style="background:#f8fafc;"><td colspan="${cols.length}" style="height:5px;border-left:1px solid #cbd5e1;border-right:1px solid #cbd5e1;"></td></tr>`;
+            const same = lastDoc === r.document_id; lastDoc = r.document_id;
+            const isV = r.status === 'VOIDED' || r.is_voided || r.doc_type === 'VOID';
+            if (!isV) { inT += Number(r.qty_in || 0); outT += Number(r.qty_out || 0); }
+            const bg = isV ? '#f8d7da' : (r.doc_type === 'IN' ? '#d1fae5' : (r.doc_type === 'ADJ' ? '#dbeafe' : (r.is_zero_stock ? '#ffe599' : '#ffffff')));
+            const tds = cols.map((c) => {
+              if (c.k === 'doc') return `<td style="padding:5px 4px;border:1px solid #cbd5e1;text-align:center;font-weight:800;">${esc(same ? '↳' : r.doc_no)}</td>`;
+              if (c.k === 'item') return `<td style="padding:5px 8px;border:1px solid #cbd5e1;font-weight:800;">${esc(isV ? t('voidLabel') : r.item_name)}</td>`;
+              if (c.k === 'open') return `<td style="padding:5px 4px;border:1px solid #cbd5e1;text-align:center;font-weight:700;">${isV ? '-' : Number(r.opening_bal || 0).toLocaleString()}</td>`;
+              if (c.k === 'inq') return `<td style="padding:5px 4px;border:1px solid #cbd5e1;text-align:center;font-weight:700;">${r.qty_in ? Number(r.qty_in).toLocaleString() : ''}</td>`;
+              if (c.k === 'outq') return `<td style="padding:5px 4px;border:1px solid #cbd5e1;text-align:center;font-weight:700;">${r.qty_out ? Number(r.qty_out).toLocaleString() : ''}</td>`;
+              if (c.k === 'bal') return `<td style="padding:5px 4px;border:1px solid #cbd5e1;text-align:center;font-weight:900;">${isV ? '-' : Number(r.closing_bal || 0).toLocaleString()}</td>`;
+              if (c.k === 'party') return `<td style="padding:5px 6px;border:1px solid #cbd5e1;font-weight:700;">${esc(same ? '↳' : r.party_name)}</td>`;
+              if (c.k === 'ref') return `<td style="padding:5px 4px;border:1px solid #cbd5e1;text-align:center;font-weight:700;">${esc(same ? '↳' : displayRef(r.ref_no, r.doc_type))}</td>`;
+              return `<td style="padding:5px 4px;border:1px solid #cbd5e1;text-align:center;font-weight:700;">${esc(same ? '↳' : r.date_str)}</td>`;
+            }).join('');
+            return sp + `<tr style="background:${bg};">${tds}</tr>`;
           }).join('');
-          return sp + `<tr style="background:${bg};">${tds}</tr>`;
-        }).join('');
 
-        const inIdx = cols.findIndex((c) => c.k === 'inq');
-        const outIdx = cols.findIndex((c) => c.k === 'outq');
-        const rightSpan = cols.length - outIdx - 1;
-        const footHtml = `<tr style="background:#0f172a;color:#38bdf8;font-weight:900;">
-          <td colspan="${inIdx}" style="padding:7px 8px;text-align:left;">${esc(t('pdfTotLabel'))}</td>
-          <td style="padding:7px 4px;text-align:center;color:#86efac;">${inT.toLocaleString()}</td>
-          <td style="padding:7px 4px;text-align:center;color:#fca5a5;">${outT.toLocaleString()}</td>
-          ${rightSpan > 1 ? `<td colspan="${rightSpan - 1}" style="padding:7px 6px;text-align:center;color:#e2e8f0;">${esc(t('pdfRowsCount')(list.length))}</td><td style="padding:7px 4px;text-align:center;color:#38bdf8;">${dateStr}</td>`
-            : `<td style="padding:7px 4px;text-align:center;color:#38bdf8;">${dateStr}</td>`}
-        </tr>`;
+          const inIdx = cols.findIndex((c) => c.k === 'inq');
+          const outIdx = cols.findIndex((c) => c.k === 'outq');
+          const rightSpan = cols.length - outIdx - 1;
+          const footHtml = `<tr style="background:#0f172a;color:#38bdf8;font-weight:900;">
+            <td colspan="${inIdx}" style="padding:7px 8px;text-align:left;">${esc(t('pdfTotLabel'))}</td>
+            <td style="padding:7px 4px;text-align:center;color:#86efac;">${inT.toLocaleString()}</td>
+            <td style="padding:7px 4px;text-align:center;color:#fca5a5;">${outT.toLocaleString()}</td>
+            ${rightSpan > 1 ? `<td colspan="${rightSpan - 1}" style="padding:7px 6px;text-align:center;color:#e2e8f0;">${esc(t('pdfRowsCount')(list.length))}</td><td style="padding:7px 4px;text-align:center;color:#38bdf8;">${dateStr}</td>`
+              : `<td style="padding:7px 4px;text-align:center;color:#38bdf8;">${dateStr}</td>`}
+          </tr>`;
 
-        bodyHtml = `<table style="width:100%;border-collapse:collapse;font-size:${fSize};">
-          <thead><tr style="background:#0f172a;color:#fff;">${cols.map((c) => `<th style="padding:6px 4px;border:1px solid #334155;">${esc(c.lbl)}</th>`).join('')}</tr></thead>
-          <tbody>
-            ${trs || `<tr><td colspan="${cols.length}" style="text-align:center;padding:18px;color:#64748b;">${esc(t('noItems'))}</td></tr>`}
-            <tr><td colspan="${cols.length}" style="text-align:center;padding:6px;color:#94a3b8;font-size:10px;font-weight:700;">${esc(t('pdfEndList'))}</td></tr>
-          </tbody>
-          <tfoot>${footHtml}</tfoot></table>`;
-      }
+          bodyHtml = `<table style="width:100%;border-collapse:collapse;font-size:${fSize};">
+            <thead><tr style="background:#0f172a;color:#fff;">${cols.map((c) => `<th style="padding:6px 4px;border:1px solid #334155;">${esc(c.lbl)}</th>`).join('')}</tr></thead>
+            <tbody>
+              ${trs || `<tr><td colspan="${cols.length}" style="text-align:center;padding:18px;color:#64748b;">${esc(t('noItems'))}</td></tr>`}
+              <tr><td colspan="${cols.length}" style="text-align:center;padding:6px;color:#94a3b8;font-size:10px;font-weight:700;">${esc(t('pdfEndList'))}</td></tr>
+            </tbody>
+            <tfoot>${footHtml}</tfoot></table>`;
+        }
 
-      const noteHtml = pdfCfg.footerNote.trim() ? `<div style="margin-top:8px;font-size:11px;font-weight:700;color:#334155;text-align:center;">${esc(pdfCfg.footerNote.trim())}</div>` : '';
-      const signHtml = pdfCfg.showSign ? `<div style="display:flex;justify-content:space-between;margin-top:18px;padding:0 14px;font-size:11px;font-weight:800;color:#0f172a;"><span>${esc(t('pdfSignPrep'))}</span><span>${esc(t('pdfSignApp'))}</span></div>` : '';
+        const noteHtml = pdfCfg.footerNote.trim() ? `<div style="margin-top:8px;font-size:11px;font-weight:700;color:#334155;text-align:center;">${esc(pdfCfg.footerNote.trim())}</div>` : '';
+        const signHtml = pdfCfg.showSign ? `<div style="display:flex;justify-content:space-between;margin-top:18px;padding:0 14px;font-size:11px;font-weight:800;color:#0f172a;"><span>${esc(t('pdfSignPrep'))}</span><span>${esc(t('pdfSignApp'))}</span></div>` : '';
 
-      stage.innerHTML = `<div style="background:#090e17;color:#38bdf8;padding:10px;text-align:center;font-size:14.5px;font-weight:900;margin-bottom:2px;">${esc(title)}</div>${bodyHtml}${noteHtml}${signHtml}`;
-      const canvas = await window.html2canvas(stage, { scale: 2, backgroundColor: '#ffffff', width: stagePx, windowWidth: stagePx, scrollX: 0, scrollY: 0 });
-      const { jsPDF } = window.jspdf;
-      const imgData = canvas.toDataURL('image/png');
-      const margin = 12;
+        stage.innerHTML = `<div style="background:#090e17;color:#38bdf8;padding:10px;text-align:center;font-size:14.5px;font-weight:900;margin-bottom:2px;">${esc(title)}</div>${bodyHtml}${noteHtml}${signHtml}`;
+        const canvas = await window.html2canvas(stage, { scale: 2, backgroundColor: '#ffffff', width: stagePx, windowWidth: stagePx, scrollX: 0, scrollY: 0 });
+        const { jsPDF } = window.jspdf;
+        const imgData = canvas.toDataURL('image/png');
+        const margin = 12;
 
-      // jsPDF ጎንና ቁመት እንዳይገለብጥ orientation ን ከpw/ph ጋር በትክክል ማዛመድ
-      let pw = 595, ph = 842, singleFit = false;
-      if (pdfCfg.mode === 'A4_P') { pw = 595; ph = 842; }
-      else if (pdfCfg.mode === 'A4_L') { pw = 842; ph = 595; }
-      else if (pdfCfg.mode === 'CUSTOM') {
-        pw = Math.max(220, Math.round((Number(pdfCfg.widthMm) || 210) * 2.83465));
-        ph = Math.max(220, Math.round((Number(pdfCfg.heightMm) || 297) * 2.83465));
-      } else {
-        pw = 595;
-        const fitImgH = (canvas.height * (pw - margin * 2)) / canvas.width;
-        if (fitImgH <= 2200) { ph = Math.max(180, Math.ceil(fitImgH + margin * 2)); singleFit = true; }
-        else { ph = 842; }
-      }
+        let pw = 595, ph = 842, singleFit = false;
+        if (pdfCfg.mode === 'A4_P') { pw = 595; ph = 842; }
+        else if (pdfCfg.mode === 'A4_L') { pw = 842; ph = 595; }
+        else if (pdfCfg.mode === 'CUSTOM') {
+          pw = Math.max(220, Math.round((Number(pdfCfg.widthMm) || 210) * 2.83465));
+          ph = Math.max(220, Math.round((Number(pdfCfg.heightMm) || 297) * 2.83465));
+        } else {
+          pw = 595;
+          const fitImgH = (canvas.height * (pw - margin * 2)) / canvas.width;
+          if (fitImgH <= 2200) { ph = Math.max(180, Math.ceil(fitImgH + margin * 2)); singleFit = true; }
+          else { ph = 842; }
+        }
 
-      const orient = pw > ph ? 'l' : 'p';
-      const pdf = new jsPDF({ orientation: orient, unit: 'pt', format: [pw, ph] });
-      const actualW = pdf.internal.pageSize.getWidth();
-      const actualH = pdf.internal.pageSize.getHeight();
-      const imgW = actualW - margin * 2;
-      const imgH = (canvas.height * imgW) / canvas.width;
+        const orient = pw > ph ? 'l' : 'p';
+        const pdf = new jsPDF({ orientation: orient, unit: 'pt', format: [pw, ph] });
+        const actualW = pdf.internal.pageSize.getWidth();
+        const actualH = pdf.internal.pageSize.getHeight();
+        const imgW = actualW - margin * 2;
+        const imgH = (canvas.height * imgW) / canvas.width;
 
-      if (singleFit || imgH <= actualH - margin * 2) {
-        pdf.addImage(imgData, 'PNG', margin, margin, imgW, imgH);
-      } else {
-        let leftH = imgH, pos = margin;
-        pdf.addImage(imgData, 'PNG', margin, pos, imgW, imgH);
-        leftH -= (actualH - margin * 2);
-        while (leftH > 0) {
-          pos = leftH - imgH + margin;
-          pdf.addPage([pw, ph], orient);
+        if (singleFit || imgH <= actualH - margin * 2) {
+          pdf.addImage(imgData, 'PNG', margin, margin, imgW, imgH);
+        } else {
+          let leftH = imgH, pos = margin;
           pdf.addImage(imgData, 'PNG', margin, pos, imgW, imgH);
           leftH -= (actualH - margin * 2);
+          while (leftH > 0) {
+            pos = leftH - imgH + margin;
+            pdf.addPage([pw, ph], orient);
+            pdf.addImage(imgData, 'PNG', margin, pos, imgW, imgH);
+            leftH -= (actualH - margin * 2);
+          }
         }
-      }
 
-      const fileName = `${isStock ? 'Stock' : (todayOnly ? 'Daily_Today' : 'Daily_Full')}_${dateStr.replace(/\//g, '-')}.pdf`;
-      if (!sendToBot) { pdf.save(fileName); return; }
-
-      try {
+        const fileName = `${isStock ? 'Stock' : (todayOnly ? 'Daily_Today' : 'Daily_Full')}_${dateStr.replace(/\//g, '-')}.pdf`;
         const blob = pdf.output('blob');
-        const fd = new FormData();
-        fd.append('token', session.token); fd.append('warehouse_id', currentWhId);
-        fd.append('report_title', title); fd.append('file', blob, fileName);
-        const res = await fetch(`${SUPABASE_URL}/functions/v1/${BOT_FUNCTION}`, {
-          method: 'POST', headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'x-session-token': session.token }, body: fd,
-        }).then((r) => r.json());
-        if (res.success) showToast(t('savedOk')); else { pdf.save(fileName); showToast(t('pdfLocal')); }
-      } catch { pdf.save(fileName); showToast(t('pdfLocal')); }
+
+        if (deliveryMode === 'download') {
+          pdf.save(fileName); vib([25, 25, 35]); showToast(t('pdfLocal')); return;
+        }
+
+        if (deliveryMode === 'share') {
+          try {
+            const fileObj = new File([blob], fileName, { type: 'application/pdf' });
+            if (navigator.canShare && navigator.canShare({ files: [fileObj] })) {
+              await navigator.share({ files: [fileObj], title });
+              vib([25, 25, 35]); return;
+            }
+          } catch {}
+          pdf.save(fileName); showToast(t('pdfLocal')); return;
+        }
+
+        try {
+          const fd = new FormData();
+          fd.append('token', session.token); fd.append('warehouse_id', currentWhId);
+          fd.append('report_title', title); fd.append('file', blob, fileName);
+          const res = await fetch(`${SUPABASE_URL}/functions/v1/${BOT_FUNCTION}`, {
+            method: 'POST', headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'x-session-token': session.token }, body: fd,
+          }).then((r) => r.json());
+          if (res.success) { vib([30, 25, 45]); showToast(t('savedOk')); }
+          else { pdf.save(fileName); showToast(t('pdfLocal')); }
+        } catch {
+          pdf.save(fileName); showToast(t('pdfLocal'));
+        }
+      });
     }
 
     // ==================== ገጽ 5: ካርታ + ካሜራ ስካነር ====================
@@ -2119,25 +2542,29 @@
           <span>• ${esc(x.item_name)}</span>
           <button type="button" class="icon-btn" style="width:24px;height:24px;color:var(--rose);" onclick="removeBinItem('${singleSlot}','${x.item_id}')">✕</button>
         </div>`).join('');
+      const sorted = (whData.items || []).slice().sort((a, b) => compareItemsSmart(a.name, b.name, a.category_name || ''));
 
       openMainModal(`📍 ${activeModalSlots.join(', ')}`, `
         ${curHtml ? `<div class="sub-card">${curHtml}</div>` : ''}
-        <select id="selBinIt" class="sel">${(whData.items || []).map((it) => `<option value="${it.id}">${esc(it.name)}</option>`).join('')}</select>
+        <select id="selBinIt" class="sel">${sorted.map((it) => `<option value="${it.id}">${esc(it.name)}</option>`).join('')}</select>
         <label class="chk-row"><input type="checkbox" id="chkBinApp" checked><span>${esc(t('appendSlot'))}</span></label>`,
         `${singleSlot ? `<button type="button" class="btn danger" onclick="clearSingleBin('${singleSlot}')">${esc(t('clearSlot'))}</button>` : `<button type="button" class="btn muted" onclick="closeMainModal()">${esc(t('cancel'))}</button>`}
-         <button type="button" class="btn teal" onclick="saveBinAssign()">${esc(t('assignBtn'))}</button>`);
+         <button type="button" class="btn teal" onclick="saveBinAssign(this)">${esc(t('assignBtn'))}</button>`);
     }
 
-    async function saveBinAssign() {
-      const itemId = document.getElementById('selBinIt').value, append = document.getElementById('chkBinApp').checked;
-      if (!itemId || !activeModalSlots.length) return;
-      const res = await callRpc('rpc_manage_bin_slots', { p_token: session.token, p_warehouse_id: currentWhId, p_action: 'ASSIGN', p_slots: activeModalSlots, p_item_id: itemId, p_append_mode: append });
-      if (res.success) { closeMainModal(); if (bulkMapMode) toggleBulkMap(); showToast(t('savedOk')); loadWarehouseData(currentWhId); }
+    async function saveBinAssign(btnEl) {
+      await withBusy(btnEl, async () => {
+        const itemId = document.getElementById('selBinIt').value, append = document.getElementById('chkBinApp').checked;
+        if (!itemId || !activeModalSlots.length) return;
+        const res = await callRpc('rpc_manage_bin_slots', { p_token: session.token, p_warehouse_id: currentWhId, p_action: 'ASSIGN', p_slots: activeModalSlots, p_item_id: itemId, p_append_mode: append });
+        if (res.success) { closeMainModal(); if (bulkMapMode) toggleBulkMap(); showToast(t('savedOk')); loadWarehouseData(currentWhId); }
+      });
     }
-    async function removeBinItem(slot, itemId) { await callRpc('rpc_manage_bin_slots', { p_token: session.token, p_warehouse_id: currentWhId, p_action: 'REMOVE_ITEM', p_slots: [slot], p_item_id: itemId }); closeMainModal(); loadWarehouseData(currentWhId); }
-    async function clearSingleBin(slot) { await callRpc('rpc_manage_bin_slots', { p_token: session.token, p_warehouse_id: currentWhId, p_action: 'CLEAR_SLOT', p_slots: [slot] }); closeMainModal(); loadWarehouseData(currentWhId); }
+    async function removeBinItem(slot, itemId) { vib(18); await callRpc('rpc_manage_bin_slots', { p_token: session.token, p_warehouse_id: currentWhId, p_action: 'REMOVE_ITEM', p_slots: [slot], p_item_id: itemId }); closeMainModal(); loadWarehouseData(currentWhId); }
+    async function clearSingleBin(slot) { vib(20); await callRpc('rpc_manage_bin_slots', { p_token: session.token, p_warehouse_id: currentWhId, p_action: 'CLEAR_SLOT', p_slots: [slot] }); closeMainModal(); loadWarehouseData(currentWhId); }
 
     async function openQrScanner() {
+      vib(18);
       openMainModal(t('qrTitle'), `
         <video id="qrVideo" class="qr-video" autoplay playsinline muted></video>
         <input type="text" id="inpQrManual" class="inp mono" placeholder="${esc(t('qrManualPh'))}" onkeydown="if(event.key==='Enter') jumpToScannedSlot(this.value)">`,
@@ -2187,10 +2614,99 @@
       items.push({ ico: '🔑', lbl: t('mPin'), fn: 'openOwnPinModal()' });
 
       document.getElementById('drawerList').innerHTML = items.map((it) => `
-        <button type="button" class="drawer-item" onclick="closeDrawer();${it.fn}">
+        <button type="button" class="drawer-item" onclick="vib(15);closeDrawer();${it.fn}">
           <span>${it.ico} ${esc(it.lbl)}</span>
           ${it.badge ? `<span class="badge-cnt">${it.badge}</span>` : ''}
         </button>`).join('');
+    }
+
+    // የድርጅት ስም እና መግለጫ (በአማርኛ እና በእንግሊዝኛ)
+    function openBrandManager() {
+      const b = getCurrentOrgBrandObj();
+      openMainModal(t('mBrand'), `
+        <div class="sub-card">
+          <b style="font-size:11.5px;color:var(--teal);">${esc(t('brandAmSec'))}</b>
+          <input id="bAmName" class="inp" value="${esc(b.amName)}" placeholder="${esc(t('phBrandTitle'))}">
+          <input id="bAmSub" class="inp" value="${esc(b.amSub)}" placeholder="${esc(t('phBrandSub'))}">
+        </div>
+        <div class="sub-card">
+          <b style="font-size:11.5px;color:var(--primary);">${esc(t('brandEnSec'))}</b>
+          <input id="bEnName" class="inp" value="${esc(b.enName)}" placeholder="${esc(t('phBrandTitle'))}">
+          <input id="bEnSub" class="inp" value="${esc(b.enSub)}" placeholder="${esc(t('phBrandSub'))}">
+        </div>`,
+        `<button type="button" class="btn muted" onclick="closeMainModal()">${esc(t('cancel'))}</button>
+         <button type="button" class="btn teal" onclick="saveBrandTitle(this)">${esc(t('save'))}</button>`);
+    }
+
+    async function saveBrandTitle(btnEl) {
+      await withBusy(btnEl, async () => {
+        const amName = document.getElementById('bAmName').value.trim();
+        const amSub = document.getElementById('bAmSub').value.trim();
+        const enName = document.getElementById('bEnName').value.trim();
+        const enSub = document.getElementById('bEnSub').value.trim();
+        if (!amName && !enName) return;
+
+        const orgId = whData.warehouse?.organization_id || session?.organization?.id || 'default';
+        const map = getBrandCfgMap();
+        map[orgId] = { amName: amName || enName, amSub, enName: enName || amName, enSub };
+        saveJson(BRAND_CFG_KEY, map);
+
+        try {
+          if (whData.warehouse?.id) {
+            await callRpc('rpc_manage_warehouse', {
+              p_token: session.token, p_action: 'UPSERT',
+              p_payload: {
+                id: whData.warehouse.id, organization_id: whData.warehouse.organization_id,
+                name: whData.warehouse.name, code: whData.warehouse.code,
+                brand_title: amName || enName, tagline: enSub || amSub,
+              },
+            });
+          }
+        } catch {}
+
+        applyBrandDisplay(); closeMainModal(); showToast(t('savedOk'));
+      });
+    }
+
+    // መጋዘኖች / ቅርንጫፎች (መጨመር እና ስም መቀየር)
+    function openBranchesManager() {
+      const list = whData.org_warehouses || [];
+      openMainModal(t('mBranches'), `
+        <div class="sub-card">
+          <input id="bEditId" type="hidden" value="">
+          <input id="bName" class="inp" placeholder="${esc(t('phBrName'))}">
+          <input id="bCode" class="inp mono" placeholder="${esc(t('phBrCode'))}" style="text-transform:uppercase;">
+          <button type="button" class="btn teal" id="btnSaveBranch" onclick="saveBranchNow(this)">+ ${esc(t('save'))}</button>
+        </div>
+        ${list.map((w, i) => `
+          <div class="sub-card" style="flex-direction:row;align-items:center;justify-content:space-between;">
+            <b>${esc(w.name)} <small style="color:var(--muted);">(${esc(w.code)})</small></b>
+            <button type="button" class="icon-btn" style="width:28px;height:28px;" onclick="fillBranchEdit(${i})">✏️</button>
+          </div>`).join('')}`,
+        `<button type="button" class="btn muted" style="grid-column:span 2;" onclick="closeMainModal()">${esc(t('close'))}</button>`);
+    }
+
+    function fillBranchEdit(idx) {
+      vib(15);
+      const w = (whData.org_warehouses || [])[idx]; if (!w) return;
+      document.getElementById('bEditId').value = w.id;
+      document.getElementById('bName').value = w.name;
+      document.getElementById('bCode').value = w.code;
+      document.getElementById('bName').focus();
+    }
+
+    async function saveBranchNow(btnEl) {
+      await withBusy(btnEl, async () => {
+        const editId = document.getElementById('bEditId').value.trim();
+        const name = document.getElementById('bName').value.trim();
+        const code = document.getElementById('bCode').value.trim().toUpperCase();
+        if (!name || !code) return;
+        const payload = { organization_id: whData.warehouse.organization_id, name, code, brand_title: getActiveBrand() };
+        if (editId) payload.id = editId;
+        const res = await callRpc('rpc_manage_warehouse', { p_token: session.token, p_action: 'UPSERT', p_payload: payload });
+        if (res.success) { closeMainModal(); showToast(t('savedOk')); loadWarehouseData(currentWhId); }
+        else showToast(t('errGeneric'));
+      });
     }
 
     function openFormCfgModal() {
@@ -2215,6 +2731,7 @@
     }
 
     function saveFormCfg() {
+      vib(20);
       formCfg = {
         outShowPad: document.getElementById('cfgOutPad').checked,
         outAutoPadLabel: document.getElementById('cfgAutoPad').checked,
@@ -2266,11 +2783,11 @@
     }
 
     function onPdfModeChange() {
-      const m = document.getElementById('pCfgMode').value;
-      document.getElementById('pCfgCustomDim').style.display = m === 'CUSTOM' ? 'grid' : 'none';
+      document.getElementById('pCfgCustomDim').style.display = document.getElementById('pCfgMode').value === 'CUSTOM' ? 'grid' : 'none';
     }
 
     function savePdfCfg() {
+      vib(20);
       pdfCfg = {
         mode: document.getElementById('pCfgMode').value,
         widthMm: Math.max(80, Number(document.getElementById('pCfgW').value || 210)),
@@ -2285,24 +2802,7 @@
         showDate: document.getElementById('pCfgDate').checked,
         stockShowZero: document.getElementById('pCfgZero').checked,
       };
-      saveJson(PDF_CFG_KEY, pdfCfg);
-      closeMainModal(); showToast(t('savedOk'));
-    }
-
-    function openBrandManager() {
-      openMainModal(t('mBrand'), `<div class="sub-card"><span class="lbl-sm">${esc(t('phBrandTitle'))}</span><input id="inpBrandEdit" class="inp" value="${esc(getActiveBrand())}"></div>`,
-        `<button type="button" class="btn muted" onclick="closeMainModal()">${esc(t('cancel'))}</button>
-         <button type="button" class="btn teal" onclick="saveBrandTitle()">${esc(t('save'))}</button>`);
-    }
-
-    async function saveBrandTitle() {
-      const val = document.getElementById('inpBrandEdit').value.trim(); if (!val) return;
-      const orgId = whData.warehouse?.organization_id || session?.organization?.id || '';
-      const ov = getBrandOverrides(); if (currentWhId) ov[currentWhId] = val; if (orgId) ov[orgId] = val; saveJson(BRAND_OVERRIDE_KEY, ov);
-      try { if (whData.warehouse?.id) await callRpc('rpc_manage_warehouse', { p_token: session.token, p_action: 'UPSERT', p_payload: { id: whData.warehouse.id, organization_id: whData.warehouse.organization_id, name: whData.warehouse.name, code: whData.warehouse.code, brand_title: val } }); } catch {}
-      if (whData.warehouse) whData.warehouse.brand_title = val;
-      if (session?.organization) { session.organization.brand_title = val; session.organization.name = val; saveJson(SESSION_KEY, session); }
-      applyBrandDisplay(); closeMainModal(); showToast(t('savedOk'));
+      saveJson(PDF_CFG_KEY, pdfCfg); closeMainModal(); showToast(t('savedOk'));
     }
 
     function openOrgsManager() {
@@ -2313,31 +2813,17 @@
           <input id="oName" class="inp" placeholder="${esc(t('phOrgName'))}">
           <input id="oBr" class="inp" placeholder="${esc(t('phBrName'))}">
           <div class="grid-2"><input id="oAdmN" class="inp" placeholder="${esc(t('phAdmName'))}"><input id="oAdmP" class="inp mono" maxlength="6" inputmode="numeric" placeholder="${esc(t('phPin'))}"></div>
-          <button type="button" class="btn teal" onclick="createNewOrg()">+ ${esc(t('add'))}</button>
+          <button type="button" class="btn teal" onclick="createNewOrg(this)">+ ${esc(t('add'))}</button>
         </div>${orgs.map((o) => `<div class="sub-card"><b>${esc(o.code)} — ${esc(o.name)}</b></div>`).join('')}`,
         `<button type="button" class="btn muted" style="grid-column:span 2;" onclick="closeMainModal()">${esc(t('close'))}</button>`);
     }
 
-    async function createNewOrg() {
-      const orgName = document.getElementById('oName').value.trim();
-      const res = await callRpc('rpc_manage_organization', { p_token: session.token, p_action: 'CREATE', p_payload: { code: document.getElementById('oCode').value, name: orgName, brand_title: orgName, first_branch_name: document.getElementById('oBr').value, admin_name: document.getElementById('oAdmN').value, admin_pin: document.getElementById('oAdmP').value } });
-      if (res.success) { closeMainModal(); showToast(t('savedOk')); } else showToast(t('errGeneric'));
-    }
-
-    function openBranchesManager() {
-      const list = whData.org_warehouses || [];
-      openMainModal(t('mBranches'), `
-        <div class="sub-card">
-          <input id="bName" class="inp" placeholder="${esc(t('phBrName'))}">
-          <input id="bCode" class="inp mono" placeholder="${esc(t('phBrCode'))}" style="text-transform:uppercase;">
-          <button type="button" class="btn teal" onclick="addBranch()">+ ${esc(t('add'))}</button>
-        </div>${list.map((w) => `<div class="sub-card"><b>${esc(w.name)} (${esc(w.code)})</b></div>`).join('')}`,
-        `<button type="button" class="btn muted" style="grid-column:span 2;" onclick="closeMainModal()">${esc(t('close'))}</button>`);
-    }
-
-    async function addBranch() {
-      const res = await callRpc('rpc_manage_warehouse', { p_token: session.token, p_action: 'UPSERT', p_payload: { organization_id: whData.warehouse.organization_id, name: document.getElementById('bName').value, code: document.getElementById('bCode').value, brand_title: getActiveBrand() } });
-      if (res.success) { closeMainModal(); showToast(t('savedOk')); loadWarehouseData(currentWhId); } else showToast(t('errGeneric'));
+    async function createNewOrg(btnEl) {
+      await withBusy(btnEl, async () => {
+        const orgName = document.getElementById('oName').value.trim();
+        const res = await callRpc('rpc_manage_organization', { p_token: session.token, p_action: 'CREATE', p_payload: { code: document.getElementById('oCode').value, name: orgName, brand_title: orgName, first_branch_name: document.getElementById('oBr').value, admin_name: document.getElementById('oAdmN').value, admin_pin: document.getElementById('oAdmP').value } });
+        if (res.success) { closeMainModal(); showToast(t('savedOk')); } else showToast(t('errGeneric'));
+      });
     }
 
     async function openStaffManager() {
@@ -2360,24 +2846,27 @@
           <div class="grid-2"><input id="stName" class="inp" placeholder="${esc(t('phStaffName'))}"><input id="stPin" class="inp mono" maxlength="6" inputmode="numeric" placeholder="${esc(t('phPin'))}"></div>
           <div class="grid-2"><input id="stEmail" type="email" class="inp" placeholder="${esc(t('emailPh'))}"><input id="stPass" type="password" class="inp" placeholder="${esc(t('passPh'))}"></div>
           <select id="stRole" class="sel"><option value="STAFF">${esc(t('roleStaff'))}</option><option value="ORG_ADMIN">${esc(t('roleOrgAdm'))}</option></select>
-          <button type="button" class="btn teal" onclick="addStaffMember()">+ ${esc(t('add'))}</button>
+          <button type="button" class="btn teal" onclick="addStaffMember(this)">+ ${esc(t('add'))}</button>
         </div>${staffCards}`,
         `<button type="button" class="btn muted" style="grid-column:span 2;" onclick="closeMainModal()">${esc(t('close'))}</button>`);
     }
 
-    async function addStaffMember() {
-      const res = await callRpc('rpc_manage_staff', {
-        p_token: session.token, p_action: 'ADD',
-        p_payload: {
-          organization_id: whData.warehouse.organization_id, full_name: document.getElementById('stName').value,
-          pin: document.getElementById('stPin').value, email: document.getElementById('stEmail').value.trim().toLowerCase() || null,
-          password: document.getElementById('stPass').value || null, role: document.getElementById('stRole').value, warehouse_ids: [currentWhId],
-        },
+    async function addStaffMember(btnEl) {
+      await withBusy(btnEl, async () => {
+        const res = await callRpc('rpc_manage_staff', {
+          p_token: session.token, p_action: 'ADD',
+          p_payload: {
+            organization_id: whData.warehouse.organization_id, full_name: document.getElementById('stName').value,
+            pin: document.getElementById('stPin').value, email: document.getElementById('stEmail').value.trim().toLowerCase() || null,
+            password: document.getElementById('stPass').value || null, role: document.getElementById('stRole').value, warehouse_ids: [currentWhId],
+          },
+        });
+        if (res.success) { showToast(t('savedOk')); openStaffManager(); } else showToast(t('errGeneric'));
       });
-      if (res.success) { showToast(t('savedOk')); openStaffManager(); } else showToast(t('errGeneric'));
     }
 
     async function toggleStaffBranch(userId, warehouseId, currentlyHas) {
+      vib(18);
       const res = await callRpc('rpc_manage_branch_access', { p_token: session.token, p_action: currentlyHas ? 'REVOKE' : 'GRANT', p_payload: { user_id: userId, warehouse_id: warehouseId } });
       if (res.success) openStaffManager();
     }
@@ -2392,8 +2881,8 @@
           <div style="display:flex;justify-content:space-between;align-items:center;"><b>${esc(chTypeLabel(c.channel_type))} — ${esc(c.label)}</b><span style="font-size:10px;color:var(--muted);">${esc(c.warehouse_name)}</span></div>
           <div style="font-size:11px;color:var(--primary);word-break:break-all;">${esc(c.target_address)}</div>
           <div style="display:flex;gap:5px;">
-            <button type="button" class="pdf-pill" onclick="testNotifChannel('${c.id}')">${esc(t('testBtn'))}</button>
-            ${c.channel_type === 'TELEGRAM' ? `<button type="button" class="pdf-pill" style="border-color:var(--teal);color:var(--teal);" onclick="linkTelegramWebhook('${c.id}')">${esc(t('webhookBtn'))}</button>` : ''}
+            <button type="button" class="pdf-pill" onclick="testNotifChannel('${c.id}',this)">${esc(t('testBtn'))}</button>
+            ${c.channel_type === 'TELEGRAM' ? `<button type="button" class="pdf-pill" style="border-color:var(--teal);color:var(--teal);" onclick="linkTelegramWebhook('${c.id}',false,this)">${esc(t('webhookBtn'))}</button>` : ''}
             <button type="button" class="pdf-pill" style="color:#fca5a5;" onclick="deleteNotifChannel('${c.id}')">${esc(t('del'))}</button>
           </div>
         </div>`).join('');
@@ -2408,88 +2897,99 @@
           <input id="chTarget" class="inp" placeholder="${esc(t('phChTarget'))}">
           <input id="chCred1" class="inp" placeholder="${esc(t('phChCred1'))}">
           <input id="chCred2" class="inp" style="display:none;" placeholder="${esc(t('phChCred2'))}">
-          <button type="button" class="btn teal" onclick="saveNotifChannel()">+ ${esc(t('save'))}</button>
+          <button type="button" class="btn teal" onclick="saveNotifChannel(this)">+ ${esc(t('save'))}</button>
         </div>${cards}`,
         `<button type="button" class="btn muted" style="grid-column:span 2;" onclick="closeMainModal()">${esc(t('close'))}</button>`);
     }
 
     function onChTypeChange() { const tp = document.getElementById('chType').value; document.getElementById('chCred2').style.display = (tp === 'WHATSAPP' || tp === 'SMS') ? 'block' : 'none'; }
-    async function saveNotifChannel() {
-      const tp = document.getElementById('chType').value, c1 = document.getElementById('chCred1').value.trim(), c2 = document.getElementById('chCred2').value.trim();
-      const creds = tp === 'TELEGRAM' ? { bot_token: c1 } : tp === 'WHATSAPP' ? { access_token: c1, phone_number_id: c2 } : tp === 'SMS' ? { api_key: c1, sender_id: c2 } : { api_key: c1 };
-      const res = await callRpc('rpc_manage_notification_channels', { p_token: session.token, p_action: 'UPSERT', p_payload: { organization_id: whData.warehouse.organization_id, warehouse_id: document.getElementById('chWh').value || null, channel_type: tp, label: document.getElementById('chLabel').value.trim() || chTypeLabel(tp), target_address: document.getElementById('chTarget').value.trim(), credentials: creds } });
-      if (res.success) { if (tp === 'TELEGRAM' && res.channel_id) await linkTelegramWebhook(res.channel_id, true); showToast(t('savedOk')); openChannelsManager(); } else showToast(t('errGeneric'));
+    async function saveNotifChannel(btnEl) {
+      await withBusy(btnEl, async () => {
+        const tp = document.getElementById('chType').value, c1 = document.getElementById('chCred1').value.trim(), c2 = document.getElementById('chCred2').value.trim();
+        const creds = tp === 'TELEGRAM' ? { bot_token: c1 } : tp === 'WHATSAPP' ? { access_token: c1, phone_number_id: c2 } : tp === 'SMS' ? { api_key: c1, sender_id: c2 } : { api_key: c1 };
+        const res = await callRpc('rpc_manage_notification_channels', { p_token: session.token, p_action: 'UPSERT', p_payload: { organization_id: whData.warehouse.organization_id, warehouse_id: document.getElementById('chWh').value || null, channel_type: tp, label: document.getElementById('chLabel').value.trim() || chTypeLabel(tp), target_address: document.getElementById('chTarget').value.trim(), credentials: creds } });
+        if (res.success) { if (tp === 'TELEGRAM' && res.channel_id) await linkTelegramWebhook(res.channel_id, true); showToast(t('savedOk')); openChannelsManager(); } else showToast(t('errGeneric'));
+      });
     }
-    async function linkTelegramWebhook(channelId, silent = false) { const res = await callBot({ action: 'register_telegram_webhook', channel_id: channelId }); if (!silent) showToast(res.success ? t('savedOk') : t('errGeneric')); }
-    async function testNotifChannel(channelId) { const res = await callBot({ action: 'test_channel', channel_id: channelId }); showToast(res.success ? t('savedOk') : t('errGeneric')); }
-    async function deleteNotifChannel(channelId) { await callRpc('rpc_manage_notification_channels', { p_token: session.token, p_action: 'DELETE', p_payload: { organization_id: whData.warehouse.organization_id, channel_id: channelId } }); openChannelsManager(); }
+    async function linkTelegramWebhook(channelId, silent = false, btnEl = null) {
+      const fn = async () => { const res = await callBot({ action: 'register_telegram_webhook', channel_id: channelId }); if (!silent) showToast(res.success ? t('savedOk') : t('errGeneric')); };
+      if (btnEl) await withBusy(btnEl, fn); else await fn();
+    }
+    async function testNotifChannel(channelId, btnEl) { await withBusy(btnEl, async () => { const res = await callBot({ action: 'test_channel', channel_id: channelId }); showToast(res.success ? t('savedOk') : t('errGeneric')); }); }
+    async function deleteNotifChannel(channelId) { vib(20); await callRpc('rpc_manage_notification_channels', { p_token: session.token, p_action: 'DELETE', p_payload: { organization_id: whData.warehouse.organization_id, channel_id: channelId } }); openChannelsManager(); }
 
-    // ዕቃዎች + ብልህ በጅምላ መገልበጫ (Sheets A & B ካቴጎሪ ራስ-ሰር ለይቶ ያስገባል)
+    // ዕቃዎች + ብልህ በጅምላ መገልበጫ
     function openCatalogManager() {
-      const cats = whData.categories || [];
+      const cats = (whData.categories || []).slice().sort((a, b) => a.name.localeCompare(b.name));
       openMainModal(t('mCatalog'), `
         <div class="sub-card">
-          <div style="display:flex;gap:5px;"><input id="catNewName" class="inp" placeholder="${esc(t('phCatName'))}"><button type="button" class="btn primary" onclick="addCategoryNow()">+</button></div>
+          <div style="display:flex;gap:5px;"><input id="catNewName" class="inp" placeholder="${esc(t('phCatName'))}"><button type="button" class="btn primary" onclick="addCategoryNow(this)">+</button></div>
         </div>
         <div class="sub-card">
-          <input id="itNewName" class="inp" placeholder="${esc(t('phItemName'))}">
+          <input id="itNewName" class="inp" placeholder="${esc(t('phItemName'))}" oninput="onSmartDimInput(this)">
           <select id="itNewCat" class="sel"><option value="">-</option>${cats.map((c) => `<option value="${c.id}">${esc(c.name)}</option>`).join('')}</select>
           <input id="itNewOp" type="number" class="inp mono" value="0" min="0" placeholder="${esc(t('phOpening'))}">
-          <button type="button" class="btn teal" onclick="addItemNow()">+ ${esc(t('add'))}</button>
+          <button type="button" class="btn teal" onclick="addItemNow(this)">+ ${esc(t('add'))}</button>
         </div>
         <div class="sub-card">
           <b style="font-size:11.5px;color:var(--amber);">📥 ${esc(t('bulkTitle'))}</b>
           <span class="lbl-sm">${esc(t('bulkHint'))}</span>
           <textarea id="bulkItemsTxt" class="txtarea" placeholder="D - pipe&#10;25 D	200&#10;32 D	740&#10;Flat&#10;15×2.5 Flat	491"></textarea>
-          <button type="button" class="btn primary" onclick="runBulkImport()">${esc(t('bulkBtn'))}</button>
+          <button type="button" class="btn primary" onclick="runBulkImport(this)">${esc(t('bulkBtn'))}</button>
         </div>`,
         `<button type="button" class="btn muted" style="grid-column:span 2;" onclick="closeMainModal()">${esc(t('close'))}</button>`);
     }
 
-    async function addCategoryNow() {
-      const n = document.getElementById('catNewName').value.trim(); if (!n) return;
-      await callRpc('rpc_manage_catalog', { p_token: session.token, p_warehouse_id: currentWhId, p_action: 'ADD_CATEGORY', p_payload: { name: n } });
-      await loadWarehouseData(currentWhId); openCatalogManager();
-    }
-
-    async function addItemNow() {
-      const n = document.getElementById('itNewName').value.trim(); if (!n) return;
-      const res = await callRpc('rpc_manage_catalog', { p_token: session.token, p_warehouse_id: currentWhId, p_action: 'UPSERT_ITEM', p_payload: { name: n, category_id: document.getElementById('itNewCat').value, opening_qty: Number(document.getElementById('itNewOp').value || 0) } });
-      if (res.success) { showToast(t('savedOk')); await loadWarehouseData(currentWhId); openCatalogManager(); }
-    }
-
-    async function runBulkImport() {
-      const raw = document.getElementById('bulkItemsTxt').value.trim();
-      if (!raw) return;
-      let curCat = '';
-      const rows = [];
-      raw.split(/\r?\n/).forEach((line) => {
-        const parts = (line.includes('\t') ? line.split('\t') : line.split(',')).map((s) => s.trim());
-        const c0 = parts[0] || '', c1 = parts[1] || '', c2 = parts[2] || '';
-        if (!c0 && !c1 && !c2) return;
-        if (/^(የዕቃ|item|category|ካቴጎሪ)/i.test(c0) && /^(መነሻ|open)/i.test(c1)) return;
-
-        if (parts.length >= 3 && c2 !== '') {
-          if (c0) curCat = c0;
-          if (c1) rows.push({ category: curCat, name: c1, opening_qty: Math.max(0, parseInt(c2.replace(/[^\d-]/g, ''), 10) || 0) });
-        } else if (parts.length >= 2 && c1 !== '') {
-          const numMatch = c1.match(/^-?\d[\d,]*$/);
-          if (numMatch) {
-            if (c0) rows.push({ category: curCat, name: c0, opening_qty: Math.max(0, parseInt(c1.replace(/[^\d]/g, ''), 10) || 0) });
-          } else {
-            if (c0) curCat = c0;
-            if (c1) rows.push({ category: curCat, name: c1, opening_qty: 0 });
-          }
-        } else if (c0 && !/^-?\d[\d,]*$/.test(c0)) {
-          curCat = c0;
-        }
+    async function addCategoryNow(btnEl) {
+      await withBusy(btnEl, async () => {
+        const n = document.getElementById('catNewName').value.trim(); if (!n) return;
+        await callRpc('rpc_manage_catalog', { p_token: session.token, p_warehouse_id: currentWhId, p_action: 'ADD_CATEGORY', p_payload: { name: n } });
+        await loadWarehouseData(currentWhId); openCatalogManager();
       });
-      if (!rows.length) return;
-      const res = await callRpc('rpc_manage_catalog', { p_token: session.token, p_warehouse_id: currentWhId, p_action: 'BULK_IMPORT', p_payload: { rows } });
-      if (res.success) {
-        showToast(t('bulkDone')(res.imported_count || 0));
-        await loadWarehouseData(currentWhId); closeMainModal();
-      } else showToast(t('errGeneric'));
+    }
+
+    async function addItemNow(btnEl) {
+      await withBusy(btnEl, async () => {
+        const n = formatSmartDim(document.getElementById('itNewName').value.trim()); if (!n) return;
+        const res = await callRpc('rpc_manage_catalog', { p_token: session.token, p_warehouse_id: currentWhId, p_action: 'UPSERT_ITEM', p_payload: { name: n, category_id: document.getElementById('itNewCat').value, opening_qty: Number(document.getElementById('itNewOp').value || 0) } });
+        if (res.success) { showToast(t('savedOk')); await loadWarehouseData(currentWhId); openCatalogManager(); }
+      });
+    }
+
+    async function runBulkImport(btnEl) {
+      await withBusy(btnEl, async () => {
+        const raw = document.getElementById('bulkItemsTxt').value.trim();
+        if (!raw) return;
+        let curCat = '';
+        const rows = [];
+        raw.split(/\r?\n/).forEach((line) => {
+          const parts = (line.includes('\t') ? line.split('\t') : line.split(',')).map((s) => s.trim());
+          const c0 = parts[0] || '', c1 = parts[1] || '', c2 = parts[2] || '';
+          if (!c0 && !c1 && !c2) return;
+          if (/^(የዕቃ|item|category|ካቴጎሪ)/i.test(c0) && /^(መነሻ|open)/i.test(c1)) return;
+
+          if (parts.length >= 3 && c2 !== '') {
+            if (c0) curCat = c0;
+            if (c1) rows.push({ category: curCat, name: formatSmartDim(c1), opening_qty: Math.max(0, parseInt(c2.replace(/[^\d-]/g, ''), 10) || 0) });
+          } else if (parts.length >= 2 && c1 !== '') {
+            const numMatch = c1.match(/^-?\d[\d,]*$/);
+            if (numMatch) {
+              if (c0) rows.push({ category: curCat, name: formatSmartDim(c0), opening_qty: Math.max(0, parseInt(c1.replace(/[^\d]/g, ''), 10) || 0) });
+            } else {
+              if (c0) curCat = c0;
+              if (c1) rows.push({ category: curCat, name: formatSmartDim(c1), opening_qty: 0 });
+            }
+          } else if (c0 && !/^-?\d[\d,]*$/.test(c0)) {
+            curCat = c0;
+          }
+        });
+        if (!rows.length) return;
+        const res = await callRpc('rpc_manage_catalog', { p_token: session.token, p_warehouse_id: currentWhId, p_action: 'BULK_IMPORT', p_payload: { rows } });
+        if (res.success) {
+          showToast(t('bulkDone')(res.imported_count || 0));
+          await loadWarehouseData(currentWhId); closeMainModal();
+        } else showToast(t('errGeneric'));
+      });
     }
 
     // መደርደሪያዎች
@@ -2505,7 +3005,7 @@
             <input id="rkCols" type="number" class="inp mono" value="6" min="1" placeholder="${esc(t('phRackCols'))}">
             <input id="rkRows" type="number" class="inp mono" value="5" min="1" placeholder="${esc(t('phRackRows'))}">
           </div>
-          <button type="button" class="btn teal" onclick="saveRackNow()">+ ${esc(t('save'))}</button>
+          <button type="button" class="btn teal" onclick="saveRackNow(this)">+ ${esc(t('save'))}</button>
         </div>
         ${rks.map((r, i) => `
           <div class="sub-card" style="flex-direction:row;align-items:center;justify-content:space-between;">
@@ -2519,6 +3019,7 @@
     }
 
     function fillRackEdit(idx) {
+      vib(15);
       const r = (whData.racks || [])[idx]; if (!r) return;
       document.getElementById('rkCode').value = r.code;
       document.getElementById('rkName').value = r.name;
@@ -2526,20 +3027,23 @@
       document.getElementById('rkRows').value = r.rows;
     }
 
-    async function saveRackNow() {
-      const code = document.getElementById('rkCode').value.trim().toUpperCase();
-      const name = document.getElementById('rkName').value.trim() || code;
-      const cols = Math.max(1, Number(document.getElementById('rkCols').value || 6));
-      const rows = Math.max(1, Number(document.getElementById('rkRows').value || 5));
-      if (!code) return;
-      const list = (whData.racks || []).slice();
-      const ex = list.findIndex((r) => r.code === code);
-      if (ex >= 0) list[ex] = { code, name, cols, rows }; else list.push({ code, name, cols, rows });
-      await callRpc('rpc_manage_racks', { p_token: session.token, p_warehouse_id: currentWhId, p_racks: list });
-      await loadWarehouseData(currentWhId); openRacksManager();
+    async function saveRackNow(btnEl) {
+      await withBusy(btnEl, async () => {
+        const code = document.getElementById('rkCode').value.trim().toUpperCase();
+        const name = document.getElementById('rkName').value.trim() || code;
+        const cols = Math.max(1, Number(document.getElementById('rkCols').value || 6));
+        const rows = Math.max(1, Number(document.getElementById('rkRows').value || 5));
+        if (!code) return;
+        const list = (whData.racks || []).slice();
+        const ex = list.findIndex((r) => r.code === code);
+        if (ex >= 0) list[ex] = { code, name, cols, rows }; else list.push({ code, name, cols, rows });
+        await callRpc('rpc_manage_racks', { p_token: session.token, p_warehouse_id: currentWhId, p_racks: list });
+        await loadWarehouseData(currentWhId); openRacksManager();
+      });
     }
 
     async function deleteRackAt(idx) {
+      vib(20);
       const list = (whData.racks || []).filter((_, i) => i !== idx);
       await callRpc('rpc_manage_racks', { p_token: session.token, p_warehouse_id: currentWhId, p_racks: list });
       await loadWarehouseData(currentWhId); openRacksManager();
@@ -2553,19 +3057,36 @@
           <div class="sub-card">
             <b>${esc(a.item_name)} (${a.system_bal} ➔ ${a.counted_qty} | ${a.diff_qty > 0 ? '+' : ''}${a.diff_qty})</b>
             <span class="lbl-sm">${esc(a.requested_by)} — ${esc(a.reason)}</span>
-            <div class="grid-2"><button type="button" class="btn teal" onclick="reviewAdj('${a.id}',true)">${esc(t('approve'))}</button><button type="button" class="btn danger" onclick="reviewAdj('${a.id}',false)">${esc(t('reject'))}</button></div>
+            <div class="grid-2"><button type="button" class="btn teal" onclick="reviewAdj('${a.id}',true,this)">${esc(t('approve'))}</button><button type="button" class="btn danger" onclick="reviewAdj('${a.id}',false,this)">${esc(t('reject'))}</button></div>
           </div>`).join('') : `<div class="sub-card" style="text-align:center;">${esc(t('noItems'))}</div>`,
         `<button type="button" class="btn muted" style="grid-column:span 2;" onclick="closeMainModal()">${esc(t('close'))}</button>`);
     }
 
-    async function reviewAdj(id, approve) { const res = await callRpc('rpc_review_adjustment', { p_token: session.token, p_adjustment_id: id, p_approve: approve }); if (res.success) { showToast(t('savedOk')); await loadWarehouseData(currentWhId); openApprovalsManager(); } }
-    async function sendRiskAuditNow() { const res = await callBot({ action: 'send_risk_audit', warehouse_id: currentWhId }); showToast(res.success ? t('savedOk') : t('errGeneric')); }
+    async function reviewAdj(id, approve, btnEl) {
+      await withBusy(btnEl, async () => {
+        const res = await callRpc('rpc_review_adjustment', { p_token: session.token, p_adjustment_id: id, p_approve: approve });
+        if (res.success) { showToast(t('savedOk')); await loadWarehouseData(currentWhId); openApprovalsManager(); }
+      });
+    }
+
+    async function sendRiskAuditNow() {
+      await withBusy(null, async () => {
+        showToast(t('busyTxt'));
+        const res = await callBot({ action: 'send_risk_audit', warehouse_id: currentWhId });
+        showToast(res.success ? t('savedOk') : t('errGeneric'));
+      });
+    }
 
     function openOwnPinModal() {
       openMainModal(t('mPin'), `<input id="pOld" type="password" class="inp mono" maxlength="6" inputmode="numeric" placeholder="${esc(t('phOldPin'))}"><input id="pNew" type="password" class="inp mono" maxlength="6" inputmode="numeric" placeholder="${esc(t('phNewPin'))}">`,
-        `<button type="button" class="btn muted" onclick="closeMainModal()">${esc(t('cancel'))}</button><button type="button" class="btn teal" onclick="saveOwnPin()">${esc(t('save'))}</button>`);
+        `<button type="button" class="btn muted" onclick="closeMainModal()">${esc(t('cancel'))}</button><button type="button" class="btn teal" onclick="saveOwnPin(this)">${esc(t('save'))}</button>`);
     }
-    async function saveOwnPin() { const res = await callRpc('rpc_manage_staff', { p_token: session.token, p_action: 'CHANGE_OWN_PIN', p_payload: { old_pin: document.getElementById('pOld').value, new_pin: document.getElementById('pNew').value } }); if (res.success) { closeMainModal(); showToast(t('savedOk')); } else showToast(t('errGeneric')); }
+    async function saveOwnPin(btnEl) {
+      await withBusy(btnEl, async () => {
+        const res = await callRpc('rpc_manage_staff', { p_token: session.token, p_action: 'CHANGE_OWN_PIN', p_payload: { old_pin: document.getElementById('pOld').value, new_pin: document.getElementById('pNew').value } });
+        if (res.success) { closeMainModal(); showToast(t('savedOk')); } else showToast(t('errGeneric'));
+      });
+    }
 
     // ==================== ዳሰሳ፣ ቋንቋ እና ጅማሬ ====================
     function openMainModal(title, bodyHtml, footHtml) { document.getElementById('modalTitle').textContent = title; document.getElementById('modalBody').innerHTML = bodyHtml; document.getElementById('modalFoot').innerHTML = footHtml; document.getElementById('mainModal').classList.add('open'); }
@@ -2582,13 +3103,13 @@
       selectedPdfIds = {}; updatePdfBar();
       document.getElementById('submitDock').style.display = (name === 'entry' && basket.length) ? 'flex' : 'none';
       if (name === 'tally') { ensureWakeLock(); renderTally(); }
-      if (name === 'daily') loadDaily();
+      if (name === 'daily') loadDaily(true);
       if (name === 'stock') loadStock();
       if (name === 'map') renderMap();
     }
 
     function toggleLang() {
-      lang = (lang === 'am') ? 'en' : 'am'; localStorage.setItem(LANG_KEY, lang); vib(16);
+      lang = (lang === 'am') ? 'en' : 'am'; localStorage.setItem(LANG_KEY, lang); vib(18);
       renderStaticLabels(); renderDynamicFormFields();
       if (session) { renderDrawerMenu(); renderTiles(); renderBasket(); renderTally(); renderDaily(); renderStock(); renderMap(); }
     }
@@ -2625,6 +3146,7 @@
       document.getElementById('inpInPlate').placeholder = t('platePh');
       document.getElementById('inpSearch').placeholder = t('searchPh');
       document.getElementById('inpQuickQty').placeholder = t('qtyPh');
+      document.getElementById('btnSendToTally').textContent = t('btnToTally');
 
       document.getElementById('btnTTicket').textContent = t('tTicket');
       document.getElementById('btnTFree').textContent = t('tFree');
@@ -2647,6 +3169,7 @@
       document.getElementById('btnPAll').textContent = t('pAll');
       document.getElementById('btnPdfClear').textContent = t('pdfClear');
       document.getElementById('btnPdfDownload').textContent = t('pdfDown');
+      document.getElementById('btnPdfShare').textContent = t('pdfShare');
     }
 
     (function setupTallyGestures() {
@@ -2670,3 +3193,4 @@
   </script>
 </body>
 </html>
+
