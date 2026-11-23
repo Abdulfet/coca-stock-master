@@ -166,7 +166,7 @@
     tr.r-sel td:first-child { border-left: 3px solid var(--emerald); }
     tr.r-sp td { height: 8px; padding: 0; background: var(--bg); border-left: none; border-right: none; }
     tr.r-ltz-sp td { height: 6px; padding: 0; background: rgba(6,10,18,0.65); border-left: none; border-right: none; }
-    .act-pair { display: inline-flex; gap: 3px; align-items: center; justify-content: center; }
+    .act-pair { display: inline-flex; gap: 4px; align-items: center; justify-content: center; }
 
     /* ተንሳፋፊ የፒዲኤፍ አሞሌ */
     .pdf-bar { position: fixed; bottom: 60px; left: 50%; transform: translateX(-50%); width: calc(100% - 14px); max-width: 626px; height: 44px; background: rgba(6,78,59,0.92); border: 1.5px solid var(--emerald); border-radius: 22px; padding: 4px 8px; display: none; align-items: center; justify-content: space-between; gap: 5px; z-index: 45; backdrop-filter: blur(8px); }
@@ -256,7 +256,10 @@
     <div class="drawer-list" id="drawerList"></div>
     <div style="border-top:1px solid var(--border);padding-top:10px;display:flex;flex-direction:column;gap:7px;">
       <button type="button" id="btnInstallApp" class="btn primary" style="display:none;height:36px;" onclick="triggerPwaInstall()"></button>
-      <div id="drawerUserInfo" style="font-size:11px;font-weight:800;color:var(--muted);"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <span id="drawerUserInfo" style="font-size:11px;font-weight:800;color:var(--muted);"></span>
+        <span style="font-size:10px;font-weight:900;color:var(--teal);opacity:0.8;">v8</span>
+      </div>
       <button type="button" class="btn danger" id="btnLogout" onclick="doLogout()"></button>
     </div>
   </aside>
@@ -484,7 +487,6 @@
       inShowNote: false,
     };
 
-    // አንዴ የመረጡት ወይም የሞሉት የወረቀት መጠን በፍጹም በራሱ አይቀያየርም
     const DEFAULT_PDF_CFG = {
       mode: 'A4_P', // A4_P | A4_L | A5_P | LETTER_P | CUSTOM
       widthMm: 210,
@@ -778,7 +780,6 @@
       }
     }
 
-    // የኪቦርድ ፈጣን አቋራጮች፦ 32rx0.8 -> 32Ø×0.8 | © -> Ø | x / * -> ×
     function formatSmartDim(val) {
       let s = String(val || '');
       s = s.replace(/©/g, 'Ø');
@@ -1845,7 +1846,7 @@
         if (mode === 'custom') { carryMult = v; saveTallyState(); renderTally(); } else addTallyStroke(v);
       };
     }
-    // ==================== የደህንነት ፒን / ፓስወርድ ማረጋገጫ ====================
+    // ==================== የደህንነት ፒን / ፓስወርድ ማረጋገጫ (v8) ====================
     function promptSecurityVerify(requireAdmin, onAuthorized) {
       vib(20);
       const msg = requireAdmin ? t('authVerifyAdminMsg') : t('authVerifyMsg');
@@ -1866,30 +1867,34 @@
         if (!val) { errEl.textContent = t('authVerifyWrong'); return; }
 
         await withBusy(btn, async () => {
-          let verifiedUser = null;
+          let actor = null;
           try {
-            if (/^\d{4,6}$/.test(val)) {
-              const r = await callRpc('rpc_login', { p_org_code: session?.organization?.code || '', p_pin: val });
-              if (r?.success) {
-                verifiedUser = r.user;
-                callRpc('rpc_logout', { p_token: r.token }).catch(() => {});
-              }
+            const r = await callRpc('rpc_verify_action_credential', {
+              p_token: session.token,
+              p_warehouse_id: currentWhId,
+              p_secret: val,
+              p_require_admin: Boolean(requireAdmin),
+            });
+            if (r?.success) {
+              actor = { full_name: r.actor_name || session?.user?.full_name || '', role: r.role || '' };
             }
-            if (!verifiedUser && session?.user?.email) {
-              const r2 = await callRpc('rpc_login_email', { p_email: session.user.email, p_password: val });
-              if (r2?.success) {
-                verifiedUser = r2.user;
-                callRpc('rpc_logout', { p_token: r2.token }).catch(() => {});
+          } catch {
+            // ዳታቤዙ ላይ rpc_verify_action_credential ገና ካልተጫነ በተጠባባቂ መንገድ ማረጋገጥ
+            try {
+              if (/^\d{4,6}$/.test(val)) {
+                const r1 = await callRpc('rpc_login', { p_org_code: session?.organization?.code || '', p_pin: val });
+                if (r1?.success) {
+                  const okAdm = !requireAdmin || r1.user.role === 'SUPER_ADMIN' || r1.user.role === 'ORG_ADMIN';
+                  if (okAdm) actor = r1.user;
+                  callRpc('rpc_logout', { p_token: r1.token }).catch(() => {});
+                }
               }
-            }
-          } catch {}
+            } catch {}
+          }
 
-          if (!verifiedUser) { errEl.textContent = t('authVerifyWrong'); vib([60, 40, 60]); return; }
-          const isAdm = verifiedUser.role === 'SUPER_ADMIN' || verifiedUser.role === 'ORG_ADMIN';
-          if (requireAdmin && !isAdm) { errEl.textContent = t('authVerifyWrong'); vib([60, 40, 60]); return; }
-
+          if (!actor) { errEl.textContent = t('authVerifyWrong'); vib([60, 40, 60]); return; }
           closeMainModal();
-          await onAuthorized(verifiedUser);
+          await onAuthorized(actor);
         });
       };
     }
@@ -1928,15 +1933,14 @@
       updateActionToggleBtns();
     }
 
-    // ==================== ገጽ 3: ዕለታዊ (ንጹህ VOID + Hard Delete + Audit Log) ====================
-    function normalizeDailyList(rows) {
+    // ==================== ገጽ 3: ዕለታዊ (OPENING ጸድቶ + 1 ረድፍ VOID + Hard Delete) ====================
+    function normalizeDailyList(rows, includeOpening = false) {
       const seenVoidDoc = new Set();
       const cleaned = [];
       (rows || []).forEach((r) => {
+        if (!includeOpening && String(r.doc_no || '').trim().toUpperCase() === 'OPENING') return;
         const isWholeVoid = r.status === 'VOIDED' || r.doc_type === 'VOID';
-        // በንቁ ሰነድ ውስጥ የተሰረዘ ነጠላ ረድፍ እንዳይታይ
         if (!isWholeVoid && r.is_voided) return;
-        // ሙሉ ሰነዱ VOID ከሆነ ብዙ ቀይ ረድፍ ከመደርደር 1 ንጹህ ረድፍ ብቻ
         if (isWholeVoid) {
           const dKey = String(r.document_id || r.doc_no);
           if (seenVoidDoc.has(dKey)) return;
@@ -1947,8 +1951,8 @@
       return cleaned;
     }
 
-    function getSortedDailyRows(rows, forceDocAsc = false) {
-      const cleanRows = normalizeDailyList(rows);
+    function getSortedDailyRows(rows, forceDocAsc = false, includeOpening = false) {
+      const cleanRows = normalizeDailyList(rows, includeOpening);
       const groups = [], map = new Map();
       cleanRows.forEach((r) => {
         const key = String(r.document_id || r.ledger_id);
@@ -2009,7 +2013,7 @@
 
       let inT = 0, outT = 0, vCnt = 0, lastDoc = null;
       const html = [];
-      const ordered = getSortedDailyRows(dailyRows, false);
+      const ordered = getSortedDailyRows(dailyRows, false, false);
       const isBrAdm = whData.is_branch_admin || whData.is_org_admin || session?.user?.role === 'SUPER_ADMIN';
 
       ordered.forEach((r) => {
@@ -2073,10 +2077,12 @@
 
     function verifyAndUnvoid(docId, docNo) {
       promptSecurityVerify(true, async (actor) => {
-        const res = await callRpc('rpc_unvoid_document', { p_token: session.token, p_document_id: docId });
-        if (!res.success) { showToast(res.error === 'INSUFFICIENT_STOCK' ? t('errStock') : t('errGeneric')); return; }
-        sendAuditLog(t('auditUnvoidTitle'), `#${docNo}`, `ሰነድ #${docNo} እንደገና ወደ ንቁ (Active) ተመልሷል።`, actor.full_name);
-        showToast(t('savedOk')); loadWarehouseData(currentWhId); loadDaily(false);
+        try {
+          const res = await callRpc('rpc_unvoid_document', { p_token: session.token, p_document_id: docId });
+          if (!res.success) { showToast(res.error === 'INSUFFICIENT_STOCK' ? t('errStock') : (res.error || t('errGeneric'))); return; }
+          sendAuditLog(t('auditUnvoidTitle'), `#${docNo}`, `ሰነድ #${docNo} እንደገና ወደ ንቁ (Active) ተመልሷል።`, actor.full_name);
+          showToast(t('savedOk')); loadWarehouseData(currentWhId); loadDaily(false);
+        } catch (e) { showToast(e?.message || t('errGeneric')); }
       });
     }
 
@@ -2089,17 +2095,19 @@
 
     function verifyAndHardDelete(docId, docNo) {
       promptSecurityVerify(true, async (actor) => {
-        const res = await callRpc('rpc_delete_document', { p_token: session.token, p_document_id: docId });
-        if (!res.success) { showToast(res.error === 'INSUFFICIENT_STOCK' ? t('errStock') : t('errGeneric')); return; }
-        const sum = res.deleted_summary || {};
-        const linesTxt = (sum.lines || []).map((l) => `• ${l.item_name} (${l.qty})`).join('\n');
-        const detail = [
-          sum.party_name ? `ደንበኛ/አቅራቢ: ${sum.party_name}` : '',
-          sum.ref_no && sum.ref_no !== '-' ? `ፓድ/ታርጋ: ${sum.ref_no}` : '',
-          linesTxt,
-        ].filter(Boolean).join('\n');
-        sendAuditLog(t('auditDelTitle'), `#${sum.doc_no || docNo}`, detail, actor.full_name);
-        showToast(t('savedOk')); loadWarehouseData(currentWhId); loadDaily(false);
+        try {
+          const res = await callRpc('rpc_delete_document', { p_token: session.token, p_document_id: docId });
+          if (!res.success) { showToast(res.error === 'INSUFFICIENT_STOCK' ? t('errStock') : (res.error || t('errGeneric'))); return; }
+          const sum = res.deleted_summary || {};
+          const linesTxt = (sum.lines || []).map((l) => `• ${l.item_name} (${l.qty})`).join('\n');
+          const detail = [
+            sum.party_name ? `ደንበኛ/አቅራቢ: ${sum.party_name}` : '',
+            sum.ref_no && sum.ref_no !== '-' ? `ፓድ/ታርጋ: ${sum.ref_no}` : '',
+            linesTxt,
+          ].filter(Boolean).join('\n');
+          sendAuditLog(t('auditDelTitle'), `#${sum.doc_no || docNo}`, detail, actor.full_name);
+          showToast(t('savedOk')); loadWarehouseData(currentWhId); loadDaily(false);
+        } catch (e) { showToast(e?.message || t('errGeneric')); }
       });
     }
 
@@ -2200,23 +2208,27 @@
       const voidCopy = editVoidIds.slice();
 
       promptSecurityVerify(voidCopy.length > 0, async (actor) => {
-        const res = await callRpc('rpc_edit_document', {
-          p_token: session.token, p_document_id: docId,
-          p_new_doc_no: newDocNo, p_new_party: newParty, p_new_ref: newRef,
-          p_line_updates: updates, p_append_items: appendCopy, p_void_ledger_ids: voidCopy,
-        });
-        if (!res.success) { showToast(res.error === 'INSUFFICIENT_STOCK' ? t('errStock') : t('errGeneric')); return; }
-        sendAuditLog(t('auditEditTitle'), `#${newDocNo}`, changes.join('\n') || `ደንበኛ/ማጣቀሻ: ${newParty} (${newRef})`, actor.full_name);
-        showToast(t('savedOk')); loadWarehouseData(currentWhId); loadDaily(false);
+        try {
+          const res = await callRpc('rpc_edit_document', {
+            p_token: session.token, p_document_id: docId,
+            p_new_doc_no: newDocNo, p_new_party: newParty, p_new_ref: newRef,
+            p_line_updates: updates, p_append_items: appendCopy, p_void_ledger_ids: voidCopy,
+          });
+          if (!res.success) { showToast(res.error === 'INSUFFICIENT_STOCK' ? t('errStock') : (res.error || t('errGeneric'))); return; }
+          sendAuditLog(t('auditEditTitle'), `#${newDocNo}`, changes.join('\n') || `ደንበኛ/ማጣቀሻ: ${newParty} (${newRef})`, actor.full_name);
+          showToast(t('savedOk')); loadWarehouseData(currentWhId); loadDaily(false);
+        } catch (e) { showToast(e?.message || t('errGeneric')); }
       });
     }
 
     function verifyAndVoidDoc(docId, docNo, partyName) {
       promptSecurityVerify(false, async (actor) => {
-        const res = await callRpc('rpc_void_document', { p_token: session.token, p_document_id: docId });
-        if (!res.success) { showToast(t('errGeneric')); return; }
-        sendAuditLog(t('auditVoidTitle'), `#${docNo}`, `ደንበኛ/አቅራቢ: ${partyName || '-'}`, actor.full_name);
-        showToast(t('savedOk')); loadWarehouseData(currentWhId); loadDaily(false);
+        try {
+          const res = await callRpc('rpc_void_document', { p_token: session.token, p_document_id: docId });
+          if (!res.success) { showToast(res.error || t('errGeneric')); return; }
+          sendAuditLog(t('auditVoidTitle'), `#${docNo}`, `ደንበኛ/አቅራቢ: ${partyName || '-'}`, actor.full_name);
+          showToast(t('savedOk')); loadWarehouseData(currentWhId); loadDaily(false);
+        } catch (e) { showToast(e?.message || t('errGeneric')); }
       });
     }
 
@@ -2477,7 +2489,6 @@
         const ph = sz.h * 2.83465;
         const orient = pw > ph ? 'l' : 'p';
 
-        // የተመረጠውን የወረቀት ጎን/ቁመት ሬሾ 100% ሳይቀየር መጠበቅ
         const stagePx = sz.w > sz.h ? 1060 : 794;
         const pagePxH = Math.round(stagePx * (sz.h / sz.w));
         const padPx = 22;
@@ -2486,7 +2497,7 @@
         let headHtml = '';
         let footTableHtml = '';
         let endListRow = '';
-        const units = []; // እያንዳንዱ unit: { rows: string[] }
+        const units = [];
 
         if (isStock) {
           const baseList = onlyIds
@@ -2535,7 +2546,6 @@
               prevLtzKey = ltz ? ltz.groupKey : null;
               const itemTr = makeItemTr(r);
               if (idx === 0) {
-                // ካቴጎሪ ርዕስ በገጽ መጨረሻ ብቻውን እንዳይቀር ከመጀመሪያው ዕቃ ጋር አብሮ ይታሰራል
                 const bundle = [];
                 if (spTr) bundle.push(spTr);
                 bundle.push(catTr, itemTr);
@@ -2561,11 +2571,8 @@
           footTableHtml = `<table style="width:100%;border-collapse:collapse;font-size:${fSize};"><tbody><tr style="background:#0f172a;color:#38bdf8;font-weight:900;">${footTds}</tr></tbody></table>`;
         } else {
           let rawList = onlyIds ? dailyRows.filter((r) => onlyIds.includes(String(r.ledger_id || r.document_id))) : dailyRows;
-          if (!onlyIds && !pdfCfg.includeOpeningInDaily) {
-            rawList = rawList.filter((r) => String(r.doc_no || '').toUpperCase() !== 'OPENING');
-          }
           if (todayOnly) rawList = rawList.filter((r) => String(r.date_str || '').includes(dateStr));
-          const list = getSortedDailyRows(rawList, true);
+          const list = getSortedDailyRows(rawList, true, Boolean(onlyIds || pdfCfg.includeOpeningInDaily));
 
           const dm = t('dPdfMap');
           const cols = [{ k: 'doc', lbl: dm.doc }, { k: 'item', lbl: dm.item }];
@@ -2578,7 +2585,6 @@
           headHtml = `<thead><tr style="background:#0f172a;color:#fff;">${cols.map((c) => `<th style="padding:5.5px 4px;border:1px solid #334155;font-weight:900;">${esc(c.lbl)}</th>`).join('')}</tr></thead>`;
           endListRow = `<tr><td colspan="${cols.length}" style="text-align:center;padding:5px;color:#64748b;font-size:9.5px;font-weight:700;border:none;">${esc(t('pdfEndList'))}</td></tr>`;
 
-          // ሰነዶችን በቡድን ማደራጀት (አጭር ሰነድ በሁለት ገጽ መካከል እንዳይቆራረጥ)
           const docGroups = [], gMap = new Map();
           let inT = 0, outT = 0;
           list.forEach((r) => {
@@ -2637,7 +2643,6 @@
         const signHtml = pdfCfg.showSign ? `<div style="display:flex;justify-content:space-between;margin-top:16px;padding:0 12px;font-size:10.5px;font-weight:800;color:#0f172a;"><span>${esc(t('pdfSignPrep'))}</span><span>${esc(t('pdfSignApp'))}</span></div>` : '';
         const finalFooterBlock = `${footTableHtml}${noteHtml}${signHtml}`;
 
-        // ትክክለኛ የረድፍ ቁመት በመለካት ወደ ንጹህ ገጾች መከፋፈል
         stage.style.width = `${innerW}px`;
         stage.innerHTML = `<div id="mHead">${titleBannerHtml}<table style="width:100%;border-collapse:collapse;font-size:${fSize};">${headHtml}</table></div>
           <div id="mFoot">${finalFooterBlock}</div>
@@ -2670,11 +2675,7 @@
         });
         if (curRows.length) pages.push({ rows: curRows, usedH: curH });
         if (!pages.length) pages.push({ rows: [], usedH: 0 });
-
-        // የመጨረሻው ገጽ ላይ የድምር ግርጌው ካልበቃ ንጹህ ተጨማሪ ገጽ መጨመር
-        if (pages[pages.length - 1].usedH > maxBodyLast) {
-          pages.push({ rows: [], usedH: 0 });
-        }
+        if (pages[pages.length - 1].usedH > maxBodyLast) pages.push({ rows: [], usedH: 0 });
 
         const { jsPDF } = window.jspdf;
         const pdf = new jsPDF({ orientation: orient, unit: 'pt', format: [pw, ph] });
@@ -3497,7 +3498,9 @@
       if (urlOrg) document.getElementById('inpOrgCode').value = urlOrg.toUpperCase();
       renderStaticLabels();
       if (session?.token) enterApp();
-      if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(() => {});
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('./sw.js', { updateViaCache: 'none' }).catch(() => {});
+      }
     })();
   </script>
 </body>
