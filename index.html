@@ -61,14 +61,20 @@
     .seg-btn.teal { background: var(--teal-dark); border-color: var(--teal); color: #99f6e4; }
 
     .card { background: var(--surface); border: 1px solid var(--border); border-radius: 11px; padding: 6px; margin-bottom: 5px; flex-shrink: 0; }
-    .inp, .sel { width: 100%; height: 34px; padding: 0 8px; border-radius: 8px; border: 1px solid var(--border-strong); background: var(--surface-deep); color: var(--text); font-size: 12px; font-weight: 800; outline: none; }
-    .inp:focus, .sel:focus { border-color: var(--teal); }
+    .inp, .sel, .txtarea { width: 100%; height: 34px; padding: 0 8px; border-radius: 8px; border: 1px solid var(--border-strong); background: var(--surface-deep); color: var(--text); font-size: 12px; font-weight: 800; outline: none; }
+    .txtarea { height: 120px; padding: 8px; resize: vertical; font-family: ui-monospace, monospace; font-size: 11px; }
+    .inp:focus, .sel:focus, .txtarea:focus { border-color: var(--teal); }
     .inp.mono { font-family: ui-monospace, monospace; text-align: center; color: var(--primary); }
-    .grid-3 { display: grid; grid-template-columns: 1.2fr 1.05fr 0.85fr; gap: 5px; }
-    .grid-2 { display: grid; grid-template-columns: 1.45fr 1fr; gap: 5px; }
+    .grid-3 { display: grid; grid-template-columns: 1.15fr 1fr 1fr; gap: 5px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
     .doc-combo { display: flex; border: 1.5px solid var(--primary); border-radius: 8px; overflow: hidden; height: 34px; background: var(--surface-deep); }
     .doc-combo input { border: none; border-radius: 0; flex: 1; min-width: 0; text-align: center; color: var(--primary); font-family: ui-monospace, monospace; }
     .btn-void-mini { border: none; border-left: 1px solid #7f1d1d; background: #450a0a; color: #fca5a5; padding: 0 7px; font-size: 9.5px; font-weight: 900; cursor: pointer; display: inline-flex; align-items: center; }
+    .pad-combo { display: flex; border: 1px solid var(--border-strong); border-radius: 8px; overflow: hidden; height: 34px; background: var(--surface-deep); }
+    .pad-tag { background: #0369a1; color: #fff; font-size: 10px; font-weight: 900; padding: 0 7px; display: inline-flex; align-items: center; flex-shrink: 0; }
+    .pad-combo input { border: none; border-radius: 0; flex: 1; min-width: 0; }
+    .extra-fields { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 5px; }
+    .extra-fields > * { flex: 1 1 110px; }
 
     /* ገጽ 1: መመዝገቢያ */
     .quick-row { display: grid; grid-template-columns: 1fr 68px 40px; gap: 5px; margin-bottom: 6px; flex-shrink: 0; }
@@ -99,7 +105,7 @@
     .dock-btn.out { background: var(--rose); color: #fff; }
     .dock-btn.in { background: var(--emerald); color: #052e16; }
 
-    /* ገጽ 2: የላቀ ቆጠራ + ባለብዙ ቲኬት */
+    /* ገጽ 2: ቆጠራ */
     .ticket-bar { display: flex; gap: 5px; overflow-x: auto; margin-bottom: 5px; flex-shrink: 0; padding-bottom: 2px; }
     .tk-tab { height: 30px; padding: 0 10px; border-radius: 15px; border: 1px solid var(--border-strong); background: var(--surface); color: var(--muted); font-size: 11px; font-weight: 900; cursor: pointer; white-space: nowrap; display: inline-flex; align-items: center; gap: 5px; flex-shrink: 0; }
     .tk-tab.active { background: #172554; border-color: var(--primary); color: #fff; }
@@ -115,11 +121,12 @@
     .preset-btn.active { background: var(--teal); border-color: #5eead4; color: var(--teal-dark); }
     .preset-btn.custom { font-family: inherit; font-size: 10px; color: var(--amber); }
     .alert-box { display: none; padding: 6px 10px; border-radius: 10px; text-align: center; font-size: 11px; font-weight: 900; margin-bottom: 5px; flex-shrink: 0; }
-    .alert-box.warn { display: block; background: rgba(245,158,11,0.16); border: 1.5px solid var(--amber); color: #fde68a; }
+    .alert-box.warn { display: block; background: rgba(245,158,11,0.22); border: 1.5px solid var(--amber); color: #fde68a; }
     .alert-box.stop { display: block; background: var(--emerald); color: #022c22; }
     .alert-box.over { display: block; background: rgba(14,165,233,0.18); border: 1.5px solid var(--primary); color: #7dd3fc; }
     .tally-pad { flex: 1; min-height: 0; background: var(--surface-deep); border: 2px dashed rgba(20,184,166,0.45); border-radius: 16px; display: flex; flex-direction: column; overflow: hidden; cursor: pointer; touch-action: pan-y; margin-bottom: 5px; }
     .tally-pad.flash { border-color: var(--emerald); background: rgba(16,185,129,0.08); }
+    .tally-pad.near { border-color: var(--amber); background: rgba(245,158,11,0.08); }
     .tally-pad.done { border-style: solid; border-color: var(--emerald); }
     .tally-canvas { flex: 1; overflow-y: auto; padding: 10px; display: flex; flex-wrap: wrap; align-content: flex-start; gap: 6px 10px; }
     .t-grp { position: relative; width: 42px; height: 40px; display: inline-flex; align-items: center; justify-content: center; }
@@ -193,7 +200,7 @@
     .btn.muted { background: #1e293b; color: var(--text); }
     .sub-card { background: var(--surface-deep); border: 1px solid var(--border); border-radius: 10px; padding: 9px; display: flex; flex-direction: column; gap: 6px; }
     .lbl-sm { font-size: 10px; font-weight: 900; color: var(--muted); }
-    .chk-row { display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 800; }
+    .chk-row { display: flex; align-items: center; gap: 7px; font-size: 11.5px; font-weight: 800; cursor: pointer; }
     .toast { position: fixed; top: 14px; left: 50%; transform: translateX(-50%); background: #042f2e; border: 1px solid var(--teal); color: #99f6e4; padding: 9px 14px; border-radius: 12px; font-size: 12px; font-weight: 900; z-index: 999; display: flex; align-items: center; gap: 10px; box-shadow: 0 12px 28px rgba(0,0,0,0.7); max-width: 92vw; }
     .toast-btn { background: var(--amber); color: #000; border: none; border-radius: 7px; padding: 4px 8px; font-size: 11px; font-weight: 900; cursor: pointer; }
     video.qr-video { width: 100%; border-radius: 12px; background: #000; max-height: 260px; object-fit: cover; }
@@ -204,22 +211,22 @@
 </head>
 <body>
 
-  <!-- መግቢያ (ኢሜል + ፓስወርድ እና ፒን) -->
+  <!-- መግቢያ -->
   <div id="loginGate" class="gate">
     <div class="gate-card">
       <div class="gate-mark" id="gateMark">መ</div>
       <div class="gate-title" id="lblGateTitle"></div>
       <div class="seg" style="margin-bottom:2px;">
-        <button type="button" id="btnAuthPin" class="seg-btn teal" onclick="setAuthMode('PIN')"></button>
-        <button type="button" id="btnAuthEmail" class="seg-btn" onclick="setAuthMode('EMAIL')"></button>
+        <button type="button" id="btnAuthEmail" class="seg-btn teal" onclick="setAuthMode('EMAIL')"></button>
+        <button type="button" id="btnAuthPin" class="seg-btn" onclick="setAuthMode('PIN')"></button>
       </div>
-      <div id="authPinBox" style="display:flex;flex-direction:column;gap:10px;">
-        <input type="text" id="inpOrgCode" class="inp mono" style="height:42px;text-transform:uppercase;" autocomplete="organization">
-        <input type="password" id="inpLoginPin" class="inp gate-pin" maxlength="6" inputmode="numeric" placeholder="••••••" onkeydown="if(event.key==='Enter') doLogin()">
-      </div>
-      <div id="authEmailBox" style="display:none;flex-direction:column;gap:10px;">
+      <div id="authEmailBox" style="display:flex;flex-direction:column;gap:10px;">
         <input type="email" id="inpLoginEmail" class="inp" style="height:42px;" autocomplete="email">
         <input type="password" id="inpLoginPass" class="inp" style="height:42px;" autocomplete="current-password" onkeydown="if(event.key==='Enter') doLogin()">
+      </div>
+      <div id="authPinBox" style="display:none;flex-direction:column;gap:10px;">
+        <input type="text" id="inpOrgCode" class="inp mono" style="height:42px;text-transform:uppercase;" autocomplete="organization">
+        <input type="password" id="inpLoginPin" class="inp gate-pin" maxlength="6" inputmode="numeric" placeholder="••••••" onkeydown="if(event.key==='Enter') doLogin()">
       </div>
       <button type="button" class="btn teal" id="btnLoginSubmit" onclick="doLogin()"></button>
       <div id="loginErr" style="color:var(--rose);font-size:11.5px;font-weight:900;text-align:center;"></div>
@@ -262,15 +269,32 @@
         <button type="button" id="btnModeIn" class="seg-btn" onclick="setEntryMode('IN')"></button>
       </div>
       <div class="card">
-        <div class="grid-3">
-          <div class="doc-combo">
-            <input type="text" id="inpDocNo" onfocus="checkDocSilently()">
-            <button type="button" id="btnVoidMini" class="btn-void-mini" onclick="promptDirectVoid()"></button>
+        <!-- ወጪ (OUT) ቅጽ -->
+        <div id="entryOutForm">
+          <div class="grid-3">
+            <div class="doc-combo">
+              <input type="text" id="inpDocNo" onfocus="checkDocSilently()">
+              <button type="button" id="btnVoidMini" class="btn-void-mini" onclick="promptDirectVoid()"></button>
+            </div>
+            <input type="text" id="inpParty" class="inp">
+            <div class="pad-combo" id="outPadBox">
+              <span class="pad-tag" id="lblPadTag"></span>
+              <input type="text" id="inpRef" class="inp">
+            </div>
           </div>
-          <input type="text" id="inpParty" class="inp">
-          <input type="text" id="inpRef" class="inp">
+          <div id="outExtraFields" class="extra-fields"></div>
+        </div>
+        <!-- ገቢ (IN) ቅጽ (አቅራቢ / ሹፌር / ታርጋ + አማራጭ ቅንብሮች) -->
+        <div id="entryInForm" style="display:none;">
+          <div class="grid-3">
+            <input type="text" id="inpInSupplier" class="inp">
+            <input type="text" id="inpInDriver" class="inp">
+            <input type="text" id="inpInPlate" class="inp">
+          </div>
+          <div id="inExtraFields" class="extra-fields"></div>
         </div>
       </div>
+
       <div class="quick-row">
         <input type="text" id="inpSearch" class="inp" oninput="renderTiles()" onkeydown="if(event.key==='Enter') quickAdd()">
         <input type="number" id="inpQuickQty" class="inp mono" min="1" inputmode="numeric" onkeydown="if(event.key==='Enter') quickAdd()">
@@ -284,7 +308,7 @@
       </div>
     </section>
 
-    <!-- ገጽ 2: ቆጠራ (ነጻ ቆጠራ + ባለብዙ ቲኬት/መኪና + ኦዲት) -->
+    <!-- ገጽ 2: ቆጠራ -->
     <section id="viewTally" class="view">
       <div class="seg">
         <button type="button" id="btnTTicket" class="seg-btn teal" onclick="setTallyTab('TICKET')"></button>
@@ -292,7 +316,6 @@
         <button type="button" id="btnTAudit" class="seg-btn" onclick="setTallyTab('AUDIT')"></button>
       </div>
 
-      <!-- የጭነት ቲኬቶች ክፍል -->
       <div id="tallyTicketArea">
         <div id="ticketBar" class="ticket-bar"></div>
         <div class="card" style="padding:5px;">
@@ -307,15 +330,14 @@
         <div id="ticketItemsStrip" class="tk-items"></div>
       </div>
 
-      <!-- የነጻ ቆጠራ ክፍል -->
       <div id="tallyFreeArea" style="display:none;margin-bottom:5px;flex-shrink:0;">
-        <div class="grid-2">
+        <div style="display:grid;grid-template-columns:1fr 0.9fr auto;gap:5px;">
           <input type="text" id="inpFreeLabel" class="inp" oninput="freeTally.label=this.value;saveTallyState()">
           <input type="number" id="inpFreeTarget" class="inp mono" min="0" inputmode="numeric" oninput="freeTally.target=Math.max(0,Math.floor(Number(this.value||0)));saveTallyState();renderTallyStats()">
+          <button type="button" id="btnFreeLock" class="icon-btn" style="width:36px;height:34px;" onclick="toggleFreeLock()">🔒</button>
         </div>
       </div>
 
-      <!-- የስቶክ ኦዲት ክፍል -->
       <div id="tallyAuditArea" style="display:none;margin-bottom:5px;flex-shrink:0;">
         <div class="grid-2">
           <select id="selAuditItem" class="sel" onchange="onAuditItemChange()"></select>
@@ -355,7 +377,7 @@
           <input type="text" id="inpDailySearch" class="inp" oninput="renderDaily()">
           <button type="button" id="btnDailySort" class="icon-btn" style="width:auto;padding:0 7px;font-size:10.5px;" onclick="toggleDailySort()">#</button>
           <button type="button" id="btnZeroOnly" class="icon-btn" style="width:auto;padding:0 8px;color:var(--amber);" onclick="toggleZeroFilter()">0</button>
-          <button type="button" id="btnDailyPdf" class="icon-btn" style="width:auto;padding:0 8px;font-size:10.5px;color:var(--teal);" onclick="exportCurrentViewPdf(false)"></button>
+          <button type="button" id="btnDailyPdf" class="icon-btn" style="width:auto;padding:0 8px;font-size:10.5px;color:var(--teal);" onclick="openDailyPdfChoice()"></button>
         </div>
         <div class="metrics" id="dailyMetrics"></div>
       </div>
@@ -432,7 +454,20 @@
     const LANG_KEY = 'erp_lang_v4';
     const BRAND_OVERRIDE_KEY = 'erp_brand_overrides_v4';
     const TALLY_STATE_KEY = 'erp_tally_state_v5';
+    const FORM_CFG_KEY = 'erp_form_cfg_v1';
     const PRESETS = [1, 2, 3, 5, 10, 15, 20];
+
+    const DEFAULT_FORM_CFG = {
+      outPadPrefix: 'ፓድ',
+      outShowPad: true,
+      outShowKg: false,
+      outShowDriver: false,
+      outShowPlate: false,
+      outShowNote: false,
+      inShowDocNo: false,
+      inShowKg: false,
+      inShowNote: false,
+    };
 
     const I18N = {
       am: {
@@ -441,14 +476,15 @@
         orgCodePh: 'የድርጅት ኮድ', emailPh: 'ኢሜል አድራሻ', passPh: 'ፓስወርድ',
         loginBtn: 'ግባ', langSwitch: 'እንግሊዝኛ', langShort: 'እንግሊዝኛ', logout: 'ውጣ', installApp: '📲 አፑን ጫን',
         navEntry: 'መመዝገቢያ', navTally: 'ቆጠራ', navDaily: 'ዕለታዊ', navStock: 'ስቶክ', navMap: 'ካርታ',
-        modeOut: 'የወጪ ዕቃ', modeIn: 'የገቢ ዕቃ', voidShort: 'የተበላሸ', pdfBtn: 'ፒዲኤፍ',
+        modeOut: 'የወጪ ዕቃ', modeIn: 'የገቢ ዕቃ', voidShort: 'የተበላሸ', unvoidShort: 'መልስ', pdfBtn: 'ፒዲኤፍ',
         tTicket: 'የጭነት ቲኬት', tFree: 'ነጻ ቆጠራ', tAudit: 'ስቶክ ማስተካከያ',
         tkShort: 'ቲኬት', tkNew: 'አዲስ', tkAddItem: 'ዕቃ ጨምር', tkDirOut: 'ወጪ', tkDirIn: 'ገቢ',
         tkAddModalTitle: 'ወደ ቲኬት ዕቃዎች ጨምር', tkTargetPh: 'ዒላማ ብዛት (0 = ክፍት)',
         tkNoItems: 'ዕቃ ለመቁጠር ከላይ «+ ዕቃ ጨምር» ይጫኑ',
-        freeLabelPh: 'ማስታወሻ (አማራጭ)', freeTargetPh: 'ዒላማ ብዛት (አማራጭ)',
+        freeLabelPh: 'ማስታወሻ (አማራጭ)', freeTargetPh: 'ዒላማ ብዛት',
         postDirect: 'ቀጥታ መዝግብ', sendEntry: 'ወደ መመዝገቢያ', applyAdj: 'ማስተካከያ ላክ',
-        docPh: 'ሰነድ ቁ.', partyOutPh: 'ደንበኛ', partyInPh: 'አቅራቢ', refOutPh: 'ፓድ ቁ.', refInPh: 'ሹፌር / ታርጋ',
+        docPh: 'ሰነድ ቁ.', partyOutPh: 'ደንበኛ', partyInPh: 'አቅራቢ', driverPh: 'ሹፌር', platePh: 'ታርጋ ቁጥር',
+        refOutPh: 'ቁጥር ብቻ', kgPh: 'ክብደት (ኪ.ግ)', notePh: 'ማስታወሻ',
         searchPh: 'ዕቃ ፈልግ...', qtyPh: 'ብዛት', dailySearchPh: 'ሰነድ፣ ዕቃ፣ ደንበኛ ወይም ቀን ፈልግ...',
         stockSearchPh: 'ዕቃ ወይም ካቴጎሪ ፈልግ...', mapSearchPh: 'በካርታው ላይ ዕቃ ፈልግ...',
         countBtn: 'ቁጠር', perCarry: 'በአንድ ሸክም', other: 'ሌላ',
@@ -456,7 +492,9 @@
         undo: 'መልስ', odd: 'ጎዶሎ', clear: 'አጽዳ',
         submitOut: 'ወጪ መዝግብ', submitIn: 'ገቢ መዝግብ',
         pWeek: 'ይህ ሳምንት', pLastWeek: 'ያለፈው ሳምንት', pMonth: 'ይህ ወር', pAll: 'ሁሉም',
-        stopAlert: 'ግቡ ሞልቷል — ጭነት አስቆም', oddWarn: (r) => `የቀረው ${r} ብቻ ነው`,
+        stopAlert: '🛑 ግቡ ሞልቷል — ጭነት አስቆም',
+        nearAlert: (s, r) => `⚠️ የመጨረሻ ${s} ጭረት (${r} ፍሬ) ብቻ ቀረ!`,
+        oddWarn: (r) => `🔔 ጎዶሎ፦ ${r} ፍሬ ብቻ ቀረ!`,
         overWarn: (d) => `ከግቡ +${d} ትርፍ ተገኝቷል`, shortWarn: (d) => `-${d} ጉድለት አለ`,
         exactMatch: 'ከሲስተም ቀሪ ጋር እኩል ነው',
         dockTot: (c, q) => `ድምር፦ ${c} ዓይነት (${q} ፍሬ)`,
@@ -465,29 +503,36 @@
         sCols: ['ዕቃ', 'መነሻ', 'ገቢ', 'ወጪ', 'ማስተካከያ', 'ቀሪ'],
         sPdfCols5: ['የዕቃ አይነት', 'መነሻ', 'የገባ (+)', 'የወጣ (-)', 'ቀሪ'],
         sPdfCols6: ['የዕቃ አይነት', 'መነሻ', 'የገባ (+)', 'የወጣ (-)', 'ማስተካከያ', 'ቀሪ'],
-        pdfDailySub: 'ዕለታዊ ሪፖርት', pdfStockSub: 'ማስተር ስቶክ ሪፖርት',
+        pdfDailySub: 'ዕለታዊ ሪፖርት', pdfTodaySub: 'የዛሬው ዕለታዊ ሪፖርት', pdfStockSub: 'ማስተር ስቶክ ሪፖርት',
+        pdfChoiceTitle: 'ዕለታዊ ፒዲኤፍ ምርጫ', pdfTodayBtn: 'የዛሬው ብቻ', pdfFullBtn: 'ሙሉ ታሪክ',
         pdfEndList: '✦ የዝርዝር መጨረሻ ✦',
         pdfTotLabel: 'የሪፖርቱ አጠቃላይ ድምር (ገቢ / ወጪ)',
         pdfRowsCount: (n) => `የተመዘገቡ ዕቃዎች፦ ${n} ረድፍ`,
         pdfStockTot: (n) => `ጠቅላላ (${n} ዓይነት)`,
-        mOrgs: 'ድርጅቶች', mBrand: 'የድርጅት ስም', mBranches: 'ቅርንጫፎች', mStaff: 'ሰራተኞች እና ፈቃድ',
+        mOrgs: 'ድርጅቶች', mBrand: 'የድርጅት ስም', mFormCfg: 'የቅጽ ቅንብሮች', mBranches: 'ቅርንጫፎች', mStaff: 'ሰራተኞች እና ፈቃድ',
         mChannels: 'የመገናኛ አድራሻዎች', mCatalog: 'ዕቃዎች እና ካቴጎሪ', mRacks: 'መደርደሪያዎች',
         mApprovals: 'የማስተካከያ ጥያቄዎች', mRisk: 'የስጋት ኦዲት ላክ', mPin: 'ፒን ቀይር',
+        cfgOutHead: 'የወጪ ቅጽ አማራጮች', cfgInHead: 'የገቢ ቅጽ አማራጮች',
+        cfgPadPrefix: 'የፓድ ቅድመ-ቃል', cfgShowPad: 'ፓድ ቁጥር አሳይ', cfgShowKg: 'ክብደት (ኪ.ግ) አሳይ',
+        cfgShowDriver: 'ሹፌር አሳይ', cfgShowPlate: 'ታርጋ ቁጥር አሳይ', cfgShowNote: 'ማስታወሻ አሳይ', cfgInDocNo: 'በገቢ ላይ የሰነድ ቁጥር አሳይ',
         phBrandTitle: 'የድርጅትዎ መጠሪያ ስም',
+        quickNewTitle: 'አዲስ ዕቃ መዝግብ', quickNewAsk: (n) => `«${n}» በዝርዝር ውስጥ የለም። እንደ አዲስ ዕቃ ተመዝግቦ ወደ ቅርጫት ይግባ?`,
+        bulkTitle: 'በጅምላ አስገባ (Excel / Sheets)',
+        bulkHint: 'በእያንዳንዱ መስመር፦ ካቴጎሪ, የዕቃ ስም, መነሻ ብዛት (ወይም ከExcel 3 አምዶችን ኮፒ አድርገው ይለጥፉ)',
+        bulkBtn: 'በጅምላ አስገባ', bulkDone: (n) => `${n} አዳዲስ ዕቃዎች ገብተዋል`,
         save: 'አስቀምጥ', close: 'ዝጋ', cancel: 'ተው', ok: 'አጽድቅ', del: 'አጥፋ', add: 'ጨምር',
         emptySlot: 'ባዶ', assignBtn: 'መድብ', clearSlot: 'ሳጥን አጽዳ', appendSlot: 'ከነባሩ ሳይጠፋ ጨምር',
         pdfClear: 'አጽዳ', pdfDown: 'አውርድ', pdfSend: 'ላክ',
         savedOk: 'በተሳካ ሁኔታ ተመዝግቧል', offlineSaved: 'ኢንተርኔት የለም — ስልኩ ላይ ተቀምጧል',
         syncNow: (n) => `ላክ (${n})`, syncedOk: 'ሁሉም የተጠራቀሙ ሰነዶች ተልከዋል',
-        errPin: 'የተሳሳተ መለያ ወይም ሚስጥር ቁጥር', errEmailNotReady: 'የኢሜል መግቢያ በዳታቤዝ ላይ ገና አልተገናኘም — ለጊዜው በፒን ይግቡ',
-        errStock: 'በቂ ስቶክ የለም', errNeedDoc: 'የሰነድ ቁጥር ያስገቡ', errNeedCount: 'ቢያንስ አንድ ዕቃ ይቁጠሩ',
-        dupTitle: 'የተደገመ የሰነድ ቁጥር',
-        dupAskPin: 'ይህ ሰነድ ቀድሞ ተመዝግቧል። በአዲስ ፓድ ከሆነ የአድሚን ፒን ያስገቡ፦',
+        errPin: 'የተሳሳተ መለያ ወይም ሚስጥር ቁጥር', errStock: 'በቂ ስቶክ የለም', errNeedDoc: 'የሰነድ ቁጥር ያስገቡ', errNeedCount: 'ቢያንስ አንድ ዕቃ ይቁጠሩ',
+        dupTitle: 'የተደገመ የሰነድ ቁጥር', dupAskPin: 'ይህ ሰነድ ቀድሞ ተመዝግቧል። በአዲስ ፓድ ከሆነ የአድሚን ፒን ያስገቡ፦',
         seqJumpTitle: 'የሰነድ ተራ ቁጥር ለውጥ', seqVoidChk: 'የቀድሞውን ፓድ ቀሪ ቅጠሎች በአንድ ረድፍ የተበላሸ አድርግ፦',
         qrTitle: 'የመደርደሪያ ኮድ ስካነር', qrManualPh: 'ወይም ሳጥን ኮድ ይጻፉ',
         adjPending: 'ለአድሚን ማጽደቂያ ተልኳል', adjApproved: 'ማስተካከያው ጸድቆ ተመዝግቧል',
         adjPlusReason: 'የቆጠራ ትርፍ ማስተካከያ', adjMinusReason: 'የቆጠራ ጉድለት ማስተካከያ',
-        editDocTitle: 'ሰነድ ማስተካከያ', voidDocBtn: 'ሙሉ ሰነዱን የተበላሸ አድርግ',
+        editDocTitle: 'ሰነድ ማስተካከያ / ቅያሬ / መጨመሪያ', addForgotten: 'የተረሳ ዕቃ ጨምር',
+        voidDocBtn: 'ሙሉ ሰነዱን የተበላሸ አድርግ', unvoidAsk: 'ይህን የተበላሸ ሰነድ እንደገና ወደ ንቁ (Active) ይመልሱት?',
         testBtn: 'ሞክር', webhookBtn: 'ቁልፍ አገናኝ', approve: 'አጽድቅ', reject: 'ሰርዝ',
         phOrgCode: 'የድርጅት ኮድ', phOrgName: 'የድርጅት ስም', phBrName: 'የቅርንጫፍ ስም', phBrCode: 'የቅርንጫፍ ኮድ',
         phAdmName: 'የአድሚን ስም', phPin: 'ፒን ኮድ', phOldPin: 'የአሁኑ ፒን', phNewPin: 'አዲሱ ፒን',
@@ -496,7 +541,7 @@
         phChLabel: 'መለያ ስም', phChTarget: 'የቻት መለያ / ስልክ ቁጥር / አድራሻ',
         phChCred1: 'ሚስጥራዊ ቁልፍ / ቶከን', phChCred2: 'የስልክ መለያ / ላኪ ስም',
         phCatName: 'አዲስ ካቴጎሪ ስም', phItemName: 'የዕቃ ስም', phOpening: 'መነሻ ብዛት',
-        phRackCode: 'ኮድ', phRackName: 'የመደርደሪያ ስም', phRackCols: 'አምዶች',
+        phRackCode: 'ኮድ', phRackName: 'የመደርደሪያ ስም', phRackCols: 'ወደ ጎን (አምድ)', phRackRows: 'ወደ ላይ (ረድፍ)',
         voidLabel: 'የተበላሸ', metricVoid: 'የተበላሸ', pdfLoading: 'ፒዲኤፍ በመጫን ላይ...', pdfLocal: 'ስልኩ ላይ ወርዷል',
         errGeneric: 'ስህተት ተፈጥሯል', noItems: 'ምንም መረጃ የለም', sortDoc: 'በሰነድ ቁጥር', sortTime: 'በጊዜ'
       },
@@ -506,14 +551,15 @@
         orgCodePh: 'Organization Code', emailPh: 'Email Address', passPh: 'Password',
         loginBtn: 'Sign In', langSwitch: 'Amharic', langShort: 'Amharic', logout: 'Sign Out', installApp: '📲 Install App',
         navEntry: 'Entry', navTally: 'Tally', navDaily: 'Daily', navStock: 'Stock', navMap: 'Map',
-        modeOut: 'Issue Out', modeIn: 'Receive In', voidShort: 'Void', pdfBtn: 'PDF',
+        modeOut: 'Issue Out', modeIn: 'Receive In', voidShort: 'Void', unvoidShort: 'Unvoid', pdfBtn: 'PDF',
         tTicket: 'Loading Ticket', tFree: 'Free Count', tAudit: 'Stock Audit',
         tkShort: 'Ticket', tkNew: 'New', tkAddItem: 'Add Item', tkDirOut: 'OUT', tkDirIn: 'IN',
         tkAddModalTitle: 'Add Items to Ticket', tkTargetPh: 'Target Qty (0 = Open)',
         tkNoItems: 'Tap "+ Add Item" above to load items',
-        freeLabelPh: 'Note (optional)', freeTargetPh: 'Target Qty (optional)',
+        freeLabelPh: 'Note (optional)', freeTargetPh: 'Target Qty',
         postDirect: 'Post Directly', sendEntry: 'Copy to Entry', applyAdj: 'Submit Adjustment',
-        docPh: 'Doc No.', partyOutPh: 'Customer', partyInPh: 'Supplier', refOutPh: 'Pad No.', refInPh: 'Driver / Plate',
+        docPh: 'Doc No.', partyOutPh: 'Customer', partyInPh: 'Supplier', driverPh: 'Driver', platePh: 'Plate No.',
+        refOutPh: 'Number only', kgPh: 'Weight (kg)', notePh: 'Note',
         searchPh: 'Search item...', qtyPh: 'Qty', dailySearchPh: 'Search doc, item, party, date...',
         stockSearchPh: 'Search item or category...', mapSearchPh: 'Find item on map...',
         countBtn: 'Count', perCarry: 'Per load', other: 'Other',
@@ -521,7 +567,9 @@
         undo: 'Undo', odd: 'Odd', clear: 'Clear',
         submitOut: 'Post Issue', submitIn: 'Post Receipt',
         pWeek: 'This Week', pLastWeek: 'Last Week', pMonth: 'This Month', pAll: 'All Time',
-        stopAlert: 'Target reached — Stop loading', oddWarn: (r) => `Only ${r} remaining`,
+        stopAlert: '🛑 Target reached — Stop loading',
+        nearAlert: (s, r) => `⚠️ Final ${s} strokes (${r} pcs) left!`,
+        oddWarn: (r) => `🔔 Odd: only ${r} pcs left!`,
         overWarn: (d) => `Surplus: +${d}`, shortWarn: (d) => `Shortage: -${d}`,
         exactMatch: 'Matches system balance',
         dockTot: (c, q) => `Total: ${c} items (${q} pcs)`,
@@ -530,29 +578,36 @@
         sCols: ['Item', 'Open', 'In', 'Out', 'Adj', 'Bal'],
         sPdfCols5: ['Item Name', 'Opening', 'In (+)', 'Out (-)', 'Balance'],
         sPdfCols6: ['Item Name', 'Opening', 'In (+)', 'Out (-)', 'Adj', 'Balance'],
-        pdfDailySub: 'Daily Report', pdfStockSub: 'Master Stock Report',
+        pdfDailySub: 'Daily Report', pdfTodaySub: "Today's Daily Report", pdfStockSub: 'Master Stock Report',
+        pdfChoiceTitle: 'Daily PDF Options', pdfTodayBtn: 'Today Only', pdfFullBtn: 'Full History',
         pdfEndList: '✦ End of List ✦',
         pdfTotLabel: 'Report Totals (In / Out)',
         pdfRowsCount: (n) => `Recorded Lines: ${n}`,
         pdfStockTot: (n) => `Total (${n} items)`,
-        mOrgs: 'Organizations', mBrand: 'Organization Name', mBranches: 'Branches', mStaff: 'Staff & Access',
+        mOrgs: 'Organizations', mBrand: 'Organization Name', mFormCfg: 'Form Fields Settings', mBranches: 'Branches', mStaff: 'Staff & Access',
         mChannels: 'Notification Channels', mCatalog: 'Items & Categories', mRacks: 'Racks',
         mApprovals: 'Pending Adjustments', mRisk: 'Send Risk Audit', mPin: 'Change PIN',
+        cfgOutHead: 'Issue (OUT) Fields', cfgInHead: 'Receive (IN) Fields',
+        cfgPadPrefix: 'Pad Prefix', cfgShowPad: 'Show Pad No.', cfgShowKg: 'Show Weight (kg)',
+        cfgShowDriver: 'Show Driver', cfgShowPlate: 'Show Plate No.', cfgShowNote: 'Show Note', cfgInDocNo: 'Show Doc No. on Receive',
         phBrandTitle: 'Your Organization Display Name',
+        quickNewTitle: 'Register New Item', quickNewAsk: (n) => `"${n}" is not in catalog. Register as new item and add to basket?`,
+        bulkTitle: 'Bulk Import (Excel / Sheets)',
+        bulkHint: 'One per line: Category, Item Name, Opening Qty (or paste 3 columns from Excel)',
+        bulkBtn: 'Bulk Import', bulkDone: (n) => `Imported ${n} new items`,
         save: 'Save', close: 'Close', cancel: 'Cancel', ok: 'Confirm', del: 'Delete', add: 'Add',
         emptySlot: 'Empty', assignBtn: 'Assign', clearSlot: 'Clear Slot', appendSlot: 'Keep existing slots',
         pdfClear: 'Clear', pdfDown: 'Download', pdfSend: 'Send',
         savedOk: 'Saved successfully', offlineSaved: 'Offline — queued on device',
         syncNow: (n) => `Sync (${n})`, syncedOk: 'Offline queue synced',
-        errPin: 'Invalid credentials', errEmailNotReady: 'Email login backend not enabled yet — use PIN for now',
-        errStock: 'Insufficient stock', errNeedDoc: 'Enter document number', errNeedCount: 'Count at least one item first',
-        dupTitle: 'Duplicate Document',
-        dupAskPin: 'This document number already exists. Enter Admin PIN to override:',
+        errPin: 'Invalid credentials', errStock: 'Insufficient stock', errNeedDoc: 'Enter document number', errNeedCount: 'Count at least one item first',
+        dupTitle: 'Duplicate Document', dupAskPin: 'This document number already exists. Enter Admin PIN to override:',
         seqJumpTitle: 'Document Sequence Change', seqVoidChk: 'Close previous pad leaves as one Void row:',
         qrTitle: 'Bin QR Scanner', qrManualPh: 'Or type slot code',
         adjPending: 'Sent for Admin approval', adjApproved: 'Adjustment approved & posted',
         adjPlusReason: 'Physical count surplus', adjMinusReason: 'Physical count shortage',
-        editDocTitle: 'Edit Document', voidDocBtn: 'Void Entire Document',
+        editDocTitle: 'Edit / Swap / Add Item', addForgotten: 'Add Forgotten Item',
+        voidDocBtn: 'Void Entire Document', unvoidAsk: 'Restore this voided document back to Active?',
         testBtn: 'Test', webhookBtn: 'Link Bot', approve: 'Approve', reject: 'Reject',
         phOrgCode: 'Org Code', phOrgName: 'Organization Name', phBrName: 'Branch Name', phBrCode: 'Branch Code',
         phAdmName: 'Admin Name', phPin: 'PIN Code', phOldPin: 'Current PIN', phNewPin: 'New PIN',
@@ -561,30 +616,30 @@
         phChLabel: 'Channel Label', phChTarget: 'Chat ID / Phone / URL',
         phChCred1: 'Bot Token / API Key', phChCred2: 'Phone Number ID / Sender ID',
         phCatName: 'New Category Name', phItemName: 'Item Name', phOpening: 'Opening Qty',
-        phRackCode: 'Code', phRackName: 'Rack Name', phRackCols: 'Columns',
+        phRackCode: 'Code', phRackName: 'Rack Name', phRackCols: 'Columns', phRackRows: 'Rows',
         voidLabel: 'Void', metricVoid: 'Void', pdfLoading: 'PDF engine loading...', pdfLocal: 'Downloaded locally',
         errGeneric: 'Operation failed', noItems: 'No records found', sortDoc: 'By Doc No', sortTime: 'By Time'
       }
     };
 
     let lang = localStorage.getItem(LANG_KEY) === 'en' ? 'en' : 'am';
-    let authMode = 'PIN';
+    let authMode = 'EMAIL';
     let session = loadJson(SESSION_KEY, null);
+    let formCfg = { ...DEFAULT_FORM_CFG, ...loadJson(FORM_CFG_KEY, {}) };
     let currentWhId = '';
     let whData = { warehouse: {}, items: [], categories: [], racks: [], slot_map: {}, last_doc_num: 0, next_doc_num: 1, pending_adjustments_count: 0, is_branch_admin: false, is_org_admin: false, org_warehouses: [] };
     let entryMode = 'OUT';
     let basket = [];
 
-    // የላቀ ቆጠራ ዳታ (በስልኩ ላይ ይቀመጣል)
-    let tallyTab = 'TICKET'; // TICKET | FREE | AUDIT
+    let tallyTab = 'TICKET';
     let carryMult = 5;
     let tickets = [];
     let activeTicketId = '';
-    let freeTally = { label: '', target: 0, strokes: [] };
+    let freeTally = { label: '', target: 0, lockTarget: true, strokes: [] };
     let auditTally = { itemId: '', strokes: [] };
 
     let dailyRows = [];
-    let dailySort = 'DOC'; // DOC | TIME
+    let dailySort = 'DOC';
     let stockRows = [];
     let stockPeriod = 'WEEK';
     let zeroFilter = false;
@@ -603,6 +658,8 @@
     let dragEl = null;
     let dragIdx = -1;
     let deferredInstallPrompt = null;
+    let editVoidIds = [];
+    let editAppendList = [];
 
     function t(k) { return I18N[lang][k]; }
     function esc(s) { return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
@@ -613,18 +670,15 @@
     function docNumInt(v) { const m = String(v || '').match(/\d+/); return m ? parseInt(m[0], 10) : 0; }
 
     window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredInstallPrompt = e;
+      e.preventDefault(); deferredInstallPrompt = e;
       const b = document.getElementById('btnInstallApp');
       if (b) { b.style.display = 'block'; b.textContent = t('installApp'); }
     });
 
     async function triggerPwaInstall() {
       if (!deferredInstallPrompt) return;
-      deferredInstallPrompt.prompt();
-      await deferredInstallPrompt.userChoice;
-      deferredInstallPrompt = null;
-      document.getElementById('btnInstallApp').style.display = 'none';
+      deferredInstallPrompt.prompt(); await deferredInstallPrompt.userChoice;
+      deferredInstallPrompt = null; document.getElementById('btnInstallApp').style.display = 'none';
     }
 
     function getBrandOverrides() { return loadJson(BRAND_OVERRIDE_KEY, {}); }
@@ -675,11 +729,7 @@
     async function callRpc(fnName, params = {}) {
       const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${fnName}`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          apikey: SUPABASE_KEY,
-          Authorization: `Bearer ${SUPABASE_KEY}`,
-        },
+        headers: { 'Content-Type': 'application/json', apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` },
         body: JSON.stringify(params),
       });
       const data = await res.json();
@@ -690,12 +740,7 @@
     async function callBot(payload) {
       const res = await fetch(`${SUPABASE_URL}/functions/v1/${BOT_FUNCTION}`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          apikey: SUPABASE_KEY,
-          Authorization: `Bearer ${SUPABASE_KEY}`,
-          'x-session-token': session?.token || '',
-        },
+        headers: { 'Content-Type': 'application/json', apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'x-session-token': session?.token || '' },
         body: JSON.stringify({ ...payload, token: session?.token || '', function_name: BOT_FUNCTION }),
       });
       return await res.json();
@@ -705,20 +750,14 @@
     function updateSyncPill() {
       const q = getOfflineQueue();
       const pill = document.getElementById('syncPill');
-      if (q.length > 0) {
-        pill.style.display = 'inline-flex';
-        pill.style.alignItems = 'center';
-        pill.textContent = t('syncNow')(q.length);
-      } else {
-        pill.style.display = 'none';
-      }
+      if (q.length > 0) { pill.style.display = 'inline-flex'; pill.style.alignItems = 'center'; pill.textContent = t('syncNow')(q.length); }
+      else pill.style.display = 'none';
     }
 
     async function syncOfflineQueue() {
       const q = getOfflineQueue();
       if (!q.length || !navigator.onLine || !session?.token) return;
-      const remaining = [];
-      let synced = 0;
+      const remaining = []; let synced = 0;
       for (const job of q) {
         try {
           const r = await callRpc('rpc_post_document', { ...job.params, p_token: session.token });
@@ -727,16 +766,15 @@
             if (job.params.p_doc_type === 'IN' && r.document_id) {
               callBot({ action: 'send_grn', warehouse_id: job.params.p_warehouse_id, document_id: r.document_id }).catch(() => {});
             }
-          } else { remaining.push(job); }
+          } else remaining.push(job);
         } catch { remaining.push(job); }
       }
-      saveJson(QUEUE_KEY, remaining);
-      updateSyncPill();
+      saveJson(QUEUE_KEY, remaining); updateSyncPill();
       if (synced > 0) { showToast(t('syncedOk')); loadWarehouseData(currentWhId); }
     }
     window.addEventListener('online', syncOfflineQueue);
 
-    // ==================== መግቢያ (PIN + Email Ready) ====================
+    // ==================== መግቢያ ====================
     function setAuthMode(m) {
       authMode = m; vib(15);
       document.getElementById('btnAuthPin').className = 'seg-btn' + (m === 'PIN' ? ' teal' : '');
@@ -755,14 +793,7 @@
           const email = document.getElementById('inpLoginEmail').value.trim().toLowerCase();
           const pass = document.getElementById('inpLoginPass').value;
           if (!email || !pass) { errEl.textContent = t('errPin'); return; }
-          try {
-            res = await callRpc('rpc_login_email', { p_email: email, p_password: pass });
-          } catch (e) {
-            if (String(e.message).includes('Could not find the function')) {
-              errEl.textContent = t('errEmailNotReady'); return;
-            }
-            throw e;
-          }
+          res = await callRpc('rpc_login_email', { p_email: email, p_password: pass });
         } else {
           const orgCode = document.getElementById('inpOrgCode').value.trim().toUpperCase();
           const pin = document.getElementById('inpLoginPin').value.trim();
@@ -770,18 +801,14 @@
           res = await callRpc('rpc_login', { p_org_code: orgCode, p_pin: pin });
         }
         if (!res || !res.success) { errEl.textContent = t('errPin'); return; }
-        session = res;
-        saveJson(SESSION_KEY, session);
-        errEl.textContent = '';
+        session = res; saveJson(SESSION_KEY, session); errEl.textContent = '';
         enterApp();
-      } catch {
-        errEl.textContent = t('errGeneric');
-      }
+      } catch { errEl.textContent = t('errGeneric'); }
     }
 
     async function doLogout() {
       if (session?.token) callRpc('rpc_logout', { p_token: session.token }).catch(() => {});
-      session = null;
+      session = null; basket = []; dailyRows = []; stockRows = [];
       localStorage.removeItem(SESSION_KEY);
       closeDrawer();
       document.getElementById('appShell').style.display = 'none';
@@ -805,6 +832,7 @@
       loadTallyState();
       if (currentWhId) loadWarehouseData(currentWhId);
       renderStaticLabels();
+      renderDynamicFormFields();
       updateSyncPill();
       syncOfflineQueue();
     }
@@ -828,30 +856,49 @@
         if (res.racks.length && !res.racks.some((r) => r.code === activeRack)) activeRack = res.racks[0].code;
         ensureDefaultTicket();
 
-        renderDrawerMenu();
-        renderTiles();
-        renderBasket();
-        renderTally();
-        renderMap();
+        renderDrawerMenu(); renderTiles(); renderBasket(); renderTally(); renderMap();
         if (document.getElementById('viewDaily').classList.contains('active')) loadDaily();
         if (document.getElementById('viewStock').classList.contains('active')) loadStock();
-      } catch (e) {
-        if (String(e.message).includes('UNAUTHORIZED')) doLogout();
-      }
+      } catch (e) { if (String(e.message).includes('UNAUTHORIZED')) doLogout(); }
     }
 
     function switchWarehouse(id) { vib(18); basket = []; loadWarehouseData(id); }
 
-    // ==================== ገጽ 1: መመዝገቢያ ====================
+    // ==================== ገጽ 1: መመዝገቢያ እና ተለዋዋጭ ቅጽ ====================
+    function renderDynamicFormFields() {
+      document.getElementById('lblPadTag').textContent = formCfg.outPadPrefix || 'ፓድ';
+      document.getElementById('outPadBox').style.display = formCfg.outShowPad ? 'flex' : 'none';
+
+      const outEx = [];
+      if (formCfg.outShowKg) outEx.push(`<input type="number" id="inpOutKg" class="inp mono" placeholder="${esc(t('kgPh'))}">`);
+      if (formCfg.outShowDriver) outEx.push(`<input type="text" id="inpOutDriver" class="inp" placeholder="${esc(t('driverPh'))}">`);
+      if (formCfg.outShowPlate) outEx.push(`<input type="text" id="inpOutPlate" class="inp" placeholder="${esc(t('platePh'))}">`);
+      if (formCfg.outShowNote) outEx.push(`<input type="text" id="inpOutNote" class="inp" placeholder="${esc(t('notePh'))}">`);
+      document.getElementById('outExtraFields').innerHTML = outEx.join('');
+
+      const inEx = [];
+      if (formCfg.inShowDocNo) inEx.push(`<input type="text" id="inpInDocNo" class="inp mono" placeholder="${esc(t('docPh'))}">`);
+      if (formCfg.inShowKg) inEx.push(`<input type="number" id="inpInKg" class="inp mono" placeholder="${esc(t('kgPh'))}">`);
+      if (formCfg.inShowNote) inEx.push(`<input type="text" id="inpInNote" class="inp" placeholder="${esc(t('notePh'))}">`);
+      document.getElementById('inExtraFields').innerHTML = inEx.join('');
+    }
+
     function setEntryMode(m) {
       entryMode = m; vib(16);
       document.getElementById('btnModeOut').className = 'seg-btn' + (m === 'OUT' ? ' out' : '');
       document.getElementById('btnModeIn').className = 'seg-btn' + (m === 'IN' ? ' in' : '');
-      document.getElementById('btnVoidMini').style.display = (m === 'OUT') ? 'inline-flex' : 'none';
-      document.getElementById('inpDocNo').value = (m === 'OUT') ? String(whData.next_doc_num || 1) : '';
-      document.getElementById('inpParty').placeholder = (m === 'OUT') ? t('partyOutPh') : t('partyInPh');
-      document.getElementById('inpRef').placeholder = (m === 'OUT') ? t('refOutPh') : t('refInPh');
+      document.getElementById('entryOutForm').style.display = m === 'OUT' ? 'block' : 'none';
+      document.getElementById('entryInForm').style.display = m === 'IN' ? 'block' : 'none';
+      if (m === 'OUT') document.getElementById('inpDocNo').value = String(whData.next_doc_num || 1);
       renderBasket();
+    }
+
+    function formatPadRef(raw) {
+      const v = String(raw || '').trim();
+      if (!v) return '-';
+      const pfx = (formCfg.outPadPrefix || 'ፓድ').trim();
+      if (!pfx || v.toLowerCase().startsWith(pfx.toLowerCase()) || v.toLowerCase().startsWith('pad')) return v;
+      return `${pfx} ${v}`;
     }
 
     function renderTiles() {
@@ -885,10 +932,40 @@
     }
 
     function quickAdd() {
-      const q = document.getElementById('inpSearch').value.trim().toLowerCase();
+      const rawName = document.getElementById('inpSearch').value.trim();
+      const q = rawName.toLowerCase();
       const qty = Math.floor(Number(document.getElementById('inpQuickQty').value || 0));
+      if (!rawName || qty <= 0) return;
+
       const it = (whData.items || []).find((x) => x.name.toLowerCase() === q) || (whData.items || []).find((x) => x.name.toLowerCase().includes(q));
-      if (!it || qty <= 0) return;
+      if (!it) {
+        // ያልተመዘገበ አዲስ ዕቃ ሲጻፍ ፈጣን መመዝገቢያ
+        const cats = whData.categories || [];
+        openMainModal(t('quickNewTitle'), `
+          <div class="sub-card" style="font-size:12px;font-weight:800;">
+            <div>${esc(t('quickNewAsk')(rawName))}</div>
+            <select id="qNewCat" class="sel"><option value="">-</option>${cats.map((c) => `<option value="${c.id}">${esc(c.name)}</option>`).join('')}</select>
+          </div>`,
+          `<button type="button" class="btn muted" onclick="closeMainModal()">${esc(t('cancel'))}</button>
+           <button type="button" class="btn teal" id="btnQNewGo">${esc(t('add'))}</button>`);
+        document.getElementById('btnQNewGo').onclick = async () => {
+          const catId = document.getElementById('qNewCat').value;
+          const res = await callRpc('rpc_manage_catalog', {
+            p_token: session.token, p_warehouse_id: currentWhId, p_action: 'UPSERT_ITEM',
+            p_payload: { name: rawName, category_id: catId, opening_qty: 0 },
+          });
+          closeMainModal();
+          if (res.success && res.item_id) {
+            await loadWarehouseData(currentWhId);
+            addToBasket(res.item_id, rawName, qty, null);
+            document.getElementById('inpSearch').value = '';
+            document.getElementById('inpQuickQty').value = '';
+            showToast(t('savedOk'));
+          } else showToast(t('errGeneric'));
+        };
+        return;
+      }
+
       addToBasket(it.id, it.name, qty, null);
       document.getElementById('inpSearch').value = '';
       document.getElementById('inpQuickQty').value = '';
@@ -909,12 +986,9 @@
       const active = document.getElementById('viewEntry').classList.contains('active');
 
       if (!basket.length) {
-        wrap.style.display = 'none'; dock.style.display = 'none'; grid.classList.remove('has-basket');
-        return;
+        wrap.style.display = 'none'; dock.style.display = 'none'; grid.classList.remove('has-basket'); return;
       }
-      wrap.style.display = 'flex';
-      dock.style.display = active ? 'flex' : 'none';
-      grid.classList.add('has-basket');
+      wrap.style.display = 'flex'; dock.style.display = active ? 'flex' : 'none'; grid.classList.add('has-basket');
 
       list.innerHTML = '';
       basket.forEach((b, i) => {
@@ -952,10 +1026,8 @@
       if (basket.length <= 1) return;
       e.preventDefault();
       const list = document.getElementById('basketList');
-      dragEl = rowEl;
-      dragIdx = Array.from(list.children).indexOf(rowEl);
-      rowEl.classList.add('dragging');
-      vib(30);
+      dragEl = rowEl; dragIdx = Array.from(list.children).indexOf(rowEl);
+      rowEl.classList.add('dragging'); vib(30);
 
       const onMove = (ev) => {
         if (!dragEl) return;
@@ -966,8 +1038,7 @@
             const moved = basket.splice(dragIdx, 1)[0];
             basket.splice(i, 0, moved);
             list.insertBefore(dragEl, i < dragIdx ? rows[i] : rows[i].nextSibling);
-            dragIdx = i;
-            vib(14);
+            dragIdx = i; vib(14);
             Array.from(list.children).forEach((el, k) => el.querySelector('.b-drag').textContent = k + 1);
             break;
           }
@@ -988,8 +1059,7 @@
       try {
         const r = await callRpc('rpc_check_doc_sequence', { p_token: session.token, p_warehouse_id: currentWhId });
         if (r.success) {
-          whData.last_doc_num = r.last_doc_num;
-          whData.next_doc_num = r.next_doc_num;
+          whData.last_doc_num = r.last_doc_num; whData.next_doc_num = r.next_doc_num;
           const inp = document.getElementById('inpDocNo');
           if (!inp.value.trim()) inp.value = String(r.next_doc_num);
         }
@@ -1006,7 +1076,6 @@
           openDuplicateModal(docNo, chk.existing, (adminPin) => executePostDocument(docType, docNo, party, ref, itemsPayload, null, adminPin, onSuccess));
           return;
         }
-        // የሁለት ሰራተኞች ትይዩ ጭነት መፍትሔ፦ ወደፊት ሲዘል ብቻ ያስጠነቅቃል፤ ወደ ኋላ የቀረውን (#1331 ከ #1332 በኋላ) በሰላም ይቀበላል!
         const nVal = Number(docNo);
         if (whData.last_doc_num > 0 && nVal > whData.next_doc_num && !/^\d+-\d+$/.test(docNo)) {
           openSeqJumpModal(docNo, whData.next_doc_num, (voidRange) => executePostDocument(docType, docNo, party, ref, itemsPayload, voidRange, null, onSuccess));
@@ -1017,16 +1086,46 @@
     }
 
     function handleDocumentSubmit() {
+      let docNo = '', party = '', ref = '';
+      if (entryMode === 'OUT') {
+        docNo = document.getElementById('inpDocNo').value.trim();
+        party = document.getElementById('inpParty').value.trim();
+        const parts = [];
+        if (formCfg.outShowPad) {
+          const p = document.getElementById('inpRef').value.trim();
+          if (p) parts.push(formatPadRef(p));
+        }
+        const kg = document.getElementById('inpOutKg')?.value.trim();
+        if (kg) parts.push(`${kg} kg`);
+        const dr = document.getElementById('inpOutDriver')?.value.trim();
+        if (dr) parts.push(dr);
+        const pl = document.getElementById('inpOutPlate')?.value.trim();
+        if (pl) parts.push(pl);
+        const nt = document.getElementById('inpOutNote')?.value.trim();
+        if (nt) parts.push(nt);
+        ref = parts.join(' / ') || '-';
+      } else {
+        docNo = document.getElementById('inpInDocNo')?.value.trim() || '';
+        party = document.getElementById('inpInSupplier').value.trim();
+        const dr = document.getElementById('inpInDriver').value.trim();
+        const pl = document.getElementById('inpInPlate').value.trim();
+        const parts = [];
+        if (dr || pl) parts.push(`${dr || '-'} / ${pl || '-'}`);
+        const kg = document.getElementById('inpInKg')?.value.trim();
+        if (kg) parts.push(`${kg} kg`);
+        const nt = document.getElementById('inpInNote')?.value.trim();
+        if (nt) parts.push(nt);
+        ref = parts.join(' | ') || '-';
+      }
+
       submitGenericDocument(
-        entryMode,
-        document.getElementById('inpDocNo').value.trim(),
-        document.getElementById('inpParty').value.trim(),
-        document.getElementById('inpRef').value.trim(),
+        entryMode, docNo, party, ref,
         basket.map((b) => ({ item_id: b.item_id, qty: b.qty, tally_proof: b.tally_proof || null })),
         () => {
           basket = [];
-          document.getElementById('inpParty').value = '';
-          document.getElementById('inpRef').value = '';
+          ['inpParty','inpRef','inpOutKg','inpOutDriver','inpOutPlate','inpOutNote','inpInSupplier','inpInDriver','inpInPlate','inpInDocNo','inpInKg','inpInNote'].forEach((id) => {
+            const el = document.getElementById(id); if (el) el.value = '';
+          });
         }
       );
     }
@@ -1069,32 +1168,21 @@
 
     async function executePostDocument(docType, docNo, party, ref, itemsPayload, voidRangeFirst, adminPin, onSuccess) {
       const params = {
-        p_token: session.token,
-        p_warehouse_id: currentWhId,
-        p_doc_type: docType,
-        p_doc_no: docNo,
-        p_party_name: party,
-        p_ref_no: ref,
-        p_items: itemsPayload,
+        p_token: session.token, p_warehouse_id: currentWhId, p_doc_type: docType,
+        p_doc_no: docNo, p_party_name: party, p_ref_no: ref, p_items: itemsPayload,
         p_idempotency_key: (crypto.randomUUID ? crypto.randomUUID() : 'k_' + Date.now() + '_' + Math.random()),
-        p_void_range_first: voidRangeFirst,
-        p_admin_override_pin: adminPin,
+        p_void_range_first: voidRangeFirst, p_admin_override_pin: adminPin,
       };
 
       if (!navigator.onLine) {
         const q = getOfflineQueue(); q.push({ params, ts: Date.now() }); saveJson(QUEUE_KEY, q);
-        if (onSuccess) onSuccess();
-        renderBasket(); updateSyncPill();
-        showToast(t('offlineSaved'));
-        return;
+        if (onSuccess) onSuccess(); renderBasket(); updateSyncPill();
+        showToast(t('offlineSaved')); return;
       }
 
       try {
         const res = await callRpc('rpc_post_document', params);
-        if (!res.success) {
-          showToast(res.error === 'INSUFFICIENT_STOCK' ? t('errStock') : t('errGeneric'));
-          return;
-        }
+        if (!res.success) { showToast(res.error === 'INSUFFICIENT_STOCK' ? t('errStock') : t('errGeneric')); return; }
         vib([35, 30, 50]); playTone(680, 0.1, 'triangle');
         if (docType === 'IN' && res.document_id) {
           callBot({ action: 'send_grn', warehouse_id: currentWhId, document_id: res.document_id }).catch(() => {});
@@ -1104,8 +1192,7 @@
         loadWarehouseData(currentWhId);
       } catch {
         const q = getOfflineQueue(); q.push({ params, ts: Date.now() }); saveJson(QUEUE_KEY, q);
-        if (onSuccess) onSuccess();
-        renderBasket(); updateSyncPill();
+        if (onSuccess) onSuccess(); renderBasket(); updateSyncPill();
         showToast(t('offlineSaved'));
       }
     }
@@ -1126,47 +1213,33 @@
         p_doc_no: docNo, p_party_name: t('voidLabel'), p_ref_no: '-', p_items: [],
         p_idempotency_key: (crypto.randomUUID ? crypto.randomUUID() : 'v_' + Date.now()),
       });
-      if (res.success) { showToast(t('savedOk')); loadWarehouseData(currentWhId); }
-      else showToast(t('errGeneric'));
+      if (res.success) { showToast(t('savedOk')); loadWarehouseData(currentWhId); } else showToast(t('errGeneric'));
     }
 
-    // ==================== ገጽ 2: ባለብዙ ቲኬት ቆጠራ + ነጻ ቆጠራ ====================
+    // ==================== ገጽ 2: ቆጠራ (ግብ ማቆሚያ + የመጨረሻ ጭረት ማስጠንቀቂያ) ====================
     function loadTallyState() {
       const st = loadJson(TALLY_STATE_KEY, null);
       if (st) {
-        tallyTab = st.tallyTab || 'TICKET';
-        carryMult = st.carryMult || 5;
+        tallyTab = st.tallyTab || 'TICKET'; carryMult = st.carryMult || 5;
         tickets = Array.isArray(st.tickets) ? st.tickets : [];
         activeTicketId = st.activeTicketId || '';
-        freeTally = st.freeTally || { label: '', target: 0, strokes: [] };
+        freeTally = { label: '', target: 0, lockTarget: true, strokes: [], ...(st.freeTally || {}) };
         auditTally = st.auditTally || { itemId: '', strokes: [] };
       }
       ensureDefaultTicket();
     }
 
-    function saveTallyState() {
-      saveJson(TALLY_STATE_KEY, { tallyTab, carryMult, tickets, activeTicketId, freeTally, auditTally });
-    }
+    function saveTallyState() { saveJson(TALLY_STATE_KEY, { tallyTab, carryMult, tickets, activeTicketId, freeTally, auditTally }); }
 
     function ensureDefaultTicket() {
       if (!tickets.length) {
         const id = 'tk_' + Date.now();
-        tickets.push({
-          id, dir: 'OUT', docNo: String(whData.next_doc_num || ''),
-          party: '', ref: '', items: [], activeItemId: '',
-        });
-        activeTicketId = id;
-        saveTallyState();
-      } else if (!tickets.some((x) => x.id === activeTicketId)) {
-        activeTicketId = tickets[0].id;
-      }
+        tickets.push({ id, dir: 'OUT', docNo: String(whData.next_doc_num || ''), party: '', ref: '', items: [], activeItemId: '' });
+        activeTicketId = id; saveTallyState();
+      } else if (!tickets.some((x) => x.id === activeTicketId)) activeTicketId = tickets[0].id;
     }
 
-    function getActiveTicket() {
-      ensureDefaultTicket();
-      return tickets.find((x) => x.id === activeTicketId) || tickets[0];
-    }
-
+    function getActiveTicket() { ensureDefaultTicket(); return tickets.find((x) => x.id === activeTicketId) || tickets[0]; }
     function getActiveTicketItem() {
       const tk = getActiveTicket();
       if (!tk || !tk.items.length) return null;
@@ -1180,62 +1253,33 @@
       const maxDoc = tickets.reduce((m, tk) => Math.max(m, docNumInt(tk.docNo)), Number(whData.last_doc_num || 0));
       const id = 'tk_' + Date.now() + '_' + Math.floor(Math.random() * 99);
       tickets.push({ id, dir: 'OUT', docNo: maxDoc > 0 ? String(maxDoc + 1) : '', party: '', ref: '', items: [], activeItemId: '' });
-      activeTicketId = id;
-      saveTallyState();
-      renderTally();
+      activeTicketId = id; saveTallyState(); renderTally();
     }
 
-    function selectTicket(id) {
-      vib(15); activeTicketId = id; saveTallyState(); renderTally();
-    }
-
-    function deleteActiveTicket() {
-      vib(22);
-      tickets = tickets.filter((x) => x.id !== activeTicketId);
-      ensureDefaultTicket();
-      saveTallyState();
-      renderTally();
-    }
-
-    function toggleTicketDir() {
-      const tk = getActiveTicket();
-      tk.dir = tk.dir === 'OUT' ? 'IN' : 'OUT';
-      vib(16); saveTallyState(); renderTally();
-    }
-
-    function updateTicketField(field, val) {
-      const tk = getActiveTicket();
-      tk[field] = val;
-      saveTallyState();
-      renderTicketBarOnly();
-    }
+    function selectTicket(id) { vib(15); activeTicketId = id; saveTallyState(); renderTally(); }
+    function deleteActiveTicket() { vib(22); tickets = tickets.filter((x) => x.id !== activeTicketId); ensureDefaultTicket(); saveTallyState(); renderTally(); }
+    function toggleTicketDir() { const tk = getActiveTicket(); tk.dir = tk.dir === 'OUT' ? 'IN' : 'OUT'; vib(16); saveTallyState(); renderTally(); }
+    function updateTicketField(field, val) { const tk = getActiveTicket(); tk[field] = val; saveTallyState(); renderTicketBarOnly(); }
+    function toggleFreeLock() { freeTally.lockTarget = !freeTally.lockTarget; vib(16); saveTallyState(); renderTally(); }
 
     function openInTally(itemId) {
       const it = (whData.items || []).find((x) => x.id === itemId);
       if (!it) return;
       tallyTab = 'TICKET';
       const tk = getActiveTicket();
-      if (!tk.items.some((x) => x.item_id === itemId)) {
-        tk.items.push({ item_id: it.id, name: it.name, target: 0, strokes: [] });
-      }
-      tk.activeItemId = itemId;
-      saveTallyState();
-      switchView('tally');
+      if (!tk.items.some((x) => x.item_id === itemId)) tk.items.push({ item_id: it.id, name: it.name, target: 0, strokes: [] });
+      tk.activeItemId = itemId; saveTallyState(); switchView('tally');
     }
 
     function openTicketAddItemModal() {
       const tk = getActiveTicket();
-      const renderModalList = () => {
-        const listEl = document.getElementById('tkModAddedList');
-        if (!listEl) return;
-        listEl.innerHTML = tk.items.map((x) => `
-          <div style="display:flex;justify-content:space-between;align-items:center;font-size:11.5px;font-weight:800;padding:4px 0;border-bottom:1px solid var(--border);">
-            <span>${esc(x.name)} ${x.target > 0 ? `<b style="color:var(--teal);">(${x.target})</b>` : ''}</span>
-            <button type="button" class="icon-btn" style="width:24px;height:24px;color:var(--rose);" onclick="removeTicketItem('${x.item_id}')">✕</button>
-          </div>`).join('') || `<div class="lbl-sm" style="text-align:center;">${esc(t('noItems'))}</div>`;
-      };
-
       const itemOpts = (whData.items || []).map((it) => `<option value="${it.id}">${esc(it.name)} (${it.stock})</option>`).join('');
+      const listHtml = tk.items.map((x) => `
+        <div style="display:flex;justify-content:space-between;align-items:center;font-size:11.5px;font-weight:800;padding:4px 0;border-bottom:1px solid var(--border);">
+          <span>${esc(x.name)} ${x.target > 0 ? `<b style="color:var(--teal);">(${x.target})</b>` : ''}</span>
+          <button type="button" class="icon-btn" style="width:24px;height:24px;color:var(--rose);" onclick="removeTicketItem('${x.item_id}')">✕</button>
+        </div>`).join('') || `<div class="lbl-sm" style="text-align:center;">${esc(t('noItems'))}</div>`;
+
       openMainModal(t('tkAddModalTitle'), `
         <div class="sub-card">
           <input type="text" id="tkModFilter" class="inp" placeholder="${esc(t('searchPh'))}" oninput="filterTkItemSelect(this.value)">
@@ -1245,71 +1289,48 @@
             <button type="button" class="btn teal" onclick="pushItemToTicket()">+ ${esc(t('add'))}</button>
           </div>
         </div>
-        <div class="sub-card" id="tkModAddedList"></div>`,
+        <div class="sub-card">${listHtml}</div>`,
         `<button type="button" class="btn primary" style="grid-column:span 2;" onclick="closeMainModal();renderTally();">${esc(t('ok'))}</button>`);
-      renderModalList();
     }
 
     function filterTkItemSelect(q) {
       const clean = q.trim().toLowerCase();
-      const sel = document.getElementById('tkModSel');
-      const filtered = (whData.items || []).filter((it) => !clean || it.name.toLowerCase().includes(clean));
-      sel.innerHTML = filtered.map((it) => `<option value="${it.id}">${esc(it.name)} (${it.stock})</option>`).join('');
+      document.getElementById('tkModSel').innerHTML = (whData.items || [])
+        .filter((it) => !clean || it.name.toLowerCase().includes(clean))
+        .map((it) => `<option value="${it.id}">${esc(it.name)} (${it.stock})</option>`).join('');
     }
 
     function pushItemToTicket() {
-      const sel = document.getElementById('tkModSel');
-      const itemId = sel?.value;
+      const itemId = document.getElementById('tkModSel')?.value;
       const it = (whData.items || []).find((x) => x.id === itemId);
       if (!it) return;
       const target = Math.max(0, Math.floor(Number(document.getElementById('tkModTarget').value || 0)));
       const tk = getActiveTicket();
       const ex = tk.items.find((x) => x.item_id === itemId);
-      if (ex) { ex.target = target; }
-      else { tk.items.push({ item_id: it.id, name: it.name, target, strokes: [] }); }
-      tk.activeItemId = itemId;
-      document.getElementById('tkModTarget').value = '';
-      document.getElementById('tkModFilter').value = '';
-      filterTkItemSelect('');
-      vib(20); saveTallyState();
-      openTicketAddItemModal();
+      if (ex) ex.target = target; else tk.items.push({ item_id: it.id, name: it.name, target, strokes: [] });
+      tk.activeItemId = itemId; vib(20); saveTallyState(); openTicketAddItemModal();
     }
 
     function removeTicketItem(itemId) {
       const tk = getActiveTicket();
       tk.items = tk.items.filter((x) => x.item_id !== itemId);
       if (tk.activeItemId === itemId) tk.activeItemId = tk.items[0]?.item_id || '';
-      saveTallyState();
-      openTicketAddItemModal();
+      saveTallyState(); openTicketAddItemModal();
     }
 
-    function selectTicketItem(itemId) {
-      const tk = getActiveTicket();
-      tk.activeItemId = itemId;
-      vib(15); saveTallyState(); renderTally();
-    }
-
-    function setTallyTab(tab) {
-      tallyTab = tab; vib(16);
-      saveTallyState(); renderTally();
-    }
-
-    function onAuditItemChange() {
-      auditTally.itemId = document.getElementById('selAuditItem').value;
-      auditTally.strokes = [];
-      saveTallyState(); renderTally();
-    }
+    function selectTicketItem(itemId) { const tk = getActiveTicket(); tk.activeItemId = itemId; vib(15); saveTallyState(); renderTally(); }
+    function setTallyTab(tab) { tallyTab = tab; vib(16); saveTallyState(); renderTally(); }
+    function onAuditItemChange() { auditTally.itemId = document.getElementById('selAuditItem').value; auditTally.strokes = []; saveTallyState(); renderTally(); }
 
     function getActiveStrokeContext() {
       if (tallyTab === 'FREE') {
-        return { strokes: freeTally.strokes, target: Number(freeTally.target || 0), hardStop: false, isAudit: false, enabled: true };
+        return { strokes: freeTally.strokes, target: Number(freeTally.target || 0), hardStop: Boolean(freeTally.lockTarget), isAudit: false, enabled: true };
       }
       if (tallyTab === 'AUDIT') {
         const it = (whData.items || []).find((x) => x.id === auditTally.itemId);
         return { strokes: auditTally.strokes, target: it ? Number(it.stock) : 0, hardStop: false, isAudit: true, enabled: Boolean(it) };
       }
-      const tk = getActiveTicket();
-      const item = getActiveTicketItem();
+      const tk = getActiveTicket(), item = getActiveTicketItem();
       if (!item) return { strokes: [], target: 0, hardStop: false, isAudit: false, enabled: false };
       return { strokes: item.strokes, target: Number(item.target || 0), hardStop: tk.dir === 'OUT', isAudit: false, enabled: true };
     }
@@ -1327,8 +1348,7 @@
 
       const now = Date.now();
       if (customQty === null && now - lastTapMs < 130) return;
-      lastTapMs = now;
-      ensureWakeLock();
+      lastTapMs = now; ensureWakeLock();
 
       const counted = sumStrokes(ctx.strokes);
       if (ctx.hardStop && ctx.target > 0 && counted >= ctx.target) {
@@ -1343,20 +1363,25 @@
       ctx.strokes.push({ qty: add, isOdd, ts: now });
       saveTallyState();
 
+      const newTotal = counted + add;
+      const rem = ctx.target > 0 ? Math.max(0, ctx.target - newTotal) : 999999;
+      const remStrokes = Math.ceil(rem / Math.max(1, carryMult));
+
       const pad = document.getElementById('tallyPad');
       pad.classList.add('flash'); setTimeout(() => pad.classList.remove('flash'), 100);
 
-      if (ctx.hardStop && ctx.target > 0 && counted + add >= ctx.target) {
+      if (ctx.hardStop && ctx.target > 0 && newTotal >= ctx.target) {
         vib([90, 50, 90, 50, 140]); playTone(880, 0.15, 'square'); setTimeout(() => playTone(1175, 0.22, 'square'), 160);
+      } else if (ctx.target > 0 && rem > 0 && remStrokes <= 3) {
+        // የመጨረሻ 3 ጭረት ማስጠንቀቂያ ድምፅና ንዝረት
+        vib([45, 30, 45]); playTone(780, 0.09, 'sawtooth', 0.14);
       } else if (ctx.strokes.length % 5 === 0) {
         vib([40, 25, 50]); playTone(720, 0.08, 'triangle');
       } else {
         vib(22); playTone(520, 0.05);
       }
 
-      renderTicketItemsStrip();
-      renderTallyCanvas(true);
-      renderTallyStats();
+      renderTicketItemsStrip(); renderTallyCanvas(true); renderTallyStats();
       const c = document.getElementById('tallyCanvas'); c.scrollTop = c.scrollHeight;
     }
 
@@ -1387,9 +1412,7 @@
         const tot = sumStrokes(freeTally.strokes);
         if (tot <= 0) return;
         document.getElementById('inpQuickQty').value = String(tot);
-        switchView('entry');
-        showToast(`${t('counted')}: ${tot}`);
-        return;
+        switchView('entry'); showToast(`${t('counted')}: ${tot}`); return;
       }
 
       if (tallyTab === 'AUDIT') {
@@ -1397,8 +1420,7 @@
         if (!it) return;
         const total = sumStrokes(auditTally.strokes);
         const res = await callRpc('rpc_submit_adjustment', {
-          p_token: session.token, p_warehouse_id: currentWhId,
-          p_item_id: it.id, p_counted_qty: total,
+          p_token: session.token, p_warehouse_id: currentWhId, p_item_id: it.id, p_counted_qty: total,
           p_reason: total > it.stock ? t('adjPlusReason') : t('adjMinusReason'),
           p_tally_proof: { mode: 'AUDIT', strokes: auditTally.strokes },
         });
@@ -1406,22 +1428,19 @@
         callBot({ action: 'notify_adjustment', warehouse_id: currentWhId, adjustment_id: res.adjustment_id }).catch(() => {});
         auditTally.strokes = []; saveTallyState();
         showToast(res.status === 'APPROVED' ? t('adjApproved') : t('adjPending'));
-        loadWarehouseData(currentWhId);
-        return;
+        loadWarehouseData(currentWhId); return;
       }
 
-      // ባለብዙ ዕቃ ቲኬትን በቀጥታ ወደ ዕለታዊ መመዝገብ
       const tk = getActiveTicket();
       const payloadItems = tk.items
         .map((x) => ({ item_id: x.item_id, qty: sumStrokes(x.strokes), tally_proof: { mode: tk.dir, strokes: x.strokes } }))
         .filter((x) => x.qty > 0);
       if (!payloadItems.length) { showToast(t('errNeedCount')); return; }
 
-      submitGenericDocument(tk.dir, tk.docNo.trim(), tk.party.trim(), tk.ref.trim(), payloadItems, () => {
+      const refFormatted = tk.dir === 'OUT' ? formatPadRef(tk.ref) : (tk.ref.trim() || '-');
+      submitGenericDocument(tk.dir, tk.docNo.trim(), tk.party.trim(), refFormatted, payloadItems, () => {
         tickets = tickets.filter((x) => x.id !== tk.id);
-        ensureDefaultTicket();
-        saveTallyState();
-        renderTally();
+        ensureDefaultTicket(); saveTallyState(); renderTally();
       });
     }
 
@@ -1437,8 +1456,7 @@
     function renderTicketItemsStrip() {
       if (tallyTab !== 'TICKET') return;
       const tk = getActiveTicket();
-      const strip = document.getElementById('ticketItemsStrip');
-      strip.innerHTML = tk.items.map((x) => {
+      document.getElementById('ticketItemsStrip').innerHTML = tk.items.map((x) => {
         const cnt = sumStrokes(x.strokes);
         const isDone = x.target > 0 && cnt >= x.target;
         const cls = x.item_id === tk.activeItemId ? 'active' : (isDone ? 'done' : '');
@@ -1451,7 +1469,6 @@
       document.getElementById('btnTTicket').className = 'seg-btn' + (tallyTab === 'TICKET' ? ' teal' : '');
       document.getElementById('btnTFree').className = 'seg-btn' + (tallyTab === 'FREE' ? ' in' : '');
       document.getElementById('btnTAudit').className = 'seg-btn' + (tallyTab === 'AUDIT' ? ' adj' : '');
-
       document.getElementById('tallyTicketArea').style.display = tallyTab === 'TICKET' ? 'block' : 'none';
       document.getElementById('tallyFreeArea').style.display = tallyTab === 'FREE' ? 'block' : 'none';
       document.getElementById('tallyAuditArea').style.display = tallyTab === 'AUDIT' ? 'block' : 'none';
@@ -1468,13 +1485,16 @@
         if (document.activeElement !== document.getElementById('inpTkRef')) document.getElementById('inpTkRef').value = tk.ref || '';
         document.getElementById('inpTkDoc').placeholder = t('docPh');
         document.getElementById('inpTkParty').placeholder = tk.dir === 'OUT' ? t('partyOutPh') : t('partyInPh');
-        document.getElementById('inpTkRef').placeholder = tk.dir === 'OUT' ? t('refOutPh') : t('refInPh');
+        document.getElementById('inpTkRef').placeholder = tk.dir === 'OUT' ? t('refOutPh') : t('platePh');
         renderTicketItemsStrip();
       } else if (tallyTab === 'FREE') {
         document.getElementById('inpFreeLabel').value = freeTally.label || '';
         document.getElementById('inpFreeLabel').placeholder = t('freeLabelPh');
         document.getElementById('inpFreeTarget').value = freeTally.target > 0 ? freeTally.target : '';
         document.getElementById('inpFreeTarget').placeholder = t('freeTargetPh');
+        const lk = document.getElementById('btnFreeLock');
+        lk.textContent = freeTally.lockTarget ? '🔒' : '🔓';
+        lk.style.borderColor = freeTally.lockTarget ? 'var(--teal)' : 'var(--border-strong)';
       } else {
         const sel = document.getElementById('selAuditItem');
         sel.innerHTML = (whData.items || []).map((it) => `<option value="${it.id}" ${it.id === auditTally.itemId ? 'selected' : ''}>${esc(it.name)} (${it.stock})</option>`).join('');
@@ -1489,17 +1509,13 @@
         `<button type="button" class="preset-btn custom ${!isP ? 'active' : ''}" onclick="openNumModal('custom')">${!isP ? '+' + carryMult : esc(t('other'))}</button>`;
 
       document.getElementById('btnTCommit').textContent =
-        tallyTab === 'TICKET' ? `✅ ${t('postDirect')}`
-        : tallyTab === 'FREE' ? `📥 ${t('sendEntry')}`
-        : `⚡ ${t('applyAdj')}`;
+        tallyTab === 'TICKET' ? `✅ ${t('postDirect')}` : tallyTab === 'FREE' ? `📥 ${t('sendEntry')}` : `⚡ ${t('applyAdj')}`;
 
-      renderTallyCanvas(false);
-      renderTallyStats();
+      renderTallyCanvas(false); renderTallyStats();
     }
 
     function renderTallyCanvas(animLast) {
-      const c = document.getElementById('tallyCanvas');
-      const ctx = getActiveStrokeContext();
+      const c = document.getElementById('tallyCanvas'), ctx = getActiveStrokeContext();
       if (!ctx.enabled) {
         c.innerHTML = `<div style="margin:auto;text-align:center;color:var(--muted);font-size:12px;font-weight:800;padding:12px;">${esc(t('tkNoItems'))}</div>`;
         return;
@@ -1513,9 +1529,7 @@
       for (let i = 0; i < s.length; i += 5) {
         const ch = s.slice(i, i + 5);
         h += '<div class="t-grp">';
-        for (let b = 0; b < Math.min(4, ch.length); b++) {
-          h += `<div class="t-bar ${ch[b].isOdd ? 'odd' : ''} ${animLast && i + b === s.length - 1 ? 'anim-b' : ''}"></div>`;
-        }
+        for (let b = 0; b < Math.min(4, ch.length); b++) h += `<div class="t-bar ${ch[b].isOdd ? 'odd' : ''} ${animLast && i + b === s.length - 1 ? 'anim-b' : ''}"></div>`;
         if (ch.length === 5) h += `<div class="t-slash ${animLast && i + 4 === s.length - 1 ? 'anim-s' : ''}"></div>`;
         h += '</div>';
       }
@@ -1529,7 +1543,7 @@
       document.getElementById('valTStrokes').textContent = ctx.strokes.length.toLocaleString();
       const rLbl = document.getElementById('lblTRight'), rVal = document.getElementById('valTRight');
       const box = document.getElementById('tallyAlert'), pad = document.getElementById('tallyPad');
-      box.className = 'alert-box'; pad.classList.remove('done');
+      box.className = 'alert-box'; pad.classList.remove('done', 'near');
 
       if (ctx.isAudit) {
         const d = cnt - trg;
@@ -1540,14 +1554,22 @@
       } else {
         rLbl.textContent = t('remaining');
         if (trg <= 0) rVal.textContent = '∞';
-        else if (ctx.hardStop) {
-          const rem = Math.max(0, trg - cnt); rVal.textContent = rem.toLocaleString();
-          if (cnt >= trg) { box.className = 'alert-box stop'; box.textContent = t('stopAlert'); pad.classList.add('done'); }
-          else if (rem < carryMult) { box.className = 'alert-box warn'; box.textContent = t('oddWarn')(rem); }
-        } else {
-          const d = cnt - trg; rVal.textContent = d >= 0 ? `+${d}` : String(trg - cnt);
-          if (d > 0) { box.className = 'alert-box over'; box.textContent = t('overWarn')(d); }
-          else if (d === 0) { box.className = 'alert-box stop'; box.textContent = t('exactMatch'); pad.classList.add('done'); }
+        else {
+          const rem = Math.max(0, trg - cnt);
+          const remStrokes = Math.ceil(rem / Math.max(1, carryMult));
+          if (ctx.hardStop) {
+            rVal.textContent = rem.toLocaleString();
+            if (cnt >= trg) { box.className = 'alert-box stop'; box.textContent = t('stopAlert'); pad.classList.add('done'); }
+            else if (rem < carryMult) { box.className = 'alert-box warn'; box.textContent = t('oddWarn')(rem); pad.classList.add('near'); }
+            else if (remStrokes <= 3) { box.className = 'alert-box warn'; box.textContent = t('nearAlert')(remStrokes, rem); pad.classList.add('near'); }
+          } else {
+            const d = cnt - trg;
+            rVal.textContent = d >= 0 ? `+${d}` : rem.toLocaleString();
+            if (d > 0) { box.className = 'alert-box over'; box.textContent = t('overWarn')(d); }
+            else if (d === 0) { box.className = 'alert-box stop'; box.textContent = t('exactMatch'); pad.classList.add('done'); }
+            else if (rem < carryMult) { box.className = 'alert-box warn'; box.textContent = t('oddWarn')(rem); pad.classList.add('near'); }
+            else if (remStrokes <= 3) { box.className = 'alert-box warn'; box.textContent = t('nearAlert')(remStrokes, rem); pad.classList.add('near'); }
+          }
         }
       }
     }
@@ -1566,11 +1588,10 @@
       };
     }
 
-    // ==================== ገጽ 3 እና 4: ዕለታዊ፣ ስቶክ እና የሞባይል ፒዲኤፍ ====================
+    // ==================== ገጽ 3: ዕለታዊ (እርማት፣ ቅያሬ፣ መጨመር፣ ማጥፋት፣ ቮይድ፣ አንቮይድ) ====================
     function getSortedDailyRows(rows, ascendingDoc = false) {
       if (dailySort === 'TIME' && !ascendingDoc) return rows;
-      const groups = [];
-      const map = new Map();
+      const groups = [], map = new Map();
       rows.forEach((r) => {
         const key = String(r.document_id || r.ledger_id);
         if (!map.has(key)) {
@@ -1583,17 +1604,14 @@
         if (a.docNum !== b.docNum) return ascendingDoc ? (a.docNum - b.docNum) : (b.docNum - a.docNum);
         return ascendingDoc ? a.docStr.localeCompare(b.docStr) : b.docStr.localeCompare(a.docStr);
       });
-      const out = [];
-      groups.forEach((g) => g.lines.forEach((l) => out.push(l)));
+      const out = []; groups.forEach((g) => g.lines.forEach((l) => out.push(l)));
       return out;
     }
 
     function toggleDailySort() {
-      dailySort = dailySort === 'DOC' ? 'TIME' : 'DOC';
-      vib(16);
+      dailySort = dailySort === 'DOC' ? 'TIME' : 'DOC'; vib(16);
       document.getElementById('btnDailySort').textContent = dailySort === 'DOC' ? '#' : '🕒';
-      showToast(dailySort === 'DOC' ? t('sortDoc') : t('sortTime'));
-      renderDaily();
+      showToast(dailySort === 'DOC' ? t('sortDoc') : t('sortTime')); renderDaily();
     }
 
     async function loadDaily() {
@@ -1614,6 +1632,7 @@
       let inT = 0, outT = 0, vCnt = 0, lastDoc = null;
       const html = [];
       const ordered = getSortedDailyRows(dailyRows, false);
+      const isBrAdm = whData.is_branch_admin || whData.is_org_admin || session?.user?.role === 'SUPER_ADMIN';
 
       ordered.forEach((r) => {
         if (zeroFilter && !r.is_zero_stock) return;
@@ -1621,8 +1640,7 @@
         if (q && !txt.includes(q)) return;
 
         if (!q && lastDoc && lastDoc !== r.document_id) html.push('<tr class="r-sp"><td colspan="9"></td></tr>');
-        const same = (!q && lastDoc === r.document_id);
-        lastDoc = r.document_id;
+        const same = (!q && lastDoc === r.document_id); lastDoc = r.document_id;
 
         const isVoid = r.status === 'VOIDED' || r.is_voided || r.doc_type === 'VOID';
         if (isVoid) vCnt++; else { inT += Number(r.qty_in || 0); outT += Number(r.qty_out || 0); }
@@ -1630,6 +1648,15 @@
         const selKey = String(r.ledger_id || r.document_id);
         const isSel = pdfSelectType === 'daily' && Boolean(selectedPdfIds[selKey]);
         const cls = isSel ? 'r-sel' : (isVoid ? 'r-void' : (r.doc_type === 'IN' ? 'r-in' : (r.doc_type === 'ADJ' ? 'r-adj' : (r.is_zero_stock ? 'r-zero' : ''))));
+
+        let actionCell = '';
+        if (!same) {
+          if (isVoid && isBrAdm && r.doc_type !== 'VOID') {
+            actionCell = `<button type="button" class="icon-btn" style="width:auto;padding:0 6px;height:24px;font-size:10px;color:var(--emerald);border-color:var(--emerald);" onclick="event.stopPropagation();promptUnvoidDoc('${r.document_id}','${esc(r.doc_no)}')">↩ ${esc(t('unvoidShort'))}</button>`;
+          } else if (r.can_edit && !isVoid) {
+            actionCell = `<button type="button" class="icon-btn" style="width:26px;height:24px;font-size:11px;" onclick="event.stopPropagation();openEditDocModal('${r.document_id}')">⚙️</button>`;
+          }
+        }
 
         html.push(`
           <tr class="${cls}" onclick="togglePdfRow('daily','${selKey}',this)">
@@ -1641,7 +1668,7 @@
             <td>${isVoid ? '-' : Number(r.closing_bal || 0).toLocaleString()}</td>
             <td>${esc(same ? '↳' : r.party_name)}</td>
             <td>${esc(same ? '↳' : r.date_str)}</td>
-            <td style="text-align:center;">${r.can_edit && !isVoid ? `<button type="button" class="icon-btn" style="width:26px;height:24px;font-size:11px;" onclick="event.stopPropagation();openEditDocModal('${r.document_id}')">⚙️</button>` : ''}</td>
+            <td style="text-align:center;">${actionCell}</td>
           </tr>`);
       });
 
@@ -1650,14 +1677,30 @@
         `<span style="color:var(--emerald);">+${inT.toLocaleString()}</span><span style="color:var(--rose);">-${outT.toLocaleString()}</span><span style="color:var(--amber);">${esc(t('metricVoid'))}: ${vCnt}</span>`;
     }
 
+    function promptUnvoidDoc(docId, docNo) {
+      openMainModal(`↩ ${t('unvoidShort')} #${docNo}`, `<div class="sub-card" style="font-size:12px;font-weight:800;">${esc(t('unvoidAsk'))}</div>`,
+        `<button type="button" class="btn muted" onclick="closeMainModal()">${esc(t('cancel'))}</button>
+         <button type="button" class="btn teal" onclick="executeUnvoidDoc('${docId}')">${esc(t('ok'))}</button>`);
+    }
+
+    async function executeUnvoidDoc(docId) {
+      const res = await callRpc('rpc_unvoid_document', { p_token: session.token, p_document_id: docId });
+      if (!res.success) { showToast(res.error === 'INSUFFICIENT_STOCK' ? t('errStock') : t('errGeneric')); return; }
+      closeMainModal(); showToast(t('savedOk')); loadWarehouseData(currentWhId); loadDaily();
+    }
+
     function openEditDocModal(docId) {
       const lines = dailyRows.filter((r) => r.document_id === docId && !r.is_voided);
       if (!lines.length) return;
+      editVoidIds = []; editAppendList = [];
       const head = lines[0];
+      const allOpts = (selId) => (whData.items || []).map((it) => `<option value="${it.id}" ${it.id === selId ? 'selected' : ''}>${esc(it.name)}</option>`).join('');
+
       const rowsHtml = lines.map((l) => `
-        <div style="display:flex;gap:5px;align-items:center;">
-          <span style="flex:1;font-size:11.5px;font-weight:800;">${esc(l.item_name)}</span>
-          <input type="number" class="inp mono" style="width:72px;" data-lid="${l.ledger_id}" data-iid="${l.item_id}" value="${l.qty_in || l.qty_out}" min="1">
+        <div class="ed-line-row" data-lid="${l.ledger_id}" style="display:grid;grid-template-columns:1fr 64px 28px;gap:4px;align-items:center;">
+          <select class="sel ed-item-sel">${allOpts(l.item_id)}</select>
+          <input type="number" class="inp mono ed-qty-inp" value="${l.qty_in || l.qty_out}" min="1">
+          <button type="button" class="icon-btn" style="width:28px;height:32px;color:var(--rose);" onclick="markLineVoid(this,${l.ledger_id})">🗑️</button>
         </div>`).join('');
 
       openMainModal(t('editDocTitle'), `
@@ -1667,23 +1710,65 @@
             <input type="text" id="edParty" class="inp" value="${esc(head.party_name)}">
             <input type="text" id="edRef" class="inp" value="${esc(head.ref_no)}">
           </div>
-          ${rowsHtml}
+          <div id="edLinesWrap" style="display:flex;flex-direction:column;gap:5px;margin-top:4px;">${rowsHtml}</div>
+        </div>
+        <div class="sub-card">
+          <span class="lbl-sm">+ ${esc(t('addForgotten'))}</span>
+          <div style="display:grid;grid-template-columns:1fr 64px 36px;gap:4px;">
+            <select id="edNewItemSel" class="sel">${allOpts('')}</select>
+            <input type="number" id="edNewItemQty" class="inp mono" min="1" placeholder="${esc(t('qtyPh'))}">
+            <button type="button" class="btn primary" style="height:34px;padding:0;" onclick="appendEditLine()">+</button>
+          </div>
+          <div id="edAppendedWrap" style="display:flex;flex-direction:column;gap:4px;"></div>
         </div>
         <button type="button" class="btn danger" onclick="executeVoidDoc('${docId}')">${esc(t('voidDocBtn'))}</button>`,
         `<button type="button" class="btn muted" onclick="closeMainModal()">${esc(t('cancel'))}</button>
          <button type="button" class="btn teal" onclick="saveEditDoc('${docId}')">${esc(t('save'))}</button>`);
     }
 
+    function markLineVoid(btnEl, lid) {
+      const row = btnEl.closest('.ed-line-row');
+      if (editVoidIds.includes(lid)) {
+        editVoidIds = editVoidIds.filter((x) => x !== lid);
+        row.style.opacity = '1';
+      } else {
+        editVoidIds.push(lid);
+        row.style.opacity = '0.35';
+      }
+      vib(16);
+    }
+
+    function appendEditLine() {
+      const sel = document.getElementById('edNewItemSel');
+      const qty = Math.floor(Number(document.getElementById('edNewItemQty').value || 0));
+      if (!sel.value || qty <= 0) return;
+      const name = sel.options[sel.selectedIndex]?.text || '';
+      editAppendList.push({ item_id: sel.value, qty, name });
+      document.getElementById('edNewItemQty').value = '';
+      document.getElementById('edAppendedWrap').innerHTML = editAppendList.map((x, idx) => `
+        <div style="display:flex;justify-content:space-between;font-size:11px;font-weight:800;color:var(--emerald);">
+          <span>+ ${esc(x.name)} (${x.qty})</span>
+          <button type="button" style="background:none;border:none;color:var(--rose);font-weight:900;cursor:pointer;" onclick="editAppendList.splice(${idx},1);this.parentElement.remove();">✕</button>
+        </div>`).join('');
+    }
+
     async function saveEditDoc(docId) {
-      const updates = Array.from(document.querySelectorAll('#modalBody input[data-lid]')).map((el) => ({
-        ledger_id: Number(el.dataset.lid), item_id: el.dataset.iid, qty: Math.max(1, Number(el.value || 1)),
-      }));
+      const updates = Array.from(document.querySelectorAll('#edLinesWrap .ed-line-row'))
+        .filter((row) => !editVoidIds.includes(Number(row.dataset.lid)))
+        .map((row) => ({
+          ledger_id: Number(row.dataset.lid),
+          item_id: row.querySelector('.ed-item-sel').value,
+          qty: Math.max(1, Number(row.querySelector('.ed-qty-inp').value || 1)),
+        }));
+
       const res = await callRpc('rpc_edit_document', {
         p_token: session.token, p_document_id: docId,
         p_new_doc_no: document.getElementById('edDocNo').value.trim(),
         p_new_party: document.getElementById('edParty').value.trim(),
         p_new_ref: document.getElementById('edRef').value.trim(),
         p_line_updates: updates,
+        p_append_items: editAppendList.map((x) => ({ item_id: x.item_id, qty: x.qty })),
+        p_void_ledger_ids: editVoidIds,
       });
       if (!res.success) { showToast(res.error === 'INSUFFICIENT_STOCK' ? t('errStock') : t('errGeneric')); return; }
       closeMainModal(); showToast(t('savedOk')); loadWarehouseData(currentWhId); loadDaily();
@@ -1695,18 +1780,12 @@
       closeMainModal(); showToast(t('savedOk')); loadWarehouseData(currentWhId); loadDaily();
     }
 
+    // ==================== ገጽ 4: ስቶክ እና ፒዲኤፍ ====================
     function getPeriodBounds(p) {
-      const now = new Date(), end = new Date();
-      let start = new Date(0);
-      if (p === 'WEEK') {
-        const d = new Date(now); const day = d.getDay() || 7; d.setHours(0,0,0,0); d.setDate(d.getDate() - (day - 1)); start = d;
-      } else if (p === 'LAST_WEEK') {
-        const d = new Date(now); const day = d.getDay() || 7; d.setHours(0,0,0,0); d.setDate(d.getDate() - (day - 1));
-        end.setTime(d.getTime() - 1);
-        start = new Date(d.getTime() - 7 * 86400000);
-      } else if (p === 'MONTH') {
-        start = new Date(now.getFullYear(), now.getMonth(), 1);
-      }
+      const now = new Date(), end = new Date(); let start = new Date(0);
+      if (p === 'WEEK') { const d = new Date(now); const day = d.getDay() || 7; d.setHours(0,0,0,0); d.setDate(d.getDate() - (day - 1)); start = d; }
+      else if (p === 'LAST_WEEK') { const d = new Date(now); const day = d.getDay() || 7; d.setHours(0,0,0,0); d.setDate(d.getDate() - (day - 1)); end.setTime(d.getTime() - 1); start = new Date(d.getTime() - 7 * 86400000); }
+      else if (p === 'MONTH') start = new Date(now.getFullYear(), now.getMonth(), 1);
       return { start: start.toISOString(), end: end.toISOString() };
     }
 
@@ -1731,7 +1810,6 @@
         if (!byCat[r.category_name]) byCat[r.category_name] = [];
         byCat[r.category_name].push(r);
       });
-
       const html = [];
       Object.keys(byCat).forEach((cat) => {
         html.push(`<tr class="r-cat"><td colspan="6">📁 ${esc(cat)}</td></tr>`);
@@ -1760,11 +1838,7 @@
       updatePdfBar();
     }
 
-    function clearPdfSelection() {
-      selectedPdfIds = {}; updatePdfBar();
-      if (pdfSelectType === 'daily') renderDaily(); else renderStock();
-    }
-
+    function clearPdfSelection() { selectedPdfIds = {}; updatePdfBar(); if (pdfSelectType === 'daily') renderDaily(); else renderStock(); }
     function updatePdfBar() {
       const cnt = Object.keys(selectedPdfIds).length;
       document.getElementById('pdfBar').style.display = cnt > 0 ? 'flex' : 'none';
@@ -1774,21 +1848,28 @@
     async function runSelectedPdf(sendToBot) {
       const ids = Object.keys(selectedPdfIds);
       if (!ids.length) return;
-      await generateAndDeliverPdf(pdfSelectType === 'stock', ids, sendToBot);
+      await generateAndDeliverPdf(pdfSelectType === 'stock', ids, sendToBot, false);
       clearPdfSelection();
     }
 
-    async function exportCurrentViewPdf(isStock) {
-      await generateAndDeliverPdf(isStock, null, true);
+    function openDailyPdfChoice() {
+      openMainModal(t('pdfChoiceTitle'), `
+        <div class="grid-2">
+          <button type="button" class="btn teal" onclick="closeMainModal();generateAndDeliverPdf(false,null,true,true)">${esc(t('pdfTodayBtn'))}</button>
+          <button type="button" class="btn primary" onclick="closeMainModal();generateAndDeliverPdf(false,null,true,false)">${esc(t('pdfFullBtn'))}</button>
+        </div>`,
+        `<button type="button" class="btn muted" style="grid-column:span 2;" onclick="closeMainModal()">${esc(t('cancel'))}</button>`);
     }
 
-    // ለሞባይል ንባብ የተመቻቸ እና ቀን በትክክለኛው አምድ ላይ የሚቀመጥ ፒዲኤፍ
-    async function generateAndDeliverPdf(isStock, onlyIds, sendToBot) {
+    async function exportCurrentViewPdf(isStock) { await generateAndDeliverPdf(isStock, null, true, false); }
+
+    async function generateAndDeliverPdf(isStock, onlyIds, sendToBot, todayOnly = false) {
       if (!window.html2canvas || !window.jspdf) { showToast(t('pdfLoading')); return; }
       const stage = document.getElementById('pdfStage');
       const brand = getActiveBrand();
       const dateStr = new Date().toLocaleDateString('en-GB');
-      const title = `${brand} — ${isStock ? t('pdfStockSub') : t('pdfDailySub')} (${dateStr})`;
+      const subTitle = isStock ? t('pdfStockSub') : (todayOnly ? t('pdfTodaySub') : t('pdfDailySub'));
+      const title = `${brand} — ${subTitle} (${dateStr})`;
 
       let bodyHtml = '';
       if (isStock) {
@@ -1829,7 +1910,8 @@
             <td style="text-align:center;color:#fde047;">${clT.toLocaleString()}</td>
           </tr></tfoot></table>`;
       } else {
-        const rawList = onlyIds ? dailyRows.filter((r) => onlyIds.includes(String(r.ledger_id || r.document_id))) : dailyRows;
+        let rawList = onlyIds ? dailyRows.filter((r) => onlyIds.includes(String(r.ledger_id || r.document_id))) : dailyRows;
+        if (todayOnly) rawList = rawList.filter((r) => String(r.date_str || '').includes(dateStr));
         const list = getSortedDailyRows(rawList, true);
         let lastDoc = null, inT = 0, outT = 0;
 
@@ -1871,12 +1953,7 @@
       stage.innerHTML = `<div style="background:#090e17;color:#38bdf8;padding:10px;text-align:center;font-size:14.5px;font-weight:900;margin-bottom:2px;">${esc(title)}</div>${bodyHtml}`;
       const canvas = await window.html2canvas(stage, { scale: 2, backgroundColor: '#ffffff' });
       const { jsPDF } = window.jspdf;
-
-      // ለሞባይል ሙሉ እይታ የተገጣጠመ የገጽ ቁመት (ባዶ A4 ቦታ ሳይተው)
-      const pw = 595;
-      const margin = 10;
-      const imgW = pw - margin * 2;
-      const imgH = (canvas.height * imgW) / canvas.width;
+      const pw = 595, margin = 10, imgW = pw - margin * 2, imgH = (canvas.height * imgW) / canvas.width;
       const imgData = canvas.toDataURL('image/png');
 
       let pdf;
@@ -1884,41 +1961,24 @@
         pdf = new jsPDF({ orientation: 'portrait', unit: 'pt', format: [pw, Math.max(220, imgH + margin * 2)] });
         pdf.addImage(imgData, 'PNG', margin, margin, imgW, imgH);
       } else {
-        const ph = 842;
-        pdf = new jsPDF({ orientation: 'portrait', unit: 'pt', format: 'a4' });
-        let leftH = imgH, pos = margin;
-        pdf.addImage(imgData, 'PNG', margin, pos, imgW, imgH);
-        leftH -= (ph - margin * 2);
-        while (leftH > 0) {
-          pos = leftH - imgH + margin;
-          pdf.addPage();
-          pdf.addImage(imgData, 'PNG', margin, pos, imgW, imgH);
-          leftH -= (ph - margin * 2);
-        }
+        const ph = 842; pdf = new jsPDF({ orientation: 'portrait', unit: 'pt', format: 'a4' });
+        let leftH = imgH, pos = margin; pdf.addImage(imgData, 'PNG', margin, pos, imgW, imgH); leftH -= (ph - margin * 2);
+        while (leftH > 0) { pos = leftH - imgH + margin; pdf.addPage(); pdf.addImage(imgData, 'PNG', margin, pos, imgW, imgH); leftH -= (ph - margin * 2); }
       }
 
-      const fileName = `${isStock ? 'Stock' : 'Daily'}_${dateStr.replace(/\//g, '-')}.pdf`;
+      const fileName = `${isStock ? 'Stock' : (todayOnly ? 'Daily_Today' : 'Daily_Full')}_${dateStr.replace(/\//g, '-')}.pdf`;
       if (!sendToBot) { pdf.save(fileName); return; }
 
       try {
         const blob = pdf.output('blob');
         const fd = new FormData();
-        fd.append('token', session.token);
-        fd.append('warehouse_id', currentWhId);
-        fd.append('report_title', title);
-        fd.append('file', blob, fileName);
-
+        fd.append('token', session.token); fd.append('warehouse_id', currentWhId);
+        fd.append('report_title', title); fd.append('file', blob, fileName);
         const res = await fetch(`${SUPABASE_URL}/functions/v1/${BOT_FUNCTION}`, {
-          method: 'POST',
-          headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'x-session-token': session.token },
-          body: fd,
+          method: 'POST', headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'x-session-token': session.token }, body: fd,
         }).then((r) => r.json());
-
-        if (res.success) showToast(t('savedOk'));
-        else { pdf.save(fileName); showToast(t('pdfLocal')); }
-      } catch {
-        pdf.save(fileName); showToast(t('pdfLocal'));
-      }
+        if (res.success) showToast(t('savedOk')); else { pdf.save(fileName); showToast(t('pdfLocal')); }
+      } catch { pdf.save(fileName); showToast(t('pdfLocal')); }
     }
 
     // ==================== ገጽ 5: ካርታ + ካሜራ ስካነር ====================
@@ -1926,8 +1986,7 @@
       bulkMapMode = !bulkMapMode; bulkMapSlots = {}; vib(16);
       document.getElementById('btnBulkMap').style.background = bulkMapMode ? 'var(--primary)' : 'var(--surface-deep)';
       document.getElementById('btnBulkMap').style.color = bulkMapMode ? '#fff' : 'var(--primary)';
-      document.getElementById('btnBulkAssign').style.display = 'none';
-      renderMap();
+      document.getElementById('btnBulkAssign').style.display = 'none'; renderMap();
     }
 
     function renderMap() {
@@ -1958,10 +2017,8 @@
         if (bulkMapSlots[sid]) delete bulkMapSlots[sid]; else bulkMapSlots[sid] = true;
         const n = Object.keys(bulkMapSlots).length;
         const btn = document.getElementById('btnBulkAssign');
-        btn.style.display = n ? 'inline-flex' : 'none';
-        btn.textContent = `${t('assignBtn')} (${n})`;
-        renderMap();
-        return;
+        btn.style.display = n ? 'inline-flex' : 'none'; btn.textContent = `${t('assignBtn')} (${n})`;
+        renderMap(); return;
       }
       openBinModal(sid);
     }
@@ -1985,25 +2042,13 @@
     }
 
     async function saveBinAssign() {
-      const itemId = document.getElementById('selBinIt').value;
-      const append = document.getElementById('chkBinApp').checked;
+      const itemId = document.getElementById('selBinIt').value, append = document.getElementById('chkBinApp').checked;
       if (!itemId || !activeModalSlots.length) return;
-      const res = await callRpc('rpc_manage_bin_slots', {
-        p_token: session.token, p_warehouse_id: currentWhId, p_action: 'ASSIGN',
-        p_slots: activeModalSlots, p_item_id: itemId, p_append_mode: append,
-      });
+      const res = await callRpc('rpc_manage_bin_slots', { p_token: session.token, p_warehouse_id: currentWhId, p_action: 'ASSIGN', p_slots: activeModalSlots, p_item_id: itemId, p_append_mode: append });
       if (res.success) { closeMainModal(); if (bulkMapMode) toggleBulkMap(); showToast(t('savedOk')); loadWarehouseData(currentWhId); }
     }
-
-    async function removeBinItem(slot, itemId) {
-      await callRpc('rpc_manage_bin_slots', { p_token: session.token, p_warehouse_id: currentWhId, p_action: 'REMOVE_ITEM', p_slots: [slot], p_item_id: itemId });
-      closeMainModal(); loadWarehouseData(currentWhId);
-    }
-
-    async function clearSingleBin(slot) {
-      await callRpc('rpc_manage_bin_slots', { p_token: session.token, p_warehouse_id: currentWhId, p_action: 'CLEAR_SLOT', p_slots: [slot] });
-      closeMainModal(); loadWarehouseData(currentWhId);
-    }
+    async function removeBinItem(slot, itemId) { await callRpc('rpc_manage_bin_slots', { p_token: session.token, p_warehouse_id: currentWhId, p_action: 'REMOVE_ITEM', p_slots: [slot], p_item_id: itemId }); closeMainModal(); loadWarehouseData(currentWhId); }
+    async function clearSingleBin(slot) { await callRpc('rpc_manage_bin_slots', { p_token: session.token, p_warehouse_id: currentWhId, p_action: 'CLEAR_SLOT', p_slots: [slot] }); closeMainModal(); loadWarehouseData(currentWhId); }
 
     async function openQrScanner() {
       openMainModal(t('qrTitle'), `
@@ -2011,40 +2056,22 @@
         <input type="text" id="inpQrManual" class="inp mono" placeholder="${esc(t('qrManualPh'))}" onkeydown="if(event.key==='Enter') jumpToScannedSlot(this.value)">`,
         `<button type="button" class="btn muted" onclick="closeMainModal()">${esc(t('close'))}</button>
          <button type="button" class="btn teal" onclick="jumpToScannedSlot(document.getElementById('inpQrManual').value)">${esc(t('ok'))}</button>`);
-
       try {
         qrStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
-        const vid = document.getElementById('qrVideo');
-        vid.srcObject = qrStream;
+        const vid = document.getElementById('qrVideo'); vid.srcObject = qrStream;
         if ('BarcodeDetector' in window) {
           const detector = new BarcodeDetector({ formats: ['qr_code', 'code_128'] });
           const scan = async () => {
             if (!qrStream) return;
-            try {
-              const codes = await detector.detect(vid);
-              if (codes.length && codes[0].rawValue) { jumpToScannedSlot(codes[0].rawValue); return; }
-            } catch {}
+            try { const codes = await detector.detect(vid); if (codes.length && codes[0].rawValue) { jumpToScannedSlot(codes[0].rawValue); return; } } catch {}
             qrLoopId = requestAnimationFrame(scan);
           };
           qrLoopId = requestAnimationFrame(scan);
         }
       } catch {}
     }
-
-    function stopQrCamera() {
-      if (qrLoopId) { cancelAnimationFrame(qrLoopId); qrLoopId = null; }
-      if (qrStream) { qrStream.getTracks().forEach((tr) => tr.stop()); qrStream = null; }
-    }
-
-    function jumpToScannedSlot(code) {
-      const clean = String(code || '').trim().toUpperCase();
-      if (!clean) return;
-      closeMainModal();
-      const rk = clean.split('-')[0];
-      if ((whData.racks || []).some((r) => r.code === rk)) activeRack = rk;
-      renderMap();
-      openBinModal(clean);
-    }
+    function stopQrCamera() { if (qrLoopId) { cancelAnimationFrame(qrLoopId); qrLoopId = null; } if (qrStream) { qrStream.getTracks().forEach((tr) => tr.stop()); qrStream = null; } }
+    function jumpToScannedSlot(code) { const clean = String(code || '').trim().toUpperCase(); if (!clean) return; closeMainModal(); const rk = clean.split('-')[0]; if ((whData.racks || []).some((r) => r.code === rk)) activeRack = rk; renderMap(); openBinModal(clean); }
 
     // ==================== ጎን ሜኑ እና አስተዳደር ====================
     function openDrawer() { vib(15); document.getElementById('drawerBg').style.display = 'block'; document.getElementById('drawer').classList.add('open'); }
@@ -2068,6 +2095,7 @@
         items.push({ ico: '✅', lbl: t('mApprovals'), fn: 'openApprovalsManager()', badge: whData.pending_adjustments_count || 0 });
         items.push({ ico: '⚠️', lbl: t('mRisk'), fn: 'sendRiskAuditNow()' });
       }
+      items.push({ ico: '⚙️', lbl: t('mFormCfg'), fn: 'openFormCfgModal()' });
       items.push({ ico: '🔑', lbl: t('mPin'), fn: 'openOwnPinModal()' });
 
       document.getElementById('drawerList').innerHTML = items.map((it) => `
@@ -2077,33 +2105,55 @@
         </button>`).join('');
     }
 
-    function openBrandManager() {
-      const cur = getActiveBrand();
-      openMainModal(t('mBrand'), `
+    function openFormCfgModal() {
+      openMainModal(t('mFormCfg'), `
         <div class="sub-card">
-          <span class="lbl-sm">${esc(t('phBrandTitle'))}</span>
-          <input id="inpBrandEdit" class="inp" value="${esc(cur)}" placeholder="${esc(t('phBrandTitle'))}">
+          <b style="font-size:12px;color:var(--rose);">${esc(t('cfgOutHead'))}</b>
+          <span class="lbl-sm">${esc(t('cfgPadPrefix'))}</span>
+          <input id="cfgPadPfx" class="inp" value="${esc(formCfg.outPadPrefix)}">
+          <label class="chk-row"><input type="checkbox" id="cfgOutPad" ${formCfg.outShowPad ? 'checked' : ''}><span>${esc(t('cfgShowPad'))}</span></label>
+          <label class="chk-row"><input type="checkbox" id="cfgOutKg" ${formCfg.outShowKg ? 'checked' : ''}><span>${esc(t('cfgShowKg'))}</span></label>
+          <label class="chk-row"><input type="checkbox" id="cfgOutDr" ${formCfg.outShowDriver ? 'checked' : ''}><span>${esc(t('cfgShowDriver'))}</span></label>
+          <label class="chk-row"><input type="checkbox" id="cfgOutPl" ${formCfg.outShowPlate ? 'checked' : ''}><span>${esc(t('cfgShowPlate'))}</span></label>
+          <label class="chk-row"><input type="checkbox" id="cfgOutNt" ${formCfg.outShowNote ? 'checked' : ''}><span>${esc(t('cfgShowNote'))}</span></label>
+        </div>
+        <div class="sub-card">
+          <b style="font-size:12px;color:var(--emerald);">${esc(t('cfgInHead'))}</b>
+          <label class="chk-row"><input type="checkbox" id="cfgInDoc" ${formCfg.inShowDocNo ? 'checked' : ''}><span>${esc(t('cfgInDocNo'))}</span></label>
+          <label class="chk-row"><input type="checkbox" id="cfgInKg" ${formCfg.inShowKg ? 'checked' : ''}><span>${esc(t('cfgShowKg'))}</span></label>
+          <label class="chk-row"><input type="checkbox" id="cfgInNt" ${formCfg.inShowNote ? 'checked' : ''}><span>${esc(t('cfgShowNote'))}</span></label>
         </div>`,
+        `<button type="button" class="btn muted" onclick="closeMainModal()">${esc(t('cancel'))}</button>
+         <button type="button" class="btn teal" onclick="saveFormCfg()">${esc(t('save'))}</button>`);
+    }
+
+    function saveFormCfg() {
+      formCfg = {
+        outPadPrefix: document.getElementById('cfgPadPfx').value.trim() || 'ፓድ',
+        outShowPad: document.getElementById('cfgOutPad').checked,
+        outShowKg: document.getElementById('cfgOutKg').checked,
+        outShowDriver: document.getElementById('cfgOutDr').checked,
+        outShowPlate: document.getElementById('cfgOutPl').checked,
+        outShowNote: document.getElementById('cfgOutNt').checked,
+        inShowDocNo: document.getElementById('cfgInDoc').checked,
+        inShowKg: document.getElementById('cfgInKg').checked,
+        inShowNote: document.getElementById('cfgInNt').checked,
+      };
+      saveJson(FORM_CFG_KEY, formCfg);
+      renderDynamicFormFields(); closeMainModal(); showToast(t('savedOk'));
+    }
+
+    function openBrandManager() {
+      openMainModal(t('mBrand'), `<div class="sub-card"><span class="lbl-sm">${esc(t('phBrandTitle'))}</span><input id="inpBrandEdit" class="inp" value="${esc(getActiveBrand())}"></div>`,
         `<button type="button" class="btn muted" onclick="closeMainModal()">${esc(t('cancel'))}</button>
          <button type="button" class="btn teal" onclick="saveBrandTitle()">${esc(t('save'))}</button>`);
     }
 
     async function saveBrandTitle() {
-      const val = document.getElementById('inpBrandEdit').value.trim();
-      if (!val) return;
+      const val = document.getElementById('inpBrandEdit').value.trim(); if (!val) return;
       const orgId = whData.warehouse?.organization_id || session?.organization?.id || '';
-      const ov = getBrandOverrides();
-      if (currentWhId) ov[currentWhId] = val;
-      if (orgId) ov[orgId] = val;
-      saveJson(BRAND_OVERRIDE_KEY, ov);
-      try {
-        if (whData.warehouse?.id) {
-          await callRpc('rpc_manage_warehouse', {
-            p_token: session.token, p_action: 'UPSERT',
-            p_payload: { id: whData.warehouse.id, organization_id: whData.warehouse.organization_id, name: whData.warehouse.name, code: whData.warehouse.code, brand_title: val },
-          });
-        }
-      } catch {}
+      const ov = getBrandOverrides(); if (currentWhId) ov[currentWhId] = val; if (orgId) ov[orgId] = val; saveJson(BRAND_OVERRIDE_KEY, ov);
+      try { if (whData.warehouse?.id) await callRpc('rpc_manage_warehouse', { p_token: session.token, p_action: 'UPSERT', p_payload: { id: whData.warehouse.id, organization_id: whData.warehouse.organization_id, name: whData.warehouse.name, code: whData.warehouse.code, brand_title: val } }); } catch {}
       if (whData.warehouse) whData.warehouse.brand_title = val;
       if (session?.organization) { session.organization.brand_title = val; session.organization.name = val; saveJson(SESSION_KEY, session); }
       applyBrandDisplay(); closeMainModal(); showToast(t('savedOk'));
@@ -2116,22 +2166,15 @@
           <input id="oCode" class="inp mono" placeholder="${esc(t('phOrgCode'))}" style="text-transform:uppercase;">
           <input id="oName" class="inp" placeholder="${esc(t('phOrgName'))}">
           <input id="oBr" class="inp" placeholder="${esc(t('phBrName'))}">
-          <div class="grid-2">
-            <input id="oAdmN" class="inp" placeholder="${esc(t('phAdmName'))}">
-            <input id="oAdmP" class="inp mono" maxlength="6" inputmode="numeric" placeholder="${esc(t('phPin'))}">
-          </div>
+          <div class="grid-2"><input id="oAdmN" class="inp" placeholder="${esc(t('phAdmName'))}"><input id="oAdmP" class="inp mono" maxlength="6" inputmode="numeric" placeholder="${esc(t('phPin'))}"></div>
           <button type="button" class="btn teal" onclick="createNewOrg()">+ ${esc(t('add'))}</button>
-        </div>
-        ${orgs.map((o) => `<div class="sub-card"><b>${esc(o.code)} — ${esc(o.name)}</b></div>`).join('')}`,
+        </div>${orgs.map((o) => `<div class="sub-card"><b>${esc(o.code)} — ${esc(o.name)}</b></div>`).join('')}`,
         `<button type="button" class="btn muted" style="grid-column:span 2;" onclick="closeMainModal()">${esc(t('close'))}</button>`);
     }
 
     async function createNewOrg() {
       const orgName = document.getElementById('oName').value.trim();
-      const res = await callRpc('rpc_manage_organization', {
-        p_token: session.token, p_action: 'CREATE',
-        p_payload: { code: document.getElementById('oCode').value, name: orgName, brand_title: orgName, first_branch_name: document.getElementById('oBr').value, admin_name: document.getElementById('oAdmN').value, admin_pin: document.getElementById('oAdmP').value },
-      });
+      const res = await callRpc('rpc_manage_organization', { p_token: session.token, p_action: 'CREATE', p_payload: { code: document.getElementById('oCode').value, name: orgName, brand_title: orgName, first_branch_name: document.getElementById('oBr').value, admin_name: document.getElementById('oAdmN').value, admin_pin: document.getElementById('oAdmP').value } });
       if (res.success) { closeMainModal(); showToast(t('savedOk')); } else showToast(t('errGeneric'));
     }
 
@@ -2142,24 +2185,18 @@
           <input id="bName" class="inp" placeholder="${esc(t('phBrName'))}">
           <input id="bCode" class="inp mono" placeholder="${esc(t('phBrCode'))}" style="text-transform:uppercase;">
           <button type="button" class="btn teal" onclick="addBranch()">+ ${esc(t('add'))}</button>
-        </div>
-        ${list.map((w) => `<div class="sub-card"><b>${esc(w.name)} (${esc(w.code)})</b></div>`).join('')}`,
+        </div>${list.map((w) => `<div class="sub-card"><b>${esc(w.name)} (${esc(w.code)})</b></div>`).join('')}`,
         `<button type="button" class="btn muted" style="grid-column:span 2;" onclick="closeMainModal()">${esc(t('close'))}</button>`);
     }
 
     async function addBranch() {
-      const res = await callRpc('rpc_manage_warehouse', {
-        p_token: session.token, p_action: 'UPSERT',
-        p_payload: { organization_id: whData.warehouse.organization_id, name: document.getElementById('bName').value, code: document.getElementById('bCode').value, brand_title: getActiveBrand() },
-      });
+      const res = await callRpc('rpc_manage_warehouse', { p_token: session.token, p_action: 'UPSERT', p_payload: { organization_id: whData.warehouse.organization_id, name: document.getElementById('bName').value, code: document.getElementById('bCode').value, brand_title: getActiveBrand() } });
       if (res.success) { closeMainModal(); showToast(t('savedOk')); loadWarehouseData(currentWhId); } else showToast(t('errGeneric'));
     }
 
     async function openStaffManager() {
       const res = await callRpc('rpc_manage_branch_access', { p_token: session.token, p_action: 'LIST_ORG_STAFF', p_payload: { organization_id: whData.warehouse.organization_id } });
-      const staff = res.staff || [];
-      const whs = whData.org_warehouses || [];
-
+      const staff = res.staff || [], whs = whData.org_warehouses || [];
       const staffCards = staff.map((s) => `
         <div class="sub-card">
           <div style="display:flex;justify-content:space-between;"><b>${esc(s.full_name)}</b><span style="color:var(--teal);font-size:10.5px;">${esc(roleLabel(s.role))}</span></div>
@@ -2174,18 +2211,9 @@
 
       openMainModal(t('mStaff'), `
         <div class="sub-card">
-          <div class="grid-2">
-            <input id="stName" class="inp" placeholder="${esc(t('phStaffName'))}">
-            <input id="stPin" class="inp mono" maxlength="6" inputmode="numeric" placeholder="${esc(t('phPin'))}">
-          </div>
-          <div class="grid-2">
-            <input id="stEmail" type="email" class="inp" placeholder="${esc(t('emailPh'))}">
-            <input id="stPass" type="password" class="inp" placeholder="${esc(t('passPh'))}">
-          </div>
-          <select id="stRole" class="sel">
-            <option value="STAFF">${esc(t('roleStaff'))}</option>
-            <option value="ORG_ADMIN">${esc(t('roleOrgAdm'))}</option>
-          </select>
+          <div class="grid-2"><input id="stName" class="inp" placeholder="${esc(t('phStaffName'))}"><input id="stPin" class="inp mono" maxlength="6" inputmode="numeric" placeholder="${esc(t('phPin'))}"></div>
+          <div class="grid-2"><input id="stEmail" type="email" class="inp" placeholder="${esc(t('emailPh'))}"><input id="stPass" type="password" class="inp" placeholder="${esc(t('passPh'))}"></div>
+          <select id="stRole" class="sel"><option value="STAFF">${esc(t('roleStaff'))}</option><option value="ORG_ADMIN">${esc(t('roleOrgAdm'))}</option></select>
           <button type="button" class="btn teal" onclick="addStaffMember()">+ ${esc(t('add'))}</button>
         </div>${staffCards}`,
         `<button type="button" class="btn muted" style="grid-column:span 2;" onclick="closeMainModal()">${esc(t('close'))}</button>`);
@@ -2195,41 +2223,27 @@
       const res = await callRpc('rpc_manage_staff', {
         p_token: session.token, p_action: 'ADD',
         p_payload: {
-          organization_id: whData.warehouse.organization_id,
-          full_name: document.getElementById('stName').value,
-          pin: document.getElementById('stPin').value,
-          email: document.getElementById('stEmail').value.trim().toLowerCase() || null,
-          password: document.getElementById('stPass').value || null,
-          role: document.getElementById('stRole').value,
-          warehouse_ids: [currentWhId],
+          organization_id: whData.warehouse.organization_id, full_name: document.getElementById('stName').value,
+          pin: document.getElementById('stPin').value, email: document.getElementById('stEmail').value.trim().toLowerCase() || null,
+          password: document.getElementById('stPass').value || null, role: document.getElementById('stRole').value, warehouse_ids: [currentWhId],
         },
       });
       if (res.success) { showToast(t('savedOk')); openStaffManager(); } else showToast(t('errGeneric'));
     }
 
     async function toggleStaffBranch(userId, warehouseId, currentlyHas) {
-      const res = await callRpc('rpc_manage_branch_access', {
-        p_token: session.token, p_action: currentlyHas ? 'REVOKE' : 'GRANT',
-        p_payload: { user_id: userId, warehouse_id: warehouseId },
-      });
+      const res = await callRpc('rpc_manage_branch_access', { p_token: session.token, p_action: currentlyHas ? 'REVOKE' : 'GRANT', p_payload: { user_id: userId, warehouse_id: warehouseId } });
       if (res.success) openStaffManager();
     }
 
     function chTypeLabel(tp) { return tp === 'TELEGRAM' ? t('chTg') : tp === 'WHATSAPP' ? t('chWa') : tp === 'SMS' ? t('chSms') : t('chWh'); }
 
     async function openChannelsManager() {
-      const res = await callRpc('rpc_manage_notification_channels', {
-        p_token: session.token, p_action: 'LIST', p_payload: { organization_id: whData.warehouse.organization_id },
-      });
-      const channels = res.channels || [];
-      const whs = whData.org_warehouses || [];
-
+      const res = await callRpc('rpc_manage_notification_channels', { p_token: session.token, p_action: 'LIST', p_payload: { organization_id: whData.warehouse.organization_id } });
+      const channels = res.channels || [], whs = whData.org_warehouses || [];
       const cards = channels.map((c) => `
         <div class="sub-card">
-          <div style="display:flex;justify-content:space-between;align-items:center;">
-            <b>${esc(chTypeLabel(c.channel_type))} — ${esc(c.label)}</b>
-            <span style="font-size:10px;color:var(--muted);">${esc(c.warehouse_name)}</span>
-          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;"><b>${esc(chTypeLabel(c.channel_type))} — ${esc(c.label)}</b><span style="font-size:10px;color:var(--muted);">${esc(c.warehouse_name)}</span></div>
           <div style="font-size:11px;color:var(--primary);word-break:break-all;">${esc(c.target_address)}</div>
           <div style="display:flex;gap:5px;">
             <button type="button" class="pdf-pill" onclick="testNotifChannel('${c.id}')">${esc(t('testBtn'))}</button>
@@ -2241,17 +2255,8 @@
       openMainModal(t('mChannels'), `
         <div class="sub-card">
           <div class="grid-2">
-            <select id="chType" class="sel" onchange="onChTypeChange()">
-              <option value="TELEGRAM">${esc(t('chTg'))}</option>
-              <option value="WHATSAPP">${esc(t('chWa'))}</option>
-              <option value="SMS">${esc(t('chSms'))}</option>
-              <option value="WEBHOOK">${esc(t('chWh'))}</option>
-            </select>
-            <select id="chWh" class="sel">
-              <option value="${currentWhId}">${esc(whData.warehouse.name)}</option>
-              <option value="">${esc(t('chAllBranches'))}</option>
-              ${whs.filter((w) => w.id !== currentWhId).map((w) => `<option value="${w.id}">${esc(w.name)}</option>`).join('')}
-            </select>
+            <select id="chType" class="sel" onchange="onChTypeChange()"><option value="TELEGRAM">${esc(t('chTg'))}</option><option value="WHATSAPP">${esc(t('chWa'))}</option><option value="SMS">${esc(t('chSms'))}</option><option value="WEBHOOK">${esc(t('chWh'))}</option></select>
+            <select id="chWh" class="sel"><option value="${currentWhId}">${esc(whData.warehouse.name)}</option><option value="">${esc(t('chAllBranches'))}</option>${whs.filter((w) => w.id !== currentWhId).map((w) => `<option value="${w.id}">${esc(w.name)}</option>`).join('')}</select>
           </div>
           <input id="chLabel" class="inp" placeholder="${esc(t('phChLabel'))}">
           <input id="chTarget" class="inp" placeholder="${esc(t('phChTarget'))}">
@@ -2262,113 +2267,118 @@
         `<button type="button" class="btn muted" style="grid-column:span 2;" onclick="closeMainModal()">${esc(t('close'))}</button>`);
     }
 
-    function onChTypeChange() {
-      const tp = document.getElementById('chType').value;
-      document.getElementById('chCred2').style.display = (tp === 'WHATSAPP' || tp === 'SMS') ? 'block' : 'none';
-    }
-
+    function onChTypeChange() { const tp = document.getElementById('chType').value; document.getElementById('chCred2').style.display = (tp === 'WHATSAPP' || tp === 'SMS') ? 'block' : 'none'; }
     async function saveNotifChannel() {
-      const tp = document.getElementById('chType').value;
-      const c1 = document.getElementById('chCred1').value.trim();
-      const c2 = document.getElementById('chCred2').value.trim();
-      const creds = tp === 'TELEGRAM' ? { bot_token: c1 }
-        : tp === 'WHATSAPP' ? { access_token: c1, phone_number_id: c2 }
-        : tp === 'SMS' ? { api_key: c1, sender_id: c2 }
-        : { api_key: c1 };
-
-      const res = await callRpc('rpc_manage_notification_channels', {
-        p_token: session.token, p_action: 'UPSERT',
-        p_payload: {
-          organization_id: whData.warehouse.organization_id,
-          warehouse_id: document.getElementById('chWh').value || null,
-          channel_type: tp,
-          label: document.getElementById('chLabel').value.trim() || chTypeLabel(tp),
-          target_address: document.getElementById('chTarget').value.trim(),
-          credentials: creds,
-        },
-      });
-      if (res.success) {
-        if (tp === 'TELEGRAM' && res.channel_id) await linkTelegramWebhook(res.channel_id, true);
-        showToast(t('savedOk'));
-        openChannelsManager();
-      } else showToast(t('errGeneric'));
+      const tp = document.getElementById('chType').value, c1 = document.getElementById('chCred1').value.trim(), c2 = document.getElementById('chCred2').value.trim();
+      const creds = tp === 'TELEGRAM' ? { bot_token: c1 } : tp === 'WHATSAPP' ? { access_token: c1, phone_number_id: c2 } : tp === 'SMS' ? { api_key: c1, sender_id: c2 } : { api_key: c1 };
+      const res = await callRpc('rpc_manage_notification_channels', { p_token: session.token, p_action: 'UPSERT', p_payload: { organization_id: whData.warehouse.organization_id, warehouse_id: document.getElementById('chWh').value || null, channel_type: tp, label: document.getElementById('chLabel').value.trim() || chTypeLabel(tp), target_address: document.getElementById('chTarget').value.trim(), credentials: creds } });
+      if (res.success) { if (tp === 'TELEGRAM' && res.channel_id) await linkTelegramWebhook(res.channel_id, true); showToast(t('savedOk')); openChannelsManager(); } else showToast(t('errGeneric'));
     }
+    async function linkTelegramWebhook(channelId, silent = false) { const res = await callBot({ action: 'register_telegram_webhook', channel_id: channelId }); if (!silent) showToast(res.success ? t('savedOk') : t('errGeneric')); }
+    async function testNotifChannel(channelId) { const res = await callBot({ action: 'test_channel', channel_id: channelId }); showToast(res.success ? t('savedOk') : t('errGeneric')); }
+    async function deleteNotifChannel(channelId) { await callRpc('rpc_manage_notification_channels', { p_token: session.token, p_action: 'DELETE', p_payload: { organization_id: whData.warehouse.organization_id, channel_id: channelId } }); openChannelsManager(); }
 
-    async function linkTelegramWebhook(channelId, silent = false) {
-      const res = await callBot({ action: 'register_telegram_webhook', channel_id: channelId });
-      if (!silent) showToast(res.success ? t('savedOk') : t('errGeneric'));
-    }
-
-    async function testNotifChannel(channelId) {
-      const res = await callBot({ action: 'test_channel', channel_id: channelId });
-      showToast(res.success ? t('savedOk') : t('errGeneric'));
-    }
-
-    async function deleteNotifChannel(channelId) {
-      await callRpc('rpc_manage_notification_channels', {
-        p_token: session.token, p_action: 'DELETE',
-        p_payload: { organization_id: whData.warehouse.organization_id, channel_id: channelId },
-      });
-      openChannelsManager();
-    }
-
+    // ዕቃዎች + በጅምላ መገልበጫ
     function openCatalogManager() {
       const cats = whData.categories || [];
       openMainModal(t('mCatalog'), `
         <div class="sub-card">
-          <div style="display:flex;gap:5px;">
-            <input id="catNewName" class="inp" placeholder="${esc(t('phCatName'))}">
-            <button type="button" class="btn primary" onclick="addCategoryNow()">+</button>
-          </div>
+          <div style="display:flex;gap:5px;"><input id="catNewName" class="inp" placeholder="${esc(t('phCatName'))}"><button type="button" class="btn primary" onclick="addCategoryNow()">+</button></div>
         </div>
         <div class="sub-card">
           <input id="itNewName" class="inp" placeholder="${esc(t('phItemName'))}">
           <select id="itNewCat" class="sel"><option value="">-</option>${cats.map((c) => `<option value="${c.id}">${esc(c.name)}</option>`).join('')}</select>
           <input id="itNewOp" type="number" class="inp mono" value="0" min="0" placeholder="${esc(t('phOpening'))}">
           <button type="button" class="btn teal" onclick="addItemNow()">+ ${esc(t('add'))}</button>
+        </div>
+        <div class="sub-card">
+          <b style="font-size:11.5px;color:var(--amber);">📥 ${esc(t('bulkTitle'))}</b>
+          <span class="lbl-sm">${esc(t('bulkHint'))}</span>
+          <textarea id="bulkItemsTxt" class="txtarea" placeholder="Angle, 30x2 Angle, 28&#10;Flat, 15x2.5 Flat, 591"></textarea>
+          <button type="button" class="btn primary" onclick="runBulkImport()">${esc(t('bulkBtn'))}</button>
         </div>`,
         `<button type="button" class="btn muted" style="grid-column:span 2;" onclick="closeMainModal()">${esc(t('close'))}</button>`);
     }
 
     async function addCategoryNow() {
-      const n = document.getElementById('catNewName').value.trim();
-      if (!n) return;
+      const n = document.getElementById('catNewName').value.trim(); if (!n) return;
       await callRpc('rpc_manage_catalog', { p_token: session.token, p_warehouse_id: currentWhId, p_action: 'ADD_CATEGORY', p_payload: { name: n } });
       await loadWarehouseData(currentWhId); openCatalogManager();
     }
 
     async function addItemNow() {
-      const n = document.getElementById('itNewName').value.trim();
-      if (!n) return;
-      const res = await callRpc('rpc_manage_catalog', {
-        p_token: session.token, p_warehouse_id: currentWhId, p_action: 'UPSERT_ITEM',
-        p_payload: { name: n, category_id: document.getElementById('itNewCat').value, opening_qty: Number(document.getElementById('itNewOp').value || 0) },
-      });
+      const n = document.getElementById('itNewName').value.trim(); if (!n) return;
+      const res = await callRpc('rpc_manage_catalog', { p_token: session.token, p_warehouse_id: currentWhId, p_action: 'UPSERT_ITEM', p_payload: { name: n, category_id: document.getElementById('itNewCat').value, opening_qty: Number(document.getElementById('itNewOp').value || 0) } });
       if (res.success) { showToast(t('savedOk')); await loadWarehouseData(currentWhId); openCatalogManager(); }
     }
 
+    async function runBulkImport() {
+      const raw = document.getElementById('bulkItemsTxt').value.trim();
+      if (!raw) return;
+      const rows = raw.split(/\r?\n/).map((line) => {
+        const parts = line.includes('\t') ? line.split('\t') : line.split(',');
+        if (parts.length >= 3) return { category: parts[0].trim(), name: parts[1].trim(), opening_qty: parseInt(parts[2].replace(/[^\d]/g, ''), 10) || 0 };
+        if (parts.length === 2) return { category: '', name: parts[0].trim(), opening_qty: parseInt(parts[1].replace(/[^\d]/g, ''), 10) || 0 };
+        return { category: '', name: parts[0].trim(), opening_qty: 0 };
+      }).filter((r) => r.name);
+      if (!rows.length) return;
+      const res = await callRpc('rpc_manage_catalog', { p_token: session.token, p_warehouse_id: currentWhId, p_action: 'BULK_IMPORT', p_payload: { rows } });
+      if (res.success) {
+        showToast(t('bulkDone')(res.imported_count || 0));
+        await loadWarehouseData(currentWhId); closeMainModal();
+      } else showToast(t('errGeneric'));
+    }
+
+    // መደርደሪያዎች (ወደ ጎን + ወደ ላይ + ማስተካከያ + ማጥፊያ)
     function openRacksManager() {
       const rks = whData.racks || [];
       openMainModal(t('mRacks'), `
         <div class="sub-card">
-          <div class="grid-3">
+          <div class="grid-2">
             <input id="rkCode" class="inp mono" placeholder="${esc(t('phRackCode'))}" style="text-transform:uppercase;">
             <input id="rkName" class="inp" placeholder="${esc(t('phRackName'))}">
-            <input id="rkCols" type="number" class="inp mono" value="6" placeholder="${esc(t('phRackCols'))}">
           </div>
-          <button type="button" class="btn teal" onclick="addRackNow()">+ ${esc(t('add'))}</button>
+          <div class="grid-2">
+            <input id="rkCols" type="number" class="inp mono" value="6" min="1" placeholder="${esc(t('phRackCols'))}">
+            <input id="rkRows" type="number" class="inp mono" value="5" min="1" placeholder="${esc(t('phRackRows'))}">
+          </div>
+          <button type="button" class="btn teal" onclick="saveRackNow()">+ ${esc(t('save'))}</button>
         </div>
-        ${rks.map((r) => `<div class="sub-card"><b>${esc(r.code)} — ${esc(r.name)} (${r.cols}×${r.rows})</b></div>`).join('')}`,
+        ${rks.map((r, i) => `
+          <div class="sub-card" style="flex-direction:row;align-items:center;justify-content:space-between;">
+            <b>${esc(r.code)} — ${esc(r.name)} (${r.cols}×${r.rows})</b>
+            <div style="display:flex;gap:4px;">
+              <button type="button" class="icon-btn" style="width:28px;height:28px;" onclick="fillRackEdit(${i})">✏️</button>
+              <button type="button" class="icon-btn" style="width:28px;height:28px;color:var(--rose);" onclick="deleteRackAt(${i})">🗑️</button>
+            </div>
+          </div>`).join('')}`,
         `<button type="button" class="btn muted" style="grid-column:span 2;" onclick="closeMainModal()">${esc(t('close'))}</button>`);
     }
 
-    async function addRackNow() {
+    function fillRackEdit(idx) {
+      const r = (whData.racks || [])[idx]; if (!r) return;
+      document.getElementById('rkCode').value = r.code;
+      document.getElementById('rkName').value = r.name;
+      document.getElementById('rkCols').value = r.cols;
+      document.getElementById('rkRows').value = r.rows;
+    }
+
+    async function saveRackNow() {
       const code = document.getElementById('rkCode').value.trim().toUpperCase();
       const name = document.getElementById('rkName').value.trim() || code;
-      const cols = Number(document.getElementById('rkCols').value || 6);
+      const cols = Math.max(1, Number(document.getElementById('rkCols').value || 6));
+      const rows = Math.max(1, Number(document.getElementById('rkRows').value || 5));
       if (!code) return;
-      const next = (whData.racks || []).concat([{ code, name, cols, rows: 5 }]);
-      await callRpc('rpc_manage_racks', { p_token: session.token, p_warehouse_id: currentWhId, p_racks: next });
+      const list = (whData.racks || []).slice();
+      const ex = list.findIndex((r) => r.code === code);
+      if (ex >= 0) list[ex] = { code, name, cols, rows }; else list.push({ code, name, cols, rows });
+      await callRpc('rpc_manage_racks', { p_token: session.token, p_warehouse_id: currentWhId, p_racks: list });
+      await loadWarehouseData(currentWhId); openRacksManager();
+    }
+
+    async function deleteRackAt(idx) {
+      const list = (whData.racks || []).filter((_, i) => i !== idx);
+      await callRpc('rpc_manage_racks', { p_token: session.token, p_warehouse_id: currentWhId, p_racks: list });
       await loadWarehouseData(currentWhId); openRacksManager();
     }
 
@@ -2380,47 +2390,22 @@
           <div class="sub-card">
             <b>${esc(a.item_name)} (${a.system_bal} ➔ ${a.counted_qty} | ${a.diff_qty > 0 ? '+' : ''}${a.diff_qty})</b>
             <span class="lbl-sm">${esc(a.requested_by)} — ${esc(a.reason)}</span>
-            <div class="grid-2">
-              <button type="button" class="btn teal" onclick="reviewAdj('${a.id}',true)">${esc(t('approve'))}</button>
-              <button type="button" class="btn danger" onclick="reviewAdj('${a.id}',false)">${esc(t('reject'))}</button>
-            </div>
+            <div class="grid-2"><button type="button" class="btn teal" onclick="reviewAdj('${a.id}',true)">${esc(t('approve'))}</button><button type="button" class="btn danger" onclick="reviewAdj('${a.id}',false)">${esc(t('reject'))}</button></div>
           </div>`).join('') : `<div class="sub-card" style="text-align:center;">${esc(t('noItems'))}</div>`,
         `<button type="button" class="btn muted" style="grid-column:span 2;" onclick="closeMainModal()">${esc(t('close'))}</button>`);
     }
 
-    async function reviewAdj(id, approve) {
-      const res = await callRpc('rpc_review_adjustment', { p_token: session.token, p_adjustment_id: id, p_approve: approve });
-      if (res.success) { showToast(t('savedOk')); await loadWarehouseData(currentWhId); openApprovalsManager(); }
-    }
-
-    async function sendRiskAuditNow() {
-      const res = await callBot({ action: 'send_risk_audit', warehouse_id: currentWhId });
-      showToast(res.success ? t('savedOk') : t('errGeneric'));
-    }
+    async function reviewAdj(id, approve) { const res = await callRpc('rpc_review_adjustment', { p_token: session.token, p_adjustment_id: id, p_approve: approve }); if (res.success) { showToast(t('savedOk')); await loadWarehouseData(currentWhId); openApprovalsManager(); } }
+    async function sendRiskAuditNow() { const res = await callBot({ action: 'send_risk_audit', warehouse_id: currentWhId }); showToast(res.success ? t('savedOk') : t('errGeneric')); }
 
     function openOwnPinModal() {
-      openMainModal(t('mPin'), `
-        <input id="pOld" type="password" class="inp mono" maxlength="6" inputmode="numeric" placeholder="${esc(t('phOldPin'))}">
-        <input id="pNew" type="password" class="inp mono" maxlength="6" inputmode="numeric" placeholder="${esc(t('phNewPin'))}">`,
-        `<button type="button" class="btn muted" onclick="closeMainModal()">${esc(t('cancel'))}</button>
-         <button type="button" class="btn teal" onclick="saveOwnPin()">${esc(t('save'))}</button>`);
+      openMainModal(t('mPin'), `<input id="pOld" type="password" class="inp mono" maxlength="6" inputmode="numeric" placeholder="${esc(t('phOldPin'))}"><input id="pNew" type="password" class="inp mono" maxlength="6" inputmode="numeric" placeholder="${esc(t('phNewPin'))}">`,
+        `<button type="button" class="btn muted" onclick="closeMainModal()">${esc(t('cancel'))}</button><button type="button" class="btn teal" onclick="saveOwnPin()">${esc(t('save'))}</button>`);
     }
-
-    async function saveOwnPin() {
-      const res = await callRpc('rpc_manage_staff', {
-        p_token: session.token, p_action: 'CHANGE_OWN_PIN',
-        p_payload: { old_pin: document.getElementById('pOld').value, new_pin: document.getElementById('pNew').value },
-      });
-      if (res.success) { closeMainModal(); showToast(t('savedOk')); } else showToast(t('errGeneric'));
-    }
+    async function saveOwnPin() { const res = await callRpc('rpc_manage_staff', { p_token: session.token, p_action: 'CHANGE_OWN_PIN', p_payload: { old_pin: document.getElementById('pOld').value, new_pin: document.getElementById('pNew').value } }); if (res.success) { closeMainModal(); showToast(t('savedOk')); } else showToast(t('errGeneric')); }
 
     // ==================== ዳሰሳ፣ ቋንቋ እና ጅማሬ ====================
-    function openMainModal(title, bodyHtml, footHtml) {
-      document.getElementById('modalTitle').textContent = title;
-      document.getElementById('modalBody').innerHTML = bodyHtml;
-      document.getElementById('modalFoot').innerHTML = footHtml;
-      document.getElementById('mainModal').classList.add('open');
-    }
+    function openMainModal(title, bodyHtml, footHtml) { document.getElementById('modalTitle').textContent = title; document.getElementById('modalBody').innerHTML = bodyHtml; document.getElementById('modalFoot').innerHTML = footHtml; document.getElementById('mainModal').classList.add('open'); }
     function closeMainModal() { stopQrCamera(); document.getElementById('mainModal').classList.remove('open'); }
 
     function switchView(name) {
@@ -2440,16 +2425,13 @@
     }
 
     function toggleLang() {
-      lang = (lang === 'am') ? 'en' : 'am';
-      localStorage.setItem(LANG_KEY, lang);
-      vib(16);
-      renderStaticLabels();
+      lang = (lang === 'am') ? 'en' : 'am'; localStorage.setItem(LANG_KEY, lang); vib(16);
+      renderStaticLabels(); renderDynamicFormFields();
       if (session) { renderDrawerMenu(); renderTiles(); renderBasket(); renderTally(); renderDaily(); renderStock(); renderMap(); }
     }
 
     function renderStaticLabels() {
-      document.getElementById('docRoot').lang = lang;
-      applyBrandDisplay();
+      document.getElementById('docRoot').lang = lang; applyBrandDisplay();
       document.getElementById('gateMark').textContent = t('gateMark');
       document.getElementById('lblGateTitle').textContent = t('gateTitle');
       document.getElementById('btnAuthPin').textContent = t('authPin');
@@ -2473,8 +2455,11 @@
       document.getElementById('btnModeIn').textContent = t('modeIn');
       document.getElementById('btnVoidMini').textContent = t('voidShort');
       document.getElementById('inpDocNo').placeholder = t('docPh');
-      document.getElementById('inpParty').placeholder = entryMode === 'OUT' ? t('partyOutPh') : t('partyInPh');
-      document.getElementById('inpRef').placeholder = entryMode === 'OUT' ? t('refOutPh') : t('refInPh');
+      document.getElementById('inpParty').placeholder = t('partyOutPh');
+      document.getElementById('inpRef').placeholder = t('refOutPh');
+      document.getElementById('inpInSupplier').placeholder = t('partyInPh');
+      document.getElementById('inpInDriver').placeholder = t('driverPh');
+      document.getElementById('inpInPlate').placeholder = t('platePh');
       document.getElementById('inpSearch').placeholder = t('searchPh');
       document.getElementById('inpQuickQty').placeholder = t('qtyPh');
 
@@ -2504,16 +2489,11 @@
     (function setupTallyGestures() {
       const pad = document.getElementById('tallyPad');
       let sx = 0, sy = 0, st = 0;
-      pad.addEventListener('pointerdown', (e) => {
-        if (!e.isPrimary || e.target.closest('.t-stats')) return;
-        sx = e.clientX; sy = e.clientY; st = Date.now();
-      });
+      pad.addEventListener('pointerdown', (e) => { if (!e.isPrimary || e.target.closest('.t-stats')) return; sx = e.clientX; sy = e.clientY; st = Date.now(); });
       pad.addEventListener('pointerup', (e) => {
         if (!e.isPrimary || e.target.closest('.t-stats')) return;
         const dx = e.clientX - sx, dy = e.clientY - sy, dt = Date.now() - st;
-        if ((Math.hypot(dx, dy) < 14 && dt < 450) || (Math.abs(dx) > 30 && Math.abs(dx) > Math.abs(dy) * 0.9 && dt < 500)) {
-          addTallyStroke();
-        }
+        if ((Math.hypot(dx, dy) < 14 && dt < 450) || (Math.abs(dx) > 30 && Math.abs(dx) > Math.abs(dy) * 0.9 && dt < 500)) addTallyStroke();
       });
     })();
 
@@ -2522,9 +2502,7 @@
       if (urlOrg) document.getElementById('inpOrgCode').value = urlOrg.toUpperCase();
       renderStaticLabels();
       if (session?.token) enterApp();
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./sw.js').catch(() => {});
-      }
+      if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(() => {});
     })();
   </script>
 </body>
