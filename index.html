@@ -166,6 +166,7 @@
     tr.r-sel td:first-child { border-left: 3px solid var(--emerald); }
     tr.r-sp td { height: 8px; padding: 0; background: var(--bg); border-left: none; border-right: none; }
     tr.r-ltz-sp td { height: 6px; padding: 0; background: rgba(6,10,18,0.65); border-left: none; border-right: none; }
+    .act-pair { display: inline-flex; gap: 3px; align-items: center; justify-content: center; }
 
     /* ተንሳፋፊ የፒዲኤፍ አሞሌ */
     .pdf-bar { position: fixed; bottom: 60px; left: 50%; transform: translateX(-50%); width: calc(100% - 14px); max-width: 626px; height: 44px; background: rgba(6,78,59,0.92); border: 1.5px solid var(--emerald); border-radius: 22px; padding: 4px 8px; display: none; align-items: center; justify-content: space-between; gap: 5px; z-index: 45; backdrop-filter: blur(8px); }
@@ -202,15 +203,21 @@
     .btn.teal { background: var(--teal); color: var(--teal-dark); }
     .btn.primary { background: var(--primary); }
     .btn.danger { background: var(--rose); }
+    .btn.hard-del { background: #7f1d1d; border: 1px solid var(--rose); color: #fecaca; }
     .btn.muted { background: #1e293b; color: var(--text); }
     .sub-card { background: var(--surface-deep); border: 1px solid var(--border); border-radius: 10px; padding: 9px; display: flex; flex-direction: column; gap: 6px; }
     .lbl-sm { font-size: 10px; font-weight: 900; color: var(--muted); }
     .chk-row { display: flex; align-items: center; gap: 7px; font-size: 11.5px; font-weight: 800; cursor: pointer; }
+    .ev-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
     .toast { position: fixed; top: 14px; left: 50%; transform: translateX(-50%); background: #042f2e; border: 1px solid var(--teal); color: #99f6e4; padding: 9px 14px; border-radius: 12px; font-size: 12px; font-weight: 900; z-index: 999; display: flex; align-items: center; gap: 10px; box-shadow: 0 12px 28px rgba(0,0,0,0.7); max-width: 92vw; }
     .toast-btn { background: var(--amber); color: #000; border: none; border-radius: 7px; padding: 4px 8px; font-size: 11px; font-weight: 900; cursor: pointer; }
     video.qr-video { width: 100%; border-radius: 12px; background: #000; max-height: 260px; object-fit: cover; }
 
-    #pdfStage { position: fixed; left: -12000px; top: 0; width: 780px; background: #fff; color: #000; font-family: system-ui, Arial, sans-serif; padding: 12px; }
+    /* ባለገጽ ፒዲኤፍ መሳያ መድረክ */
+    #pdfStage { position: fixed; left: -14000px; top: 0; background: #fff; color: #000; font-family: system-ui, Arial, sans-serif; }
+    .pdf-page-box { background: #ffffff; color: #0f172a; display: flex; flex-direction: column; box-sizing: border-box; overflow: hidden; position: relative; }
+    .pdf-page-body { flex: 1; overflow: hidden; }
+    .pdf-page-foot { margin-top: auto; padding-top: 6px; }
     @media (min-width: 640px) { .modal-bg { align-items: center; } }
   </style>
 </head>
@@ -399,7 +406,7 @@
       <div class="card" style="display:flex;gap:5px;">
         <input type="text" id="inpStockSearch" class="inp" style="flex:1;" oninput="onSmartDimInput(this); renderStock()">
         <button type="button" id="btnStockActToggle" class="icon-btn on" style="width:30px;" onclick="toggleActionsCol('stock')">⚙️</button>
-        <button type="button" id="btnStockPdf" class="icon-btn" style="width:auto;padding:0 8px;font-size:10.5px;color:var(--teal);" onclick="exportCurrentViewPdf(true, this)"></button>
+        <button type="button" id="btnStockPdf" class="icon-btn" style="width:auto;padding:0 8px;font-size:10.5px;color:var(--teal);" onclick="openStockPdfChoice()"></button>
       </div>
       <div id="stockTblWrap" class="tbl-wrap"><table class="tbl"><thead id="stockHead"></thead><tbody id="stockBody"></tbody></table></div>
     </section>
@@ -422,7 +429,7 @@
       <div style="display:flex;gap:4px;">
         <button type="button" class="pdf-pill" id="btnPdfDownload" onclick="runSelectedPdf('download', this)"></button>
         <button type="button" class="pdf-pill" id="btnPdfShare" onclick="runSelectedPdf('share', this)"></button>
-        <button type="button" class="pdf-send" id="btnPdfSend" onclick="runSelectedPdf('bot', this)"></button>
+        <button type="button" class="pdf-send" id="btnPdfSend" onclick="openSelectedSendPicker()"></button>
       </div>
     </div>
 
@@ -461,7 +468,7 @@
     const BRAND_CFG_KEY = 'erp_brand_cfg_v5';
     const TALLY_STATE_KEY = 'erp_tally_state_v5';
     const FORM_CFG_KEY = 'erp_form_cfg_v2';
-    const PDF_CFG_KEY = 'erp_pdf_cfg_v1';
+    const PDF_CFG_KEY = 'erp_pdf_cfg_v2';
     const UI_CFG_KEY = 'erp_ui_cfg_v1';
     const PRESETS = [1, 2, 3, 5, 10, 15, 20];
 
@@ -477,11 +484,12 @@
       inShowNote: false,
     };
 
+    // አንዴ የመረጡት ወይም የሞሉት የወረቀት መጠን በፍጹም በራሱ አይቀያየርም
     const DEFAULT_PDF_CFG = {
-      mode: 'MOBILE_FIT',
+      mode: 'A4_P', // A4_P | A4_L | A5_P | LETTER_P | CUSTOM
       widthMm: 210,
       heightMm: 297,
-      fontSize: 'md',
+      fontSize: 'md', // sm | md | lg
       headerSub: '',
       footerNote: '',
       showSign: false,
@@ -490,6 +498,7 @@
       showRef: true,
       showDate: true,
       stockShowZero: false,
+      includeOpeningInDaily: false,
     };
 
     const DEFAULT_UI_CFG = {
@@ -532,7 +541,9 @@
         sCols: ['ረድፍ', 'የዕቃው አይነት', 'መነሻ', 'የገባ', 'የወጣ', 'ቀሪ', '⚙️'],
         sPdfMap: { item: 'የዕቃ አይነት', open: 'መነሻ', inq: 'የገባ (+)', outq: 'የወጣ (-)', adj: 'ማስተካከያ', bal: 'ቀሪ' },
         pdfDailySub: 'ዕለታዊ ሪፖርት', pdfTodaySub: 'የዛሬው ዕለታዊ ሪፖርት', pdfStockSub: 'ማስተር ስቶክ ሪፖርት',
-        pdfChoiceTitle: 'ዕለታዊ ፒዲኤፍ ምርጫ', pdfTodayBtn: 'የዛሬው ብቻ', pdfFullBtn: 'ሙሉ ታሪክ',
+        pdfChoiceTitle: 'ዕለታዊ ፒዲኤፍ ምርጫ', pdfStockChoiceTitle: 'ስቶክ ፒዲኤፍ መላኪያ',
+        pdfTodayBtn: 'የዛሬው ብቻ', pdfFullBtn: 'ሙሉ ታሪክ',
+        pdfDestTitle: 'መድረሻ ምረጥ', sendAllCh: '📡 ወደ ሁሉም ቻናሎች ላክ', sendViaPhone: '📱 በስልኬ አጋራ (ያለ ቦት)', downloadLocal: '⬇️ ስልኩ ላይ አውርድ',
         pdfEndList: '✦ የዝርዝር መጨረሻ ✦',
         pdfTotLabel: 'ጠቅላላ ድምር (ገቢ / ወጪ)',
         pdfRowsCount: (n) => `የተመዘገቡ፦ ${n} ረድፍ`,
@@ -548,15 +559,20 @@
         itemCatLbl: 'ካቴጎሪ', itemDelBtn: 'ዕቃውን አጥፋ', itemAdjHint: 'ቀሪ ለማስተካከል በቆጠራ → ስቶክ ማስተካከያ ይጠቀሙ',
         authVerifyTitle: 'የደህንነት ማረጋገጫ',
         authVerifyMsg: 'ይህን እርምጃ ለማስፈጸም የራስዎን (ወይም የአድሚን) ፒን / ፓስወርድ ያስገቡ፦',
+        authVerifyAdminMsg: 'ይህ እርምጃ ለአድሚን ብቻ ነው — የአድሚን ፒን / ፓስወርድ ያስገቡ፦',
         authVerifyPh: 'ፒን ወይም ፓስወርድ', authVerifyWrong: 'የተሳሳተ ፒን ወይም ፓስወርድ',
         cfgOutHead: 'የወጪ ቅጽ አማራጮች', cfgInHead: 'የገቢ ቅጽ አማራጮች',
         cfgAutoPad: 'በፓድ ቁጥር ላይ «ፓድ ቁ.» በራሱ ይጨምር', cfgShowPad: 'ፓድ ቁጥር አሳይ', cfgShowKg: 'ክብደት (ኪ.ግ) አሳይ',
         cfgShowDriver: 'ሹፌር አሳይ', cfgShowPlate: 'ታርጋ ቁጥር አሳይ', cfgShowNote: 'ማስታወሻ አሳይ', cfgInDocNo: 'በገቢ ላይ የሰነድ ቁጥር አሳይ',
-        pdfModeLbl: 'የወረቀት አቀማመጥ', pdfModeMob: 'ለሞባይል የተገጣጠመ (ያለ ባዶ ቦታ)', pdfModeA4P: 'A4 ቀጥታ', pdfModeA4L: 'A4 አግድም', pdfModeCustom: 'በራስ መጠን (ሚ.ሜ)',
+        pdfModeLbl: 'የወረቀት መጠን (በራሱ አይቀያየርም)',
+        pdfModeA4P: 'A4 ቀጥታ (210 × 297 ሚ.ሜ)', pdfModeA4L: 'A4 አግድም (297 × 210 ሚ.ሜ)',
+        pdfModeA5P: 'A5 ቀጥታ (148 × 210 ሚ.ሜ)', pdfModeLetter: 'Letter ቀጥታ (216 × 279 ሚ.ሜ)',
+        pdfModeCustom: 'በራስ መጠን (ሚ.ሜ)',
         pdfWPh: 'ጎን (ሚ.ሜ)', pdfHPh: 'ቁመት (ሚ.ሜ)', pdfFontLbl: 'የጽሑፍ መጠን', pdfFontSm: 'ትንሽ', pdfFontMd: 'መካከለኛ', pdfFontLg: 'ትልቅ',
         pdfHeaderSubPh: 'ተጨማሪ የራስጌ መግለጫ (አማራጭ)', pdfFooterNotePh: 'የግርጌ ማስታወሻ (አማራጭ)',
         pdfChkSign: 'የፊርማ መስመር አሳይ', pdfChkOpen: 'መነሻ ብዛት አሳይ', pdfChkParty: 'ደንበኛ / አቅራቢ አሳይ',
         pdfChkRef: 'ፓድ / ታርጋ አሳይ', pdfChkDate: 'ቀን አሳይ', pdfChkZero: 'በስቶክ ላይ 0 የሆኑትንም አሳይ',
+        pdfChkIncOpen: 'በዕለታዊ ፒዲኤፍ ላይ OPENING ንም አሳይ',
         quickNewTitle: 'አዲስ ዕቃ መዝግብ', quickNewAsk: (n) => `«${n}» በዝርዝር ውስጥ የለም። እንደ አዲስ ዕቃ ተመዝግቦ ወደ ቅርጫት ይግባ?`,
         bulkTitle: 'በጅምላ አስገባ (Excel / Sheets)',
         bulkHint: 'ከSheets አምድ A እና B ን ኮፒ አድርገው ይለጥፉ (የካቴጎሪ ርዕሶችን በራሱ ይለያል)',
@@ -573,14 +589,20 @@
         adjPending: 'ለአድሚን ማጽደቂያ ተልኳል', adjApproved: 'ማስተካከያው ጸድቆ ተመዝግቧል',
         adjPlusReason: 'የቆጠራ ትርፍ ማስተካከያ', adjMinusReason: 'የቆጠራ ጉድለት ማስተካከያ',
         editDocTitle: 'ሰነድ ማስተካከያ / ቅያሬ / መጨመሪያ', addForgotten: 'የተረሳ ዕቃ ጨምር',
-        voidDocBtn: 'ሙሉ ሰነዱን የተበላሸ አድርግ', unvoidAsk: 'ይህን የተበላሸ ሰነድ እንደገና ወደ ንቁ ይመልሱት?',
+        voidDocBtn: 'ሰነዱን የተበላሸ (VOID) አድርግ',
+        hardDelBtn: '🗑️ ሙሉ ለሙሉ አጥፋ (አድሚን)',
+        hardDelAsk: 'ይህ ሰነድ ከዳታቤዝ ላይ ሙሉ ለሙሉ ይጠፋል፤ የዕቃዎቹ ስቶክም ይመለሳል። ወደ ኦዲት መልዕክት ይላካል። ይቀጥሉ?',
+        unvoidAsk: 'ይህን የተበላሸ ሰነድ እንደገና ወደ ንቁ ይመልሱት?',
+        auditEditTitle: 'የሰነድ እርማት / ማስተካከያ', auditVoidTitle: 'ሰነድ የተበላሸ (VOID) ተደርጓል',
+        auditUnvoidTitle: 'የተበላሸ ሰነድ ተመልሷል (UNVOID)', auditDelTitle: 'ሰነድ ሙሉ ለሙሉ ተሰርዟል (HARD DELETE)',
         testBtn: 'ሞክር', webhookBtn: 'ቁልፍ አገናኝ', approve: 'አጽድቅ', reject: 'ሰርዝ',
         phOrgCode: 'የድርጅት ኮድ', phOrgName: 'የድርጅት ስም', phBrName: 'የመጋዘን ስም', phBrCode: 'የመጋዘን ኮድ',
         phAdmName: 'የአድሚን ስም', phPin: 'ፒን ኮድ', phOldPin: 'የአሁኑ ፒን', phNewPin: 'አዲሱ ፒን',
         phStaffName: 'የሰራተኛ ስም', roleStaff: 'ሰራተኛ', roleOrgAdm: 'የድርጅት አድሚን', roleSuper: 'ዋና ባለቤት',
-        chTg: 'ቴሌግራም', chWa: 'ዋትሳፕ', chSms: 'ኤስኤምኤስ', chWh: 'ዌብሁክ', chAllBranches: 'ለመላው ድርጅት',
-        phChLabel: 'መለያ ስም', phChTarget: 'የቻት መለያ / ስልክ ቁጥር / አድራሻ',
-        phChCred1: 'ሚስጥራዊ ቁልፍ / ቶከን', phChCred2: 'የስልክ መለያ / ላኪ ስም',
+        chTg: 'ቴሌግራም', chWa: 'ዋትሳፕ', chEmail: 'ኢሜል', chSms: 'ኤስኤምኤስ', chWh: 'ዌብሁክ', chAllBranches: 'ለመላው ድርጅት',
+        phChLabel: 'መለያ ስም', phChTarget: 'የቻት መለያ / ስልክ / ኢሜል / አድራሻ',
+        phChCred1: 'ሚስጥራዊ ቁልፍ / ቶከን / API Key', phChCred2: 'የስልክ መለያ / ላኪ ስም / From Email', phChCred3: 'የSMS አገልግሎት URL',
+        evLbl: 'የሚላኩ መልዕክቶች', evGrn: 'ገቢ (GRN)', evAudit: 'ኦዲት (Audit)', evRisk: 'ስጋት ኦዲት', evPdf: 'ፒዲኤፍ (PDF)',
         phCatName: 'አዲስ ካቴጎሪ ስም', phItemName: 'የዕቃ ስም (32rx0.8 ➔ 32Ø×0.8)', phOpening: 'መነሻ ብዛት',
         phRackCode: 'ኮድ', phRackName: 'የመደርደሪያ ስም', phRackCols: 'ወደ ጎን (አምድ)', phRackRows: 'ወደ ላይ (ረድፍ)',
         voidLabel: 'የተበላሸ', metricVoid: 'የተበላሸ', pdfLoading: 'ፒዲኤፍ በመዘጋጀት ላይ...', pdfLocal: 'ስልኩ ላይ ወርዷል',
@@ -621,7 +643,9 @@
         sCols: ['Row', 'Item Name', 'Open', 'In', 'Out', 'Bal', '⚙️'],
         sPdfMap: { item: 'Item Name', open: 'Opening', inq: 'In (+)', outq: 'Out (-)', adj: 'Adj', bal: 'Balance' },
         pdfDailySub: 'Daily Report', pdfTodaySub: "Today's Daily Report", pdfStockSub: 'Master Stock Report',
-        pdfChoiceTitle: 'Daily PDF Options', pdfTodayBtn: 'Today Only', pdfFullBtn: 'Full History',
+        pdfChoiceTitle: 'Daily PDF Options', pdfStockChoiceTitle: 'Stock PDF Delivery',
+        pdfTodayBtn: 'Today Only', pdfFullBtn: 'Full History',
+        pdfDestTitle: 'Choose Destination', sendAllCh: '📡 Send to All Channels', sendViaPhone: '📱 Share via Phone', downloadLocal: '⬇️ Download PDF',
         pdfEndList: '✦ End of List ✦',
         pdfTotLabel: 'Report Totals (In / Out)',
         pdfRowsCount: (n) => `Recorded Lines: ${n}`,
@@ -637,15 +661,20 @@
         itemCatLbl: 'Category', itemDelBtn: 'Delete Item', itemAdjHint: 'Use Tally → Stock Audit to adjust stock balance',
         authVerifyTitle: 'Security Verification',
         authVerifyMsg: 'Enter your (or Admin) PIN / Password to confirm this action:',
+        authVerifyAdminMsg: 'Admin only — Enter Admin PIN / Password to confirm:',
         authVerifyPh: 'PIN or Password', authVerifyWrong: 'Invalid PIN or Password',
         cfgOutHead: 'Issue (OUT) Fields', cfgInHead: 'Receive (IN) Fields',
         cfgAutoPad: 'Auto-prepend "Pad No." on save & display', cfgShowPad: 'Show Pad No.', cfgShowKg: 'Show Weight (kg)',
         cfgShowDriver: 'Show Driver', cfgShowPlate: 'Show Plate No.', cfgShowNote: 'Show Note', cfgInDocNo: 'Show Doc No. on Receive',
-        pdfModeLbl: 'Page Layout', pdfModeMob: 'Mobile Fit (No blank space)', pdfModeA4P: 'A4 Portrait', pdfModeA4L: 'A4 Landscape', pdfModeCustom: 'Custom Size (mm)',
+        pdfModeLbl: 'Page Size (Locked — never auto-resizes)',
+        pdfModeA4P: 'A4 Portrait (210 × 297 mm)', pdfModeA4L: 'A4 Landscape (297 × 210 mm)',
+        pdfModeA5P: 'A5 Portrait (148 × 210 mm)', pdfModeLetter: 'Letter Portrait (216 × 279 mm)',
+        pdfModeCustom: 'Custom Size (mm)',
         pdfWPh: 'Width (mm)', pdfHPh: 'Height (mm)', pdfFontLbl: 'Font Size', pdfFontSm: 'Small', pdfFontMd: 'Medium', pdfFontLg: 'Large',
         pdfHeaderSubPh: 'Custom Header Subtitle (optional)', pdfFooterNotePh: 'Custom Footer Note (optional)',
         pdfChkSign: 'Show Signature Line', pdfChkOpen: 'Show Opening Qty', pdfChkParty: 'Show Party / Customer',
         pdfChkRef: 'Show Pad / Plate', pdfChkDate: 'Show Date', pdfChkZero: 'Include Zero-Stock Items',
+        pdfChkIncOpen: 'Include OPENING rows in Daily PDF',
         quickNewTitle: 'Register New Item', quickNewAsk: (n) => `"${n}" is not in catalog. Register as new item and add to basket?`,
         bulkTitle: 'Bulk Import (Excel / Sheets)',
         bulkHint: 'Copy Columns A & B from Sheets and paste here (Category headers are auto-detected)',
@@ -662,14 +691,20 @@
         adjPending: 'Sent for Admin approval', adjApproved: 'Adjustment approved & posted',
         adjPlusReason: 'Physical count surplus', adjMinusReason: 'Physical count shortage',
         editDocTitle: 'Edit / Swap / Add Item', addForgotten: 'Add Forgotten Item',
-        voidDocBtn: 'Void Entire Document', unvoidAsk: 'Restore this voided document back to Active?',
+        voidDocBtn: 'Mark Document as VOID',
+        hardDelBtn: '🗑️ Permanently Delete (Admin)',
+        hardDelAsk: 'This permanently deletes the document from the database, restores stock, and logs to Audit. Continue?',
+        unvoidAsk: 'Restore this voided document back to Active?',
+        auditEditTitle: 'Document Edited', auditVoidTitle: 'Document Voided',
+        auditUnvoidTitle: 'Document Restored (Unvoid)', auditDelTitle: 'Document Permanently Deleted',
         testBtn: 'Test', webhookBtn: 'Link Bot', approve: 'Approve', reject: 'Reject',
         phOrgCode: 'Org Code', phOrgName: 'Organization Name', phBrName: 'Warehouse Name', phBrCode: 'Warehouse Code',
         phAdmName: 'Admin Name', phPin: 'PIN Code', phOldPin: 'Current PIN', phNewPin: 'New PIN',
         phStaffName: 'Staff Name', roleStaff: 'Staff', roleOrgAdm: 'Org Admin', roleSuper: 'Super Admin',
-        chTg: 'Telegram', chWa: 'WhatsApp', chSms: 'SMS', chWh: 'Webhook', chAllBranches: 'All Branches',
-        phChLabel: 'Channel Label', phChTarget: 'Chat ID / Phone / URL',
-        phChCred1: 'Bot Token / API Key', phChCred2: 'Phone Number ID / Sender ID',
+        chTg: 'Telegram', chWa: 'WhatsApp', chEmail: 'Email', chSms: 'SMS', chWh: 'Webhook', chAllBranches: 'All Branches',
+        phChLabel: 'Channel Label', phChTarget: 'Chat ID / Phone / Email / URL',
+        phChCred1: 'Bot Token / Access Token / API Key', phChCred2: 'Phone ID / Sender ID / From Email', phChCred3: 'SMS Gateway URL',
+        evLbl: 'Events to Send', evGrn: 'Receive (GRN)', evAudit: 'Audit Log', evRisk: 'Risk Audit', evPdf: 'PDF Reports',
         phCatName: 'New Category Name', phItemName: 'Item Name (32rx0.8 ➔ 32Ø×0.8)', phOpening: 'Opening Qty',
         phRackCode: 'Code', phRackName: 'Rack Name', phRackCols: 'Columns', phRackRows: 'Rows',
         voidLabel: 'Void', metricVoid: 'Void', pdfLoading: 'Preparing PDF...', pdfLocal: 'Downloaded locally',
@@ -686,6 +721,7 @@
     let uiCfg = { ...DEFAULT_UI_CFG, ...loadJson(UI_CFG_KEY, {}) };
     let currentWhId = '';
     let whData = { warehouse: {}, items: [], categories: [], racks: [], slot_map: {}, last_doc_num: 0, next_doc_num: 1, pending_adjustments_count: 0, is_branch_admin: false, is_org_admin: false, org_warehouses: [] };
+    let cachedChannels = [];
     let entryMode = 'OUT';
     let basket = [];
 
@@ -728,7 +764,6 @@
     function roleLabel(r) { return r === 'SUPER_ADMIN' ? t('roleSuper') : (r === 'ORG_ADMIN' ? t('roleOrgAdm') : t('roleStaff')); }
     function docNumInt(v) { const m = String(v || '').match(/\d+/); return m ? parseInt(m[0], 10) : 0; }
 
-    // ድርብ-ንካ መከላከያ እና ንዝረት ለሁሉም አስፈላጊ ቁልፎች
     async function withBusy(btnEl, fn) {
       if (isBusyAction) return;
       vib(24);
@@ -764,7 +799,6 @@
       }
     }
 
-    // የLTZ ልዩ ቅደም ተከተል (28/38/48 -> ውፍረት -> L, T, Z) እና የተፈጥሮ ቁጥር አደራደር
     function parseLtzInfo(name) {
       const m = String(name || '').trim().match(/^(\d+(?:\.\d+)?)\s*([LTZ])\s*[×x*]\s*(\d+(?:\.\d+)?)/i);
       if (!m) return null;
@@ -818,7 +852,6 @@
       return s;
     }
 
-    // ሁለት ቋንቋ የድርጅት ስም እና መግለጫ
     function getBrandCfgMap() { return loadJson(BRAND_CFG_KEY, {}); }
     function getCurrentOrgBrandObj() {
       const orgId = whData.warehouse?.organization_id || session?.organization?.id || 'default';
@@ -909,6 +942,19 @@
       return await res.json();
     }
 
+    async function refreshCachedChannels() {
+      if (!session?.token || !whData.warehouse?.organization_id) return;
+      try {
+        const res = await callRpc('rpc_manage_notification_channels', {
+          p_token: session.token, p_action: 'LIST',
+          p_payload: { organization_id: whData.warehouse.organization_id },
+        });
+        if (res?.success) {
+          cachedChannels = (res.channels || []).filter((c) => !c.warehouse_id || c.warehouse_id === currentWhId);
+        }
+      } catch {}
+    }
+
     function getOfflineQueue() { return loadJson(QUEUE_KEY, []); }
     function updateSyncPill() {
       const q = getOfflineQueue();
@@ -976,7 +1022,7 @@
     async function doLogout() {
       vib(25);
       if (session?.token) callRpc('rpc_logout', { p_token: session.token }).catch(() => {});
-      session = null; basket = []; dailyRows = []; stockRows = [];
+      session = null; basket = []; dailyRows = []; stockRows = []; cachedChannels = [];
       localStorage.removeItem(SESSION_KEY);
       closeDrawer();
       document.getElementById('appShell').style.display = 'none';
@@ -1022,9 +1068,10 @@
         if (!auditTally.itemId && res.items.length) auditTally.itemId = res.items[0].id;
         if (res.racks.length && !res.racks.some((r) => r.code === activeRack)) activeRack = res.racks[0].code;
         ensureDefaultTicket();
+        refreshCachedChannels();
 
         renderDrawerMenu(); renderTiles(); renderBasket(); renderTally(); renderMap();
-        if (document.getElementById('viewDaily').classList.contains('active')) loadDaily();
+        if (document.getElementById('viewDaily').classList.contains('active')) loadDaily(false);
         if (document.getElementById('viewStock').classList.contains('active')) loadStock();
       } catch (e) { if (String(e.message).includes('UNAUTHORIZED')) doLogout(); }
     }
@@ -1266,7 +1313,6 @@
       renderBasket(); renderTiles();
     }
 
-    // ከመመዝገቢያ ወደ ቆጠራ ተራ መላኪያ (Optional Tally Queue)
     function sendBasketToTally() {
       if (!basket.length) return;
       vib([25, 20, 30]);
@@ -1802,9 +1848,10 @@
     // ==================== የደህንነት ፒን / ፓስወርድ ማረጋገጫ ====================
     function promptSecurityVerify(requireAdmin, onAuthorized) {
       vib(20);
+      const msg = requireAdmin ? t('authVerifyAdminMsg') : t('authVerifyMsg');
       openMainModal(t('authVerifyTitle'), `
         <div class="sub-card" style="font-size:12px;font-weight:800;">
-          <div>${esc(t('authVerifyMsg'))}</div>
+          <div>${esc(msg)}</div>
           <input type="password" id="inpSecCred" class="inp mono" style="height:42px;font-size:16px;" placeholder="${esc(t('authVerifyPh'))}" onkeydown="if(event.key==='Enter') document.getElementById('btnSecGo').click()">
           <div id="secErr" style="color:var(--rose);font-size:11px;font-weight:900;text-align:center;"></div>
         </div>`,
@@ -1847,6 +1894,17 @@
       };
     }
 
+    function sendAuditLog(actionTitle, docNo, details, actorName) {
+      callBot({
+        action: 'send_audit_log',
+        warehouse_id: currentWhId,
+        action_title: actionTitle,
+        doc_no: docNo || '',
+        details: details || '',
+        actor_name: actorName || session?.user?.full_name || '',
+      }).catch(() => {});
+    }
+
     // ==================== የእርምጃ (⚙️) አምድ ማብሪያ / ማጥፊያ ====================
     function updateActionToggleBtns() {
       const dBtn = document.getElementById('btnDailyActToggle');
@@ -1870,10 +1928,29 @@
       updateActionToggleBtns();
     }
 
-    // ==================== ገጽ 3: ዕለታዊ (ከላይ የቆዩ ➔ ከታች አዳዲስ) ====================
+    // ==================== ገጽ 3: ዕለታዊ (ንጹህ VOID + Hard Delete + Audit Log) ====================
+    function normalizeDailyList(rows) {
+      const seenVoidDoc = new Set();
+      const cleaned = [];
+      (rows || []).forEach((r) => {
+        const isWholeVoid = r.status === 'VOIDED' || r.doc_type === 'VOID';
+        // በንቁ ሰነድ ውስጥ የተሰረዘ ነጠላ ረድፍ እንዳይታይ
+        if (!isWholeVoid && r.is_voided) return;
+        // ሙሉ ሰነዱ VOID ከሆነ ብዙ ቀይ ረድፍ ከመደርደር 1 ንጹህ ረድፍ ብቻ
+        if (isWholeVoid) {
+          const dKey = String(r.document_id || r.doc_no);
+          if (seenVoidDoc.has(dKey)) return;
+          seenVoidDoc.add(dKey);
+        }
+        cleaned.push(r);
+      });
+      return cleaned;
+    }
+
     function getSortedDailyRows(rows, forceDocAsc = false) {
+      const cleanRows = normalizeDailyList(rows);
       const groups = [], map = new Map();
-      rows.forEach((r) => {
+      cleanRows.forEach((r) => {
         const key = String(r.document_id || r.ledger_id);
         if (!map.has(key)) {
           const g = { docNum: docNumInt(r.doc_no), docStr: String(r.doc_no || ''), isOpen: String(r.doc_no || '').toUpperCase() === 'OPENING', lines: [] };
@@ -1883,7 +1960,6 @@
       });
 
       if (dailySort === 'TIME' && !forceDocAsc) {
-        // ዳታቤዙ አዲሱን ከላይ ስለሚልክ ገልብጠን የቆዩትን ከላይ፣ አዳዲሶቹን ከታች እናደርጋለን
         groups.reverse();
       } else {
         groups.sort((a, b) => {
@@ -1953,15 +2029,19 @@
 
         let actionTd = '';
         if (showAct) {
-          let actionBtn = '';
+          let actionBtns = '';
           if (!same) {
-            if (isVoid && isBrAdm && r.doc_type !== 'VOID') {
-              actionBtn = `<button type="button" class="icon-btn" style="width:auto;padding:0 6px;height:24px;font-size:10px;color:var(--emerald);border-color:var(--emerald);" onclick="event.stopPropagation();promptUnvoidDoc('${r.document_id}','${esc(r.doc_no)}')">↩ ${esc(t('unvoidShort'))}</button>`;
-            } else if (r.can_edit && !isVoid) {
-              actionBtn = `<button type="button" class="icon-btn" style="width:26px;height:24px;font-size:11px;" onclick="event.stopPropagation();openEditDocModal('${r.document_id}')">⚙️</button>`;
+            if (isVoid && isBrAdm) {
+              const unvoidHtml = r.doc_type !== 'VOID'
+                ? `<button type="button" class="icon-btn" style="width:auto;padding:0 6px;height:24px;font-size:10px;color:var(--emerald);border-color:var(--emerald);" onclick="event.stopPropagation();promptUnvoidDoc('${r.document_id}','${esc(r.doc_no)}')">↩ ${esc(t('unvoidShort'))}</button>`
+                : '';
+              const delHtml = `<button type="button" class="icon-btn" style="width:26px;height:24px;font-size:11px;color:var(--rose);border-color:#7f1d1d;" onclick="event.stopPropagation();promptHardDeleteDoc('${r.document_id}','${esc(r.doc_no)}')">🗑️</button>`;
+              actionBtns = `<div class="act-pair">${unvoidHtml}${delHtml}</div>`;
+            } else if ((r.can_edit || isBrAdm) && !isVoid) {
+              actionBtns = `<button type="button" class="icon-btn" style="width:26px;height:24px;font-size:11px;" onclick="event.stopPropagation();openEditDocModal('${r.document_id}')">⚙️</button>`;
             }
           }
-          actionTd = `<td style="text-align:center;">${actionBtn}</td>`;
+          actionTd = `<td style="text-align:center;">${actionBtns}</td>`;
         }
 
         html.push(`
@@ -1969,8 +2049,8 @@
             <td>${esc(same ? '↳' : r.doc_no)}</td>
             <td>${esc(isVoid ? t('voidLabel') : r.item_name)}</td>
             <td>${isVoid ? '-' : Number(r.opening_bal || 0).toLocaleString()}</td>
-            <td style="color:var(--emerald);">${r.qty_in ? '+' + Number(r.qty_in).toLocaleString() : '-'}</td>
-            <td style="color:var(--rose);">${r.qty_out ? '-' + Number(r.qty_out).toLocaleString() : '-'}</td>
+            <td style="color:var(--emerald);">${!isVoid && r.qty_in ? '+' + Number(r.qty_in).toLocaleString() : '-'}</td>
+            <td style="color:var(--rose);">${!isVoid && r.qty_out ? '-' + Number(r.qty_out).toLocaleString() : '-'}</td>
             <td>${isVoid ? '-' : Number(r.closing_bal || 0).toLocaleString()}</td>
             <td>${esc(same ? '↳' : r.party_name)}</td>
             <td>${esc(same ? '↳' : displayRef(r.ref_no, r.doc_type))}</td>
@@ -1988,13 +2068,37 @@
       vib(18);
       openMainModal(`↩ ${t('unvoidShort')} #${docNo}`, `<div class="sub-card" style="font-size:12px;font-weight:800;">${esc(t('unvoidAsk'))}</div>`,
         `<button type="button" class="btn muted" onclick="closeMainModal()">${esc(t('cancel'))}</button>
-         <button type="button" class="btn teal" onclick="verifyAndUnvoid('${docId}')">${esc(t('ok'))}</button>`);
+         <button type="button" class="btn teal" onclick="verifyAndUnvoid('${docId}','${esc(docNo)}')">${esc(t('ok'))}</button>`);
     }
 
-    function verifyAndUnvoid(docId) {
-      promptSecurityVerify(true, async () => {
+    function verifyAndUnvoid(docId, docNo) {
+      promptSecurityVerify(true, async (actor) => {
         const res = await callRpc('rpc_unvoid_document', { p_token: session.token, p_document_id: docId });
         if (!res.success) { showToast(res.error === 'INSUFFICIENT_STOCK' ? t('errStock') : t('errGeneric')); return; }
+        sendAuditLog(t('auditUnvoidTitle'), `#${docNo}`, `ሰነድ #${docNo} እንደገና ወደ ንቁ (Active) ተመልሷል።`, actor.full_name);
+        showToast(t('savedOk')); loadWarehouseData(currentWhId); loadDaily(false);
+      });
+    }
+
+    function promptHardDeleteDoc(docId, docNo) {
+      vib(22);
+      openMainModal(`${t('hardDelBtn')} — #${docNo}`, `<div class="sub-card" style="font-size:12px;font-weight:800;color:#fecaca;">${esc(t('hardDelAsk'))}</div>`,
+        `<button type="button" class="btn muted" onclick="closeMainModal()">${esc(t('cancel'))}</button>
+         <button type="button" class="btn danger" onclick="verifyAndHardDelete('${docId}','${esc(docNo)}')">${esc(t('del'))}</button>`);
+    }
+
+    function verifyAndHardDelete(docId, docNo) {
+      promptSecurityVerify(true, async (actor) => {
+        const res = await callRpc('rpc_delete_document', { p_token: session.token, p_document_id: docId });
+        if (!res.success) { showToast(res.error === 'INSUFFICIENT_STOCK' ? t('errStock') : t('errGeneric')); return; }
+        const sum = res.deleted_summary || {};
+        const linesTxt = (sum.lines || []).map((l) => `• ${l.item_name} (${l.qty})`).join('\n');
+        const detail = [
+          sum.party_name ? `ደንበኛ/አቅራቢ: ${sum.party_name}` : '',
+          sum.ref_no && sum.ref_no !== '-' ? `ፓድ/ታርጋ: ${sum.ref_no}` : '',
+          linesTxt,
+        ].filter(Boolean).join('\n');
+        sendAuditLog(t('auditDelTitle'), `#${sum.doc_no || docNo}`, detail, actor.full_name);
         showToast(t('savedOk')); loadWarehouseData(currentWhId); loadDaily(false);
       });
     }
@@ -2005,11 +2109,12 @@
       if (!lines.length) return;
       editVoidIds = []; editAppendList = [];
       const head = lines[0];
+      const isBrAdm = whData.is_branch_admin || whData.is_org_admin || session?.user?.role === 'SUPER_ADMIN';
       const sortedItems = (whData.items || []).slice().sort((a, b) => compareItemsSmart(a.name, b.name, a.category_name || ''));
       const allOpts = (selId) => sortedItems.map((it) => `<option value="${it.id}" ${it.id === selId ? 'selected' : ''}>${esc(it.name)}</option>`).join('');
 
       const rowsHtml = lines.map((l) => `
-        <div class="ed-line-row" data-lid="${l.ledger_id}" style="display:grid;grid-template-columns:1fr 64px 28px;gap:4px;align-items:center;">
+        <div class="ed-line-row" data-lid="${l.ledger_id}" data-orig-name="${esc(l.item_name)}" data-orig-qty="${l.qty_in || l.qty_out}" style="display:grid;grid-template-columns:1fr 64px 28px;gap:4px;align-items:center;">
           <select class="sel ed-item-sel">${allOpts(l.item_id)}</select>
           <input type="number" class="inp mono ed-qty-inp" value="${l.qty_in || l.qty_out}" min="1">
           <button type="button" class="icon-btn" style="width:28px;height:32px;color:var(--rose);" onclick="markLineVoid(this,${l.ledger_id})">🗑️</button>
@@ -2033,9 +2138,10 @@
           </div>
           <div id="edAppendedWrap" style="display:flex;flex-direction:column;gap:4px;"></div>
         </div>
-        <button type="button" class="btn danger" onclick="verifyAndVoidDoc('${docId}')">${esc(t('voidDocBtn'))}</button>`,
+        <button type="button" class="btn danger" onclick="verifyAndVoidDoc('${docId}','${esc(head.doc_no)}','${esc(head.party_name)}')">${esc(t('voidDocBtn'))}</button>
+        ${isBrAdm ? `<button type="button" class="btn hard-del" onclick="promptHardDeleteDoc('${docId}','${esc(head.doc_no)}')">${esc(t('hardDelBtn'))}</button>` : ''}`,
         `<button type="button" class="btn muted" onclick="closeMainModal()">${esc(t('cancel'))}</button>
-         <button type="button" class="btn teal" onclick="prepareSaveEditDoc('${docId}','${head.doc_type}')">${esc(t('save'))}</button>`);
+         <button type="button" class="btn teal" onclick="prepareSaveEditDoc('${docId}','${head.doc_type}','${esc(head.doc_no)}')">${esc(t('save'))}</button>`);
     }
 
     function markLineVoid(btnEl, lid) {
@@ -2060,41 +2166,61 @@
         </div>`).join('');
     }
 
-    function prepareSaveEditDoc(docId, docType) {
-      const updates = Array.from(document.querySelectorAll('#edLinesWrap .ed-line-row'))
-        .filter((row) => !editVoidIds.includes(Number(row.dataset.lid)))
-        .map((row) => ({
-          ledger_id: Number(row.dataset.lid),
-          item_id: row.querySelector('.ed-item-sel').value,
-          qty: Math.max(1, Number(row.querySelector('.ed-qty-inp').value || 1)),
-        }));
+    function prepareSaveEditDoc(docId, docType, origDocNo) {
+      const rows = Array.from(document.querySelectorAll('#edLinesWrap .ed-line-row'));
+      const changes = [];
+      const updates = [];
+
+      rows.forEach((row) => {
+        const lid = Number(row.dataset.lid);
+        const origName = row.dataset.origName || '';
+        const origQty = Number(row.dataset.origQty || 0);
+        if (editVoidIds.includes(lid)) {
+          changes.push(`• የተሰረዘ ረድፍ: ${origName} (${origQty})`);
+          return;
+        }
+        const sel = row.querySelector('.ed-item-sel');
+        const newName = sel.options[sel.selectedIndex]?.text || '';
+        const newQty = Math.max(1, Number(row.querySelector('.ed-qty-inp').value || 1));
+        updates.push({ ledger_id: lid, item_id: sel.value, qty: newQty });
+        if (newName !== origName || newQty !== origQty) {
+          changes.push(`• ${origName} (${origQty}) ➔ ${newName} (${newQty})`);
+        }
+      });
+
+      editAppendList.forEach((x) => changes.push(`• የተጨመረ: ${x.name} (${x.qty})`));
+
       const newDocNo = document.getElementById('edDocNo').value.trim();
       const newParty = document.getElementById('edParty').value.trim();
       const rawRef = document.getElementById('edRef').value.trim();
       const newRef = docType === 'OUT' ? formatPadRef(rawRef) : rawRef;
+      if (newDocNo !== origDocNo) changes.unshift(`• ሰነድ ቁጥር: #${origDocNo} ➔ #${newDocNo}`);
+
       const appendCopy = editAppendList.map((x) => ({ item_id: x.item_id, qty: x.qty }));
       const voidCopy = editVoidIds.slice();
 
-      promptSecurityVerify(voidCopy.length > 0, async () => {
+      promptSecurityVerify(voidCopy.length > 0, async (actor) => {
         const res = await callRpc('rpc_edit_document', {
           p_token: session.token, p_document_id: docId,
           p_new_doc_no: newDocNo, p_new_party: newParty, p_new_ref: newRef,
           p_line_updates: updates, p_append_items: appendCopy, p_void_ledger_ids: voidCopy,
         });
         if (!res.success) { showToast(res.error === 'INSUFFICIENT_STOCK' ? t('errStock') : t('errGeneric')); return; }
+        sendAuditLog(t('auditEditTitle'), `#${newDocNo}`, changes.join('\n') || `ደንበኛ/ማጣቀሻ: ${newParty} (${newRef})`, actor.full_name);
         showToast(t('savedOk')); loadWarehouseData(currentWhId); loadDaily(false);
       });
     }
 
-    function verifyAndVoidDoc(docId) {
-      promptSecurityVerify(false, async () => {
+    function verifyAndVoidDoc(docId, docNo, partyName) {
+      promptSecurityVerify(false, async (actor) => {
         const res = await callRpc('rpc_void_document', { p_token: session.token, p_document_id: docId });
         if (!res.success) { showToast(t('errGeneric')); return; }
+        sendAuditLog(t('auditVoidTitle'), `#${docNo}`, `ደንበኛ/አቅራቢ: ${partyName || '-'}`, actor.full_name);
         showToast(t('savedOk')); loadWarehouseData(currentWhId); loadDaily(false);
       });
     }
 
-    // ==================== ገጽ 4: ስቶክ (ፊደል ቅደም ተከተል + LTZ + ካቴጎሪ ምርጫ + ማስተካከያ) ====================
+    // ==================== ገጽ 4: ስቶክ ====================
     let renderedStockGroups = [];
 
     function getPeriodBounds(p) {
@@ -2191,7 +2317,6 @@
       document.getElementById('stockBody').innerHTML = html.length ? html.join('') : `<tr><td colspan="${colSpan}" style="text-align:center;padding:16px;color:var(--muted);">${esc(t('noItems'))}</td></tr>`;
     }
 
-    // ካቴጎሪ ርዕስ ሲነካ ሁሉንም የካቴጎሪውን ዕቃዎች ለፒዲኤፍ መምረጥ
     function togglePdfCategory(gIdx) {
       const grp = renderedStockGroups[gIdx];
       if (!grp || !grp.items.length) return;
@@ -2220,32 +2345,34 @@
           <select id="edStItemCat" class="sel">${cats.map((c) => `<option value="${c.id}" ${c.id === it.category_id ? 'selected' : ''}>${esc(c.name)}</option>`).join('')}</select>
           <span class="lbl-sm" style="color:var(--teal);">${esc(t('itemAdjHint'))}</span>
         </div>
-        <button type="button" class="btn danger" onclick="verifyDeleteStockItem('${itemId}')">🗑️ ${esc(t('itemDelBtn'))}</button>`,
+        <button type="button" class="btn danger" onclick="verifyDeleteStockItem('${itemId}','${esc(it.name)}')">🗑️ ${esc(t('itemDelBtn'))}</button>`,
         `<button type="button" class="btn muted" onclick="closeMainModal()">${esc(t('cancel'))}</button>
-         <button type="button" class="btn teal" onclick="verifySaveStockItem('${itemId}')">${esc(t('save'))}</button>`);
+         <button type="button" class="btn teal" onclick="verifySaveStockItem('${itemId}','${esc(it.name)}')">${esc(t('save'))}</button>`);
     }
 
-    function verifySaveStockItem(itemId) {
+    function verifySaveStockItem(itemId, oldName) {
       const newName = formatSmartDim(document.getElementById('edStItemName').value.trim());
       const newCat = document.getElementById('edStItemCat').value;
       if (!newName) return;
-      promptSecurityVerify(false, async () => {
+      promptSecurityVerify(false, async (actor) => {
         const res = await callRpc('rpc_manage_catalog', {
           p_token: session.token, p_warehouse_id: currentWhId, p_action: 'UPDATE_ITEM',
           p_payload: { item_id: itemId, name: newName, category_id: newCat },
         });
         if (!res.success) { showToast(t('errGeneric')); return; }
+        sendAuditLog(t('editItemTitle'), '', `${oldName} ➔ ${newName}`, actor.full_name);
         showToast(t('savedOk')); await loadWarehouseData(currentWhId); loadStock();
       });
     }
 
-    function verifyDeleteStockItem(itemId) {
-      promptSecurityVerify(true, async () => {
+    function verifyDeleteStockItem(itemId, itemName) {
+      promptSecurityVerify(true, async (actor) => {
         const res = await callRpc('rpc_manage_catalog', {
           p_token: session.token, p_warehouse_id: currentWhId, p_action: 'DELETE_ITEMS',
           p_payload: { item_ids: [itemId] },
         });
         if (!res.success) { showToast(t('errGeneric')); return; }
+        sendAuditLog(t('itemDelBtn'), '', `ዕቃ ተሰርዟል: ${itemName}`, actor.full_name);
         showToast(t('savedOk')); await loadWarehouseData(currentWhId); loadStock();
       });
     }
@@ -2269,29 +2396,71 @@
       document.getElementById('btnPdfSend').textContent = `${t('pdfSend')} (${cnt})`;
     }
 
-    async function runSelectedPdf(deliveryMode, btnEl) {
-      const ids = Object.keys(selectedPdfIds);
-      if (!ids.length) return;
-      await generateAndDeliverPdf(pdfSelectType === 'stock', ids, deliveryMode, false, btnEl);
-      clearPdfSelection();
+    // ==================== የፒዲኤፍ መድረሻ መምረጫ + ተቆለፈ መጠን ባለገጽ PDF ሞተር ====================
+    function openDestinationPicker(title, onSelect) {
+      vib(18);
+      const chBtns = (cachedChannels || []).map((c) => `
+        <button type="button" class="btn muted" style="text-align:left;border:1px solid var(--border-strong);" onclick="closeMainModal();window.__pdfPickCb('bot','${c.id}')">
+          📡 ${esc(chTypeLabel(c.channel_type))} — ${esc(c.label)}
+        </button>`).join('');
+
+      window.__pdfPickCb = onSelect;
+      openMainModal(title || t('pdfDestTitle'), `
+        <div class="sub-card">
+          ${cachedChannels.length ? `<button type="button" class="btn teal" onclick="closeMainModal();window.__pdfPickCb('bot','')">${esc(t('sendAllCh'))}</button>` : ''}
+          ${chBtns}
+          <button type="button" class="btn primary" onclick="closeMainModal();window.__pdfPickCb('share','')">${esc(t('sendViaPhone'))}</button>
+          <button type="button" class="btn muted" onclick="closeMainModal();window.__pdfPickCb('download','')">${esc(t('downloadLocal'))}</button>
+        </div>`,
+        `<button type="button" class="btn muted" onclick="closeMainModal()">${esc(t('cancel'))}</button>
+         <button type="button" class="btn muted" onclick="closeMainModal();openPdfCfgModal()">⚙️ ${esc(t('mPdfCfg'))}</button>`);
     }
 
     function openDailyPdfChoice() {
       vib(18);
       openMainModal(t('pdfChoiceTitle'), `
         <div class="grid-2">
-          <button type="button" class="btn teal" onclick="closeMainModal();generateAndDeliverPdf(false,null,'bot',true,this)">${esc(t('pdfTodayBtn'))}</button>
-          <button type="button" class="btn primary" onclick="closeMainModal();generateAndDeliverPdf(false,null,'bot',false,this)">${esc(t('pdfFullBtn'))}</button>
+          <button type="button" class="btn teal" onclick="closeMainModal();openDestinationPicker('${esc(t('pdfTodayBtn'))}',(m,c)=>generateAndDeliverPdf(false,null,m,true,null,c))">${esc(t('pdfTodayBtn'))}</button>
+          <button type="button" class="btn primary" onclick="closeMainModal();openDestinationPicker('${esc(t('pdfFullBtn'))}',(m,c)=>generateAndDeliverPdf(false,null,m,false,null,c))">${esc(t('pdfFullBtn'))}</button>
         </div>`,
         `<button type="button" class="btn muted" onclick="closeMainModal()">${esc(t('cancel'))}</button>
          <button type="button" class="btn muted" onclick="closeMainModal();openPdfCfgModal()">⚙️ ${esc(t('mPdfCfg'))}</button>`);
     }
 
-    async function exportCurrentViewPdf(isStock, btnEl) {
-      await generateAndDeliverPdf(isStock, null, 'bot', false, btnEl);
+    function openStockPdfChoice() {
+      openDestinationPicker(t('pdfStockChoiceTitle'), (m, c) => generateAndDeliverPdf(true, null, m, false, null, c));
     }
 
-    async function generateAndDeliverPdf(isStock, onlyIds, deliveryMode, todayOnly = false, btnEl = null) {
+    function openSelectedSendPicker() {
+      const ids = Object.keys(selectedPdfIds);
+      if (!ids.length) return;
+      openDestinationPicker(t('pdfDestTitle'), async (m, c) => {
+        await generateAndDeliverPdf(pdfSelectType === 'stock', ids, m, false, null, c);
+        clearPdfSelection();
+      });
+    }
+
+    async function runSelectedPdf(deliveryMode, btnEl) {
+      const ids = Object.keys(selectedPdfIds);
+      if (!ids.length) return;
+      await generateAndDeliverPdf(pdfSelectType === 'stock', ids, deliveryMode, false, btnEl, '');
+      clearPdfSelection();
+    }
+
+    function getLockedPageSizeMm() {
+      if (pdfCfg.mode === 'A4_L') return { w: 297, h: 210 };
+      if (pdfCfg.mode === 'A5_P') return { w: 148, h: 210 };
+      if (pdfCfg.mode === 'LETTER_P') return { w: 216, h: 279 };
+      if (pdfCfg.mode === 'CUSTOM') {
+        return {
+          w: Math.max(80, Number(pdfCfg.widthMm) || 210),
+          h: Math.max(80, Number(pdfCfg.heightMm) || 297),
+        };
+      }
+      return { w: 210, h: 297 };
+    }
+
+    async function generateAndDeliverPdf(isStock, onlyIds, deliveryMode, todayOnly = false, btnEl = null, channelId = '') {
       if (!window.html2canvas || !window.jspdf) { showToast(t('pdfLoading')); return; }
 
       await withBusy(btnEl, async () => {
@@ -2301,11 +2470,24 @@
         const dateStr = new Date().toLocaleDateString('en-GB');
         const subTitle = pdfCfg.headerSub.trim() || (isStock ? t('pdfStockSub') : (todayOnly ? t('pdfTodaySub') : t('pdfDailySub')));
         const title = `${brand} — ${subTitle} (${dateStr})`;
-        const fSize = pdfCfg.fontSize === 'sm' ? '10px' : (pdfCfg.fontSize === 'lg' ? '13.5px' : '11.5px');
-        const stagePx = pdfCfg.mode === 'A4_L' ? 1040 : 780;
-        stage.style.width = `${stagePx}px`;
+        const fSize = pdfCfg.fontSize === 'sm' ? '9.5px' : (pdfCfg.fontSize === 'lg' ? '12.5px' : '10.8px');
 
-        let bodyHtml = '';
+        const sz = getLockedPageSizeMm();
+        const pw = sz.w * 2.83465;
+        const ph = sz.h * 2.83465;
+        const orient = pw > ph ? 'l' : 'p';
+
+        // የተመረጠውን የወረቀት ጎን/ቁመት ሬሾ 100% ሳይቀየር መጠበቅ
+        const stagePx = sz.w > sz.h ? 1060 : 794;
+        const pagePxH = Math.round(stagePx * (sz.h / sz.w));
+        const padPx = 22;
+        const innerW = stagePx - padPx * 2;
+
+        let headHtml = '';
+        let footTableHtml = '';
+        let endListRow = '';
+        const units = []; // እያንዳንዱ unit: { rows: string[] }
+
         if (isStock) {
           const baseList = onlyIds
             ? stockRows.filter((r) => onlyIds.includes(r.item_id))
@@ -2319,52 +2501,72 @@
           if (hasAdj) cols.push({ k: 'adj', lbl: sm.adj });
           cols.push({ k: 'bal', lbl: sm.bal });
 
+          headHtml = `<thead><tr style="background:#0f172a;color:#fff;">${cols.map((c) => `<th style="padding:6px 5px;border:1px solid #334155;font-weight:900;">${esc(c.lbl)}</th>`).join('')}</tr></thead>`;
+          endListRow = `<tr><td colspan="${cols.length}" style="text-align:center;padding:5px;color:#64748b;font-size:9.5px;font-weight:700;border:none;">${esc(t('pdfEndList'))}</td></tr>`;
+
           let opT = 0, inT = 0, outT = 0, adjT = 0, clT = 0, totalItems = 0;
-          const trArr = [];
+          const makeItemTr = (r) => {
+            totalItems++;
+            opT += Number(r.opening_qty); inT += Number(r.in_qty); outT += Number(r.out_qty); adjT += Number(r.adj_net_qty); clT += Number(r.closing_qty);
+            const lowLim = whData.warehouse?.low_limit || 20;
+            const bg = r.closing_qty === 0 ? '#f8d7da' : (r.closing_qty <= lowLim ? '#fff3cd' : '#ffffff');
+            const txtClr = r.closing_qty === 0 ? '#991b1b' : (r.closing_qty <= lowLim ? '#92400e' : '#0f172a');
+            const tds = cols.map((c) => {
+              if (c.k === 'item') return `<td style="padding:4.5px 8px;border:1px solid #cbd5e1;font-weight:800;">${esc(r.item_name)}</td>`;
+              if (c.k === 'open') return `<td style="padding:4.5px;border:1px solid #cbd5e1;text-align:center;font-weight:700;">${Number(r.opening_qty).toLocaleString()}</td>`;
+              if (c.k === 'inq') return `<td style="padding:4.5px;border:1px solid #cbd5e1;text-align:center;font-weight:700;">${Number(r.in_qty).toLocaleString()}</td>`;
+              if (c.k === 'outq') return `<td style="padding:4.5px;border:1px solid #cbd5e1;text-align:center;font-weight:700;">${Number(r.out_qty).toLocaleString()}</td>`;
+              if (c.k === 'adj') return `<td style="padding:4.5px;border:1px solid #cbd5e1;text-align:center;font-weight:700;">${Number(r.adj_net_qty).toLocaleString()}</td>`;
+              return `<td style="padding:4.5px;border:1px solid #cbd5e1;text-align:center;font-weight:900;">${Number(r.closing_qty).toLocaleString()}</td>`;
+            }).join('');
+            return `<tr style="background:${bg};color:${txtClr};">${tds}</tr>`;
+          };
+
           groups.forEach((grp, gIdx) => {
-            if (gIdx > 0) trArr.push(`<tr style="background:#ffffff;"><td colspan="${cols.length}" style="height:8px;border:none;"></td></tr>`);
-            trArr.push(`<tr style="background:#1c4532;color:#fff;"><td colspan="${cols.length}" style="padding:6px 10px;font-weight:900;">${esc(grp.cat)}</td></tr>`);
+            const catTr = `<tr style="background:#1c4532;color:#fff;"><td colspan="${cols.length}" style="padding:5.5px 9px;font-weight:900;">${esc(grp.cat)}</td></tr>`;
+            const spTr = gIdx > 0 ? `<tr style="background:#ffffff;"><td colspan="${cols.length}" style="height:7px;border:none;"></td></tr>` : '';
             let prevLtzKey = null;
-            grp.items.forEach((r) => {
+
+            grp.items.forEach((r, idx) => {
               const ltz = parseLtzInfo(r.item_name);
-              if (ltz && prevLtzKey && ltz.groupKey !== prevLtzKey) {
-                trArr.push(`<tr style="background:#f8fafc;"><td colspan="${cols.length}" style="height:5px;border-left:1px solid #cbd5e1;border-right:1px solid #cbd5e1;"></td></tr>`);
-              }
+              const ltzSp = (ltz && prevLtzKey && ltz.groupKey !== prevLtzKey)
+                ? `<tr style="background:#f8fafc;"><td colspan="${cols.length}" style="height:4px;border-left:1px solid #cbd5e1;border-right:1px solid #cbd5e1;"></td></tr>`
+                : '';
               prevLtzKey = ltz ? ltz.groupKey : null;
-              totalItems++;
-              opT += Number(r.opening_qty); inT += Number(r.in_qty); outT += Number(r.out_qty); adjT += Number(r.adj_net_qty); clT += Number(r.closing_qty);
-              const lowLim = whData.warehouse?.low_limit || 20;
-              const bg = r.closing_qty === 0 ? '#f8d7da' : (r.closing_qty <= lowLim ? '#fff3cd' : '#ffffff');
-              const txtClr = r.closing_qty === 0 ? '#991b1b' : (r.closing_qty <= lowLim ? '#92400e' : '#0f172a');
-              const tds = cols.map((c) => {
-                if (c.k === 'item') return `<td style="padding:5px 10px;border:1px solid #cbd5e1;font-weight:800;">${esc(r.item_name)}</td>`;
-                if (c.k === 'open') return `<td style="padding:5px;border:1px solid #cbd5e1;text-align:center;font-weight:700;">${Number(r.opening_qty).toLocaleString()}</td>`;
-                if (c.k === 'inq') return `<td style="padding:5px;border:1px solid #cbd5e1;text-align:center;font-weight:700;">${Number(r.in_qty).toLocaleString()}</td>`;
-                if (c.k === 'outq') return `<td style="padding:5px;border:1px solid #cbd5e1;text-align:center;font-weight:700;">${Number(r.out_qty).toLocaleString()}</td>`;
-                if (c.k === 'adj') return `<td style="padding:5px;border:1px solid #cbd5e1;text-align:center;font-weight:700;">${Number(r.adj_net_qty).toLocaleString()}</td>`;
-                return `<td style="padding:5px;border:1px solid #cbd5e1;text-align:center;font-weight:900;">${Number(r.closing_qty).toLocaleString()}</td>`;
-              }).join('');
-              trArr.push(`<tr style="background:${bg};color:${txtClr};">${tds}</tr>`);
+              const itemTr = makeItemTr(r);
+              if (idx === 0) {
+                // ካቴጎሪ ርዕስ በገጽ መጨረሻ ብቻውን እንዳይቀር ከመጀመሪያው ዕቃ ጋር አብሮ ይታሰራል
+                const bundle = [];
+                if (spTr) bundle.push(spTr);
+                bundle.push(catTr, itemTr);
+                units.push({ rows: bundle, noLeadSpacer: gIdx > 0 ? catTr + itemTr : null });
+              } else {
+                units.push({ rows: ltzSp ? [ltzSp, itemTr] : [itemTr] });
+              }
             });
           });
 
+          if (!units.length) {
+            units.push({ rows: [`<tr><td colspan="${cols.length}" style="text-align:center;padding:24px;color:#64748b;border:1px solid #cbd5e1;">${esc(t('noItems'))}</td></tr>`] });
+          }
+
           const footTds = cols.map((c) => {
-            if (c.k === 'item') return `<td style="padding:7px 10px;">${esc(t('pdfStockTot')(totalItems))}</td>`;
+            if (c.k === 'item') return `<td style="padding:6px 9px;">${esc(t('pdfStockTot')(totalItems))}</td>`;
             if (c.k === 'open') return `<td style="text-align:center;color:#fff;">${opT.toLocaleString()}</td>`;
             if (c.k === 'inq') return `<td style="text-align:center;color:#86efac;">${inT.toLocaleString()}</td>`;
             if (c.k === 'outq') return `<td style="text-align:center;color:#fca5a5;">${outT.toLocaleString()}</td>`;
             if (c.k === 'adj') return `<td style="text-align:center;color:#7dd3fc;">${adjT.toLocaleString()}</td>`;
             return `<td style="text-align:center;color:#fde047;">${clT.toLocaleString()}</td>`;
           }).join('');
-
-          bodyHtml = `<table style="width:100%;border-collapse:collapse;font-size:${fSize};">
-            <thead><tr style="background:#0f172a;color:#fff;">${cols.map((c) => `<th style="padding:7px;border:1px solid #334155;">${esc(c.lbl)}</th>`).join('')}</tr></thead>
-            <tbody>${trArr.join('') || `<tr><td colspan="${cols.length}" style="text-align:center;padding:18px;color:#64748b;">${esc(t('noItems'))}</td></tr>`}</tbody>
-            <tfoot><tr style="background:#0f172a;color:#38bdf8;font-weight:900;">${footTds}</tr></tfoot></table>`;
+          footTableHtml = `<table style="width:100%;border-collapse:collapse;font-size:${fSize};"><tbody><tr style="background:#0f172a;color:#38bdf8;font-weight:900;">${footTds}</tr></tbody></table>`;
         } else {
           let rawList = onlyIds ? dailyRows.filter((r) => onlyIds.includes(String(r.ledger_id || r.document_id))) : dailyRows;
+          if (!onlyIds && !pdfCfg.includeOpeningInDaily) {
+            rawList = rawList.filter((r) => String(r.doc_no || '').toUpperCase() !== 'OPENING');
+          }
           if (todayOnly) rawList = rawList.filter((r) => String(r.date_str || '').includes(dateStr));
           const list = getSortedDailyRows(rawList, true);
+
           const dm = t('dPdfMap');
           const cols = [{ k: 'doc', lbl: dm.doc }, { k: 'item', lbl: dm.item }];
           if (pdfCfg.showOpening) cols.push({ k: 'open', lbl: dm.open });
@@ -2373,91 +2575,144 @@
           if (pdfCfg.showRef) cols.push({ k: 'ref', lbl: dm.ref });
           if (pdfCfg.showDate) cols.push({ k: 'date', lbl: dm.date });
 
-          let lastDoc = null, inT = 0, outT = 0;
-          const trs = list.map((r) => {
-            let sp = '';
-            if (lastDoc && lastDoc !== r.document_id) sp = `<tr style="background:#f8fafc;"><td colspan="${cols.length}" style="height:5px;border-left:1px solid #cbd5e1;border-right:1px solid #cbd5e1;"></td></tr>`;
-            const same = lastDoc === r.document_id; lastDoc = r.document_id;
-            const isV = r.status === 'VOIDED' || r.is_voided || r.doc_type === 'VOID';
-            if (!isV) { inT += Number(r.qty_in || 0); outT += Number(r.qty_out || 0); }
-            const bg = isV ? '#f8d7da' : (r.doc_type === 'IN' ? '#d1fae5' : (r.doc_type === 'ADJ' ? '#dbeafe' : (r.is_zero_stock ? '#ffe599' : '#ffffff')));
-            const tds = cols.map((c) => {
-              if (c.k === 'doc') return `<td style="padding:5px 4px;border:1px solid #cbd5e1;text-align:center;font-weight:800;">${esc(same ? '↳' : r.doc_no)}</td>`;
-              if (c.k === 'item') return `<td style="padding:5px 8px;border:1px solid #cbd5e1;font-weight:800;">${esc(isV ? t('voidLabel') : r.item_name)}</td>`;
-              if (c.k === 'open') return `<td style="padding:5px 4px;border:1px solid #cbd5e1;text-align:center;font-weight:700;">${isV ? '-' : Number(r.opening_bal || 0).toLocaleString()}</td>`;
-              if (c.k === 'inq') return `<td style="padding:5px 4px;border:1px solid #cbd5e1;text-align:center;font-weight:700;">${r.qty_in ? Number(r.qty_in).toLocaleString() : ''}</td>`;
-              if (c.k === 'outq') return `<td style="padding:5px 4px;border:1px solid #cbd5e1;text-align:center;font-weight:700;">${r.qty_out ? Number(r.qty_out).toLocaleString() : ''}</td>`;
-              if (c.k === 'bal') return `<td style="padding:5px 4px;border:1px solid #cbd5e1;text-align:center;font-weight:900;">${isV ? '-' : Number(r.closing_bal || 0).toLocaleString()}</td>`;
-              if (c.k === 'party') return `<td style="padding:5px 6px;border:1px solid #cbd5e1;font-weight:700;">${esc(same ? '↳' : r.party_name)}</td>`;
-              if (c.k === 'ref') return `<td style="padding:5px 4px;border:1px solid #cbd5e1;text-align:center;font-weight:700;">${esc(same ? '↳' : displayRef(r.ref_no, r.doc_type))}</td>`;
-              return `<td style="padding:5px 4px;border:1px solid #cbd5e1;text-align:center;font-weight:700;">${esc(same ? '↳' : r.date_str)}</td>`;
-            }).join('');
-            return sp + `<tr style="background:${bg};">${tds}</tr>`;
-          }).join('');
+          headHtml = `<thead><tr style="background:#0f172a;color:#fff;">${cols.map((c) => `<th style="padding:5.5px 4px;border:1px solid #334155;font-weight:900;">${esc(c.lbl)}</th>`).join('')}</tr></thead>`;
+          endListRow = `<tr><td colspan="${cols.length}" style="text-align:center;padding:5px;color:#64748b;font-size:9.5px;font-weight:700;border:none;">${esc(t('pdfEndList'))}</td></tr>`;
+
+          // ሰነዶችን በቡድን ማደራጀት (አጭር ሰነድ በሁለት ገጽ መካከል እንዳይቆራረጥ)
+          const docGroups = [], gMap = new Map();
+          let inT = 0, outT = 0;
+          list.forEach((r) => {
+            const dk = String(r.document_id || r.ledger_id);
+            if (!gMap.has(dk)) { const g = []; gMap.set(dk, g); docGroups.push(g); }
+            gMap.get(dk).push(r);
+          });
+
+          docGroups.forEach((gLines, gIdx) => {
+            const spTr = gIdx > 0 ? `<tr style="background:#f8fafc;"><td colspan="${cols.length}" style="height:4px;border-left:1px solid #cbd5e1;border-right:1px solid #cbd5e1;"></td></tr>` : '';
+            const trs = gLines.map((r, idx) => {
+              const same = idx > 0;
+              const isV = r.status === 'VOIDED' || r.is_voided || r.doc_type === 'VOID';
+              if (!isV) { inT += Number(r.qty_in || 0); outT += Number(r.qty_out || 0); }
+              const bg = isV ? '#f8d7da' : (r.doc_type === 'IN' ? '#d1fae5' : (r.doc_type === 'ADJ' ? '#dbeafe' : (r.is_zero_stock ? '#ffe599' : '#ffffff')));
+              const tds = cols.map((c) => {
+                if (c.k === 'doc') return `<td style="padding:4px 4px;border:1px solid #cbd5e1;text-align:center;font-weight:800;">${esc(same ? '↳' : r.doc_no)}</td>`;
+                if (c.k === 'item') return `<td style="padding:4px 6px;border:1px solid #cbd5e1;font-weight:800;">${esc(isV ? t('voidLabel') : r.item_name)}</td>`;
+                if (c.k === 'open') return `<td style="padding:4px 4px;border:1px solid #cbd5e1;text-align:center;font-weight:700;">${isV ? '-' : Number(r.opening_bal || 0).toLocaleString()}</td>`;
+                if (c.k === 'inq') return `<td style="padding:4px 4px;border:1px solid #cbd5e1;text-align:center;font-weight:700;">${!isV && r.qty_in ? Number(r.qty_in).toLocaleString() : ''}</td>`;
+                if (c.k === 'outq') return `<td style="padding:4px 4px;border:1px solid #cbd5e1;text-align:center;font-weight:700;">${!isV && r.qty_out ? Number(r.qty_out).toLocaleString() : ''}</td>`;
+                if (c.k === 'bal') return `<td style="padding:4px 4px;border:1px solid #cbd5e1;text-align:center;font-weight:900;">${isV ? '-' : Number(r.closing_bal || 0).toLocaleString()}</td>`;
+                if (c.k === 'party') return `<td style="padding:4px 5px;border:1px solid #cbd5e1;font-weight:700;">${esc(same ? '↳' : r.party_name)}</td>`;
+                if (c.k === 'ref') return `<td style="padding:4px 4px;border:1px solid #cbd5e1;text-align:center;font-weight:700;">${esc(same ? '↳' : displayRef(r.ref_no, r.doc_type))}</td>`;
+                return `<td style="padding:4px 4px;border:1px solid #cbd5e1;text-align:center;font-weight:700;">${esc(same ? '↳' : r.date_str)}</td>`;
+              }).join('');
+              return `<tr style="background:${bg};">${tds}</tr>`;
+            });
+
+            if (trs.length <= 8) {
+              units.push({ rows: spTr ? [spTr, ...trs] : trs, noLeadSpacer: trs.join('') });
+            } else {
+              trs.forEach((tr, i) => units.push({ rows: (i === 0 && spTr) ? [spTr, tr] : [tr], noLeadSpacer: tr }));
+            }
+          });
+
+          if (!units.length) {
+            units.push({ rows: [`<tr><td colspan="${cols.length}" style="text-align:center;padding:24px;color:#64748b;border:1px solid #cbd5e1;">${esc(t('noItems'))}</td></tr>`] });
+          }
 
           const inIdx = cols.findIndex((c) => c.k === 'inq');
           const outIdx = cols.findIndex((c) => c.k === 'outq');
           const rightSpan = cols.length - outIdx - 1;
-          const footHtml = `<tr style="background:#0f172a;color:#38bdf8;font-weight:900;">
-            <td colspan="${inIdx}" style="padding:7px 8px;text-align:left;">${esc(t('pdfTotLabel'))}</td>
-            <td style="padding:7px 4px;text-align:center;color:#86efac;">${inT.toLocaleString()}</td>
-            <td style="padding:7px 4px;text-align:center;color:#fca5a5;">${outT.toLocaleString()}</td>
-            ${rightSpan > 1 ? `<td colspan="${rightSpan - 1}" style="padding:7px 6px;text-align:center;color:#e2e8f0;">${esc(t('pdfRowsCount')(list.length))}</td><td style="padding:7px 4px;text-align:center;color:#38bdf8;">${dateStr}</td>`
-              : `<td style="padding:7px 4px;text-align:center;color:#38bdf8;">${dateStr}</td>`}
-          </tr>`;
-
-          bodyHtml = `<table style="width:100%;border-collapse:collapse;font-size:${fSize};">
-            <thead><tr style="background:#0f172a;color:#fff;">${cols.map((c) => `<th style="padding:6px 4px;border:1px solid #334155;">${esc(c.lbl)}</th>`).join('')}</tr></thead>
-            <tbody>
-              ${trs || `<tr><td colspan="${cols.length}" style="text-align:center;padding:18px;color:#64748b;">${esc(t('noItems'))}</td></tr>`}
-              <tr><td colspan="${cols.length}" style="text-align:center;padding:6px;color:#94a3b8;font-size:10px;font-weight:700;">${esc(t('pdfEndList'))}</td></tr>
-            </tbody>
-            <tfoot>${footHtml}</tfoot></table>`;
+          footTableHtml = `<table style="width:100%;border-collapse:collapse;font-size:${fSize};"><tbody><tr style="background:#0f172a;color:#38bdf8;font-weight:900;">
+            <td colspan="${inIdx}" style="padding:6px 8px;text-align:left;">${esc(t('pdfTotLabel'))}</td>
+            <td style="padding:6px 4px;text-align:center;color:#86efac;">${inT.toLocaleString()}</td>
+            <td style="padding:6px 4px;text-align:center;color:#fca5a5;">${outT.toLocaleString()}</td>
+            ${rightSpan > 1
+              ? `<td colspan="${rightSpan - 1}" style="padding:6px 6px;text-align:center;color:#e2e8f0;">${esc(t('pdfRowsCount')(list.length))}</td><td style="padding:6px 4px;text-align:center;color:#38bdf8;">${dateStr}</td>`
+              : `<td style="padding:6px 4px;text-align:center;color:#38bdf8;">${dateStr}</td>`}
+          </tr></tbody></table>`;
         }
 
-        const noteHtml = pdfCfg.footerNote.trim() ? `<div style="margin-top:8px;font-size:11px;font-weight:700;color:#334155;text-align:center;">${esc(pdfCfg.footerNote.trim())}</div>` : '';
-        const signHtml = pdfCfg.showSign ? `<div style="display:flex;justify-content:space-between;margin-top:18px;padding:0 14px;font-size:11px;font-weight:800;color:#0f172a;"><span>${esc(t('pdfSignPrep'))}</span><span>${esc(t('pdfSignApp'))}</span></div>` : '';
+        const titleBannerHtml = `<div style="background:#090e17;color:#38bdf8;padding:9px 10px;text-align:center;font-size:13.5px;font-weight:900;margin-bottom:2px;">${esc(title)}</div>`;
+        const noteHtml = pdfCfg.footerNote.trim() ? `<div style="margin-top:6px;font-size:10.5px;font-weight:700;color:#334155;text-align:center;">${esc(pdfCfg.footerNote.trim())}</div>` : '';
+        const signHtml = pdfCfg.showSign ? `<div style="display:flex;justify-content:space-between;margin-top:16px;padding:0 12px;font-size:10.5px;font-weight:800;color:#0f172a;"><span>${esc(t('pdfSignPrep'))}</span><span>${esc(t('pdfSignApp'))}</span></div>` : '';
+        const finalFooterBlock = `${footTableHtml}${noteHtml}${signHtml}`;
 
-        stage.innerHTML = `<div style="background:#090e17;color:#38bdf8;padding:10px;text-align:center;font-size:14.5px;font-weight:900;margin-bottom:2px;">${esc(title)}</div>${bodyHtml}${noteHtml}${signHtml}`;
-        const canvas = await window.html2canvas(stage, { scale: 2, backgroundColor: '#ffffff', width: stagePx, windowWidth: stagePx, scrollX: 0, scrollY: 0 });
+        // ትክክለኛ የረድፍ ቁመት በመለካት ወደ ንጹህ ገጾች መከፋፈል
+        stage.style.width = `${innerW}px`;
+        stage.innerHTML = `<div id="mHead">${titleBannerHtml}<table style="width:100%;border-collapse:collapse;font-size:${fSize};">${headHtml}</table></div>
+          <div id="mFoot">${finalFooterBlock}</div>
+          <table id="mProbe" style="width:100%;border-collapse:collapse;font-size:${fSize};"><tbody></tbody></table>`;
+
+        const headH = document.getElementById('mHead').offsetHeight;
+        const footH = document.getElementById('mFoot').offsetHeight + 24;
+        const pageNumH = 20;
+        const maxBodyNormal = Math.max(120, pagePxH - padPx * 2 - headH - pageNumH - 8);
+        const maxBodyLast = Math.max(80, maxBodyNormal - footH);
+        const probeBody = document.querySelector('#mProbe tbody');
+
+        const measured = units.map((u) => {
+          probeBody.innerHTML = u.rows.join('');
+          const h = probeBody.offsetHeight || 22;
+          return { html: u.rows.join(''), cleanTop: u.noLeadSpacer || u.rows.join(''), h };
+        });
+
+        const pages = [];
+        let curRows = [], curH = 0;
+        measured.forEach((m) => {
+          if (curRows.length > 0 && curH + m.h > maxBodyNormal) {
+            pages.push({ rows: curRows, usedH: curH });
+            curRows = [m.cleanTop];
+            curH = m.h;
+          } else {
+            curRows.push(curRows.length === 0 ? m.cleanTop : m.html);
+            curH += m.h;
+          }
+        });
+        if (curRows.length) pages.push({ rows: curRows, usedH: curH });
+        if (!pages.length) pages.push({ rows: [], usedH: 0 });
+
+        // የመጨረሻው ገጽ ላይ የድምር ግርጌው ካልበቃ ንጹህ ተጨማሪ ገጽ መጨመር
+        if (pages[pages.length - 1].usedH > maxBodyLast) {
+          pages.push({ rows: [], usedH: 0 });
+        }
+
         const { jsPDF } = window.jspdf;
-        const imgData = canvas.toDataURL('image/png');
-        const margin = 12;
-
-        let pw = 595, ph = 842, singleFit = false;
-        if (pdfCfg.mode === 'A4_P') { pw = 595; ph = 842; }
-        else if (pdfCfg.mode === 'A4_L') { pw = 842; ph = 595; }
-        else if (pdfCfg.mode === 'CUSTOM') {
-          pw = Math.max(220, Math.round((Number(pdfCfg.widthMm) || 210) * 2.83465));
-          ph = Math.max(220, Math.round((Number(pdfCfg.heightMm) || 297) * 2.83465));
-        } else {
-          pw = 595;
-          const fitImgH = (canvas.height * (pw - margin * 2)) / canvas.width;
-          if (fitImgH <= 2200) { ph = Math.max(180, Math.ceil(fitImgH + margin * 2)); singleFit = true; }
-          else { ph = 842; }
-        }
-
-        const orient = pw > ph ? 'l' : 'p';
         const pdf = new jsPDF({ orientation: orient, unit: 'pt', format: [pw, ph] });
         const actualW = pdf.internal.pageSize.getWidth();
         const actualH = pdf.internal.pageSize.getHeight();
-        const imgW = actualW - margin * 2;
-        const imgH = (canvas.height * imgW) / canvas.width;
+        const totalPages = pages.length;
 
-        if (singleFit || imgH <= actualH - margin * 2) {
-          pdf.addImage(imgData, 'PNG', margin, margin, imgW, imgH);
-        } else {
-          let leftH = imgH, pos = margin;
-          pdf.addImage(imgData, 'PNG', margin, pos, imgW, imgH);
-          leftH -= (actualH - margin * 2);
-          while (leftH > 0) {
-            pos = leftH - imgH + margin;
-            pdf.addPage([pw, ph], orient);
-            pdf.addImage(imgData, 'PNG', margin, pos, imgW, imgH);
-            leftH -= (actualH - margin * 2);
-          }
+        stage.style.width = `${stagePx}px`;
+
+        for (let i = 0; i < totalPages; i++) {
+          const isLast = i === totalPages - 1;
+          const pRows = pages[i].rows.join('') + (isLast ? endListRow : '');
+          stage.innerHTML = `
+            <div class="pdf-page-box" style="width:${stagePx}px;height:${pagePxH}px;padding:${padPx}px;">
+              <div>${titleBannerHtml}</div>
+              <div class="pdf-page-body">
+                <table style="width:100%;border-collapse:collapse;font-size:${fSize};">
+                  ${headHtml}
+                  <tbody>${pRows}</tbody>
+                </table>
+              </div>
+              <div class="pdf-page-foot">
+                ${isLast ? finalFooterBlock : ''}
+                <div style="text-align:right;font-size:10px;font-weight:800;color:#64748b;margin-top:4px;">${i + 1} / ${totalPages}</div>
+              </div>
+            </div>`;
+
+          const pageEl = stage.firstElementChild;
+          const canvas = await window.html2canvas(pageEl, {
+            scale: 2, backgroundColor: '#ffffff', width: stagePx, height: pagePxH,
+            windowWidth: stagePx, windowHeight: pagePxH, scrollX: 0, scrollY: 0,
+          });
+          if (i > 0) pdf.addPage([pw, ph], orient);
+          pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, actualW, actualH);
         }
 
+        stage.innerHTML = '';
+        const reportType = isStock ? 'STOCK' : (todayOnly ? 'TODAY_DAILY' : 'FULL_DAILY');
         const fileName = `${isStock ? 'Stock' : (todayOnly ? 'Daily_Today' : 'Daily_Full')}_${dateStr.replace(/\//g, '-')}.pdf`;
         const blob = pdf.output('blob');
 
@@ -2479,7 +2734,9 @@
         try {
           const fd = new FormData();
           fd.append('token', session.token); fd.append('warehouse_id', currentWhId);
-          fd.append('report_title', title); fd.append('file', blob, fileName);
+          fd.append('report_title', title); fd.append('report_type', reportType);
+          if (channelId) fd.append('channel_id', channelId);
+          fd.append('file', blob, fileName);
           const res = await fetch(`${SUPABASE_URL}/functions/v1/${BOT_FUNCTION}`, {
             method: 'POST', headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'x-session-token': session.token }, body: fd,
           }).then((r) => r.json());
@@ -2620,7 +2877,6 @@
         </button>`).join('');
     }
 
-    // የድርጅት ስም እና መግለጫ (በአማርኛ እና በእንግሊዝኛ)
     function openBrandManager() {
       const b = getCurrentOrgBrandObj();
       openMainModal(t('mBrand'), `
@@ -2668,7 +2924,6 @@
       });
     }
 
-    // መጋዘኖች / ቅርንጫፎች (መጨመር እና ስም መቀየር)
     function openBranchesManager() {
       const list = whData.org_warehouses || [];
       openMainModal(t('mBranches'), `
@@ -2752,9 +3007,10 @@
         <div class="sub-card">
           <span class="lbl-sm">${esc(t('pdfModeLbl'))}</span>
           <select id="pCfgMode" class="sel" onchange="onPdfModeChange()">
-            <option value="MOBILE_FIT" ${pdfCfg.mode==='MOBILE_FIT'?'selected':''}>${esc(t('pdfModeMob'))}</option>
             <option value="A4_P" ${pdfCfg.mode==='A4_P'?'selected':''}>${esc(t('pdfModeA4P'))}</option>
             <option value="A4_L" ${pdfCfg.mode==='A4_L'?'selected':''}>${esc(t('pdfModeA4L'))}</option>
+            <option value="A5_P" ${pdfCfg.mode==='A5_P'?'selected':''}>${esc(t('pdfModeA5P'))}</option>
+            <option value="LETTER_P" ${pdfCfg.mode==='LETTER_P'?'selected':''}>${esc(t('pdfModeLetter'))}</option>
             <option value="CUSTOM" ${pdfCfg.mode==='CUSTOM'?'selected':''}>${esc(t('pdfModeCustom'))}</option>
           </select>
           <div id="pCfgCustomDim" class="grid-2" style="display:${pdfCfg.mode==='CUSTOM'?'grid':'none'};">
@@ -2777,6 +3033,7 @@
           <label class="chk-row"><input type="checkbox" id="pCfgRef" ${pdfCfg.showRef?'checked':''}><span>${esc(t('pdfChkRef'))}</span></label>
           <label class="chk-row"><input type="checkbox" id="pCfgDate" ${pdfCfg.showDate?'checked':''}><span>${esc(t('pdfChkDate'))}</span></label>
           <label class="chk-row"><input type="checkbox" id="pCfgZero" ${pdfCfg.stockShowZero?'checked':''}><span>${esc(t('pdfChkZero'))}</span></label>
+          <label class="chk-row"><input type="checkbox" id="pCfgIncOpen" ${pdfCfg.includeOpeningInDaily?'checked':''}><span>${esc(t('pdfChkIncOpen'))}</span></label>
         </div>`,
         `<button type="button" class="btn muted" onclick="closeMainModal()">${esc(t('cancel'))}</button>
          <button type="button" class="btn teal" onclick="savePdfCfg()">${esc(t('save'))}</button>`);
@@ -2801,6 +3058,7 @@
         showRef: document.getElementById('pCfgRef').checked,
         showDate: document.getElementById('pCfgDate').checked,
         stockShowZero: document.getElementById('pCfgZero').checked,
+        includeOpeningInDaily: document.getElementById('pCfgIncOpen').checked,
       };
       saveJson(PDF_CFG_KEY, pdfCfg); closeMainModal(); showToast(t('savedOk'));
     }
@@ -2871,14 +3129,19 @@
       if (res.success) openStaffManager();
     }
 
-    function chTypeLabel(tp) { return tp === 'TELEGRAM' ? t('chTg') : tp === 'WHATSAPP' ? t('chWa') : tp === 'SMS' ? t('chSms') : t('chWh'); }
+    function chTypeLabel(tp) {
+      const m = { TELEGRAM: t('chTg'), WHATSAPP: t('chWa'), EMAIL: t('chEmail'), SMS: t('chSms'), WEBHOOK: t('chWh') };
+      return m[tp] || tp;
+    }
 
     async function openChannelsManager() {
       const res = await callRpc('rpc_manage_notification_channels', { p_token: session.token, p_action: 'LIST', p_payload: { organization_id: whData.warehouse.organization_id } });
       const channels = res.channels || [], whs = whData.org_warehouses || [];
+      cachedChannels = channels.filter((c) => !c.warehouse_id || c.warehouse_id === currentWhId);
+
       const cards = channels.map((c) => `
         <div class="sub-card">
-          <div style="display:flex;justify-content:space-between;align-items:center;"><b>${esc(chTypeLabel(c.channel_type))} — ${esc(c.label)}</b><span style="font-size:10px;color:var(--muted);">${esc(c.warehouse_name)}</span></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;"><b>${esc(chTypeLabel(c.channel_type))} — ${esc(c.label)}</b><span style="font-size:10px;color:var(--muted);">${esc(c.warehouse_name || t('chAllBranches'))}</span></div>
           <div style="font-size:11px;color:var(--primary);word-break:break-all;">${esc(c.target_address)}</div>
           <div style="display:flex;gap:5px;">
             <button type="button" class="pdf-pill" onclick="testNotifChannel('${c.id}',this)">${esc(t('testBtn'))}</button>
@@ -2890,27 +3153,73 @@
       openMainModal(t('mChannels'), `
         <div class="sub-card">
           <div class="grid-2">
-            <select id="chType" class="sel" onchange="onChTypeChange()"><option value="TELEGRAM">${esc(t('chTg'))}</option><option value="WHATSAPP">${esc(t('chWa'))}</option><option value="SMS">${esc(t('chSms'))}</option><option value="WEBHOOK">${esc(t('chWh'))}</option></select>
-            <select id="chWh" class="sel"><option value="${currentWhId}">${esc(whData.warehouse.name)}</option><option value="">${esc(t('chAllBranches'))}</option>${whs.filter((w) => w.id !== currentWhId).map((w) => `<option value="${w.id}">${esc(w.name)}</option>`).join('')}</select>
+            <select id="chType" class="sel" onchange="onChTypeChange()">
+              <option value="TELEGRAM">${esc(t('chTg'))}</option>
+              <option value="WHATSAPP">${esc(t('chWa'))}</option>
+              <option value="EMAIL">${esc(t('chEmail'))}</option>
+              <option value="SMS">${esc(t('chSms'))}</option>
+              <option value="WEBHOOK">${esc(t('chWh'))}</option>
+            </select>
+            <select id="chWh" class="sel">
+              <option value="${currentWhId}">${esc(whData.warehouse.name)}</option>
+              <option value="">${esc(t('chAllBranches'))}</option>
+              ${whs.filter((w) => w.id !== currentWhId).map((w) => `<option value="${w.id}">${esc(w.name)}</option>`).join('')}
+            </select>
           </div>
           <input id="chLabel" class="inp" placeholder="${esc(t('phChLabel'))}">
           <input id="chTarget" class="inp" placeholder="${esc(t('phChTarget'))}">
           <input id="chCred1" class="inp" placeholder="${esc(t('phChCred1'))}">
           <input id="chCred2" class="inp" style="display:none;" placeholder="${esc(t('phChCred2'))}">
+          <input id="chCred3" class="inp" style="display:none;" placeholder="${esc(t('phChCred3'))}">
+          <span class="lbl-sm">${esc(t('evLbl'))}</span>
+          <div class="ev-grid">
+            <label class="chk-row"><input type="checkbox" class="ch-ev" value="GRN" checked><span>${esc(t('evGrn'))}</span></label>
+            <label class="chk-row"><input type="checkbox" class="ch-ev" value="AUDIT" checked><span>${esc(t('evAudit'))}</span></label>
+            <label class="chk-row"><input type="checkbox" class="ch-ev" value="RISK" checked><span>${esc(t('evRisk'))}</span></label>
+            <label class="chk-row"><input type="checkbox" class="ch-ev" value="PDF" checked><span>${esc(t('evPdf'))}</span></label>
+          </div>
           <button type="button" class="btn teal" onclick="saveNotifChannel(this)">+ ${esc(t('save'))}</button>
         </div>${cards}`,
         `<button type="button" class="btn muted" style="grid-column:span 2;" onclick="closeMainModal()">${esc(t('close'))}</button>`);
     }
 
-    function onChTypeChange() { const tp = document.getElementById('chType').value; document.getElementById('chCred2').style.display = (tp === 'WHATSAPP' || tp === 'SMS') ? 'block' : 'none'; }
+    function onChTypeChange() {
+      const tp = document.getElementById('chType').value;
+      document.getElementById('chCred2').style.display = (tp === 'WHATSAPP' || tp === 'SMS' || tp === 'EMAIL') ? 'block' : 'none';
+      document.getElementById('chCred3').style.display = (tp === 'SMS') ? 'block' : 'none';
+    }
+
     async function saveNotifChannel(btnEl) {
       await withBusy(btnEl, async () => {
-        const tp = document.getElementById('chType').value, c1 = document.getElementById('chCred1').value.trim(), c2 = document.getElementById('chCred2').value.trim();
-        const creds = tp === 'TELEGRAM' ? { bot_token: c1 } : tp === 'WHATSAPP' ? { access_token: c1, phone_number_id: c2 } : tp === 'SMS' ? { api_key: c1, sender_id: c2 } : { api_key: c1 };
-        const res = await callRpc('rpc_manage_notification_channels', { p_token: session.token, p_action: 'UPSERT', p_payload: { organization_id: whData.warehouse.organization_id, warehouse_id: document.getElementById('chWh').value || null, channel_type: tp, label: document.getElementById('chLabel').value.trim() || chTypeLabel(tp), target_address: document.getElementById('chTarget').value.trim(), credentials: creds } });
-        if (res.success) { if (tp === 'TELEGRAM' && res.channel_id) await linkTelegramWebhook(res.channel_id, true); showToast(t('savedOk')); openChannelsManager(); } else showToast(t('errGeneric'));
+        const tp = document.getElementById('chType').value;
+        const c1 = document.getElementById('chCred1').value.trim();
+        const c2 = document.getElementById('chCred2').value.trim();
+        const c3 = document.getElementById('chCred3').value.trim();
+        const events = Array.from(document.querySelectorAll('.ch-ev:checked')).map((el) => el.value);
+        const creds = tp === 'TELEGRAM' ? { bot_token: c1 }
+          : tp === 'WHATSAPP' ? { access_token: c1, phone_number_id: c2 }
+          : tp === 'EMAIL' ? { api_key: c1, from_email: c2 }
+          : tp === 'SMS' ? { api_key: c1, sender_id: c2, api_url: c3 }
+          : { api_key: c1 };
+        const res = await callRpc('rpc_manage_notification_channels', {
+          p_token: session.token, p_action: 'UPSERT',
+          p_payload: {
+            organization_id: whData.warehouse.organization_id,
+            warehouse_id: document.getElementById('chWh').value || null,
+            channel_type: tp,
+            label: document.getElementById('chLabel').value.trim() || chTypeLabel(tp),
+            target_address: document.getElementById('chTarget').value.trim(),
+            credentials: creds,
+            events: events.length ? events : ['ALL'],
+          },
+        });
+        if (res.success) {
+          if (tp === 'TELEGRAM' && res.channel_id) await linkTelegramWebhook(res.channel_id, true);
+          showToast(t('savedOk')); openChannelsManager();
+        } else showToast(t('errGeneric'));
       });
     }
+
     async function linkTelegramWebhook(channelId, silent = false, btnEl = null) {
       const fn = async () => { const res = await callBot({ action: 'register_telegram_webhook', channel_id: channelId }); if (!silent) showToast(res.success ? t('savedOk') : t('errGeneric')); };
       if (btnEl) await withBusy(btnEl, fn); else await fn();
@@ -3193,4 +3502,3 @@
   </script>
 </body>
 </html>
-
