@@ -1,8 +1,14 @@
-const CACHE = 'erp-shell-v8';
+const CACHE = 'erp-shell-v9';
 const ASSETS = ['./', './index.html', './manifest.json', './icon.svg'];
 
 self.addEventListener('install', (e) => {
-  e.waitUntil(caches.open(CACHE).then((c) => c.addAll(ASSETS)));
+  e.waitUntil(
+    caches.open(CACHE).then((c) =>
+      Promise.all(
+        ASSETS.map((u) => fetch(u, { cache: 'no-store' }).then((r) => c.put(u, r)).catch(() => {}))
+      )
+    )
+  );
   self.skipWaiting();
 });
 
@@ -18,7 +24,7 @@ self.addEventListener('activate', (e) => {
 self.addEventListener('fetch', (e) => {
   if (e.request.method !== 'GET' || e.request.url.includes('supabase.co')) return;
   e.respondWith(
-    fetch(e.request)
+    fetch(e.request, { cache: 'no-store' })
       .then((res) => {
         const copy = res.clone();
         caches.open(CACHE).then((c) => c.put(e.request, copy));
@@ -27,4 +33,3 @@ self.addEventListener('fetch', (e) => {
       .catch(() => caches.match(e.request))
   );
 });
-v8
