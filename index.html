@@ -111,7 +111,7 @@
     .dock-btn.out { background: var(--rose); color: #fff; }
     .dock-btn.in { background: var(--emerald); color: #052e16; }
 
-    /* ==================== ገጽ 2: ዘመናዊ ቆጠራ (v10) ==================== */
+    /* ==================== ገጽ 2: ዘመናዊ ቆጠራ ==================== */
     .ticket-bar { display: flex; gap: 5px; overflow-x: auto; margin-bottom: 4px; flex-shrink: 0; padding-bottom: 2px; }
     .tk-tab { height: 28px; padding: 0 10px; border-radius: 14px; border: 1px solid var(--border-strong); background: var(--surface); color: var(--muted); font-size: 10.5px; font-weight: 900; cursor: pointer; white-space: nowrap; display: inline-flex; align-items: center; gap: 4px; flex-shrink: 0; }
     .tk-tab.active { background: #172554; border-color: var(--primary); color: #fff; }
@@ -131,7 +131,6 @@
     .alert-box.stop { display: block; background: var(--emerald); color: #022c22; }
     .alert-box.over { display: block; background: rgba(14,165,233,0.18); border: 1.5px solid var(--primary); color: #7dd3fc; }
 
-    /* የቆጠራ ዋና እይታ መድረክ (Read-Only Dead Zone — ስልክ ሲደወል በስህተት አይቆጥርም) */
     .t-stage { position: relative; flex: 1; min-height: 0; background: radial-gradient(circle at 50% 0%, rgba(20,184,166,0.08) 0%, var(--surface-deep) 68%); border: 1.5px solid var(--border-strong); border-radius: 15px; display: flex; flex-direction: column; overflow: hidden; margin-bottom: 5px; transition: border-color 0.25s ease, box-shadow 0.45s ease; }
     .t-stage.glow-ok { border-color: var(--emerald); box-shadow: inset 0 0 22px rgba(16,185,129,0.28), 0 0 14px rgba(16,185,129,0.25); }
     .t-stage.glow-batch { border-color: var(--amber); box-shadow: inset 0 0 26px rgba(245,158,11,0.34), 0 0 16px rgba(245,158,11,0.3); }
@@ -140,7 +139,6 @@
     .t-prog-track { width: 100%; height: 4px; background: rgba(148,163,184,0.14); flex-shrink: 0; }
     .t-prog-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--teal), var(--emerald)); transition: width 0.2s ease; }
 
-    /* 4 ዋና ቁጥሮች (የተጫነ/የተራገፈ | ሸክም | ቀሪ ብዛት | ቀሪ ሸክም) */
     .t-stats-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; padding: 7px 6px 6px; background: rgba(15,23,42,0.88); border-bottom: 1px solid var(--border); flex-shrink: 0; }
     .t-kpi { background: rgba(6,10,18,0.58); border: 1px solid var(--border); border-radius: 9px; padding: 4px 4px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 0; }
     .t-kpi-lbl { font-size: 8.5px; font-weight: 800; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
@@ -151,11 +149,9 @@
     .t-kpi-val.c-am { color: #fcd34d; }
     .t-kpi-val.c-pr { color: #7dd3fc; }
 
-    /* የመሃል እይታ (የ10-ዙር ነጥቦች ወይም 5-በረድፍ ጭረት) */
     .t-visual { flex: 1; min-height: 0; overflow-y: auto; padding: 8px 10px; display: flex; flex-direction: column; justify-content: center; gap: 7px; }
     .t-visual.tally-mode { justify-content: flex-start; }
 
-    /* ዘመናዊ 10-ዙር መሙያ ነጥቦች */
     .batch-summary { display: flex; align-items: center; justify-content: space-between; gap: 6px; background: rgba(15,23,42,0.85); border: 1px solid var(--border); border-radius: 10px; padding: 5px 10px; }
     .batch-chip { font-family: ui-monospace, monospace; font-size: 11px; font-weight: 900; color: var(--teal); }
     .batch-sub { font-size: 10px; font-weight: 800; color: var(--muted); }
@@ -169,7 +165,6 @@
     .b-dot.w2 { background: rgba(245,158,11,0.25); border-color: var(--amber); color: #fde68a; }
     .b-dot.w3 { background: rgba(168,85,247,0.25); border-color: var(--violet); color: #e9d5ff; }
 
-    /* የ5-በረድፍ ንጹህ ጭረት ሠንጠረዥ */
     .tally-compact-bar { background: rgba(20,184,166,0.14); border: 1px solid var(--teal); border-radius: 8px; padding: 4px 9px; font-size: 10.5px; font-weight: 900; color: #99f6e4; text-align: center; }
     .tally-row-5 { display: grid; grid-template-columns: repeat(5, 1fr) 44px; align-items: center; gap: 4px; padding: 2px 0; border-bottom: 1px dashed rgba(51,65,85,0.45); }
     .tally-row-tot { font-family: ui-monospace, monospace; font-size: 9.5px; font-weight: 900; color: var(--muted); text-align: right; }
@@ -178,7 +173,6 @@
     .t-bar.odd { background: var(--amber); }
     .t-slash { position: absolute; width: 40px; height: 3.5px; background: var(--amber); border-radius: 2px; transform: rotate(-28deg); }
 
-    /* የመጨረሻ ንክኪ ሰዓት ቆጣሪ + ቴፕ */
     .cadence-bar { display: flex; align-items: center; justify-content: space-between; gap: 6px; padding: 5px 10px; background: rgba(6,10,18,0.72); border-top: 1px solid var(--border); font-size: 10px; font-weight: 800; flex-shrink: 0; }
     .cadence-timer { font-family: ui-monospace, monospace; font-weight: 900; color: #5eead4; white-space: nowrap; }
     .cadence-timer.fresh { color: #6ee7b7; }
@@ -187,31 +181,23 @@
     .c-pill { padding: 2px 6px; border-radius: 6px; background: var(--surface); border: 1px solid var(--border-strong); font-family: ui-monospace, monospace; font-size: 9.5px; color: var(--muted); white-space: nowrap; }
     .c-pill.fast { border-color: var(--amber); color: #fde68a; background: rgba(245,158,11,0.16); }
 
-    /* በስልክ ጥሪ ጊዜ መቆለፊያ ሽፋን */
     .t-pause-mask { position: absolute; inset: 0; z-index: 20; background: rgba(6,10,18,0.92); backdrop-filter: blur(5px); display: none; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 14px; text-align: center; }
     .t-pause-mask.open { display: flex; }
 
-    /* ==================== የመቁጠሪያ ቀስቃሽ ቦታ (Trigger Area) ==================== */
     .t-trigger-wrap { margin-bottom: 5px; flex-shrink: 0; }
-
-    /* A. የመንሸራተቻ ማርሽ (Swipe-Gate) */
     .sg-track { position: relative; height: 54px; border-radius: 27px; background: linear-gradient(90deg, rgba(15,23,42,0.96), rgba(4,47,46,0.9)); border: 2px solid var(--teal); overflow: hidden; touch-action: none; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 2px 10px rgba(0,0,0,0.6); }
-    .sg-track.locked-cd { border-color: var(--border-strong); opacity: 0.72; }
     .sg-fill { position: absolute; left: 0; top: 0; bottom: 0; width: 0%; background: linear-gradient(90deg, rgba(20,184,166,0.28), rgba(16,185,129,0.52)); pointer-events: none; }
     .sg-label { font-size: 12.5px; font-weight: 900; color: #99f6e4; letter-spacing: 0.2px; pointer-events: none; z-index: 1; padding-left: 36px; }
     .sg-thumb { position: absolute; left: 4px; top: 4px; width: 64px; height: 42px; border-radius: 21px; background: linear-gradient(135deg, #2dd4bf, #0d9488); color: #022c22; font-size: 16px; font-weight: 900; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 14px rgba(20,184,166,0.5); cursor: grab; z-index: 2; will-change: transform; }
     .sg-thumb.snap { transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1); }
 
-    /* B. ተቀያያሪ ቁልፍ (Ping-Pong A/B) */
     .pp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
     .pp-btn { height: 54px; border-radius: 16px; border: 2px solid var(--border-strong); background: var(--surface-deep); color: var(--muted); font-size: 13px; font-weight: 900; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; opacity: 0.42; }
     .pp-btn.ready { opacity: 1; background: linear-gradient(135deg, rgba(20,184,166,0.28), rgba(16,185,129,0.22)); border-color: var(--teal); color: #ccfbf1; box-shadow: 0 0 14px rgba(20,184,166,0.25); }
 
-    /* C. ሰፊ ነጠላ ቁልፍ (Wide Tap) */
     .tap-btn { position: relative; width: 100%; height: 54px; border-radius: 16px; border: 2px solid var(--teal); background: linear-gradient(135deg, rgba(20,184,166,0.28), rgba(14,165,233,0.18)); color: #ccfbf1; font-size: 14px; font-weight: 900; cursor: pointer; overflow: hidden; display: flex; align-items: center; justify-content: center; gap: 8px; }
     .tap-cd-bar { position: absolute; left: 0; bottom: 0; height: 4px; width: 0%; background: var(--amber); pointer-events: none; }
 
-    /* D. ባለብዙ ተሸካሚ ቀለም ቁልፎች (Multi-Carrier) */
     .mc-grid { display: grid; gap: 6px; }
     .mc-btn { position: relative; height: 54px; border-radius: 14px; border: 2px solid var(--border-strong); background: var(--surface); color: #fff; font-size: 11.5px; font-weight: 900; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; overflow: hidden; }
     .mc-btn.c0 { border-color: var(--primary); background: rgba(14,165,233,0.22); }
@@ -247,6 +233,9 @@
     .pdf-bar { position: fixed; bottom: 60px; left: 50%; transform: translateX(-50%); width: calc(100% - 14px); max-width: 626px; height: 44px; background: rgba(6,78,59,0.92); border: 1.5px solid var(--emerald); border-radius: 22px; padding: 4px 8px; display: none; align-items: center; justify-content: space-between; gap: 5px; z-index: 45; backdrop-filter: blur(8px); }
     .pdf-pill { height: 30px; padding: 0 9px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.22); background: rgba(15,23,42,0.84); color: #fff; font-size: 10.5px; font-weight: 900; cursor: pointer; white-space: nowrap; }
     .pdf-send { height: 32px; padding: 0 11px; border-radius: 16px; border: none; background: var(--emerald); color: #052e16; font-size: 11px; font-weight: 900; cursor: pointer; white-space: nowrap; }
+
+    /* የፒዲኤፍ ቀጥታ ቅድመ-እይታ ሳጥን (PDF Studio Live Preview) */
+    .pdf-preview-box { background: #ffffff; color: #0f172a; border-radius: 10px; padding: 7px; border: 1.5px solid var(--teal); overflow: hidden; }
 
     /* ካርታ */
     .rack-tabs { display: flex; gap: 5px; overflow-x: auto; margin-bottom: 6px; flex-shrink: 0; }
@@ -333,7 +322,7 @@
       <button type="button" id="btnInstallApp" class="btn primary" style="display:none;height:36px;" onclick="triggerPwaInstall()"></button>
       <div style="display:flex;justify-content:space-between;align-items:center;">
         <span id="drawerUserInfo" style="font-size:11px;font-weight:800;color:var(--muted);"></span>
-        <span style="font-size:10px;font-weight:900;color:var(--teal);opacity:0.85;">v10</span>
+        <span style="font-size:10px;font-weight:900;color:var(--teal);opacity:0.85;">v11</span>
       </div>
       <button type="button" class="btn danger" id="btnLogout" onclick="doLogout()"></button>
     </div>
@@ -396,7 +385,7 @@
       </div>
     </section>
 
-    <!-- ገጽ 2: ዘመናዊ ቆጠራ (v10) -->
+    <!-- ገጽ 2: ዘመናዊ ቆጠራ -->
     <section id="viewTally" class="view">
       <div class="seg">
         <button type="button" id="btnTTicket" class="seg-btn teal" onclick="setTallyTab('TICKET')"></button>
@@ -444,7 +433,6 @@
 
       <div id="tallyAlert" class="alert-box"></div>
 
-      <!-- ዋና የእይታ መድረክ (Read-Only — በስህተት ንክኪ አይቆጥርም) -->
       <div id="tallyStage" class="t-stage">
         <div class="t-prog-track"><div id="tProgFill" class="t-prog-fill"></div></div>
         <div class="t-stats-4">
@@ -466,7 +454,6 @@
         </div>
       </div>
 
-      <!-- ዘመናዊ መቁጠሪያ ቀስቃሽ (Swipe-Gate / Ping-Pong / Tap / Multi-Carrier) -->
       <div id="tallyTriggerArea" class="t-trigger-wrap"></div>
 
       <div class="t-actions">
@@ -566,7 +553,7 @@
     const TALLY_STATE_KEY = 'erp_tally_state_v6';
     const TALLY_CFG_KEY = 'erp_tally_cfg_v1';
     const FORM_CFG_KEY = 'erp_form_cfg_v2';
-    const PDF_CFG_KEY = 'erp_pdf_cfg_v2';
+    const PDF_CFG_KEY = 'erp_pdf_cfg_v3';
     const UI_CFG_KEY = 'erp_ui_cfg_v1';
     const PRESETS = [1, 2, 3, 5, 10, 15, 20];
 
@@ -587,7 +574,7 @@
       visualMode: 'BATCH10',  // BATCH10 | TALLY5
       carriers: 0,            // 0 | 2 | 3 | 4
       showTimer: true,
-      cooldownMs: 600,        // 0 | 500 | 1000 | 2000
+      cooldownMs: 600,        // 0 | 600 | 1000 | 2000
       autoPauseCall: true,
       voiceCallout: false,
       strongHaptics: true,
@@ -598,6 +585,14 @@
       widthMm: 210,
       heightMm: 297,
       fontSize: 'md',
+      stylePreset: 'classic', // classic | bw | minimal
+      textAlign: 'left_8',    // left_0 | left_8 | left_14 | center | right_8 | right_0
+      numAlign: 'center',     // left_8 | center | right_8 | right_0
+      vAlign: 'middle',       // top | middle | bottom
+      rowPad: 'normal',       // tight | normal | loose
+      textWeight: 'key',      // normal | key | all
+      borderStyle: 'thin',    // thin | medium | bold
+      adjColMode: 'AUTO',     // HIDE | AUTO | SHOW
       headerSub: '',
       footerNote: '',
       showSign: false,
@@ -690,7 +685,7 @@
         pdfRowsCount: (n) => `የተመዘገቡ፦ ${n} ረድፍ`,
         pdfStockTot: (n) => `ጠቅላላ (${n} ዓይነት)`,
         pdfSignPrep: 'ያዘጋጀው፦ ___________________', pdfSignApp: 'ያረጋገጠው፦ ___________________',
-        mOrgs: 'ድርጅቶች', mBrand: 'የድርጅት ስም እና መግለጫ', mFormCfg: 'የቅጽ ቅንብሮች', mPdfCfg: 'የፒዲኤፍ ቅንብሮች',
+        mOrgs: 'ድርጅቶች', mBrand: 'የድርጅት ስም እና መግለጫ', mFormCfg: 'የቅጽ ቅንብሮች', mPdfCfg: 'የፒዲኤፍ ስቱዲዮ ቅንብር',
         mBranches: 'መጋዘኖች / ቅርንጫፎች', mStaff: 'ሰራተኞች እና ፈቃድ',
         mChannels: 'የመገናኛ አድራሻዎች', mCatalog: 'ዕቃዎች እና ካቴጎሪ', mRacks: 'መደርደሪያዎች',
         mApprovals: 'የማስተካከያ ጥያቄዎች', mRisk: 'የስጋት ኦዲት ላክ', mPin: 'ፒን ቀይር',
@@ -705,11 +700,21 @@
         cfgOutHead: 'የወጪ ቅጽ አማራጮች', cfgInHead: 'የገቢ ቅጽ አማራጮች',
         cfgAutoPad: 'በፓድ ቁጥር ላይ «ፓድ ቁ.» በራሱ ይጨምር', cfgShowPad: 'ፓድ ቁጥር አሳይ', cfgShowKg: 'ክብደት (ኪ.ግ) አሳይ',
         cfgShowDriver: 'ሹፌር አሳይ', cfgShowPlate: 'ታርጋ ቁጥር አሳይ', cfgShowNote: 'ማስታወሻ አሳይ', cfgInDocNo: 'በገቢ ላይ የሰነድ ቁጥር አሳይ',
+        pdfPreviewLbl: 'ቀጥታ ቅድመ-እይታ (Live Preview)',
         pdfModeLbl: 'የወረቀት መጠን (በራሱ አይቀያየርም)',
         pdfModeA4P: 'A4 ቀጥታ (210 × 297 ሚ.ሜ)', pdfModeA4L: 'A4 አግድም (297 × 210 ሚ.ሜ)',
         pdfModeA5P: 'A5 ቀጥታ (148 × 210 ሚ.ሜ)', pdfModeLetter: 'Letter ቀጥታ (216 × 279 ሚ.ሜ)',
         pdfModeCustom: 'በራስ መጠን (ሚ.ሜ)',
         pdfWPh: 'ጎን (ሚ.ሜ)', pdfHPh: 'ቁመት (ሚ.ሜ)', pdfFontLbl: 'የጽሑፍ መጠን', pdfFontSm: 'ትንሽ', pdfFontMd: 'መካከለኛ', pdfFontLg: 'ትልቅ',
+        pdfStyleLbl: 'ዝግጁ ስታይል ገጽታ', pdfStClassic: 'ክላሲክ (ባለቀለም)', pdfStBw: 'ጥቁር እና ነጭ (ለፕሪንተር)', pdfStMin: 'ዘመናዊ ቀላል (Minimal)',
+        pdfAdjLbl: 'የ«ማስተካከያ» አምድ (ስቶክ PDF)', pdfAdjHide: 'ደብቅ (አታሳይ)', pdfAdjAuto: 'በራሱ (ማስተካከያ ሲኖር ብቻ)', pdfAdjShow: 'ሁልጊዜ አሳይ',
+        pdfTxtAlignLbl: 'የዕቃ/ጽሑፍ አሰላለፍ እና ጥግ', pdfNumAlignLbl: 'የቁጥር አምዶች አሰላለፍ',
+        pdfAlL0: 'ግራ — ሙሉ ጥግ (0px)', pdfAlL8: 'ግራ — መደበኛ ክፍተት (8px)', pdfAlL14: 'ግራ — ሰፊ ክፍተት (14px)',
+        pdfAlC: 'መሀል', pdfAlR8: 'ቀኝ — ከክፍተት ጋር (8px)', pdfAlR0: 'ቀኝ — ሙሉ ጥግ (0px)',
+        pdfVAlignLbl: 'ቀጥታ አሰላለፍ (ላይ/መሀል/ታች)', pdfVTop: 'ወደ ላይ', pdfVMid: 'መሀል', pdfVBot: 'ወደ ታች',
+        pdfRowPadLbl: 'የረድፍ ስፋት (ቁመት)', pdfPadTight: 'ጠባብ', pdfPadNorm: 'መደበኛ', pdfPadLoose: 'ሰፊ',
+        pdfWeightLbl: 'የጽሑፍ ማድመቂያ', pdfWtNorm: 'ቀላል (መደበኛ)', pdfWtKey: 'የዕቃ ስምና ቀሪ ብቻ ደማቅ', pdfWtAll: 'ሁሉም ጽሑፍ ደማቅ',
+        pdfBorderLbl: 'የሠንጠረዥ መስመር ውፍረት', pdfBrdThin: 'ቀጭን ግራጫ', pdfBrdMed: 'መካከለኛ', pdfBrdBold: 'ደማቅ ጥቁር (ለህትመት)',
         pdfHeaderSubPh: 'ተጨማሪ የራስጌ መግለጫ (አማራጭ)', pdfFooterNotePh: 'የግርጌ ማስታወሻ (አማራጭ)',
         pdfChkSign: 'የፊርማ መስመር አሳይ', pdfChkOpen: 'መነሻ ብዛት አሳይ', pdfChkParty: 'ደንበኛ / አቅራቢ አሳይ',
         pdfChkRef: 'ፓድ / ታርጋ አሳይ', pdfChkDate: 'ቀን አሳይ', pdfChkZero: 'ቀድሞ ዜሮ የቆዩትንም በስቶክ PDF አሳይ',
@@ -825,7 +830,7 @@
         pdfRowsCount: (n) => `Recorded Lines: ${n}`,
         pdfStockTot: (n) => `Total (${n} items)`,
         pdfSignPrep: 'Prepared by: ___________________', pdfSignApp: 'Approved by: ___________________',
-        mOrgs: 'Organizations', mBrand: 'Organization Name & Tagline', mFormCfg: 'Form Fields Settings', mPdfCfg: 'PDF Settings',
+        mOrgs: 'Organizations', mBrand: 'Organization Name & Tagline', mFormCfg: 'Form Fields Settings', mPdfCfg: 'PDF Studio Settings',
         mBranches: 'Warehouses / Branches', mStaff: 'Staff & Access',
         mChannels: 'Notification Channels', mCatalog: 'Items & Categories', mRacks: 'Racks',
         mApprovals: 'Pending Adjustments', mRisk: 'Send Risk Audit', mPin: 'Change PIN',
@@ -840,11 +845,21 @@
         cfgOutHead: 'Issue (OUT) Fields', cfgInHead: 'Receive (IN) Fields',
         cfgAutoPad: 'Auto-prepend "Pad No." on save & display', cfgShowPad: 'Show Pad No.', cfgShowKg: 'Show Weight (kg)',
         cfgShowDriver: 'Show Driver', cfgShowPlate: 'Show Plate No.', cfgShowNote: 'Show Note', cfgInDocNo: 'Show Doc No. on Receive',
+        pdfPreviewLbl: 'Live Preview',
         pdfModeLbl: 'Page Size (Locked — never auto-resizes)',
         pdfModeA4P: 'A4 Portrait (210 × 297 mm)', pdfModeA4L: 'A4 Landscape (297 × 210 mm)',
         pdfModeA5P: 'A5 Portrait (148 × 210 mm)', pdfModeLetter: 'Letter Portrait (216 × 279 mm)',
         pdfModeCustom: 'Custom Size (mm)',
         pdfWPh: 'Width (mm)', pdfHPh: 'Height (mm)', pdfFontLbl: 'Font Size', pdfFontSm: 'Small', pdfFontMd: 'Medium', pdfFontLg: 'Large',
+        pdfStyleLbl: 'Style Preset', pdfStClassic: 'Classic (Color)', pdfStBw: 'Clean B&W (Printer)', pdfStMin: 'Modern Minimal',
+        pdfAdjLbl: 'Adjustment Column (Stock PDF)', pdfAdjHide: 'Hide', pdfAdjAuto: 'Auto (Only when used)', pdfAdjShow: 'Always Show',
+        pdfTxtAlignLbl: 'Item / Text Alignment & Edge', pdfNumAlignLbl: 'Numbers Alignment',
+        pdfAlL0: 'Left — Flush Edge (0px)', pdfAlL8: 'Left — Standard Pad (8px)', pdfAlL14: 'Left — Wide Pad (14px)',
+        pdfAlC: 'Center', pdfAlR8: 'Right — Padded (8px)', pdfAlR0: 'Right — Flush Edge (0px)',
+        pdfVAlignLbl: 'Vertical Alignment', pdfVTop: 'Top', pdfVMid: 'Middle', pdfVBot: 'Bottom',
+        pdfRowPadLbl: 'Row Height / Density', pdfPadTight: 'Tight', pdfPadNorm: 'Normal', pdfPadLoose: 'Spacious',
+        pdfWeightLbl: 'Text Boldness', pdfWtNorm: 'Light / Normal', pdfWtKey: 'Item & Balance Bold', pdfWtAll: 'All Text Bold',
+        pdfBorderLbl: 'Table Border Weight', pdfBrdThin: 'Thin Gray', pdfBrdMed: 'Medium', pdfBrdBold: 'Bold Black (Print)',
         pdfHeaderSubPh: 'Custom Header Subtitle (optional)', pdfFooterNotePh: 'Custom Footer Note (optional)',
         pdfChkSign: 'Show Signature Line', pdfChkOpen: 'Show Opening Qty', pdfChkParty: 'Show Party / Customer',
         pdfChkRef: 'Show Pad / Plate', pdfChkDate: 'Show Date', pdfChkZero: 'Include Old Zero-Stock Items in PDF',
@@ -892,7 +907,7 @@
     let session = loadJson(SESSION_KEY, null);
     let formCfg = { ...DEFAULT_FORM_CFG, ...loadJson(FORM_CFG_KEY, {}) };
     let tallyCfg = { ...DEFAULT_TALLY_CFG, ...loadJson(TALLY_CFG_KEY, {}) };
-    let pdfCfg = { ...DEFAULT_PDF_CFG, ...loadJson(PDF_CFG_KEY, {}) };
+    let pdfCfg = { ...DEFAULT_PDF_CFG, ...loadJson('erp_pdf_cfg_v2', {}), ...loadJson(PDF_CFG_KEY, {}) };
     let uiCfg = { ...DEFAULT_UI_CFG, ...loadJson(UI_CFG_KEY, {}) };
     let currentWhId = '';
     let whData = { warehouse: {}, items: [], categories: [], racks: [], slot_map: {}, last_doc_num: 0, next_doc_num: 1, pending_adjustments_count: 0, is_branch_admin: false, is_org_admin: false, org_warehouses: [] };
@@ -1673,7 +1688,7 @@
       });
     }
 
-    // ==================== ገጽ 2: ዘመናዊ ቆጠራ ሞተር (v10) ====================
+    // ==================== ገጽ 2: ዘመናዊ ቆጠራ ሞተር ====================
     function normalizeTicket(tk) {
       return {
         id: tk.id || ('tk_' + Date.now()),
@@ -2106,7 +2121,6 @@
       const s = ctx.strokes;
       const n = s.length;
 
-      // ዘመናዊ የ10-ዙር መሙያ ነጥቦች (Batch-10)
       if (tallyCfg.visualMode !== 'TALLY5') {
         box.className = 't-visual';
         const compBatches = n === 0 ? 0 : Math.floor((n - 1) / 10);
@@ -2135,7 +2149,6 @@
         return;
       }
 
-      // ባህላዊ 5-በረድፍ ንጹህ ጭረት ሠንጠረዥ (25 ጭረት በረድፍ)
       box.className = 't-visual tally-mode';
       if (!n) {
         box.innerHTML = `<div style="margin:auto;opacity:0.15;"><div class="t-grp" style="transform:scale(1.4);"><div class="t-bar"></div><div class="t-bar"></div><div class="t-bar"></div><div class="t-bar"></div><div class="t-slash"></div></div></div>`;
@@ -2296,7 +2309,6 @@
       }
       lastTriggerSig = sig;
 
-      // D. ባለብዙ ተሸካሚ ቀለም ቁልፎች (2 / 3 / 4 ሰዎች)
       if (tallyCfg.carriers >= 2) {
         const n = Math.min(4, Math.max(2, Number(tallyCfg.carriers)));
         area.innerHTML = `<div class="mc-grid" style="grid-template-columns:repeat(${n},1fr);">
@@ -2310,7 +2322,6 @@
         return;
       }
 
-      // B. ተቀያያሪ ቁልፍ (Ping-Pong A/B)
       if (tallyCfg.triggerMode === 'PINGPONG') {
         area.innerHTML = `<div class="pp-grid">
           <button type="button" id="ppBtn0" class="pp-btn ${ppSide === 0 ? 'ready' : ''}" onclick="onPingPongTap(0)">${esc(t('ppLeft'))} (+${carryMult})</button>
@@ -2319,7 +2330,6 @@
         return;
       }
 
-      // C. ሰፊ ነጠላ ቁልፍ (Wide Tap)
       if (tallyCfg.triggerMode === 'TAP') {
         area.innerHTML = `<button type="button" id="wideTapBtn" class="tap-btn" onclick="addTallyStroke()">
           <span>⚡ ${esc(t('tapHint')(carryMult))}</span>
@@ -2328,7 +2338,6 @@
         return;
       }
 
-      // A. የመንሸራተቻ ማርሽ (Swipe-Gate — ነባሪ ዋና ቀስቃሽ)
       area.innerHTML = `
         <div id="sgTrack" class="sg-track">
           <div id="sgFill" class="sg-fill"></div>
@@ -2436,7 +2445,6 @@
       };
     }
 
-    // የቆጠራ ሴቲንግ (በግራ ጎን ሜኑ + በቆጠራ ገጽ ላይ በቀጥታ የሚከፈት)
     function openTallyCfgModal() {
       vib(18);
       openMainModal(t('mTallyCfg'), `
@@ -3061,7 +3069,76 @@
       document.getElementById('btnPdfSend').textContent = `${t('pdfSend')} (${cnt})`;
     }
 
-    // ==================== ቀላል (~1 MB) ባለገጽ PDF ሞተር + የዚህ ሳምንት ዜሮ ማጣሪያ ====================
+    // ==================== PDF Studio — ቀጥታ ቅድመ-እይታ + ሙሉ ስታይል ሞተር ====================
+    function parsePdfAlign(tok) {
+      const map = {
+        left_0: { align: 'left', padX: '1px' },
+        left_8: { align: 'left', padX: '8px' },
+        left_14: { align: 'left', padX: '14px' },
+        center: { align: 'center', padX: '4px' },
+        right_8: { align: 'right', padX: '8px' },
+        right_0: { align: 'right', padX: '1px' },
+      };
+      return map[tok] || map.left_8;
+    }
+
+    function getPdfStyleTokens(cfg) {
+      const c = { ...DEFAULT_PDF_CFG, ...(cfg || {}) };
+      const fSize = c.fontSize === 'sm' ? '9.5px' : (c.fontSize === 'lg' ? '12.5px' : '10.8px');
+      const padY = c.rowPad === 'tight' ? '2.5px' : (c.rowPad === 'loose' ? '7.5px' : '4.5px');
+      const vAlign = c.vAlign === 'top' || c.vAlign === 'bottom' ? c.vAlign : 'middle';
+      const txtAl = parsePdfAlign(c.textAlign);
+      const numAl = parsePdfAlign(c.numAlign);
+
+      const border = c.borderStyle === 'bold'
+        ? '1.6px solid #0f172a'
+        : (c.borderStyle === 'medium' ? '1.2px solid #64748b' : '1px solid #cbd5e1');
+      const headBorder = c.borderStyle === 'bold' ? '1.6px solid #0f172a' : '1px solid #334155';
+
+      const wts = c.textWeight === 'normal'
+        ? { base: 500, item: 600, bal: 700, head: 700 }
+        : (c.textWeight === 'all'
+          ? { base: 800, item: 900, bal: 900, head: 900 }
+          : { base: 600, item: 800, bal: 900, head: 900 });
+
+      const presets = {
+        classic: {
+          bannerCss: 'background:#090e17;color:#38bdf8;border:none;',
+          thBg: '#0f172a', thClr: '#ffffff', thBorder: headBorder,
+          catBg: '#1c4532', catClr: '#ffffff',
+          footBg: '#0f172a', footClr: '#38bdf8',
+          footOpenClr: '#ffffff', footInClr: '#86efac', footOutClr: '#fca5a5', footAdjClr: '#7dd3fc', footBalClr: '#fde047',
+          rowColors: true,
+        },
+        bw: {
+          bannerCss: 'background:#ffffff;color:#000000;border:2px solid #000000;',
+          thBg: '#e2e8f0', thClr: '#000000', thBorder: '1.4px solid #000000',
+          catBg: '#f1f5f9', catClr: '#000000',
+          footBg: '#e2e8f0', footClr: '#000000',
+          footOpenClr: '#000000', footInClr: '#000000', footOutClr: '#000000', footAdjClr: '#000000', footBalClr: '#000000',
+          rowColors: false,
+        },
+        minimal: {
+          bannerCss: 'background:#f8fafc;color:#0f172a;border-bottom:2px solid #0f172a;',
+          thBg: '#f1f5f9', thClr: '#0f172a', thBorder: border,
+          catBg: '#ecfdf5', catClr: '#065f46',
+          footBg: '#f8fafc', footClr: '#0f172a',
+          footOpenClr: '#0f172a', footInClr: '#047857', footOutClr: '#b91c1c', footAdjClr: '#0369a1', footBalClr: '#0f172a',
+          rowColors: true,
+        },
+      };
+      const theme = presets[c.stylePreset] || presets.classic;
+
+      const tdTextCss = (isItem = false) =>
+        `padding:${padY} ${txtAl.padX};border:${border};text-align:${txtAl.align};vertical-align:${vAlign};font-weight:${isItem ? wts.item : wts.base};`;
+      const tdNumCss = (isBal = false) =>
+        `padding:${padY} ${numAl.padX};border:${border};text-align:${numAl.align};vertical-align:${vAlign};font-weight:${isBal ? wts.bal : wts.base};`;
+      const thCss = `padding:${padY} 5px;border:${theme.thBorder};background:${theme.thBg};color:${theme.thClr};font-weight:${wts.head};vertical-align:middle;`;
+      const catCss = `padding:${padY} ${txtAl.padX};border:${border};background:${theme.catBg};color:${theme.catClr};text-align:${txtAl.align};font-weight:900;`;
+
+      return { fSize, padY, vAlign, txtAl, numAl, border, wts, theme, tdTextCss, tdNumCss, thCss, catCss };
+    }
+
     function openDestinationPicker(title, onSelect) {
       vib(18);
       const chBtns = (cachedChannels || []).map((c) => `
@@ -3135,7 +3212,7 @@
         const dateStr = new Date().toLocaleDateString('en-GB');
         const subTitle = pdfCfg.headerSub.trim() || (isStock ? t('pdfStockSub') : (todayOnly ? t('pdfTodaySub') : t('pdfDailySub')));
         const title = `${brand} — ${subTitle} (${dateStr})`;
-        const fSize = pdfCfg.fontSize === 'sm' ? '9.5px' : (pdfCfg.fontSize === 'lg' ? '12.5px' : '10.8px');
+        const st = getPdfStyleTokens(pdfCfg);
 
         const sz = getLockedPageSizeMm();
         const pw = sz.w * 2.83465;
@@ -3169,7 +3246,6 @@
             } catch {}
           }
 
-          // ቀድሞ ዜሮ ሆነው የቆዩትን አጥርቶ ንቁዎችን + በዚህ ሳምንት ወደ 0 የወረዱትን ብቻ ማካተት
           const baseList = onlyIds
             ? stockRows.filter((r) => onlyIds.includes(r.item_id))
             : stockRows.filter((r) => {
@@ -3180,15 +3256,17 @@
               });
 
           const groups = buildOrderedStockGroups(baseList, '');
-          const hasAdj = baseList.some((r) => Number(r.adj_net_qty || 0) !== 0);
+          const hasAdjData = baseList.some((r) => Number(r.adj_net_qty || 0) !== 0);
+          const showAdjCol = pdfCfg.adjColMode === 'SHOW' || (pdfCfg.adjColMode !== 'HIDE' && hasAdjData);
+
           const sm = t('sPdfMap');
           const cols = [{ k: 'item', lbl: sm.item }];
           if (pdfCfg.showOpening) cols.push({ k: 'open', lbl: sm.open });
           cols.push({ k: 'inq', lbl: sm.inq }, { k: 'outq', lbl: sm.outq });
-          if (hasAdj) cols.push({ k: 'adj', lbl: sm.adj });
+          if (showAdjCol) cols.push({ k: 'adj', lbl: sm.adj });
           cols.push({ k: 'bal', lbl: sm.bal });
 
-          headHtml = `<thead><tr style="background:#0f172a;color:#fff;">${cols.map((c) => `<th style="padding:6px 5px;border:1px solid #334155;font-weight:900;">${esc(c.lbl)}</th>`).join('')}</tr></thead>`;
+          headHtml = `<thead><tr>${cols.map((c) => `<th style="${st.thCss}">${esc(c.lbl)}</th>`).join('')}</tr></thead>`;
           endListRow = `<tr><td colspan="${cols.length}" style="text-align:center;padding:5px;color:#64748b;font-size:9.5px;font-weight:700;border:none;">${esc(t('pdfEndList'))}</td></tr>`;
 
           let opT = 0, inT = 0, outT = 0, adjT = 0, clT = 0, totalItems = 0;
@@ -3196,28 +3274,32 @@
             totalItems++;
             opT += Number(r.opening_qty); inT += Number(r.in_qty); outT += Number(r.out_qty); adjT += Number(r.adj_net_qty); clT += Number(r.closing_qty);
             const lowLim = whData.warehouse?.low_limit || 20;
-            const bg = r.closing_qty === 0 ? '#f8d7da' : (r.closing_qty <= lowLim ? '#fff3cd' : '#ffffff');
-            const txtClr = r.closing_qty === 0 ? '#991b1b' : (r.closing_qty <= lowLim ? '#92400e' : '#0f172a');
+            const bg = !st.theme.rowColors
+              ? '#ffffff'
+              : (r.closing_qty === 0 ? '#f8d7da' : (r.closing_qty <= lowLim ? '#fff3cd' : '#ffffff'));
+            const txtClr = !st.theme.rowColors
+              ? '#000000'
+              : (r.closing_qty === 0 ? '#991b1b' : (r.closing_qty <= lowLim ? '#92400e' : '#0f172a'));
             const tds = cols.map((c) => {
-              if (c.k === 'item') return `<td style="padding:4.5px 8px;border:1px solid #cbd5e1;font-weight:800;">${esc(r.item_name)}</td>`;
-              if (c.k === 'open') return `<td style="padding:4.5px;border:1px solid #cbd5e1;text-align:center;font-weight:700;">${Number(r.opening_qty).toLocaleString()}</td>`;
-              if (c.k === 'inq') return `<td style="padding:4.5px;border:1px solid #cbd5e1;text-align:center;font-weight:700;">${Number(r.in_qty).toLocaleString()}</td>`;
-              if (c.k === 'outq') return `<td style="padding:4.5px;border:1px solid #cbd5e1;text-align:center;font-weight:700;">${Number(r.out_qty).toLocaleString()}</td>`;
-              if (c.k === 'adj') return `<td style="padding:4.5px;border:1px solid #cbd5e1;text-align:center;font-weight:700;">${Number(r.adj_net_qty).toLocaleString()}</td>`;
-              return `<td style="padding:4.5px;border:1px solid #cbd5e1;text-align:center;font-weight:900;">${Number(r.closing_qty).toLocaleString()}</td>`;
+              if (c.k === 'item') return `<td style="${st.tdTextCss(true)}">${esc(r.item_name)}</td>`;
+              if (c.k === 'open') return `<td style="${st.tdNumCss(false)}">${Number(r.opening_qty).toLocaleString()}</td>`;
+              if (c.k === 'inq') return `<td style="${st.tdNumCss(false)}">${Number(r.in_qty).toLocaleString()}</td>`;
+              if (c.k === 'outq') return `<td style="${st.tdNumCss(false)}">${Number(r.out_qty).toLocaleString()}</td>`;
+              if (c.k === 'adj') return `<td style="${st.tdNumCss(false)}">${Number(r.adj_net_qty).toLocaleString()}</td>`;
+              return `<td style="${st.tdNumCss(true)}">${Number(r.closing_qty).toLocaleString()}</td>`;
             }).join('');
             return `<tr style="background:${bg};color:${txtClr};">${tds}</tr>`;
           };
 
           groups.forEach((grp, gIdx) => {
-            const catTr = `<tr style="background:#1c4532;color:#fff;"><td colspan="${cols.length}" style="padding:5.5px 9px;font-weight:900;">${esc(grp.cat)}</td></tr>`;
-            const spTr = gIdx > 0 ? `<tr style="background:#ffffff;"><td colspan="${cols.length}" style="height:7px;border:none;"></td></tr>` : '';
+            const catTr = `<tr><td colspan="${cols.length}" style="${st.catCss}">${esc(grp.cat)}</td></tr>`;
+            const spTr = gIdx > 0 ? `<tr style="background:#ffffff;"><td colspan="${cols.length}" style="height:6px;border:none;"></td></tr>` : '';
             let prevLtzKey = null;
 
             grp.items.forEach((r, idx) => {
               const ltz = parseLtzInfo(r.item_name);
               const ltzSp = (ltz && prevLtzKey && ltz.groupKey !== prevLtzKey)
-                ? `<tr style="background:#f8fafc;"><td colspan="${cols.length}" style="height:4px;border-left:1px solid #cbd5e1;border-right:1px solid #cbd5e1;"></td></tr>`
+                ? `<tr style="background:#f8fafc;"><td colspan="${cols.length}" style="height:4px;border-left:${st.border};border-right:${st.border};"></td></tr>`
                 : '';
               prevLtzKey = ltz ? ltz.groupKey : null;
               const itemTr = makeItemTr(r);
@@ -3233,18 +3315,18 @@
           });
 
           if (!units.length) {
-            units.push({ rows: [`<tr><td colspan="${cols.length}" style="text-align:center;padding:24px;color:#64748b;border:1px solid #cbd5e1;">${esc(t('noItems'))}</td></tr>`] });
+            units.push({ rows: [`<tr><td colspan="${cols.length}" style="text-align:center;padding:24px;color:#64748b;border:${st.border};">${esc(t('noItems'))}</td></tr>`] });
           }
 
           const footTds = cols.map((c) => {
-            if (c.k === 'item') return `<td style="padding:6px 9px;">${esc(t('pdfStockTot')(totalItems))}</td>`;
-            if (c.k === 'open') return `<td style="text-align:center;color:#fff;">${opT.toLocaleString()}</td>`;
-            if (c.k === 'inq') return `<td style="text-align:center;color:#86efac;">${inT.toLocaleString()}</td>`;
-            if (c.k === 'outq') return `<td style="text-align:center;color:#fca5a5;">${outT.toLocaleString()}</td>`;
-            if (c.k === 'adj') return `<td style="text-align:center;color:#7dd3fc;">${adjT.toLocaleString()}</td>`;
-            return `<td style="text-align:center;color:#fde047;">${clT.toLocaleString()}</td>`;
+            if (c.k === 'item') return `<td style="padding:6px ${st.txtAl.padX};text-align:${st.txtAl.align};">${esc(t('pdfStockTot')(totalItems))}</td>`;
+            if (c.k === 'open') return `<td style="padding:6px ${st.numAl.padX};text-align:${st.numAl.align};color:${st.theme.footOpenClr};">${opT.toLocaleString()}</td>`;
+            if (c.k === 'inq') return `<td style="padding:6px ${st.numAl.padX};text-align:${st.numAl.align};color:${st.theme.footInClr};">${inT.toLocaleString()}</td>`;
+            if (c.k === 'outq') return `<td style="padding:6px ${st.numAl.padX};text-align:${st.numAl.align};color:${st.theme.footOutClr};">${outT.toLocaleString()}</td>`;
+            if (c.k === 'adj') return `<td style="padding:6px ${st.numAl.padX};text-align:${st.numAl.align};color:${st.theme.footAdjClr};">${adjT.toLocaleString()}</td>`;
+            return `<td style="padding:6px ${st.numAl.padX};text-align:${st.numAl.align};color:${st.theme.footBalClr};">${clT.toLocaleString()}</td>`;
           }).join('');
-          footTableHtml = `<table style="width:100%;border-collapse:collapse;font-size:${fSize};"><tbody><tr style="background:#0f172a;color:#38bdf8;font-weight:900;">${footTds}</tr></tbody></table>`;
+          footTableHtml = `<table style="width:100%;border-collapse:collapse;font-size:${st.fSize};"><tbody><tr style="background:${st.theme.footBg};color:${st.theme.footClr};font-weight:900;border:${st.theme.thBorder};">${footTds}</tr></tbody></table>`;
         } else {
           let rawList = onlyIds ? dailyRows.filter((r) => onlyIds.includes(String(r.ledger_id || r.document_id))) : dailyRows;
           if (todayOnly) rawList = rawList.filter((r) => String(r.date_str || '').includes(dateStr));
@@ -3258,7 +3340,7 @@
           if (pdfCfg.showRef) cols.push({ k: 'ref', lbl: dm.ref });
           if (pdfCfg.showDate) cols.push({ k: 'date', lbl: dm.date });
 
-          headHtml = `<thead><tr style="background:#0f172a;color:#fff;">${cols.map((c) => `<th style="padding:5.5px 4px;border:1px solid #334155;font-weight:900;">${esc(c.lbl)}</th>`).join('')}</tr></thead>`;
+          headHtml = `<thead><tr>${cols.map((c) => `<th style="${st.thCss}">${esc(c.lbl)}</th>`).join('')}</tr></thead>`;
           endListRow = `<tr><td colspan="${cols.length}" style="text-align:center;padding:5px;color:#64748b;font-size:9.5px;font-weight:700;border:none;">${esc(t('pdfEndList'))}</td></tr>`;
 
           const docGroups = [], gMap = new Map();
@@ -3270,22 +3352,24 @@
           });
 
           docGroups.forEach((gLines, gIdx) => {
-            const spTr = gIdx > 0 ? `<tr style="background:#f8fafc;"><td colspan="${cols.length}" style="height:4px;border-left:1px solid #cbd5e1;border-right:1px solid #cbd5e1;"></td></tr>` : '';
+            const spTr = gIdx > 0 ? `<tr style="background:#f8fafc;"><td colspan="${cols.length}" style="height:4px;border-left:${st.border};border-right:${st.border};"></td></tr>` : '';
             const trs = gLines.map((r, idx) => {
               const same = idx > 0;
               const isV = r.status === 'VOIDED' || r.is_voided || r.doc_type === 'VOID';
               if (!isV) { inT += Number(r.qty_in || 0); outT += Number(r.qty_out || 0); }
-              const bg = isV ? '#f8d7da' : (r.doc_type === 'IN' ? '#d1fae5' : (r.doc_type === 'ADJ' ? '#dbeafe' : (r.is_zero_stock ? '#ffe599' : '#ffffff')));
+              const bg = !st.theme.rowColors
+                ? '#ffffff'
+                : (isV ? '#f8d7da' : (r.doc_type === 'IN' ? '#d1fae5' : (r.doc_type === 'ADJ' ? '#dbeafe' : (r.is_zero_stock ? '#ffe599' : '#ffffff'))));
               const tds = cols.map((c) => {
-                if (c.k === 'doc') return `<td style="padding:4px 4px;border:1px solid #cbd5e1;text-align:center;font-weight:800;">${esc(same ? '↳' : r.doc_no)}</td>`;
-                if (c.k === 'item') return `<td style="padding:4px 6px;border:1px solid #cbd5e1;font-weight:800;">${esc(isV ? t('voidLabel') : r.item_name)}</td>`;
-                if (c.k === 'open') return `<td style="padding:4px 4px;border:1px solid #cbd5e1;text-align:center;font-weight:700;">${isV ? '-' : Number(r.opening_bal || 0).toLocaleString()}</td>`;
-                if (c.k === 'inq') return `<td style="padding:4px 4px;border:1px solid #cbd5e1;text-align:center;font-weight:700;">${!isV && r.qty_in ? Number(r.qty_in).toLocaleString() : ''}</td>`;
-                if (c.k === 'outq') return `<td style="padding:4px 4px;border:1px solid #cbd5e1;text-align:center;font-weight:700;">${!isV && r.qty_out ? Number(r.qty_out).toLocaleString() : ''}</td>`;
-                if (c.k === 'bal') return `<td style="padding:4px 4px;border:1px solid #cbd5e1;text-align:center;font-weight:900;">${isV ? '-' : Number(r.closing_bal || 0).toLocaleString()}</td>`;
-                if (c.k === 'party') return `<td style="padding:4px 5px;border:1px solid #cbd5e1;font-weight:700;">${esc(same ? '↳' : r.party_name)}</td>`;
-                if (c.k === 'ref') return `<td style="padding:4px 4px;border:1px solid #cbd5e1;text-align:center;font-weight:700;">${esc(same ? '↳' : displayRef(r.ref_no, r.doc_type))}</td>`;
-                return `<td style="padding:4px 4px;border:1px solid #cbd5e1;text-align:center;font-weight:700;">${esc(same ? '↳' : r.date_str)}</td>`;
+                if (c.k === 'doc') return `<td style="${st.tdNumCss(false)}">${esc(same ? '↳' : r.doc_no)}</td>`;
+                if (c.k === 'item') return `<td style="${st.tdTextCss(true)}">${esc(isV ? t('voidLabel') : r.item_name)}</td>`;
+                if (c.k === 'open') return `<td style="${st.tdNumCss(false)}">${isV ? '-' : Number(r.opening_bal || 0).toLocaleString()}</td>`;
+                if (c.k === 'inq') return `<td style="${st.tdNumCss(false)}">${!isV && r.qty_in ? Number(r.qty_in).toLocaleString() : ''}</td>`;
+                if (c.k === 'outq') return `<td style="${st.tdNumCss(false)}">${!isV && r.qty_out ? Number(r.qty_out).toLocaleString() : ''}</td>`;
+                if (c.k === 'bal') return `<td style="${st.tdNumCss(true)}">${isV ? '-' : Number(r.closing_bal || 0).toLocaleString()}</td>`;
+                if (c.k === 'party') return `<td style="${st.tdTextCss(false)}">${esc(same ? '↳' : r.party_name)}</td>`;
+                if (c.k === 'ref') return `<td style="${st.tdNumCss(false)}">${esc(same ? '↳' : displayRef(r.ref_no, r.doc_type))}</td>`;
+                return `<td style="${st.tdNumCss(false)}">${esc(same ? '↳' : r.date_str)}</td>`;
               }).join('');
               return `<tr style="background:${bg};">${tds}</tr>`;
             });
@@ -3298,31 +3382,31 @@
           });
 
           if (!units.length) {
-            units.push({ rows: [`<tr><td colspan="${cols.length}" style="text-align:center;padding:24px;color:#64748b;border:1px solid #cbd5e1;">${esc(t('noItems'))}</td></tr>`] });
+            units.push({ rows: [`<tr><td colspan="${cols.length}" style="text-align:center;padding:24px;color:#64748b;border:${st.border};">${esc(t('noItems'))}</td></tr>`] });
           }
 
           const inIdx = cols.findIndex((c) => c.k === 'inq');
           const outIdx = cols.findIndex((c) => c.k === 'outq');
           const rightSpan = cols.length - outIdx - 1;
-          footTableHtml = `<table style="width:100%;border-collapse:collapse;font-size:${fSize};"><tbody><tr style="background:#0f172a;color:#38bdf8;font-weight:900;">
+          footTableHtml = `<table style="width:100%;border-collapse:collapse;font-size:${st.fSize};"><tbody><tr style="background:${st.theme.footBg};color:${st.theme.footClr};font-weight:900;border:${st.theme.thBorder};">
             <td colspan="${inIdx}" style="padding:6px 8px;text-align:left;">${esc(t('pdfTotLabel'))}</td>
-            <td style="padding:6px 4px;text-align:center;color:#86efac;">${inT.toLocaleString()}</td>
-            <td style="padding:6px 4px;text-align:center;color:#fca5a5;">${outT.toLocaleString()}</td>
+            <td style="padding:6px 4px;text-align:${st.numAl.align};color:${st.theme.footInClr};">${inT.toLocaleString()}</td>
+            <td style="padding:6px 4px;text-align:${st.numAl.align};color:${st.theme.footOutClr};">${outT.toLocaleString()}</td>
             ${rightSpan > 1
-              ? `<td colspan="${rightSpan - 1}" style="padding:6px 6px;text-align:center;color:#e2e8f0;">${esc(t('pdfRowsCount')(list.length))}</td><td style="padding:6px 4px;text-align:center;color:#38bdf8;">${dateStr}</td>`
-              : `<td style="padding:6px 4px;text-align:center;color:#38bdf8;">${dateStr}</td>`}
+              ? `<td colspan="${rightSpan - 1}" style="padding:6px 6px;text-align:center;color:${st.theme.footOpenClr};">${esc(t('pdfRowsCount')(list.length))}</td><td style="padding:6px 4px;text-align:center;color:${st.theme.footClr};">${dateStr}</td>`
+              : `<td style="padding:6px 4px;text-align:center;color:${st.theme.footClr};">${dateStr}</td>`}
           </tr></tbody></table>`;
         }
 
-        const titleBannerHtml = `<div style="background:#090e17;color:#38bdf8;padding:9px 10px;text-align:center;font-size:13.5px;font-weight:900;margin-bottom:2px;">${esc(title)}</div>`;
+        const titleBannerHtml = `<div style="${st.theme.bannerCss}padding:9px 10px;text-align:center;font-size:13.5px;font-weight:900;margin-bottom:2px;">${esc(title)}</div>`;
         const noteHtml = pdfCfg.footerNote.trim() ? `<div style="margin-top:6px;font-size:10.5px;font-weight:700;color:#334155;text-align:center;">${esc(pdfCfg.footerNote.trim())}</div>` : '';
         const signHtml = pdfCfg.showSign ? `<div style="display:flex;justify-content:space-between;margin-top:16px;padding:0 12px;font-size:10.5px;font-weight:800;color:#0f172a;"><span>${esc(t('pdfSignPrep'))}</span><span>${esc(t('pdfSignApp'))}</span></div>` : '';
         const finalFooterBlock = `${footTableHtml}${noteHtml}${signHtml}`;
 
         stage.style.width = `${innerW}px`;
-        stage.innerHTML = `<div id="mHead">${titleBannerHtml}<table style="width:100%;border-collapse:collapse;font-size:${fSize};">${headHtml}</table></div>
+        stage.innerHTML = `<div id="mHead">${titleBannerHtml}<table style="width:100%;border-collapse:collapse;font-size:${st.fSize};">${headHtml}</table></div>
           <div id="mFoot">${finalFooterBlock}</div>
-          <table id="mProbe" style="width:100%;border-collapse:collapse;font-size:${fSize};"><tbody></tbody></table>`;
+          <table id="mProbe" style="width:100%;border-collapse:collapse;font-size:${st.fSize};"><tbody></tbody></table>`;
 
         const headH = document.getElementById('mHead').offsetHeight;
         const footH = document.getElementById('mFoot').offsetHeight + 24;
@@ -3368,7 +3452,7 @@
             <div class="pdf-page-box" style="width:${stagePx}px;height:${pagePxH}px;padding:${padPx}px;">
               <div>${titleBannerHtml}</div>
               <div class="pdf-page-body">
-                <table style="width:100%;border-collapse:collapse;font-size:${fSize};">
+                <table style="width:100%;border-collapse:collapse;font-size:${st.fSize};">
                   ${headHtml}
                   <tbody>${pRows}</tbody>
                 </table>
@@ -3385,7 +3469,6 @@
             windowWidth: stagePx, windowHeight: pagePxH, scrollX: 0, scrollY: 0,
           });
           if (i > 0) pdf.addPage([pw, ph], orient);
-          // JPEG 0.84 + FAST compression: ከ42MB ወደ ~0.8MB በከፍተኛ ጥራት!
           pdf.addImage(canvas.toDataURL('image/jpeg', 0.84), 'JPEG', 0, 0, actualW, actualH, undefined, 'FAST');
         }
 
@@ -3681,9 +3764,153 @@
       renderDynamicFormFields(); renderDaily(); closeMainModal(); showToast(t('savedOk'));
     }
 
+    // ==================== PDF Studio ቅንብሮች (ከቀጥታ ቅድመ-እይታ ጋር) ====================
+    function readPdfCfgFromModal() {
+      return {
+        mode: document.getElementById('pCfgMode').value,
+        widthMm: Math.max(80, Number(document.getElementById('pCfgW').value || 210)),
+        heightMm: Math.max(80, Number(document.getElementById('pCfgH').value || 297)),
+        fontSize: document.getElementById('pCfgFont').value,
+        stylePreset: document.getElementById('pCfgStyle').value,
+        textAlign: document.getElementById('pCfgTxtAl').value,
+        numAlign: document.getElementById('pCfgNumAl').value,
+        vAlign: document.getElementById('pCfgVAl').value,
+        rowPad: document.getElementById('pCfgPad').value,
+        textWeight: document.getElementById('pCfgWt').value,
+        borderStyle: document.getElementById('pCfgBrd').value,
+        adjColMode: document.getElementById('pCfgAdj').value,
+        headerSub: document.getElementById('pCfgSub').value,
+        footerNote: document.getElementById('pCfgFoot').value,
+        showSign: document.getElementById('pCfgSign').checked,
+        showOpening: document.getElementById('pCfgOpen').checked,
+        showParty: document.getElementById('pCfgParty').checked,
+        showRef: document.getElementById('pCfgRef').checked,
+        showDate: document.getElementById('pCfgDate').checked,
+        stockShowZero: document.getElementById('pCfgZero').checked,
+        includeOpeningInDaily: document.getElementById('pCfgIncOpen').checked,
+      };
+    }
+
+    function updatePdfLivePreview() {
+      const box = document.getElementById('pdfLivePreview');
+      if (!box) return;
+      const cfg = readPdfCfgFromModal();
+      const st = getPdfStyleTokens(cfg);
+      const sm = t('sPdfMap');
+      const showAdj = cfg.adjColMode !== 'HIDE';
+      const cols = [{ k: 'item', lbl: sm.item }];
+      if (cfg.showOpening) cols.push({ k: 'open', lbl: sm.open });
+      cols.push({ k: 'inq', lbl: sm.inq }, { k: 'outq', lbl: sm.outq });
+      if (showAdj) cols.push({ k: 'adj', lbl: sm.adj });
+      cols.push({ k: 'bal', lbl: sm.bal });
+
+      const sampleRows = [
+        { item: '30×2 Angle', open: '28', inq: '10', outq: '5', adj: '0', bal: '33', low: false },
+        { item: '60×6 Flat', open: '5', inq: '0', outq: '4', adj: '0', bal: '1', low: true },
+      ];
+
+      const rowsHtml = sampleRows.map((r) => {
+        const bg = !st.theme.rowColors ? '#ffffff' : (r.low ? '#fff3cd' : '#ffffff');
+        const clr = !st.theme.rowColors ? '#000000' : (r.low ? '#92400e' : '#0f172a');
+        return `<tr style="background:${bg};color:${clr};">${cols.map((c) => {
+          if (c.k === 'item') return `<td style="${st.tdTextCss(true)}height:24px;">${r.item}</td>`;
+          if (c.k === 'bal') return `<td style="${st.tdNumCss(true)}height:24px;">${r.bal}</td>`;
+          return `<td style="${st.tdNumCss(false)}height:24px;">${r[c.k]}</td>`;
+        }).join('')}</tr>`;
+      }).join('');
+
+      box.innerHTML = `
+        <div style="${st.theme.bannerCss}padding:4px 6px;text-align:center;font-size:10px;font-weight:900;margin-bottom:2px;">${esc(getActiveBrand())} — ${esc(cfg.headerSub.trim() || t('pdfStockSub'))}</div>
+        <table style="width:100%;border-collapse:collapse;font-size:${st.fSize};">
+          <thead><tr>${cols.map((c) => `<th style="${st.thCss}">${esc(c.lbl)}</th>`).join('')}</tr></thead>
+          <tbody>
+            <tr><td colspan="${cols.length}" style="${st.catCss}">Angle / Flat</td></tr>
+            ${rowsHtml}
+          </tbody>
+        </table>`;
+    }
+
     function openPdfCfgModal() {
+      const alOpts = (sel) => `
+        <option value="left_0" ${sel==='left_0'?'selected':''}>${esc(t('pdfAlL0'))}</option>
+        <option value="left_8" ${sel==='left_8'?'selected':''}>${esc(t('pdfAlL8'))}</option>
+        <option value="left_14" ${sel==='left_14'?'selected':''}>${esc(t('pdfAlL14'))}</option>
+        <option value="center" ${sel==='center'?'selected':''}>${esc(t('pdfAlC'))}</option>
+        <option value="right_8" ${sel==='right_8'?'selected':''}>${esc(t('pdfAlR8'))}</option>
+        <option value="right_0" ${sel==='right_0'?'selected':''}>${esc(t('pdfAlR0'))}</option>`;
+
       openMainModal(t('mPdfCfg'), `
+        <div class="sub-card" style="padding:7px;">
+          <span class="lbl-sm" style="color:var(--teal);">👁️ ${esc(t('pdfPreviewLbl'))}</span>
+          <div id="pdfLivePreview" class="pdf-preview-box"></div>
+        </div>
         <div class="sub-card">
+          <div class="grid-2">
+            <div>
+              <span class="lbl-sm">${esc(t('pdfStyleLbl'))}</span>
+              <select id="pCfgStyle" class="sel" style="margin-top:3px;" onchange="updatePdfLivePreview()">
+                <option value="classic" ${pdfCfg.stylePreset==='classic'?'selected':''}>${esc(t('pdfStClassic'))}</option>
+                <option value="bw" ${pdfCfg.stylePreset==='bw'?'selected':''}>${esc(t('pdfStBw'))}</option>
+                <option value="minimal" ${pdfCfg.stylePreset==='minimal'?'selected':''}>${esc(t('pdfStMin'))}</option>
+              </select>
+            </div>
+            <div>
+              <span class="lbl-sm">${esc(t('pdfFontLbl'))}</span>
+              <select id="pCfgFont" class="sel" style="margin-top:3px;" onchange="updatePdfLivePreview()">
+                <option value="sm" ${pdfCfg.fontSize==='sm'?'selected':''}>${esc(t('pdfFontSm'))}</option>
+                <option value="md" ${pdfCfg.fontSize==='md'?'selected':''}>${esc(t('pdfFontMd'))}</option>
+                <option value="lg" ${pdfCfg.fontSize==='lg'?'selected':''}>${esc(t('pdfFontLg'))}</option>
+              </select>
+            </div>
+          </div>
+          <div class="grid-2">
+            <div>
+              <span class="lbl-sm">${esc(t('pdfWeightLbl'))}</span>
+              <select id="pCfgWt" class="sel" style="margin-top:3px;" onchange="updatePdfLivePreview()">
+                <option value="normal" ${pdfCfg.textWeight==='normal'?'selected':''}>${esc(t('pdfWtNorm'))}</option>
+                <option value="key" ${pdfCfg.textWeight==='key'?'selected':''}>${esc(t('pdfWtKey'))}</option>
+                <option value="all" ${pdfCfg.textWeight==='all'?'selected':''}>${esc(t('pdfWtAll'))}</option>
+              </select>
+            </div>
+            <div>
+              <span class="lbl-sm">${esc(t('pdfBorderLbl'))}</span>
+              <select id="pCfgBrd" class="sel" style="margin-top:3px;" onchange="updatePdfLivePreview()">
+                <option value="thin" ${pdfCfg.borderStyle==='thin'?'selected':''}>${esc(t('pdfBrdThin'))}</option>
+                <option value="medium" ${pdfCfg.borderStyle==='medium'?'selected':''}>${esc(t('pdfBrdMed'))}</option>
+                <option value="bold" ${pdfCfg.borderStyle==='bold'?'selected':''}>${esc(t('pdfBrdBold'))}</option>
+              </select>
+            </div>
+          </div>
+          <span class="lbl-sm">${esc(t('pdfTxtAlignLbl'))}</span>
+          <select id="pCfgTxtAl" class="sel" onchange="updatePdfLivePreview()">${alOpts(pdfCfg.textAlign)}</select>
+          <span class="lbl-sm">${esc(t('pdfNumAlignLbl'))}</span>
+          <select id="pCfgNumAl" class="sel" onchange="updatePdfLivePreview()">${alOpts(pdfCfg.numAlign)}</select>
+          <div class="grid-2">
+            <div>
+              <span class="lbl-sm">${esc(t('pdfVAlignLbl'))}</span>
+              <select id="pCfgVAl" class="sel" style="margin-top:3px;" onchange="updatePdfLivePreview()">
+                <option value="top" ${pdfCfg.vAlign==='top'?'selected':''}>${esc(t('pdfVTop'))}</option>
+                <option value="middle" ${pdfCfg.vAlign==='middle'?'selected':''}>${esc(t('pdfVMid'))}</option>
+                <option value="bottom" ${pdfCfg.vAlign==='bottom'?'selected':''}>${esc(t('pdfVBot'))}</option>
+              </select>
+            </div>
+            <div>
+              <span class="lbl-sm">${esc(t('pdfRowPadLbl'))}</span>
+              <select id="pCfgPad" class="sel" style="margin-top:3px;" onchange="updatePdfLivePreview()">
+                <option value="tight" ${pdfCfg.rowPad==='tight'?'selected':''}>${esc(t('pdfPadTight'))}</option>
+                <option value="normal" ${pdfCfg.rowPad==='normal'?'selected':''}>${esc(t('pdfPadNorm'))}</option>
+                <option value="loose" ${pdfCfg.rowPad==='loose'?'selected':''}>${esc(t('pdfPadLoose'))}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="sub-card">
+          <span class="lbl-sm">${esc(t('pdfAdjLbl'))}</span>
+          <select id="pCfgAdj" class="sel" onchange="updatePdfLivePreview()">
+            <option value="HIDE" ${pdfCfg.adjColMode==='HIDE'?'selected':''}>${esc(t('pdfAdjHide'))}</option>
+            <option value="AUTO" ${pdfCfg.adjColMode==='AUTO'?'selected':''}>${esc(t('pdfAdjAuto'))}</option>
+            <option value="SHOW" ${pdfCfg.adjColMode==='SHOW'?'selected':''}>${esc(t('pdfAdjShow'))}</option>
+          </select>
           <span class="lbl-sm">${esc(t('pdfModeLbl'))}</span>
           <select id="pCfgMode" class="sel" onchange="onPdfModeChange()">
             <option value="A4_P" ${pdfCfg.mode==='A4_P'?'selected':''}>${esc(t('pdfModeA4P'))}</option>
@@ -3696,18 +3923,12 @@
             <input type="number" id="pCfgW" class="inp mono" value="${pdfCfg.widthMm}" min="80" placeholder="${esc(t('pdfWPh'))}">
             <input type="number" id="pCfgH" class="inp mono" value="${pdfCfg.heightMm}" min="80" placeholder="${esc(t('pdfHPh'))}">
           </div>
-          <span class="lbl-sm">${esc(t('pdfFontLbl'))}</span>
-          <select id="pCfgFont" class="sel">
-            <option value="sm" ${pdfCfg.fontSize==='sm'?'selected':''}>${esc(t('pdfFontSm'))}</option>
-            <option value="md" ${pdfCfg.fontSize==='md'?'selected':''}>${esc(t('pdfFontMd'))}</option>
-            <option value="lg" ${pdfCfg.fontSize==='lg'?'selected':''}>${esc(t('pdfFontLg'))}</option>
-          </select>
         </div>
         <div class="sub-card">
-          <input id="pCfgSub" class="inp" value="${esc(pdfCfg.headerSub)}" placeholder="${esc(t('pdfHeaderSubPh'))}">
+          <input id="pCfgSub" class="inp" value="${esc(pdfCfg.headerSub)}" placeholder="${esc(t('pdfHeaderSubPh'))}" oninput="updatePdfLivePreview()">
           <input id="pCfgFoot" class="inp" value="${esc(pdfCfg.footerNote)}" placeholder="${esc(t('pdfFooterNotePh'))}">
           <label class="chk-row"><input type="checkbox" id="pCfgSign" ${pdfCfg.showSign?'checked':''}><span>${esc(t('pdfChkSign'))}</span></label>
-          <label class="chk-row"><input type="checkbox" id="pCfgOpen" ${pdfCfg.showOpening?'checked':''}><span>${esc(t('pdfChkOpen'))}</span></label>
+          <label class="chk-row"><input type="checkbox" id="pCfgOpen" ${pdfCfg.showOpening?'checked':''} onchange="updatePdfLivePreview()"><span>${esc(t('pdfChkOpen'))}</span></label>
           <label class="chk-row"><input type="checkbox" id="pCfgParty" ${pdfCfg.showParty?'checked':''}><span>${esc(t('pdfChkParty'))}</span></label>
           <label class="chk-row"><input type="checkbox" id="pCfgRef" ${pdfCfg.showRef?'checked':''}><span>${esc(t('pdfChkRef'))}</span></label>
           <label class="chk-row"><input type="checkbox" id="pCfgDate" ${pdfCfg.showDate?'checked':''}><span>${esc(t('pdfChkDate'))}</span></label>
@@ -3716,6 +3937,7 @@
         </div>`,
         `<button type="button" class="btn muted" onclick="closeMainModal()">${esc(t('cancel'))}</button>
          <button type="button" class="btn teal" onclick="savePdfCfg()">${esc(t('save'))}</button>`);
+      updatePdfLivePreview();
     }
 
     function onPdfModeChange() {
@@ -3724,21 +3946,7 @@
 
     function savePdfCfg() {
       vib(20);
-      pdfCfg = {
-        mode: document.getElementById('pCfgMode').value,
-        widthMm: Math.max(80, Number(document.getElementById('pCfgW').value || 210)),
-        heightMm: Math.max(80, Number(document.getElementById('pCfgH').value || 297)),
-        fontSize: document.getElementById('pCfgFont').value,
-        headerSub: document.getElementById('pCfgSub').value,
-        footerNote: document.getElementById('pCfgFoot').value,
-        showSign: document.getElementById('pCfgSign').checked,
-        showOpening: document.getElementById('pCfgOpen').checked,
-        showParty: document.getElementById('pCfgParty').checked,
-        showRef: document.getElementById('pCfgRef').checked,
-        showDate: document.getElementById('pCfgDate').checked,
-        stockShowZero: document.getElementById('pCfgZero').checked,
-        includeOpeningInDaily: document.getElementById('pCfgIncOpen').checked,
-      };
+      pdfCfg = readPdfCfgFromModal();
       saveJson(PDF_CFG_KEY, pdfCfg); closeMainModal(); showToast(t('savedOk'));
     }
 
@@ -4167,7 +4375,6 @@
       document.getElementById('btnPdfShare').textContent = t('pdfShare');
     }
 
-    // በስልክ ጥሪ ወይም ከአፑ ሲወጡ ራስ-ሰር መቆለፊያ
     function maybeAutoPauseTally() {
       if (!tallyCfg.autoPauseCall || tallyPaused) return;
       if (!document.getElementById('viewTally')?.classList.contains('active')) return;
@@ -4177,7 +4384,6 @@
     document.addEventListener('visibilitychange', () => { if (document.hidden) maybeAutoPauseTally(); });
     window.addEventListener('blur', maybeAutoPauseTally);
 
-    // የመጨረሻ ንክኪ ሰዓት ቆጣሪ በየሰከንዱ እንዲታደስ
     setInterval(() => {
       if (document.getElementById('viewTally')?.classList.contains('active')) updateCadenceStrip();
     }, 1000);

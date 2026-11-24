@@ -1,4 +1,4 @@
-const CACHE = 'erp-shell-v10';
+const CACHE = 'erp-shell-v11';
 const ASSETS = ['./', './index.html', './manifest.json', './icon.svg'];
 
 self.addEventListener('install', (e) => {
