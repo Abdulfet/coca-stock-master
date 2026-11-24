@@ -1,4 +1,4 @@
-const CACHE = 'erp-shell-v11';
+const CACHE = 'erp-shell-v12';
 const ASSETS = ['./', './index.html', './manifest.json', './icon.svg'];
 
 self.addEventListener('install', (e) => {
@@ -33,3 +33,4 @@ self.addEventListener('fetch', (e) => {
       .catch(() => caches.match(e.request))
   );
 });
+
