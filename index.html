@@ -17,7 +17,7 @@
       --border: #1e293b; --border-strong: #334155;
       --text: #f8fafc; --muted: #94a3b8;
       --primary: #0ea5e9; --teal: #14b8a6; --teal-dark: #042f2e;
-      --emerald: #10b981; --amber: #f59e0b; --rose: #ef4444;
+      --emerald: #10b981; --amber: #f59e0b; --rose: #ef4444; --violet: #a855f7;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; user-select: none; }
     input, select, textarea { user-select: auto; }
@@ -35,9 +35,10 @@
 
     /* ዋና ቅርፊት */
     .shell { max-width: 640px; height: 100vh; height: 100dvh; margin: 0 auto; display: none; flex-direction: column; padding: 6px 6px 0; position: relative; overflow: hidden; }
-    .topbar { height: 44px; display: flex; align-items: center; gap: 6px; background: var(--surface); border: 1px solid var(--border-strong); border-radius: 12px; padding: 0 7px; margin-bottom: 6px; flex-shrink: 0; }
+    .topbar { height: 42px; display: flex; align-items: center; gap: 6px; background: var(--surface); border: 1px solid var(--border-strong); border-radius: 12px; padding: 0 7px; margin-bottom: 5px; flex-shrink: 0; }
     .icon-btn { width: 32px; height: 30px; border-radius: 8px; border: 1px solid var(--border-strong); background: var(--surface-deep); color: var(--primary); font-size: 13.5px; font-weight: 900; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
     .icon-btn.on { background: rgba(14,165,233,0.25); border-color: var(--primary); color: #fff; }
+    .icon-btn.locked { background: rgba(239,68,68,0.22); border-color: var(--rose); color: #fca5a5; }
     .brand-box { display: flex; flex-direction: column; min-width: 0; flex-shrink: 1; line-height: 1.18; }
     .brand-name { font-size: 12px; font-weight: 900; letter-spacing: 0.2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .brand-sub { font-size: 8.5px; font-weight: 800; color: var(--primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -57,8 +58,8 @@
     /* የጋራ ክፍሎች */
     .view { display: none; flex: 1; min-height: 0; flex-direction: column; overflow: hidden; }
     .view.active { display: flex; }
-    .seg { display: flex; gap: 5px; margin-bottom: 5px; flex-shrink: 0; }
-    .seg-btn { flex: 1; height: 33px; border-radius: 10px; border: 1px solid var(--border-strong); background: var(--surface); color: var(--muted); font-size: 11px; font-weight: 900; cursor: pointer; }
+    .seg { display: flex; gap: 5px; margin-bottom: 5px; flex-shrink: 0; align-items: center; }
+    .seg-btn { flex: 1; height: 32px; border-radius: 10px; border: 1px solid var(--border-strong); background: var(--surface); color: var(--muted); font-size: 11px; font-weight: 900; cursor: pointer; }
     .seg-btn.out { background: #3b0a0a; border-color: var(--rose); color: #fca5a5; }
     .seg-btn.in { background: #052e16; border-color: var(--emerald); color: #86efac; }
     .seg-btn.adj { background: #172554; border-color: var(--primary); color: #7dd3fc; }
@@ -69,7 +70,7 @@
     .txtarea { height: 120px; padding: 8px; resize: vertical; font-family: ui-monospace, monospace; font-size: 11px; }
     .inp:focus, .sel:focus, .txtarea:focus { border-color: var(--teal); }
     .inp.mono { font-family: ui-monospace, monospace; text-align: center; color: var(--primary); }
-    .inp.sm { height: 31px; font-size: 11.5px; padding: 0 6px; }
+    .inp.sm { height: 30px; font-size: 11.5px; padding: 0 6px; }
     .grid-3 { display: grid; grid-template-columns: 1.15fr 1fr 0.95fr; gap: 5px; }
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
     .doc-combo { display: flex; border: 1.5px solid var(--primary); border-radius: 8px; overflow: hidden; height: 34px; background: var(--surface-deep); }
@@ -110,46 +111,118 @@
     .dock-btn.out { background: var(--rose); color: #fff; }
     .dock-btn.in { background: var(--emerald); color: #052e16; }
 
-    /* ገጽ 2: ቆጠራ */
-    .ticket-bar { display: flex; gap: 5px; overflow-x: auto; margin-bottom: 5px; flex-shrink: 0; padding-bottom: 2px; }
-    .tk-tab { height: 30px; padding: 0 10px; border-radius: 15px; border: 1px solid var(--border-strong); background: var(--surface); color: var(--muted); font-size: 11px; font-weight: 900; cursor: pointer; white-space: nowrap; display: inline-flex; align-items: center; gap: 5px; flex-shrink: 0; }
+    /* ==================== ገጽ 2: ዘመናዊ ቆጠራ (v10) ==================== */
+    .ticket-bar { display: flex; gap: 5px; overflow-x: auto; margin-bottom: 4px; flex-shrink: 0; padding-bottom: 2px; }
+    .tk-tab { height: 28px; padding: 0 10px; border-radius: 14px; border: 1px solid var(--border-strong); background: var(--surface); color: var(--muted); font-size: 10.5px; font-weight: 900; cursor: pointer; white-space: nowrap; display: inline-flex; align-items: center; gap: 4px; flex-shrink: 0; }
     .tk-tab.active { background: #172554; border-color: var(--primary); color: #fff; }
     .tk-tab.add { border-style: dashed; border-color: var(--teal); color: var(--teal); }
-    .tk-items { display: flex; gap: 5px; overflow-x: auto; margin-bottom: 5px; flex-shrink: 0; padding-bottom: 2px; }
-    .tk-pill { height: 32px; padding: 0 9px; border-radius: 9px; border: 1.5px solid var(--border-strong); background: var(--surface-deep); color: var(--text); font-size: 11px; font-weight: 900; cursor: pointer; white-space: nowrap; display: inline-flex; align-items: center; gap: 5px; flex-shrink: 0; }
+    .tk-items { display: flex; gap: 5px; overflow-x: auto; margin-bottom: 4px; flex-shrink: 0; padding-bottom: 2px; }
+    .tk-pill { height: 30px; padding: 0 9px; border-radius: 9px; border: 1.5px solid var(--border-strong); background: var(--surface-deep); color: var(--text); font-size: 10.5px; font-weight: 900; cursor: pointer; white-space: nowrap; display: inline-flex; align-items: center; gap: 5px; flex-shrink: 0; }
     .tk-pill.active { border-color: var(--teal); background: rgba(20,184,166,0.22); color: #99f6e4; }
     .tk-pill.done { border-color: var(--emerald); background: rgba(16,185,129,0.2); color: #86efac; }
     .tk-pill.add { border-style: dashed; border-color: var(--amber); color: var(--amber); }
 
     .preset-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px; }
-    .preset-btn { height: 31px; border-radius: 8px; border: 1px solid var(--border-strong); background: var(--surface-deep); color: var(--text); font-family: ui-monospace, monospace; font-size: 11px; font-weight: 900; cursor: pointer; }
+    .preset-btn { height: 29px; border-radius: 7px; border: 1px solid var(--border-strong); background: var(--surface-deep); color: var(--text); font-family: ui-monospace, monospace; font-size: 10.5px; font-weight: 900; cursor: pointer; }
     .preset-btn.active { background: var(--teal); border-color: #5eead4; color: var(--teal-dark); }
     .preset-btn.custom { font-family: inherit; font-size: 10px; color: var(--amber); }
-    .alert-box { display: none; padding: 6px 10px; border-radius: 10px; text-align: center; font-size: 11px; font-weight: 900; margin-bottom: 5px; flex-shrink: 0; }
+    .alert-box { display: none; padding: 5px 10px; border-radius: 9px; text-align: center; font-size: 11px; font-weight: 900; margin-bottom: 4px; flex-shrink: 0; }
     .alert-box.warn { display: block; background: rgba(245,158,11,0.22); border: 1.5px solid var(--amber); color: #fde68a; }
     .alert-box.stop { display: block; background: var(--emerald); color: #022c22; }
     .alert-box.over { display: block; background: rgba(14,165,233,0.18); border: 1.5px solid var(--primary); color: #7dd3fc; }
-    .tally-pad { flex: 1; min-height: 0; background: var(--surface-deep); border: 2px dashed rgba(20,184,166,0.45); border-radius: 16px; display: flex; flex-direction: column; overflow: hidden; cursor: pointer; touch-action: pan-y; margin-bottom: 5px; }
-    .tally-pad.flash { border-color: var(--emerald); background: rgba(16,185,129,0.08); }
-    .tally-pad.near { border-color: var(--amber); background: rgba(245,158,11,0.08); }
-    .tally-pad.done { border-style: solid; border-color: var(--emerald); }
-    .tally-canvas { flex: 1; overflow-y: auto; padding: 10px; display: flex; flex-wrap: wrap; align-content: flex-start; gap: 6px 10px; }
-    .t-grp { position: relative; width: 42px; height: 40px; display: inline-flex; align-items: center; justify-content: center; }
-    .t-bar { width: 3.5px; height: 30px; background: var(--emerald); margin: 0 2.5px; border-radius: 2px; }
+
+    /* የቆጠራ ዋና እይታ መድረክ (Read-Only Dead Zone — ስልክ ሲደወል በስህተት አይቆጥርም) */
+    .t-stage { position: relative; flex: 1; min-height: 0; background: radial-gradient(circle at 50% 0%, rgba(20,184,166,0.08) 0%, var(--surface-deep) 68%); border: 1.5px solid var(--border-strong); border-radius: 15px; display: flex; flex-direction: column; overflow: hidden; margin-bottom: 5px; transition: border-color 0.25s ease, box-shadow 0.45s ease; }
+    .t-stage.glow-ok { border-color: var(--emerald); box-shadow: inset 0 0 22px rgba(16,185,129,0.28), 0 0 14px rgba(16,185,129,0.25); }
+    .t-stage.glow-batch { border-color: var(--amber); box-shadow: inset 0 0 26px rgba(245,158,11,0.34), 0 0 16px rgba(245,158,11,0.3); }
+    .t-stage.done { border-color: var(--emerald); }
+    .t-stage.near { border-color: var(--amber); }
+    .t-prog-track { width: 100%; height: 4px; background: rgba(148,163,184,0.14); flex-shrink: 0; }
+    .t-prog-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--teal), var(--emerald)); transition: width 0.2s ease; }
+
+    /* 4 ዋና ቁጥሮች (የተጫነ/የተራገፈ | ሸክም | ቀሪ ብዛት | ቀሪ ሸክም) */
+    .t-stats-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; padding: 7px 6px 6px; background: rgba(15,23,42,0.88); border-bottom: 1px solid var(--border); flex-shrink: 0; }
+    .t-kpi { background: rgba(6,10,18,0.58); border: 1px solid var(--border); border-radius: 9px; padding: 4px 4px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 0; }
+    .t-kpi-lbl { font-size: 8.5px; font-weight: 800; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+    .t-kpi-val { font-family: ui-monospace, monospace; font-size: 16.5px; font-weight: 900; line-height: 1.18; color: var(--text); white-space: nowrap; }
+    .t-kpi-val.sm { font-size: 12.5px; }
+    .t-kpi-val.c-em { color: #6ee7b7; }
+    .t-kpi-val.c-tl { color: #5eead4; }
+    .t-kpi-val.c-am { color: #fcd34d; }
+    .t-kpi-val.c-pr { color: #7dd3fc; }
+
+    /* የመሃል እይታ (የ10-ዙር ነጥቦች ወይም 5-በረድፍ ጭረት) */
+    .t-visual { flex: 1; min-height: 0; overflow-y: auto; padding: 8px 10px; display: flex; flex-direction: column; justify-content: center; gap: 7px; }
+    .t-visual.tally-mode { justify-content: flex-start; }
+
+    /* ዘመናዊ 10-ዙር መሙያ ነጥቦች */
+    .batch-summary { display: flex; align-items: center; justify-content: space-between; gap: 6px; background: rgba(15,23,42,0.85); border: 1px solid var(--border); border-radius: 10px; padding: 5px 10px; }
+    .batch-chip { font-family: ui-monospace, monospace; font-size: 11px; font-weight: 900; color: var(--teal); }
+    .batch-sub { font-size: 10px; font-weight: 800; color: var(--muted); }
+    .dot-ring { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; padding: 4px 6px; }
+    .b-dot { height: 34px; border-radius: 11px; border: 1.5px solid var(--border-strong); background: rgba(15,23,42,0.65); display: flex; align-items: center; justify-content: center; font-family: ui-monospace, monospace; font-size: 11px; font-weight: 900; color: var(--muted); transition: transform 0.14s ease, background 0.14s ease, border-color 0.14s ease; }
+    .b-dot.filled { background: rgba(16,185,129,0.22); border-color: var(--emerald); color: #a7f3d0; }
+    .b-dot.odd { background: rgba(245,158,11,0.24); border-color: var(--amber); color: #fde68a; }
+    .b-dot.latest { transform: scale(1.06); box-shadow: 0 0 12px rgba(20,184,166,0.45); border-color: #5eead4; }
+    .b-dot.w0 { background: rgba(14,165,233,0.25); border-color: var(--primary); color: #bae6fd; }
+    .b-dot.w1 { background: rgba(16,185,129,0.25); border-color: var(--emerald); color: #a7f3d0; }
+    .b-dot.w2 { background: rgba(245,158,11,0.25); border-color: var(--amber); color: #fde68a; }
+    .b-dot.w3 { background: rgba(168,85,247,0.25); border-color: var(--violet); color: #e9d5ff; }
+
+    /* የ5-በረድፍ ንጹህ ጭረት ሠንጠረዥ */
+    .tally-compact-bar { background: rgba(20,184,166,0.14); border: 1px solid var(--teal); border-radius: 8px; padding: 4px 9px; font-size: 10.5px; font-weight: 900; color: #99f6e4; text-align: center; }
+    .tally-row-5 { display: grid; grid-template-columns: repeat(5, 1fr) 44px; align-items: center; gap: 4px; padding: 2px 0; border-bottom: 1px dashed rgba(51,65,85,0.45); }
+    .tally-row-tot { font-family: ui-monospace, monospace; font-size: 9.5px; font-weight: 900; color: var(--muted); text-align: right; }
+    .t-grp { position: relative; width: 38px; height: 34px; margin: 0 auto; display: inline-flex; align-items: center; justify-content: center; }
+    .t-bar { width: 3.5px; height: 26px; background: var(--emerald); margin: 0 2px; border-radius: 2px; }
     .t-bar.odd { background: var(--amber); }
-    .t-slash { position: absolute; width: 44px; height: 4px; background: var(--amber); border-radius: 2px; transform: rotate(-28deg); }
-    .anim-b { animation: pBar 0.12s ease-out; }
-    .anim-s { animation: pSlash 0.14s ease-out; }
-    @keyframes pBar { from { transform: scaleY(0.3); opacity: 0.3; } to { transform: scaleY(1); opacity: 1; } }
-    @keyframes pSlash { from { transform: rotate(-28deg) scaleX(0.2); opacity: 0.3; } to { transform: rotate(-28deg) scaleX(1); opacity: 1; } }
-    .t-stats { display: grid; grid-template-columns: 1fr 0.8fr 1fr; background: rgba(15,23,42,0.95); border-top: 1px solid var(--border); padding: 6px 12px; flex-shrink: 0; }
-    .t-stat { display: flex; flex-direction: column; }
-    .t-stat.c { align-items: center; }
-    .t-stat.r { align-items: flex-end; }
-    .t-lbl { font-size: 9px; font-weight: 800; color: var(--muted); }
-    .t-num { font-family: ui-monospace, monospace; font-size: 21px; font-weight: 900; line-height: 1.1; }
-    .t-actions { display: grid; grid-template-columns: 0.75fr 0.75fr 0.75fr 1.75fr; gap: 5px; margin-bottom: 62px; flex-shrink: 0; }
-    .t-btn { height: 41px; border-radius: 11px; border: 1px solid var(--border-strong); background: var(--surface); color: var(--text); font-size: 10.5px; font-weight: 900; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .t-slash { position: absolute; width: 40px; height: 3.5px; background: var(--amber); border-radius: 2px; transform: rotate(-28deg); }
+
+    /* የመጨረሻ ንክኪ ሰዓት ቆጣሪ + ቴፕ */
+    .cadence-bar { display: flex; align-items: center; justify-content: space-between; gap: 6px; padding: 5px 10px; background: rgba(6,10,18,0.72); border-top: 1px solid var(--border); font-size: 10px; font-weight: 800; flex-shrink: 0; }
+    .cadence-timer { font-family: ui-monospace, monospace; font-weight: 900; color: #5eead4; white-space: nowrap; }
+    .cadence-timer.fresh { color: #6ee7b7; }
+    .cadence-timer.stale { color: var(--muted); }
+    .cadence-pills { display: flex; gap: 4px; overflow: hidden; justify-content: flex-end; }
+    .c-pill { padding: 2px 6px; border-radius: 6px; background: var(--surface); border: 1px solid var(--border-strong); font-family: ui-monospace, monospace; font-size: 9.5px; color: var(--muted); white-space: nowrap; }
+    .c-pill.fast { border-color: var(--amber); color: #fde68a; background: rgba(245,158,11,0.16); }
+
+    /* በስልክ ጥሪ ጊዜ መቆለፊያ ሽፋን */
+    .t-pause-mask { position: absolute; inset: 0; z-index: 20; background: rgba(6,10,18,0.92); backdrop-filter: blur(5px); display: none; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 14px; text-align: center; }
+    .t-pause-mask.open { display: flex; }
+
+    /* ==================== የመቁጠሪያ ቀስቃሽ ቦታ (Trigger Area) ==================== */
+    .t-trigger-wrap { margin-bottom: 5px; flex-shrink: 0; }
+
+    /* A. የመንሸራተቻ ማርሽ (Swipe-Gate) */
+    .sg-track { position: relative; height: 54px; border-radius: 27px; background: linear-gradient(90deg, rgba(15,23,42,0.96), rgba(4,47,46,0.9)); border: 2px solid var(--teal); overflow: hidden; touch-action: none; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 2px 10px rgba(0,0,0,0.6); }
+    .sg-track.locked-cd { border-color: var(--border-strong); opacity: 0.72; }
+    .sg-fill { position: absolute; left: 0; top: 0; bottom: 0; width: 0%; background: linear-gradient(90deg, rgba(20,184,166,0.28), rgba(16,185,129,0.52)); pointer-events: none; }
+    .sg-label { font-size: 12.5px; font-weight: 900; color: #99f6e4; letter-spacing: 0.2px; pointer-events: none; z-index: 1; padding-left: 36px; }
+    .sg-thumb { position: absolute; left: 4px; top: 4px; width: 64px; height: 42px; border-radius: 21px; background: linear-gradient(135deg, #2dd4bf, #0d9488); color: #022c22; font-size: 16px; font-weight: 900; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 14px rgba(20,184,166,0.5); cursor: grab; z-index: 2; will-change: transform; }
+    .sg-thumb.snap { transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1); }
+
+    /* B. ተቀያያሪ ቁልፍ (Ping-Pong A/B) */
+    .pp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+    .pp-btn { height: 54px; border-radius: 16px; border: 2px solid var(--border-strong); background: var(--surface-deep); color: var(--muted); font-size: 13px; font-weight: 900; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; opacity: 0.42; }
+    .pp-btn.ready { opacity: 1; background: linear-gradient(135deg, rgba(20,184,166,0.28), rgba(16,185,129,0.22)); border-color: var(--teal); color: #ccfbf1; box-shadow: 0 0 14px rgba(20,184,166,0.25); }
+
+    /* C. ሰፊ ነጠላ ቁልፍ (Wide Tap) */
+    .tap-btn { position: relative; width: 100%; height: 54px; border-radius: 16px; border: 2px solid var(--teal); background: linear-gradient(135deg, rgba(20,184,166,0.28), rgba(14,165,233,0.18)); color: #ccfbf1; font-size: 14px; font-weight: 900; cursor: pointer; overflow: hidden; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .tap-cd-bar { position: absolute; left: 0; bottom: 0; height: 4px; width: 0%; background: var(--amber); pointer-events: none; }
+
+    /* D. ባለብዙ ተሸካሚ ቀለም ቁልፎች (Multi-Carrier) */
+    .mc-grid { display: grid; gap: 6px; }
+    .mc-btn { position: relative; height: 54px; border-radius: 14px; border: 2px solid var(--border-strong); background: var(--surface); color: #fff; font-size: 11.5px; font-weight: 900; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; overflow: hidden; }
+    .mc-btn.c0 { border-color: var(--primary); background: rgba(14,165,233,0.22); }
+    .mc-btn.c1 { border-color: var(--emerald); background: rgba(16,185,129,0.22); }
+    .mc-btn.c2 { border-color: var(--amber); background: rgba(245,158,11,0.22); }
+    .mc-btn.c3 { border-color: var(--violet); background: rgba(168,85,247,0.22); }
+    .mc-btn.cooling { opacity: 0.45; }
+    .mc-cnt { font-family: ui-monospace, monospace; font-size: 14px; font-weight: 900; }
+
+    .t-actions { display: grid; grid-template-columns: 0.72fr 0.72fr 0.72fr 1.84fr; gap: 5px; margin-bottom: 62px; flex-shrink: 0; }
+    .t-btn { height: 39px; border-radius: 11px; border: 1px solid var(--border-strong); background: var(--surface); color: var(--text); font-size: 10px; font-weight: 900; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.1; }
     .t-btn.commit { background: var(--teal); border-color: #5eead4; color: var(--teal-dark); font-size: 11.5px; }
 
     /* ሠንጠረዦች */
@@ -260,7 +333,7 @@
       <button type="button" id="btnInstallApp" class="btn primary" style="display:none;height:36px;" onclick="triggerPwaInstall()"></button>
       <div style="display:flex;justify-content:space-between;align-items:center;">
         <span id="drawerUserInfo" style="font-size:11px;font-weight:800;color:var(--muted);"></span>
-        <span style="font-size:10px;font-weight:900;color:var(--teal);opacity:0.8;">v9</span>
+        <span style="font-size:10px;font-weight:900;color:var(--teal);opacity:0.85;">v10</span>
       </div>
       <button type="button" class="btn danger" id="btnLogout" onclick="doLogout()"></button>
     </div>
@@ -323,44 +396,46 @@
       </div>
     </section>
 
-    <!-- ገጽ 2: ቆጠራ (ከመመዝገቢያ ቅጽ ጋር 100% የተዛመደ) -->
+    <!-- ገጽ 2: ዘመናዊ ቆጠራ (v10) -->
     <section id="viewTally" class="view">
       <div class="seg">
         <button type="button" id="btnTTicket" class="seg-btn teal" onclick="setTallyTab('TICKET')"></button>
         <button type="button" id="btnTFree" class="seg-btn" onclick="setTallyTab('FREE')"></button>
         <button type="button" id="btnTAudit" class="seg-btn" onclick="setTallyTab('AUDIT')"></button>
+        <button type="button" id="btnTPause" class="icon-btn" style="width:32px;height:32px;" onclick="toggleManualTallyPause()">🔓</button>
+        <button type="button" class="icon-btn" style="width:32px;height:32px;color:var(--teal);" onclick="openTallyCfgModal()">⚙️</button>
       </div>
 
       <div id="tallyTicketArea">
         <div id="ticketBar" class="ticket-bar"></div>
-        <div class="card" style="padding:5px;">
+        <div class="card" style="padding:5px;margin-bottom:4px;">
           <div style="display:grid;grid-template-columns:auto 1fr auto;gap:4px;align-items:center;">
-            <button type="button" id="btnTkDir" class="icon-btn" style="width:auto;padding:0 7px;font-size:10px;height:31px;" onclick="toggleTicketDir()"></button>
+            <button type="button" id="btnTkDir" class="icon-btn" style="width:auto;padding:0 7px;font-size:10px;height:30px;" onclick="toggleTicketDir()"></button>
             <div id="tkMainRow" class="grid-3"></div>
-            <button type="button" class="icon-btn" style="width:28px;height:31px;color:var(--rose);" onclick="deleteActiveTicket()">✕</button>
+            <button type="button" class="icon-btn" style="width:28px;height:30px;color:var(--rose);" onclick="deleteActiveTicket()">✕</button>
           </div>
           <div id="tkExtraFields" class="extra-fields"></div>
         </div>
         <div id="ticketItemsStrip" class="tk-items"></div>
       </div>
 
-      <div id="tallyFreeArea" style="display:none;margin-bottom:5px;flex-shrink:0;">
+      <div id="tallyFreeArea" style="display:none;margin-bottom:4px;flex-shrink:0;">
         <div style="display:grid;grid-template-columns:1fr 0.9fr auto;gap:5px;">
-          <input type="text" id="inpFreeLabel" class="inp" oninput="freeTally.label=this.value;saveTallyState()">
-          <input type="number" id="inpFreeTarget" class="inp mono" min="0" inputmode="numeric" oninput="freeTally.target=Math.max(0,Math.floor(Number(this.value||0)));saveTallyState();renderTallyStats()">
-          <button type="button" id="btnFreeLock" class="icon-btn" style="width:36px;height:34px;" onclick="toggleFreeLock()">🔒</button>
+          <input type="text" id="inpFreeLabel" class="inp sm" oninput="freeTally.label=this.value;saveTallyState()">
+          <input type="number" id="inpFreeTarget" class="inp sm mono" min="0" inputmode="numeric" oninput="freeTally.target=Math.max(0,Math.floor(Number(this.value||0)));saveTallyState();renderTallyStats()">
+          <button type="button" id="btnFreeLock" class="icon-btn" style="width:34px;height:30px;" onclick="toggleFreeLock()">🔒</button>
         </div>
       </div>
 
-      <div id="tallyAuditArea" style="display:none;margin-bottom:5px;flex-shrink:0;">
+      <div id="tallyAuditArea" style="display:none;margin-bottom:4px;flex-shrink:0;">
         <div class="grid-2">
-          <select id="selAuditItem" class="sel" onchange="onAuditItemChange()"></select>
-          <input type="number" id="inpAuditSys" class="inp mono" readonly>
+          <select id="selAuditItem" class="sel" style="height:31px;" onchange="onAuditItemChange()"></select>
+          <input type="number" id="inpAuditSys" class="inp sm mono" readonly>
         </div>
       </div>
 
-      <div class="card" style="padding:5px;">
-        <div style="display:flex;justify-content:space-between;font-size:10px;font-weight:800;color:var(--muted);margin-bottom:4px;">
+      <div class="card" style="padding:5px;margin-bottom:4px;">
+        <div style="display:flex;justify-content:space-between;font-size:9.5px;font-weight:800;color:var(--muted);margin-bottom:3px;">
           <span id="lblPerCarry"></span>
           <span id="lblCarryVal" style="color:var(--teal);font-family:ui-monospace,monospace;"></span>
         </div>
@@ -368,14 +443,32 @@
       </div>
 
       <div id="tallyAlert" class="alert-box"></div>
-      <div id="tallyPad" class="tally-pad">
-        <div id="tallyCanvas" class="tally-canvas"></div>
-        <div class="t-stats">
-          <div class="t-stat"><span class="t-lbl" id="lblTCounted"></span><span class="t-num" id="valTCounted">0</span></div>
-          <div class="t-stat c"><span class="t-lbl" id="lblTStrokes"></span><span class="t-num" style="font-size:18px;color:var(--teal);" id="valTStrokes">0</span></div>
-          <div class="t-stat r"><span class="t-lbl" id="lblTRight"></span><span class="t-num" style="color:var(--amber);" id="valTRight">∞</span></div>
+
+      <!-- ዋና የእይታ መድረክ (Read-Only — በስህተት ንክኪ አይቆጥርም) -->
+      <div id="tallyStage" class="t-stage">
+        <div class="t-prog-track"><div id="tProgFill" class="t-prog-fill"></div></div>
+        <div class="t-stats-4">
+          <div class="t-kpi"><span class="t-kpi-lbl" id="lblTCounted"></span><span class="t-kpi-val c-em" id="valTCounted">0</span></div>
+          <div class="t-kpi"><span class="t-kpi-lbl" id="lblTStrokes"></span><span class="t-kpi-val c-tl" id="valTStrokes">0</span></div>
+          <div class="t-kpi"><span class="t-kpi-lbl" id="lblTRemQty"></span><span class="t-kpi-val c-am" id="valTRemQty">∞</span></div>
+          <div class="t-kpi"><span class="t-kpi-lbl" id="lblTRemLoads"></span><span class="t-kpi-val c-pr" id="valTRemLoads">∞</span></div>
+        </div>
+        <div id="tallyVisual" class="t-visual"></div>
+        <div id="cadenceBar" class="cadence-bar">
+          <span id="cadenceTimer" class="cadence-timer stale">⏱ --</span>
+          <div id="cadencePills" class="cadence-pills"></div>
+        </div>
+        <div id="tallyPauseMask" class="t-pause-mask">
+          <div style="font-size:28px;">🔒</div>
+          <div id="lblPauseTitle" style="font-size:14px;font-weight:900;color:#fde68a;"></div>
+          <div id="lblPauseSub" style="font-size:11.5px;font-weight:800;color:var(--muted);"></div>
+          <button type="button" class="btn teal" style="min-width:150px;height:42px;border-radius:21px;" id="btnResumeTally" onclick="resumeTallyFromPause()"></button>
         </div>
       </div>
+
+      <!-- ዘመናዊ መቁጠሪያ ቀስቃሽ (Swipe-Gate / Ping-Pong / Tap / Multi-Carrier) -->
+      <div id="tallyTriggerArea" class="t-trigger-wrap"></div>
+
       <div class="t-actions">
         <button type="button" class="t-btn" style="color:#fca5a5;" onclick="undoTally()"><span>↩️</span><span id="lblTUndo"></span></button>
         <button type="button" class="t-btn" style="color:var(--amber);" onclick="openNumModal('odd')"><span>➕</span><span id="lblTOdd"></span></button>
@@ -471,6 +564,7 @@
     const LANG_KEY = 'erp_lang_v4';
     const BRAND_CFG_KEY = 'erp_brand_cfg_v5';
     const TALLY_STATE_KEY = 'erp_tally_state_v6';
+    const TALLY_CFG_KEY = 'erp_tally_cfg_v1';
     const FORM_CFG_KEY = 'erp_form_cfg_v2';
     const PDF_CFG_KEY = 'erp_pdf_cfg_v2';
     const UI_CFG_KEY = 'erp_ui_cfg_v1';
@@ -486,6 +580,17 @@
       inShowDocNo: false,
       inShowKg: false,
       inShowNote: false,
+    };
+
+    const DEFAULT_TALLY_CFG = {
+      triggerMode: 'SWIPE',   // SWIPE | PINGPONG | TAP
+      visualMode: 'BATCH10',  // BATCH10 | TALLY5
+      carriers: 0,            // 0 | 2 | 3 | 4
+      showTimer: true,
+      cooldownMs: 600,        // 0 | 500 | 1000 | 2000
+      autoPauseCall: true,
+      voiceCallout: false,
+      strongHaptics: true,
     };
 
     const DEFAULT_PDF_CFG = {
@@ -529,15 +634,48 @@
         searchPh: 'ዕቃ ፈልግ... (32rx0.8 ➔ 32Ø×0.8)', qtyPh: 'ብዛት', dailySearchPh: 'ሰነድ፣ ዕቃ፣ ደንበኛ ወይም ቀን ፈልግ...',
         stockSearchPh: 'ዕቃ ወይም ካቴጎሪ ፈልግ...', mapSearchPh: 'በካርታው ላይ ዕቃ ፈልግ...',
         countBtn: 'ቁጠር', perCarry: 'በአንድ ሸክም', other: 'ሌላ',
-        counted: 'የተቆጠረ', strokes: 'ጭረት', remaining: 'ቀሪ', diff: 'ልዩነት',
+        counted: 'የተቆጠረ', tLoaded: 'የተጫነ', tUnloaded: 'የተራገፈ', tLoads: 'ሸክም',
+        tRemQty: 'ቀሪ ብዛት', tRemLoads: 'ቀሪ ሸክም', tSysBal: 'ሲስተም', diff: 'ልዩነት',
+        remLoadMix: (l, r) => `${l}ሸ+${r}`,
         undo: 'መልስ', odd: 'ጎዶሎ', clear: 'አጽዳ',
         submitOut: 'ወጪ መዝግብ', submitIn: 'ገቢ መዝግብ',
         pWeek: 'ይህ ሳምንት', pLastWeek: 'ያለፈው ሳምንት', pMonth: 'ይህ ወር', pAll: 'ሁሉም',
         stopAlert: '🛑 ግቡ ሞልቷል — ጭነት አስቆም',
-        nearAlert: (s, r) => `⚠️ የመጨረሻ ${s} ጭረት (${r} ፍሬ) ብቻ ቀረ!`,
+        tTargetDone: '🎯 ግቡ ሙሉ በሙሉ ሞልቷል',
+        nearAlert: (s, r) => `⚠️ የመጨረሻ ${s} ሸክም (${r} ፍሬ) ብቻ ቀረ!`,
         oddWarn: (r) => `🔔 ጎዶሎ፦ ${r} ፍሬ ብቻ ቀረ!`,
         overWarn: (d) => `ከግቡ +${d} ትርፍ ተገኝቷል`, shortWarn: (d) => `-${d} ጉድለት አለ`,
         exactMatch: 'ከሲስተም ቀሪ ጋር እኩል ነው',
+        sgHint: (m) => `ወደ ቀኝ ይግፉ  (+${m})`,
+        ppLeft: '◀ ግራ (A)', ppRight: 'ቀኝ (B) ▶',
+        tapHint: (m) => `+${m} ቁጠር`,
+        workerLbl: (n) => `ሰው ${n}`,
+        batchDone: (b, q) => `የተጠናቀቁ፦ ${b}×10 (${q})`,
+        batchCur: (c, q) => `የአሁኑ ዙር፦ ${c}/10 (+${q})`,
+        tallyCompBar: (l, q) => `✅ የተጠናቀቁ፦ ${l} ሸክም (${q} ፍሬ)`,
+        secAgo: (s) => `⏱ ከ${s} ሰከንድ በፊት`,
+        minAgo: (m, s) => `⏱ ከ${m}ደ ${s}ሰ በፊት`,
+        noTapYet: '⏱ ገና አልተጀመረም',
+        pauseTitle: 'ቆጠራው ተቆልፏል',
+        pauseSub: (n, q) => `የመጨረሻ ሸክም #${n} (${q} ፍሬ)`,
+        resumeBtn: '▶ ቆጠራ ቀጥል',
+        mTallyCfg: 'የቆጠራ ሴቲንግ',
+        tCfgTrigLbl: 'የመቁጠሪያ ቁልፍ ዓይነት',
+        tCfgSwipe: 'የመንሸራተቻ ማርሽ (Swipe-Gate)',
+        tCfgPP: 'ተቀያያሪ ቁልፍ (Ping-Pong A/B)',
+        tCfgTap: 'ሰፊ ነጠላ ቁልፍ (Tap)',
+        tCfgVisLbl: 'የእይታ ዘይቤ',
+        tCfgBatch10: 'ዘመናዊ 10-ዙር ነጥቦች (የሚመከር)',
+        tCfgTally5: 'ባህላዊ 5-በረድፍ ጭረት',
+        tCfgCarLbl: 'ባለብዙ ተሸካሚ ቀለም ቁልፍ',
+        tCfgCarOff: 'ጠፍቷል (1 ዋና ቁልፍ)',
+        tCfgCarN: (n) => `${n} ተሸካሚዎች`,
+        tCfgCdLbl: 'የድጋሚ-ንክኪ መከላከያ',
+        tCfgCdOff: 'ጠፍቷል',
+        tCfgTimer: 'የመጨረሻ ንክኪ ሰዓት ቆጣሪ + ብርሃን',
+        tCfgAutoPause: 'በስልክ ጥሪ ጊዜ ራስ-ሰር መቆለፊያ',
+        tCfgVoice: 'የድምፅ ንባብ (ለብሉቱዝ ጆሮ ማዳመጫ)',
+        tCfgHaptic: 'ጠንካራ ንዝረት (ለጫጫታ መጋዘን)',
         dockTot: (c, q) => `${c} ዓይነት (${q})`,
         dCols: ['ሰነድ', 'ዕቃ', 'መነሻ', 'ገቢ', 'ወጪ', 'ቀሪ', 'ደንበኛ / ምክንያት', 'ፓድ / ታርጋ', 'ቀን', '⚙️'],
         dPdfMap: { doc: 'የሰነድ ቁጥር', item: 'የዕቃው አይነት', open: 'ያለው ብዛት', inq: 'የገባ', outq: 'የወጣ', bal: 'ቀሪ', party: 'ደንበኛ / አቅራቢ', ref: 'ፓድ / ታርጋ', date: 'ቀን' },
@@ -574,7 +712,7 @@
         pdfWPh: 'ጎን (ሚ.ሜ)', pdfHPh: 'ቁመት (ሚ.ሜ)', pdfFontLbl: 'የጽሑፍ መጠን', pdfFontSm: 'ትንሽ', pdfFontMd: 'መካከለኛ', pdfFontLg: 'ትልቅ',
         pdfHeaderSubPh: 'ተጨማሪ የራስጌ መግለጫ (አማራጭ)', pdfFooterNotePh: 'የግርጌ ማስታወሻ (አማራጭ)',
         pdfChkSign: 'የፊርማ መስመር አሳይ', pdfChkOpen: 'መነሻ ብዛት አሳይ', pdfChkParty: 'ደንበኛ / አቅራቢ አሳይ',
-        pdfChkRef: 'ፓድ / ታርጋ አሳይ', pdfChkDate: 'ቀን አሳይ', pdfChkZero: 'በስቶክ ላይ 0 የሆኑትንም አሳይ',
+        pdfChkRef: 'ፓድ / ታርጋ አሳይ', pdfChkDate: 'ቀን አሳይ', pdfChkZero: 'ቀድሞ ዜሮ የቆዩትንም በስቶክ PDF አሳይ',
         pdfChkIncOpen: 'በዕለታዊ ፒዲኤፍ ላይ OPENING ንም አሳይ',
         quickNewTitle: 'አዲስ ዕቃ መዝግብ', quickNewAsk: (n) => `«${n}» በዝርዝር ውስጥ የለም። እንደ አዲስ ዕቃ ተመዝግቦ ወደ ቅርጫት ይግባ?`,
         bulkTitle: 'በጅምላ አስገባ (Excel / Sheets)',
@@ -631,15 +769,48 @@
         searchPh: 'Search item... (32rx0.8 ➔ 32Ø×0.8)', qtyPh: 'Qty', dailySearchPh: 'Search doc, item, party, date...',
         stockSearchPh: 'Search item or category...', mapSearchPh: 'Find item on map...',
         countBtn: 'Count', perCarry: 'Per load', other: 'Other',
-        counted: 'Counted', strokes: 'Strokes', remaining: 'Left', diff: 'Variance',
+        counted: 'Counted', tLoaded: 'Loaded', tUnloaded: 'Unloaded', tLoads: 'Loads',
+        tRemQty: 'Rem. Qty', tRemLoads: 'Rem. Loads', tSysBal: 'System', diff: 'Variance',
+        remLoadMix: (l, r) => `${l}L+${r}`,
         undo: 'Undo', odd: 'Odd', clear: 'Clear',
         submitOut: 'Post Issue', submitIn: 'Post Receipt',
         pWeek: 'This Week', pLastWeek: 'Last Week', pMonth: 'This Month', pAll: 'All Time',
         stopAlert: '🛑 Target reached — Stop loading',
-        nearAlert: (s, r) => `⚠️ Final ${s} strokes (${r} pcs) left!`,
+        tTargetDone: '🎯 Target Reached',
+        nearAlert: (s, r) => `⚠️ Final ${s} loads (${r} pcs) left!`,
         oddWarn: (r) => `🔔 Odd: only ${r} pcs left!`,
         overWarn: (d) => `Surplus: +${d}`, shortWarn: (d) => `Shortage: -${d}`,
         exactMatch: 'Matches system balance',
+        sgHint: (m) => `Slide right  (+${m})`,
+        ppLeft: '◀ Left (A)', ppRight: 'Right (B) ▶',
+        tapHint: (m) => `Count +${m}`,
+        workerLbl: (n) => `W${n}`,
+        batchDone: (b, q) => `Completed: ${b}×10 (${q})`,
+        batchCur: (c, q) => `Current: ${c}/10 (+${q})`,
+        tallyCompBar: (l, q) => `✅ Completed: ${l} loads (${q} pcs)`,
+        secAgo: (s) => `⏱ ${s}s ago`,
+        minAgo: (m, s) => `⏱ ${m}m ${s}s ago`,
+        noTapYet: '⏱ Ready to count',
+        pauseTitle: 'Tally Paused',
+        pauseSub: (n, q) => `Last load #${n} (${q} pcs)`,
+        resumeBtn: '▶ Resume Tally',
+        mTallyCfg: 'Tally Settings',
+        tCfgTrigLbl: 'Trigger Style',
+        tCfgSwipe: 'Swipe-Gate Slider',
+        tCfgPP: 'Ping-Pong A/B Buttons',
+        tCfgTap: 'Wide Single Tap',
+        tCfgVisLbl: 'Display Style',
+        tCfgBatch10: 'Modern 10-Batch Dots (Recommended)',
+        tCfgTally5: 'Classic 5-per-Row Tally',
+        tCfgCarLbl: 'Multi-Carrier Color Buttons',
+        tCfgCarOff: 'Off (Single Trigger)',
+        tCfgCarN: (n) => `${n} Carriers`,
+        tCfgCdLbl: 'Double-Tap Lock',
+        tCfgCdOff: 'Off',
+        tCfgTimer: 'Last-Tap Timer + Edge Glow',
+        tCfgAutoPause: 'Auto-Pause on Call / App Switch',
+        tCfgVoice: 'Voice Callout (Bluetooth Earbud)',
+        tCfgHaptic: 'Strong Industrial Vibration',
         dockTot: (c, q) => `${c} items (${q})`,
         dCols: ['Doc', 'Item', 'Open', 'In', 'Out', 'Bal', 'Party / Reason', 'Pad / Plate', 'Date', '⚙️'],
         dPdfMap: { doc: 'Doc No.', item: 'Item Name', open: 'Opening', inq: 'In', outq: 'Out', bal: 'Balance', party: 'Party', ref: 'Pad / Plate', date: 'Date' },
@@ -676,7 +847,7 @@
         pdfWPh: 'Width (mm)', pdfHPh: 'Height (mm)', pdfFontLbl: 'Font Size', pdfFontSm: 'Small', pdfFontMd: 'Medium', pdfFontLg: 'Large',
         pdfHeaderSubPh: 'Custom Header Subtitle (optional)', pdfFooterNotePh: 'Custom Footer Note (optional)',
         pdfChkSign: 'Show Signature Line', pdfChkOpen: 'Show Opening Qty', pdfChkParty: 'Show Party / Customer',
-        pdfChkRef: 'Show Pad / Plate', pdfChkDate: 'Show Date', pdfChkZero: 'Include Zero-Stock Items',
+        pdfChkRef: 'Show Pad / Plate', pdfChkDate: 'Show Date', pdfChkZero: 'Include Old Zero-Stock Items in PDF',
         pdfChkIncOpen: 'Include OPENING rows in Daily PDF',
         quickNewTitle: 'Register New Item', quickNewAsk: (n) => `"${n}" is not in catalog. Register as new item and add to basket?`,
         bulkTitle: 'Bulk Import (Excel / Sheets)',
@@ -720,6 +891,7 @@
     let authMode = 'EMAIL';
     let session = loadJson(SESSION_KEY, null);
     let formCfg = { ...DEFAULT_FORM_CFG, ...loadJson(FORM_CFG_KEY, {}) };
+    let tallyCfg = { ...DEFAULT_TALLY_CFG, ...loadJson(TALLY_CFG_KEY, {}) };
     let pdfCfg = { ...DEFAULT_PDF_CFG, ...loadJson(PDF_CFG_KEY, {}) };
     let uiCfg = { ...DEFAULT_UI_CFG, ...loadJson(UI_CFG_KEY, {}) };
     let currentWhId = '';
@@ -733,6 +905,11 @@
     let tickets = [];
     let activeTicketId = '';
     let lastTkFormSig = '';
+    let lastTriggerSig = '';
+    let ppSide = 0;
+    let tallyPaused = false;
+    let workerLastTap = [0, 0, 0, 0];
+    let stageGlowTimer = null;
     let freeTally = { label: '', target: 0, lockTarget: true, strokes: [] };
     let auditTally = { itemId: '', strokes: [] };
 
@@ -855,7 +1032,6 @@
       return s;
     }
 
-    // የመመዝገቢያ እና ቆጠራ ቅጾች የጋራ ራስጌ አዘጋጅ (100% የተዛመደ)
     function buildHeaderPayload(mode, fields) {
       const d = fields || {};
       let docNo = '', party = '', ref = '';
@@ -934,6 +1110,17 @@
         g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + d);
         o.connect(g); g.connect(audioCtx.destination);
         o.start(); o.stop(audioCtx.currentTime + d);
+      } catch {}
+    }
+
+    function speakCount(num) {
+      if (!tallyCfg.voiceCallout || !('speechSynthesis' in window)) return;
+      try {
+        window.speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(String(num));
+        u.lang = 'en-US';
+        u.rate = 1.25;
+        window.speechSynthesis.speak(u);
       } catch {}
     }
 
@@ -1486,9 +1673,9 @@
       });
     }
 
-    // ==================== ገጽ 2: ቆጠራ (ከመመዝገቢያ ጋር ሙሉ ለሙሉ የተዛመደ) ====================
+    // ==================== ገጽ 2: ዘመናዊ ቆጠራ ሞተር (v10) ====================
     function normalizeTicket(tk) {
-      const n = {
+      return {
         id: tk.id || ('tk_' + Date.now()),
         dir: tk.dir === 'IN' ? 'IN' : 'OUT',
         docNo: tk.docNo || '',
@@ -1501,7 +1688,6 @@
         items: Array.isArray(tk.items) ? tk.items : [],
         activeItemId: tk.activeItemId || '',
       };
-      return n;
     }
 
     function loadTallyState() {
@@ -1661,15 +1847,15 @@
 
     function getActiveStrokeContext() {
       if (tallyTab === 'FREE') {
-        return { strokes: freeTally.strokes, target: Number(freeTally.target || 0), hardStop: Boolean(freeTally.lockTarget), isAudit: false, enabled: true };
+        return { strokes: freeTally.strokes, target: Number(freeTally.target || 0), hardStop: Boolean(freeTally.lockTarget), isAudit: false, dir: 'FREE', enabled: true };
       }
       if (tallyTab === 'AUDIT') {
         const it = (whData.items || []).find((x) => x.id === auditTally.itemId);
-        return { strokes: auditTally.strokes, target: it ? Number(it.stock) : 0, hardStop: false, isAudit: true, enabled: Boolean(it) };
+        return { strokes: auditTally.strokes, target: it ? Number(it.stock) : 0, hardStop: false, isAudit: true, dir: 'AUDIT', enabled: Boolean(it) };
       }
       const tk = getActiveTicket(), item = getActiveTicketItem();
-      if (!item) return { strokes: [], target: 0, hardStop: false, isAudit: false, enabled: false };
-      return { strokes: item.strokes, target: Number(item.target || 0), hardStop: tk.dir === 'OUT', isAudit: false, enabled: true };
+      if (!item) return { strokes: [], target: 0, hardStop: false, isAudit: false, dir: tk.dir, enabled: false };
+      return { strokes: item.strokes, target: Number(item.target || 0), hardStop: tk.dir === 'OUT', isAudit: false, dir: tk.dir, enabled: true };
     }
 
     function sumStrokes(arr) { return (arr || []).reduce((s, x) => s + Number(x.qty || 0), 0); }
@@ -1679,66 +1865,125 @@
       try { wakeLock = await navigator.wakeLock.request('screen'); wakeLock.addEventListener('release', () => wakeLock = null); } catch {}
     }
 
-    function addTallyStroke(customQty = null) {
+    function triggerStageGlow(isBatch) {
+      if (!tallyCfg.showTimer) return;
+      const st = document.getElementById('tallyStage');
+      if (!st) return;
+      st.classList.remove('glow-ok', 'glow-batch');
+      void st.offsetWidth;
+      st.classList.add(isBatch ? 'glow-batch' : 'glow-ok');
+      if (stageGlowTimer) clearTimeout(stageGlowTimer);
+      stageGlowTimer = setTimeout(() => st.classList.remove('glow-ok', 'glow-batch'), 2600);
+    }
+
+    function setTallyPausedState(paused) {
+      tallyPaused = Boolean(paused);
+      const mask = document.getElementById('tallyPauseMask');
+      const btn = document.getElementById('btnTPause');
+      if (!mask || !btn) return;
+      if (tallyPaused) {
+        const ctx = getActiveStrokeContext();
+        document.getElementById('lblPauseTitle').textContent = t('pauseTitle');
+        document.getElementById('lblPauseSub').textContent = t('pauseSub')(ctx.strokes.length, sumStrokes(ctx.strokes).toLocaleString());
+        document.getElementById('btnResumeTally').textContent = t('resumeBtn');
+        mask.classList.add('open');
+        btn.textContent = '🔒'; btn.classList.add('locked');
+      } else {
+        mask.classList.remove('open');
+        btn.textContent = '🔓'; btn.classList.remove('locked');
+      }
+    }
+
+    function toggleManualTallyPause() { vib(20); setTallyPausedState(!tallyPaused); }
+    function resumeTallyFromPause() { vib(35); setTallyPausedState(false); }
+
+    function addTallyStroke(customQty = null, workerIdx = null) {
+      if (tallyPaused) return false;
       const ctx = getActiveStrokeContext();
-      if (!ctx.enabled) { openTicketAddItemModal(); return; }
+      if (!ctx.enabled) { openTicketAddItemModal(); return false; }
 
       const now = Date.now();
-      if (customQty === null && now - lastTapMs < 130) return;
-      lastTapMs = now; ensureWakeLock();
+      if (customQty === null) {
+        if (workerIdx !== null && workerIdx >= 0) {
+          const perWorkerCd = Math.max(2000, Number(tallyCfg.cooldownMs || 0));
+          if (now - (workerLastTap[workerIdx] || 0) < perWorkerCd) return false;
+          workerLastTap[workerIdx] = now;
+        } else {
+          const cd = Math.max(150, Number(tallyCfg.cooldownMs || 0));
+          if (now - lastTapMs < cd) return false;
+        }
+      }
+      lastTapMs = now;
+      ensureWakeLock();
 
       const counted = sumStrokes(ctx.strokes);
       if (ctx.hardStop && ctx.target > 0 && counted >= ctx.target) {
-        vib([90, 50, 120]); playTone(920, 0.16, 'square', 0.16); return;
+        vib([110, 50, 140]); playTone(920, 0.16, 'square', 0.16); return false;
       }
 
       let add = customQty !== null ? Math.floor(Number(customQty)) : Number(carryMult);
-      if (!add || add <= 0) return;
+      if (!add || add <= 0) return false;
       let isOdd = add !== carryMult;
       if (ctx.hardStop && ctx.target > 0 && counted + add > ctx.target) { add = ctx.target - counted; isOdd = add !== carryMult; }
 
-      ctx.strokes.push({ qty: add, isOdd, ts: now });
+      const entry = { qty: add, isOdd, ts: now };
+      if (workerIdx !== null && workerIdx >= 0) entry.worker = workerIdx;
+      ctx.strokes.push(entry);
       saveTallyState();
 
       const newTotal = counted + add;
+      const loads = ctx.strokes.length;
       const rem = ctx.target > 0 ? Math.max(0, ctx.target - newTotal) : 999999;
-      const remStrokes = Math.ceil(rem / Math.max(1, carryMult));
-
-      const pad = document.getElementById('tallyPad');
-      pad.classList.add('flash'); setTimeout(() => pad.classList.remove('flash'), 100);
+      const remLoads = Math.ceil(rem / Math.max(1, carryMult));
+      const strong = Boolean(tallyCfg.strongHaptics);
+      const isBatch10 = loads % 10 === 0;
+      const isFive = loads % 5 === 0;
 
       if (ctx.hardStop && ctx.target > 0 && newTotal >= ctx.target) {
-        vib([90, 50, 90, 50, 140]); playTone(880, 0.15, 'square'); setTimeout(() => playTone(1175, 0.22, 'square'), 160);
-      } else if (ctx.target > 0 && rem > 0 && remStrokes <= 3) {
-        vib([45, 30, 45]); playTone(780, 0.09, 'sawtooth', 0.14);
-      } else if (ctx.strokes.length % 5 === 0) {
-        vib([40, 25, 50]); playTone(720, 0.08, 'triangle');
+        vib([110, 50, 110, 50, 180]); playTone(880, 0.15, 'square'); setTimeout(() => playTone(1175, 0.22, 'square'), 160);
+      } else if (ctx.target > 0 && rem > 0 && remLoads <= 3) {
+        vib(strong ? [70, 35, 70] : [45, 30, 45]); playTone(780, 0.09, 'sawtooth', 0.14);
+      } else if (isBatch10) {
+        vib(strong ? [80, 40, 120] : [50, 30, 75]); playTone(760, 0.1, 'triangle');
+      } else if (isFive) {
+        vib(strong ? [65, 30, 65] : [40, 25, 45]); playTone(680, 0.07, 'triangle');
       } else {
-        vib(22); playTone(520, 0.05);
+        vib(strong ? 55 : 24); playTone(520, 0.05);
       }
 
-      renderTicketItemsStrip(); renderTallyCanvas(true); renderTallyStats();
-      const c = document.getElementById('tallyCanvas'); c.scrollTop = c.scrollHeight;
+      triggerStageGlow(isBatch10);
+      speakCount(newTotal);
+
+      renderTicketItemsStrip();
+      renderTallyVisual();
+      renderTallyStats();
+      updateCadenceStrip();
+      if (tallyCfg.carriers >= 2) updateMultiCarrierCounts();
+      if (tallyCfg.carriers === 0 && tallyCfg.triggerMode === 'TAP' && tallyCfg.cooldownMs >= 400) animateTapCooldown();
+      return true;
     }
 
     function undoTally() {
       const ctx = getActiveStrokeContext();
       if (!ctx.strokes.length) return;
-      ctx.strokes.pop(); vib(18); saveTallyState();
-      renderTicketItemsStrip(); renderTallyCanvas(false); renderTallyStats();
+      ctx.strokes.pop(); vib(24); saveTallyState();
+      renderTicketItemsStrip(); renderTallyVisual(); renderTallyStats(); updateCadenceStrip();
+      if (tallyCfg.carriers >= 2) updateMultiCarrierCounts();
     }
 
     function clearTallyUndoable() {
       const ctx = getActiveStrokeContext();
       if (!ctx.strokes.length) return;
       undoTallyBuf = ctx.strokes.slice();
-      ctx.strokes.length = 0; vib(28); saveTallyState();
-      renderTicketItemsStrip(); renderTallyCanvas(false); renderTallyStats();
+      ctx.strokes.length = 0; vib(35); saveTallyState();
+      renderTicketItemsStrip(); renderTallyVisual(); renderTallyStats(); updateCadenceStrip();
+      if (tallyCfg.carriers >= 2) updateMultiCarrierCounts();
       showToast(t('clear'), () => {
         if (undoTallyBuf) {
           undoTallyBuf.forEach((x) => ctx.strokes.push(x));
           undoTallyBuf = null; saveTallyState();
-          renderTicketItemsStrip(); renderTallyCanvas(false); renderTallyStats();
+          renderTicketItemsStrip(); renderTallyVisual(); renderTallyStats(); updateCadenceStrip();
+          if (tallyCfg.carriers >= 2) updateMultiCarrierCounts();
         }
       });
     }
@@ -1842,67 +2087,338 @@
       document.getElementById('btnTCommit').textContent =
         tallyTab === 'TICKET' ? `✅ ${t('postDirect')}` : tallyTab === 'FREE' ? `📥 ${t('sendEntry')}` : `⚡ ${t('applyAdj')}`;
 
-      renderTallyCanvas(false); renderTallyStats();
+      renderTallyVisual();
+      renderTallyStats();
+      renderTallyTrigger(forceForm);
+      updateCadenceStrip();
+      setTallyPausedState(tallyPaused);
     }
 
-    function renderTallyCanvas(animLast) {
-      const c = document.getElementById('tallyCanvas'), ctx = getActiveStrokeContext();
+    function renderTallyVisual() {
+      const box = document.getElementById('tallyVisual');
+      const ctx = getActiveStrokeContext();
       if (!ctx.enabled) {
-        c.innerHTML = `<div style="margin:auto;text-align:center;color:var(--muted);font-size:12px;font-weight:800;padding:12px;">${esc(t('tkNoItems'))}</div>`;
+        box.className = 't-visual';
+        box.innerHTML = `<div style="margin:auto;text-align:center;color:var(--muted);font-size:12px;font-weight:800;padding:12px;">${esc(t('tkNoItems'))}</div>`;
         return;
       }
+
       const s = ctx.strokes;
-      if (!s.length) {
-        c.innerHTML = `<div style="margin:auto;opacity:0.14;pointer-events:none;"><div class="t-grp" style="transform:scale(1.5);"><div class="t-bar"></div><div class="t-bar"></div><div class="t-bar"></div><div class="t-bar"></div><div class="t-slash"></div></div></div>`;
+      const n = s.length;
+
+      // ዘመናዊ የ10-ዙር መሙያ ነጥቦች (Batch-10)
+      if (tallyCfg.visualMode !== 'TALLY5') {
+        box.className = 't-visual';
+        const compBatches = n === 0 ? 0 : Math.floor((n - 1) / 10);
+        const compSum = sumStrokes(s.slice(0, compBatches * 10));
+        const curSlice = s.slice(compBatches * 10);
+        const curSum = sumStrokes(curSlice);
+
+        const dots = [];
+        for (let i = 0; i < 10; i++) {
+          const st = curSlice[i];
+          if (st) {
+            const wCls = (st.worker !== undefined && st.worker >= 0) ? `w${st.worker % 4}` : (st.isOdd ? 'odd' : 'filled');
+            const latestCls = i === curSlice.length - 1 ? 'latest' : '';
+            dots.push(`<div class="b-dot ${wCls} ${latestCls}">+${st.qty}</div>`);
+          } else {
+            dots.push(`<div class="b-dot">${i + 1}</div>`);
+          }
+        }
+
+        box.innerHTML = `
+          <div class="batch-summary">
+            <span class="batch-chip">${esc(t('batchDone')(compBatches, compSum.toLocaleString()))}</span>
+            <span class="batch-sub">${esc(t('batchCur')(curSlice.length, curSum.toLocaleString()))}</span>
+          </div>
+          <div class="dot-ring">${dots.join('')}</div>`;
         return;
       }
-      let h = '';
-      for (let i = 0; i < s.length; i += 5) {
-        const ch = s.slice(i, i + 5);
-        h += '<div class="t-grp">';
-        for (let b = 0; b < Math.min(4, ch.length); b++) h += `<div class="t-bar ${ch[b].isOdd ? 'odd' : ''} ${animLast && i + b === s.length - 1 ? 'anim-b' : ''}"></div>`;
-        if (ch.length === 5) h += `<div class="t-slash ${animLast && i + 4 === s.length - 1 ? 'anim-s' : ''}"></div>`;
-        h += '</div>';
+
+      // ባህላዊ 5-በረድፍ ንጹህ ጭረት ሠንጠረዥ (25 ጭረት በረድፍ)
+      box.className = 't-visual tally-mode';
+      if (!n) {
+        box.innerHTML = `<div style="margin:auto;opacity:0.15;"><div class="t-grp" style="transform:scale(1.4);"><div class="t-bar"></div><div class="t-bar"></div><div class="t-bar"></div><div class="t-bar"></div><div class="t-slash"></div></div></div>`;
+        return;
       }
-      c.innerHTML = h;
+
+      const skipHundreds = n > 100 ? Math.floor((n - 1) / 100) * 100 : 0;
+      let runningQty = sumStrokes(s.slice(0, skipHundreds));
+      let html = '';
+      if (skipHundreds > 0) {
+        html += `<div class="tally-compact-bar">${esc(t('tallyCompBar')(skipHundreds, runningQty.toLocaleString()))}</div>`;
+      }
+
+      const vis = s.slice(skipHundreds);
+      for (let r = 0; r < vis.length; r += 25) {
+        const rowChunk = vis.slice(r, r + 25);
+        runningQty += sumStrokes(rowChunk);
+        let grps = '';
+        for (let g = 0; g < 5; g++) {
+          const ch = rowChunk.slice(g * 5, g * 5 + 5);
+          if (!ch.length) { grps += '<div></div>'; continue; }
+          grps += '<div class="t-grp">';
+          for (let b = 0; b < Math.min(4, ch.length); b++) {
+            grps += `<div class="t-bar ${ch[b].isOdd ? 'odd' : ''}"></div>`;
+          }
+          if (ch.length === 5) grps += '<div class="t-slash"></div>';
+          grps += '</div>';
+        }
+        html += `<div class="tally-row-5">${grps}<span class="tally-row-tot">${runningQty.toLocaleString()}</span></div>`;
+      }
+      box.innerHTML = html;
+      box.scrollTop = box.scrollHeight;
     }
 
     function renderTallyStats() {
       const ctx = getActiveStrokeContext();
-      const cnt = sumStrokes(ctx.strokes), trg = ctx.target;
+      const cnt = sumStrokes(ctx.strokes);
+      const loads = ctx.strokes.length;
+      const trg = ctx.target;
+      const mult = Math.max(1, Number(carryMult || 1));
+
+      document.getElementById('lblTCounted').textContent =
+        ctx.dir === 'OUT' ? t('tLoaded') : (ctx.dir === 'IN' ? t('tUnloaded') : t('counted'));
+      document.getElementById('lblTStrokes').textContent = t('tLoads');
       document.getElementById('valTCounted').textContent = cnt.toLocaleString();
-      document.getElementById('valTStrokes').textContent = ctx.strokes.length.toLocaleString();
-      const rLbl = document.getElementById('lblTRight'), rVal = document.getElementById('valTRight');
-      const box = document.getElementById('tallyAlert'), pad = document.getElementById('tallyPad');
-      box.className = 'alert-box'; pad.classList.remove('done', 'near');
+      document.getElementById('valTStrokes').textContent = loads.toLocaleString();
+
+      const rQtyLbl = document.getElementById('lblTRemQty');
+      const rQtyVal = document.getElementById('valTRemQty');
+      const rLdLbl = document.getElementById('lblTRemLoads');
+      const rLdVal = document.getElementById('valTRemLoads');
+      const box = document.getElementById('tallyAlert');
+      const stage = document.getElementById('tallyStage');
+      const prog = document.getElementById('tProgFill');
+
+      box.className = 'alert-box';
+      stage.classList.remove('done', 'near');
+      rLdVal.className = 't-kpi-val c-pr';
+
+      if (trg > 0) {
+        const pct = Math.min(100, Math.round((cnt / trg) * 100));
+        prog.style.width = `${pct}%`;
+      } else {
+        prog.style.width = '0%';
+      }
 
       if (ctx.isAudit) {
         const d = cnt - trg;
-        rLbl.textContent = t('diff'); rVal.textContent = (d > 0 ? '+' : '') + d;
+        rQtyLbl.textContent = t('diff');
+        rQtyVal.textContent = (d > 0 ? '+' : '') + d.toLocaleString();
+        rLdLbl.textContent = t('tSysBal');
+        rLdVal.textContent = trg.toLocaleString();
         if (d > 0) { box.className = 'alert-box over'; box.textContent = t('overWarn')(d); }
         else if (d < 0 && cnt > 0) { box.className = 'alert-box warn'; box.textContent = t('shortWarn')(Math.abs(d)); }
-        else if (d === 0 && cnt > 0) { box.className = 'alert-box stop'; box.textContent = t('exactMatch'); pad.classList.add('done'); }
+        else if (d === 0 && cnt > 0) { box.className = 'alert-box stop'; box.textContent = t('exactMatch'); stage.classList.add('done'); }
       } else {
-        rLbl.textContent = t('remaining');
-        if (trg <= 0) rVal.textContent = '∞';
-        else {
+        rQtyLbl.textContent = t('tRemQty');
+        rLdLbl.textContent = t('tRemLoads');
+        if (trg <= 0) {
+          rQtyVal.textContent = '∞';
+          rLdVal.textContent = '∞';
+        } else {
           const rem = Math.max(0, trg - cnt);
-          const remStrokes = Math.ceil(rem / Math.max(1, carryMult));
+          const fullL = Math.floor(rem / mult);
+          const oddR = rem % mult;
+          const remLoadsCeil = Math.ceil(rem / mult);
+
+          if (rem === 0) {
+            rLdVal.textContent = '0';
+          } else if (oddR === 0) {
+            rLdVal.textContent = fullL.toLocaleString();
+          } else if (fullL === 0) {
+            rLdVal.textContent = `+${oddR}`;
+          } else {
+            rLdVal.classList.add('sm');
+            rLdVal.textContent = t('remLoadMix')(fullL, oddR);
+          }
+
           if (ctx.hardStop) {
-            rVal.textContent = rem.toLocaleString();
-            if (cnt >= trg) { box.className = 'alert-box stop'; box.textContent = t('stopAlert'); pad.classList.add('done'); }
-            else if (rem < carryMult) { box.className = 'alert-box warn'; box.textContent = t('oddWarn')(rem); pad.classList.add('near'); }
-            else if (remStrokes <= 3) { box.className = 'alert-box warn'; box.textContent = t('nearAlert')(remStrokes, rem); pad.classList.add('near'); }
+            rQtyVal.textContent = rem.toLocaleString();
+            if (cnt >= trg) { box.className = 'alert-box stop'; box.textContent = t('stopAlert'); stage.classList.add('done'); }
+            else if (rem < mult) { box.className = 'alert-box warn'; box.textContent = t('oddWarn')(rem); stage.classList.add('near'); }
+            else if (remLoadsCeil <= 3) { box.className = 'alert-box warn'; box.textContent = t('nearAlert')(remLoadsCeil, rem); stage.classList.add('near'); }
           } else {
             const d = cnt - trg;
-            rVal.textContent = d >= 0 ? `+${d}` : rem.toLocaleString();
+            rQtyVal.textContent = d > 0 ? `+${d.toLocaleString()}` : rem.toLocaleString();
             if (d > 0) { box.className = 'alert-box over'; box.textContent = t('overWarn')(d); }
-            else if (d === 0) { box.className = 'alert-box stop'; box.textContent = t('exactMatch'); pad.classList.add('done'); }
-            else if (rem < carryMult) { box.className = 'alert-box warn'; box.textContent = t('oddWarn')(rem); pad.classList.add('near'); }
-            else if (remStrokes <= 3) { box.className = 'alert-box warn'; box.textContent = t('nearAlert')(remStrokes, rem); pad.classList.add('near'); }
+            else if (d === 0) { box.className = 'alert-box stop'; box.textContent = t('tTargetDone'); stage.classList.add('done'); }
+            else if (rem < mult) { box.className = 'alert-box warn'; box.textContent = t('oddWarn')(rem); stage.classList.add('near'); }
+            else if (remLoadsCeil <= 3) { box.className = 'alert-box warn'; box.textContent = t('nearAlert')(remLoadsCeil, rem); stage.classList.add('near'); }
           }
         }
       }
+    }
+
+    function updateCadenceStrip() {
+      const bar = document.getElementById('cadenceBar');
+      if (!bar) return;
+      bar.style.display = tallyCfg.showTimer ? 'flex' : 'none';
+      if (!tallyCfg.showTimer) return;
+
+      const ctx = getActiveStrokeContext();
+      const s = ctx.strokes;
+      const timerEl = document.getElementById('cadenceTimer');
+      const pillsEl = document.getElementById('cadencePills');
+
+      if (!s.length) {
+        timerEl.className = 'cadence-timer stale';
+        timerEl.textContent = t('noTapYet');
+        pillsEl.innerHTML = '';
+        return;
+      }
+
+      const lastTs = s[s.length - 1].ts || 0;
+      const diffSec = Math.max(0, Math.floor((Date.now() - lastTs) / 1000));
+      timerEl.className = 'cadence-timer ' + (diffSec <= 4 ? 'fresh' : 'stale');
+      if (diffSec < 60) timerEl.textContent = t('secAgo')(diffSec);
+      else timerEl.textContent = t('minAgo')(Math.floor(diffSec / 60), diffSec % 60);
+
+      const recent = s.slice(-3).reverse();
+      pillsEl.innerHTML = recent.map((st, idx) => {
+        const realIdx = s.length - 1 - idx;
+        const prev = realIdx > 0 ? s[realIdx - 1] : null;
+        const gap = prev && prev.ts ? ((st.ts - prev.ts) / 1000) : null;
+        const isFast = gap !== null && gap < 1.3;
+        const gapTxt = gap !== null ? `${gap < 10 ? gap.toFixed(1) : Math.round(gap)}s` : '•';
+        return `<span class="c-pill ${isFast ? 'fast' : ''}">#${realIdx + 1} (${gapTxt})</span>`;
+      }).join('');
+    }
+
+    function renderTallyTrigger(force = false) {
+      const area = document.getElementById('tallyTriggerArea');
+      if (!area) return;
+      const sig = `${tallyCfg.carriers}|${tallyCfg.triggerMode}|${carryMult}|${lang}`;
+      if (!force && sig === lastTriggerSig) {
+        if (tallyCfg.carriers >= 2) updateMultiCarrierCounts();
+        return;
+      }
+      lastTriggerSig = sig;
+
+      // D. ባለብዙ ተሸካሚ ቀለም ቁልፎች (2 / 3 / 4 ሰዎች)
+      if (tallyCfg.carriers >= 2) {
+        const n = Math.min(4, Math.max(2, Number(tallyCfg.carriers)));
+        area.innerHTML = `<div class="mc-grid" style="grid-template-columns:repeat(${n},1fr);">
+          ${Array.from({ length: n }, (_, i) => `
+            <button type="button" class="mc-btn c${i}" id="mcBtn${i}" onclick="onMultiCarrierTap(${i})">
+              <span>${esc(t('workerLbl')(i + 1))} (+${carryMult})</span>
+              <span class="mc-cnt" id="mcCnt${i}">0</span>
+            </button>`).join('')}
+        </div>`;
+        updateMultiCarrierCounts();
+        return;
+      }
+
+      // B. ተቀያያሪ ቁልፍ (Ping-Pong A/B)
+      if (tallyCfg.triggerMode === 'PINGPONG') {
+        area.innerHTML = `<div class="pp-grid">
+          <button type="button" id="ppBtn0" class="pp-btn ${ppSide === 0 ? 'ready' : ''}" onclick="onPingPongTap(0)">${esc(t('ppLeft'))} (+${carryMult})</button>
+          <button type="button" id="ppBtn1" class="pp-btn ${ppSide === 1 ? 'ready' : ''}" onclick="onPingPongTap(1)">${esc(t('ppRight'))} (+${carryMult})</button>
+        </div>`;
+        return;
+      }
+
+      // C. ሰፊ ነጠላ ቁልፍ (Wide Tap)
+      if (tallyCfg.triggerMode === 'TAP') {
+        area.innerHTML = `<button type="button" id="wideTapBtn" class="tap-btn" onclick="addTallyStroke()">
+          <span>⚡ ${esc(t('tapHint')(carryMult))}</span>
+          <div id="tapCdBar" class="tap-cd-bar"></div>
+        </button>`;
+        return;
+      }
+
+      // A. የመንሸራተቻ ማርሽ (Swipe-Gate — ነባሪ ዋና ቀስቃሽ)
+      area.innerHTML = `
+        <div id="sgTrack" class="sg-track">
+          <div id="sgFill" class="sg-fill"></div>
+          <span class="sg-label">${esc(t('sgHint')(carryMult))}</span>
+          <div id="sgThumb" class="sg-thumb">❯❯</div>
+        </div>`;
+      bindSwipeGate();
+    }
+
+    function bindSwipeGate() {
+      const track = document.getElementById('sgTrack');
+      const thumb = document.getElementById('sgThumb');
+      const fill = document.getElementById('sgFill');
+      if (!track || !thumb || !fill) return;
+
+      let active = false, startX = 0, maxTravel = 1, triggered = false;
+
+      const resetThumb = () => {
+        thumb.classList.add('snap');
+        thumb.style.transform = 'translate3d(0,0,0)';
+        fill.style.width = '0%';
+      };
+
+      track.addEventListener('pointerdown', (e) => {
+        if (!e.isPrimary || tallyPaused) return;
+        const rect = track.getBoundingClientRect();
+        maxTravel = Math.max(40, rect.width - thumb.offsetWidth - 10);
+        active = true; triggered = false; startX = e.clientX;
+        thumb.classList.remove('snap');
+        try { track.setPointerCapture(e.pointerId); } catch {}
+      });
+
+      track.addEventListener('pointermove', (e) => {
+        if (!active || triggered) return;
+        const dx = Math.max(0, Math.min(maxTravel, e.clientX - startX));
+        thumb.style.transform = `translate3d(${dx}px,0,0)`;
+        fill.style.width = `${Math.round((dx / maxTravel) * 100)}%`;
+        if (dx >= maxTravel * 0.64) {
+          triggered = true;
+          active = false;
+          addTallyStroke(null, null);
+          resetThumb();
+        }
+      });
+
+      const endDrag = () => { if (!active) return; active = false; resetThumb(); };
+      track.addEventListener('pointerup', endDrag);
+      track.addEventListener('pointercancel', endDrag);
+    }
+
+    function onPingPongTap(side) {
+      if (side !== ppSide) return;
+      if (addTallyStroke(null, null)) {
+        ppSide = 1 - ppSide;
+        document.getElementById('ppBtn0')?.classList.toggle('ready', ppSide === 0);
+        document.getElementById('ppBtn1')?.classList.toggle('ready', ppSide === 1);
+      }
+    }
+
+    function onMultiCarrierTap(wIdx) {
+      if (addTallyStroke(null, wIdx)) {
+        const btn = document.getElementById(`mcBtn${wIdx}`);
+        if (btn) {
+          const perWorkerCd = Math.max(2000, Number(tallyCfg.cooldownMs || 0));
+          btn.classList.add('cooling');
+          setTimeout(() => btn.classList.remove('cooling'), perWorkerCd);
+        }
+      }
+    }
+
+    function updateMultiCarrierCounts() {
+      const ctx = getActiveStrokeContext();
+      const counts = [0, 0, 0, 0];
+      (ctx.strokes || []).forEach((st) => {
+        if (st.worker !== undefined && st.worker >= 0 && st.worker < 4) counts[st.worker]++;
+      });
+      for (let i = 0; i < 4; i++) {
+        const el = document.getElementById(`mcCnt${i}`);
+        if (el) el.textContent = String(counts[i]);
+      }
+    }
+
+    function animateTapCooldown() {
+      const bar = document.getElementById('tapCdBar');
+      if (!bar) return;
+      bar.style.transition = 'none';
+      bar.style.width = '100%';
+      void bar.offsetWidth;
+      bar.style.transition = `width ${tallyCfg.cooldownMs}ms linear`;
+      bar.style.width = '0%';
     }
 
     function openNumModal(mode) {
@@ -1916,10 +2432,75 @@
         const v = Math.floor(Number(inp.value || 0));
         if (v <= 0) return;
         closeMainModal();
-        if (mode === 'custom') { carryMult = v; saveTallyState(); renderTally(false); } else addTallyStroke(v);
+        if (mode === 'custom') { carryMult = v; saveTallyState(); renderTally(false); } else addTallyStroke(v, null);
       };
     }
-    // ==================== የደህንነት ፒን / ፓስወርድ ማረጋገጫ (v9) ====================
+
+    // የቆጠራ ሴቲንግ (በግራ ጎን ሜኑ + በቆጠራ ገጽ ላይ በቀጥታ የሚከፈት)
+    function openTallyCfgModal() {
+      vib(18);
+      openMainModal(t('mTallyCfg'), `
+        <div class="sub-card">
+          <span class="lbl-sm">${esc(t('tCfgTrigLbl'))}</span>
+          <select id="tcTrig" class="sel">
+            <option value="SWIPE" ${tallyCfg.triggerMode==='SWIPE'?'selected':''}>${esc(t('tCfgSwipe'))}</option>
+            <option value="PINGPONG" ${tallyCfg.triggerMode==='PINGPONG'?'selected':''}>${esc(t('tCfgPP'))}</option>
+            <option value="TAP" ${tallyCfg.triggerMode==='TAP'?'selected':''}>${esc(t('tCfgTap'))}</option>
+          </select>
+          <span class="lbl-sm">${esc(t('tCfgVisLbl'))}</span>
+          <select id="tcVis" class="sel">
+            <option value="BATCH10" ${tallyCfg.visualMode==='BATCH10'?'selected':''}>${esc(t('tCfgBatch10'))}</option>
+            <option value="TALLY5" ${tallyCfg.visualMode==='TALLY5'?'selected':''}>${esc(t('tCfgTally5'))}</option>
+          </select>
+          <div class="grid-2">
+            <div>
+              <span class="lbl-sm">${esc(t('tCfgCarLbl'))}</span>
+              <select id="tcCar" class="sel" style="margin-top:3px;">
+                <option value="0" ${tallyCfg.carriers===0?'selected':''}>${esc(t('tCfgCarOff'))}</option>
+                <option value="2" ${tallyCfg.carriers===2?'selected':''}>${esc(t('tCfgCarN')(2))}</option>
+                <option value="3" ${tallyCfg.carriers===3?'selected':''}>${esc(t('tCfgCarN')(3))}</option>
+                <option value="4" ${tallyCfg.carriers===4?'selected':''}>${esc(t('tCfgCarN')(4))}</option>
+              </select>
+            </div>
+            <div>
+              <span class="lbl-sm">${esc(t('tCfgCdLbl'))}</span>
+              <select id="tcCd" class="sel" style="margin-top:3px;">
+                <option value="0" ${tallyCfg.cooldownMs===0?'selected':''}>${esc(t('tCfgCdOff'))}</option>
+                <option value="600" ${tallyCfg.cooldownMs===600?'selected':''}>0.6s</option>
+                <option value="1000" ${tallyCfg.cooldownMs===1000?'selected':''}>1.0s</option>
+                <option value="2000" ${tallyCfg.cooldownMs===2000?'selected':''}>2.0s</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="sub-card">
+          <label class="chk-row"><input type="checkbox" id="tcTimer" ${tallyCfg.showTimer?'checked':''}><span>${esc(t('tCfgTimer'))}</span></label>
+          <label class="chk-row"><input type="checkbox" id="tcAutoPause" ${tallyCfg.autoPauseCall?'checked':''}><span>${esc(t('tCfgAutoPause'))}</span></label>
+          <label class="chk-row"><input type="checkbox" id="tcVoice" ${tallyCfg.voiceCallout?'checked':''}><span>${esc(t('tCfgVoice'))}</span></label>
+          <label class="chk-row"><input type="checkbox" id="tcHaptic" ${tallyCfg.strongHaptics?'checked':''}><span>${esc(t('tCfgHaptic'))}</span></label>
+        </div>`,
+        `<button type="button" class="btn muted" onclick="closeMainModal()">${esc(t('cancel'))}</button>
+         <button type="button" class="btn teal" onclick="saveTallyCfg()">${esc(t('save'))}</button>`);
+    }
+
+    function saveTallyCfg() {
+      vib(22);
+      tallyCfg = {
+        triggerMode: document.getElementById('tcTrig').value,
+        visualMode: document.getElementById('tcVis').value,
+        carriers: Number(document.getElementById('tcCar').value || 0),
+        cooldownMs: Number(document.getElementById('tcCd').value || 0),
+        showTimer: document.getElementById('tcTimer').checked,
+        autoPauseCall: document.getElementById('tcAutoPause').checked,
+        voiceCallout: document.getElementById('tcVoice').checked,
+        strongHaptics: document.getElementById('tcHaptic').checked,
+      };
+      saveJson(TALLY_CFG_KEY, tallyCfg);
+      closeMainModal();
+      renderTally(true);
+      showToast(t('savedOk'));
+    }
+    // ==================== የደህንነት ፒን / ፓስወርድ ማረጋገጫ ====================
     function promptSecurityVerify(requireAdmin, onAuthorized) {
       vib(20);
       const msg = requireAdmin ? t('authVerifyAdminMsg') : t('authVerifyMsg');
@@ -2480,7 +3061,7 @@
       document.getElementById('btnPdfSend').textContent = `${t('pdfSend')} (${cnt})`;
     }
 
-    // ==================== የፒዲኤፍ መድረሻ መምረጫ + ተቆለፈ መጠን ባለገጽ PDF ሞተር ====================
+    // ==================== ቀላል (~1 MB) ባለገጽ PDF ሞተር + የዚህ ሳምንት ዜሮ ማጣሪያ ====================
     function openDestinationPicker(title, onSelect) {
       vib(18);
       const chBtns = (cachedChannels || []).map((c) => `
@@ -2572,9 +3153,32 @@
         const units = [];
 
         if (isStock) {
+          let movedThisWeek = null;
+          if (!onlyIds && !pdfCfg.stockShowZero && stockPeriod !== 'WEEK') {
+            try {
+              const wb = getPeriodBounds('WEEK');
+              const wr = await callRpc('rpc_get_period_stock_report', { p_token: session.token, p_warehouse_id: currentWhId, p_start: wb.start, p_end: wb.end, p_active_only: false });
+              if (wr?.success) {
+                movedThisWeek = new Set();
+                (wr.rows || []).forEach((w) => {
+                  if (Number(w.in_qty || 0) > 0 || Number(w.out_qty || 0) > 0 || Number(w.adj_net_qty || 0) !== 0) {
+                    movedThisWeek.add(w.item_id);
+                  }
+                });
+              }
+            } catch {}
+          }
+
+          // ቀድሞ ዜሮ ሆነው የቆዩትን አጥርቶ ንቁዎችን + በዚህ ሳምንት ወደ 0 የወረዱትን ብቻ ማካተት
           const baseList = onlyIds
             ? stockRows.filter((r) => onlyIds.includes(r.item_id))
-            : stockRows.filter((r) => pdfCfg.stockShowZero || r.closing_qty > 0 || r.in_qty > 0 || r.out_qty > 0 || r.adj_net_qty !== 0);
+            : stockRows.filter((r) => {
+                if (pdfCfg.stockShowZero) return true;
+                if (Number(r.closing_qty || 0) > 0) return true;
+                if (movedThisWeek) return movedThisWeek.has(r.item_id);
+                return Number(r.in_qty || 0) > 0 || Number(r.out_qty || 0) > 0 || Number(r.adj_net_qty || 0) !== 0;
+              });
+
           const groups = buildOrderedStockGroups(baseList, '');
           const hasAdj = baseList.some((r) => Number(r.adj_net_qty || 0) !== 0);
           const sm = t('sPdfMap');
@@ -2750,7 +3354,7 @@
         if (pages[pages.length - 1].usedH > maxBodyLast) pages.push({ rows: [], usedH: 0 });
 
         const { jsPDF } = window.jspdf;
-        const pdf = new jsPDF({ orientation: orient, unit: 'pt', format: [pw, ph] });
+        const pdf = new jsPDF({ orientation: orient, unit: 'pt', format: [pw, ph], compress: true });
         const actualW = pdf.internal.pageSize.getWidth();
         const actualH = pdf.internal.pageSize.getHeight();
         const totalPages = pages.length;
@@ -2777,11 +3381,12 @@
 
           const pageEl = stage.firstElementChild;
           const canvas = await window.html2canvas(pageEl, {
-            scale: 2, backgroundColor: '#ffffff', width: stagePx, height: pagePxH,
+            scale: 1.5, backgroundColor: '#ffffff', width: stagePx, height: pagePxH,
             windowWidth: stagePx, windowHeight: pagePxH, scrollX: 0, scrollY: 0,
           });
           if (i > 0) pdf.addPage([pw, ph], orient);
-          pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, actualW, actualH);
+          // JPEG 0.84 + FAST compression: ከ42MB ወደ ~0.8MB በከፍተኛ ጥራት!
+          pdf.addImage(canvas.toDataURL('image/jpeg', 0.84), 'JPEG', 0, 0, actualW, actualH, undefined, 'FAST');
         }
 
         stage.innerHTML = '';
@@ -2814,7 +3419,7 @@
             method: 'POST', headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'x-session-token': session.token }, body: fd,
           }).then((r) => r.json());
           if (res.success) { vib([30, 25, 45]); showToast(t('savedOk')); }
-          else { pdf.save(fileName); showToast(t('pdfLocal')); }
+          else { pdf.save(fileName); showToast(res.errors?.[0] || res.error || t('pdfLocal')); }
         } catch {
           pdf.save(fileName); showToast(t('pdfLocal'));
         }
@@ -2939,6 +3544,7 @@
         items.push({ ico: '✅', lbl: t('mApprovals'), fn: 'openApprovalsManager()', badge: whData.pending_adjustments_count || 0 });
         items.push({ ico: '⚠️', lbl: t('mRisk'), fn: 'sendRiskAuditNow()' });
       }
+      items.push({ ico: '🧮', lbl: t('mTallyCfg'), fn: 'openTallyCfgModal()' });
       items.push({ ico: '⚙️', lbl: t('mFormCfg'), fn: 'openFormCfgModal()' });
       items.push({ ico: '📄', lbl: t('mPdfCfg'), fn: 'openPdfCfgModal()' });
       items.push({ ico: '🔑', lbl: t('mPin'), fn: 'openOwnPinModal()' });
@@ -3265,6 +3871,11 @@
     async function saveNotifChannel(btnEl) {
       await withBusy(btnEl, async () => {
         const tp = document.getElementById('chType').value;
+        const target = document.getElementById('chTarget').value.trim();
+        if (!target) { showToast(t('errGeneric')); return; }
+        if (tp === 'WEBHOOK' && !/^https?:\/\//i.test(target)) {
+          showToast('Webhook URL must start with https://'); return;
+        }
         const c1 = document.getElementById('chCred1').value.trim();
         const c2 = document.getElementById('chCred2').value.trim();
         const c3 = document.getElementById('chCred3').value.trim();
@@ -3281,7 +3892,7 @@
             warehouse_id: document.getElementById('chWh').value || null,
             channel_type: tp,
             label: document.getElementById('chLabel').value.trim() || chTypeLabel(tp),
-            target_address: document.getElementById('chTarget').value.trim(),
+            target_address: target,
             credentials: creds,
             events: events.length ? events : ['ALL'],
           },
@@ -3294,10 +3905,10 @@
     }
 
     async function linkTelegramWebhook(channelId, silent = false, btnEl = null) {
-      const fn = async () => { const res = await callBot({ action: 'register_telegram_webhook', channel_id: channelId }); if (!silent) showToast(res.success ? t('savedOk') : t('errGeneric')); };
+      const fn = async () => { const res = await callBot({ action: 'register_telegram_webhook', channel_id: channelId }); if (!silent) showToast(res.success ? t('savedOk') : (res.error || t('errGeneric'))); };
       if (btnEl) await withBusy(btnEl, fn); else await fn();
     }
-    async function testNotifChannel(channelId, btnEl) { await withBusy(btnEl, async () => { const res = await callBot({ action: 'test_channel', channel_id: channelId }); showToast(res.success ? t('savedOk') : t('errGeneric')); }); }
+    async function testNotifChannel(channelId, btnEl) { await withBusy(btnEl, async () => { const res = await callBot({ action: 'test_channel', channel_id: channelId }); showToast(res.success ? t('savedOk') : (res.error || t('errGeneric'))); }); }
     async function deleteNotifChannel(channelId) { vib(20); await callRpc('rpc_manage_notification_channels', { p_token: session.token, p_action: 'DELETE', p_payload: { organization_id: whData.warehouse.organization_id, channel_id: channelId } }); openChannelsManager(); }
 
     // ዕቃዎች + ብልህ በጅምላ መገልበጫ
@@ -3455,7 +4066,7 @@
       await withBusy(null, async () => {
         showToast(t('busyTxt'));
         const res = await callBot({ action: 'send_risk_audit', warehouse_id: currentWhId });
-        showToast(res.success ? t('savedOk') : t('errGeneric'));
+        showToast(res.success ? t('savedOk') : (res.errors?.[0] || res.error || t('errGeneric')));
       });
     }
 
@@ -3470,7 +4081,7 @@
       });
     }
 
-    // ==================== ዳሰሳ፣ ቋንቋ እና ጅማሬ ====================
+    // ==================== ዳሰሳ፣ ቋንቋ፣ የጥሪ መቆለፊያ እና ጅማሬ ====================
     function openMainModal(title, bodyHtml, footHtml) { document.getElementById('modalTitle').textContent = title; document.getElementById('modalBody').innerHTML = bodyHtml; document.getElementById('modalFoot').innerHTML = footHtml; document.getElementById('mainModal').classList.add('open'); }
     function closeMainModal() { stopQrCamera(); document.getElementById('mainModal').classList.remove('open'); }
 
@@ -3535,7 +4146,9 @@
       document.getElementById('btnTAudit').textContent = t('tAudit');
       document.getElementById('lblPerCarry').textContent = t('perCarry');
       document.getElementById('lblTCounted').textContent = t('counted');
-      document.getElementById('lblTStrokes').textContent = t('strokes');
+      document.getElementById('lblTStrokes').textContent = t('tLoads');
+      document.getElementById('lblTRemQty').textContent = t('tRemQty');
+      document.getElementById('lblTRemLoads').textContent = t('tRemLoads');
       document.getElementById('lblTUndo').textContent = t('undo');
       document.getElementById('lblTOdd').textContent = t('odd');
       document.getElementById('lblTClear').textContent = t('clear');
@@ -3554,16 +4167,20 @@
       document.getElementById('btnPdfShare').textContent = t('pdfShare');
     }
 
-    (function setupTallyGestures() {
-      const pad = document.getElementById('tallyPad');
-      let sx = 0, sy = 0, st = 0;
-      pad.addEventListener('pointerdown', (e) => { if (!e.isPrimary || e.target.closest('.t-stats')) return; sx = e.clientX; sy = e.clientY; st = Date.now(); });
-      pad.addEventListener('pointerup', (e) => {
-        if (!e.isPrimary || e.target.closest('.t-stats')) return;
-        const dx = e.clientX - sx, dy = e.clientY - sy, dt = Date.now() - st;
-        if ((Math.hypot(dx, dy) < 14 && dt < 450) || (Math.abs(dx) > 30 && Math.abs(dx) > Math.abs(dy) * 0.9 && dt < 500)) addTallyStroke();
-      });
-    })();
+    // በስልክ ጥሪ ወይም ከአፑ ሲወጡ ራስ-ሰር መቆለፊያ
+    function maybeAutoPauseTally() {
+      if (!tallyCfg.autoPauseCall || tallyPaused) return;
+      if (!document.getElementById('viewTally')?.classList.contains('active')) return;
+      const ctx = getActiveStrokeContext();
+      if (ctx.strokes && ctx.strokes.length > 0) setTallyPausedState(true);
+    }
+    document.addEventListener('visibilitychange', () => { if (document.hidden) maybeAutoPauseTally(); });
+    window.addEventListener('blur', maybeAutoPauseTally);
+
+    // የመጨረሻ ንክኪ ሰዓት ቆጣሪ በየሰከንዱ እንዲታደስ
+    setInterval(() => {
+      if (document.getElementById('viewTally')?.classList.contains('active')) updateCadenceStrip();
+    }, 1000);
 
     (function boot() {
       const urlOrg = new URLSearchParams(location.search).get('org');
