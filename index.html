@@ -38,6 +38,7 @@
     .topbar { height: 42px; display: flex; align-items: center; gap: 6px; background: var(--surface); border: 1px solid var(--border-strong); border-radius: 12px; padding: 0 7px; margin-bottom: 5px; flex-shrink: 0; }
     .icon-btn { width: 32px; height: 30px; border-radius: 8px; border: 1px solid var(--border-strong); background: var(--surface-deep); color: var(--primary); font-size: 13.5px; font-weight: 900; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
     .icon-btn.on { background: rgba(14,165,233,0.25); border-color: var(--primary); color: #fff; }
+    .icon-btn.voice-on { background: rgba(20,184,166,0.25); border-color: var(--teal); color: #5eead4; }
     .icon-btn.locked { background: rgba(239,68,68,0.22); border-color: var(--rose); color: #fca5a5; }
     .brand-box { display: flex; flex-direction: column; min-width: 0; flex-shrink: 1; line-height: 1.18; }
     .brand-name { font-size: 12px; font-weight: 900; letter-spacing: 0.2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -59,7 +60,7 @@
     .view { display: none; flex: 1; min-height: 0; flex-direction: column; overflow: hidden; }
     .view.active { display: flex; }
     .seg { display: flex; gap: 5px; margin-bottom: 5px; flex-shrink: 0; align-items: center; }
-    .seg-btn { flex: 1; height: 32px; border-radius: 10px; border: 1px solid var(--border-strong); background: var(--surface); color: var(--muted); font-size: 11px; font-weight: 900; cursor: pointer; }
+    .seg-btn { flex: 1; height: 32px; border-radius: 10px; border: 1px solid var(--border-strong); background: var(--surface); color: var(--muted); font-size: 11px; font-weight: 900; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 4px; }
     .seg-btn.out { background: #3b0a0a; border-color: var(--rose); color: #fca5a5; }
     .seg-btn.in { background: #052e16; border-color: var(--emerald); color: #86efac; }
     .seg-btn.adj { background: #172554; border-color: var(--primary); color: #7dd3fc; }
@@ -111,27 +112,47 @@
     .dock-btn.out { background: var(--rose); color: #fff; }
     .dock-btn.in { background: var(--emerald); color: #052e16; }
 
-    /* ==================== ገጽ 2: ዘመናዊ ቆጠራ ==================== */
-    .ticket-bar { display: flex; gap: 5px; overflow-x: auto; margin-bottom: 4px; flex-shrink: 0; padding-bottom: 2px; }
-    .tk-tab { height: 28px; padding: 0 10px; border-radius: 14px; border: 1px solid var(--border-strong); background: var(--surface); color: var(--muted); font-size: 10.5px; font-weight: 900; cursor: pointer; white-space: nowrap; display: inline-flex; align-items: center; gap: 4px; flex-shrink: 0; }
+    /* ==================== ገጽ 2: ዘመናዊ ቆጠራ (v13 Ergonomic) ==================== */
+    .t-cap-bar { display: flex; align-items: center; gap: 5px; margin-bottom: 5px; flex-shrink: 0; }
+    .t-cap-nav { width: 30px; height: 36px; border-radius: 10px; border: 1px solid var(--border-strong); background: var(--surface); color: var(--teal); font-size: 12px; font-weight: 900; cursor: pointer; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; }
+    .t-cap-main { flex: 1; min-width: 0; height: 36px; padding: 0 11px; border-radius: 18px; border: 1.5px solid var(--border-strong); background: var(--surface); color: var(--text); font-size: 11.5px; font-weight: 900; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 6px; overflow: hidden; }
+    .t-cap-main.dir-out { border-color: rgba(239,68,68,0.5); }
+    .t-cap-main.dir-in { border-color: rgba(16,185,129,0.55); }
+    .t-cap-main.dir-free { border-color: rgba(16,185,129,0.55); }
+    .t-cap-main.dir-audit { border-color: rgba(14,165,233,0.55); }
+    .t-cap-txt { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: inline-flex; align-items: center; gap: 5px; min-width: 0; }
+    .t-cap-badge { font-family: ui-monospace, monospace; font-size: 10.5px; color: var(--teal); background: rgba(20,184,166,0.14); padding: 2px 7px; border-radius: 10px; flex-shrink: 0; }
+    .t-cap-mult { height: 36px; min-width: 58px; padding: 0 10px; border-radius: 18px; border: 1.5px solid var(--teal); background: var(--teal-dark); color: #99f6e4; font-family: ui-monospace, monospace; font-size: 12px; font-weight: 900; cursor: pointer; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; gap: 3px; }
+
+    /* የላይ እርምጃ መስመር (ከአውራ ጣት አደጋ ቀጠና የራቀ) */
+    .t-top-actions { display: grid; grid-template-columns: 0.8fr 0.8fr 0.82fr 1.58fr; gap: 5px; margin-bottom: 5px; flex-shrink: 0; }
+    .t-act-btn { position: relative; height: 35px; border-radius: 10px; border: 1px solid var(--border-strong); background: var(--surface); color: var(--text); font-size: 10.5px; font-weight: 900; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 3px; overflow: hidden; white-space: nowrap; touch-action: none; }
+    .t-act-btn > span { position: relative; z-index: 1; }
+    .t-act-btn.commit { background: rgba(20,184,166,0.15); border: 1.5px solid var(--teal); color: #99f6e4; }
+    .t-act-btn.commit.ready-done { background: var(--emerald); border-color: #6ee7b7; color: #022c22; box-shadow: 0 0 14px rgba(16,185,129,0.45); }
+    .t-hold-fill { position: absolute; left: 0; top: 0; bottom: 0; width: 0%; background: rgba(239,68,68,0.52); pointer-events: none; z-index: 0; }
+
+    .ticket-bar { display: flex; gap: 5px; overflow-x: auto; padding-bottom: 2px; }
+    .tk-tab { height: 30px; padding: 0 11px; border-radius: 15px; border: 1px solid var(--border-strong); background: var(--surface-deep); color: var(--muted); font-size: 11px; font-weight: 900; cursor: pointer; white-space: nowrap; display: inline-flex; align-items: center; gap: 4px; flex-shrink: 0; }
     .tk-tab.active { background: #172554; border-color: var(--primary); color: #fff; }
     .tk-tab.add { border-style: dashed; border-color: var(--teal); color: var(--teal); }
-    .tk-items { display: flex; gap: 5px; overflow-x: auto; margin-bottom: 4px; flex-shrink: 0; padding-bottom: 2px; }
-    .tk-pill { height: 30px; padding: 0 9px; border-radius: 9px; border: 1.5px solid var(--border-strong); background: var(--surface-deep); color: var(--text); font-size: 10.5px; font-weight: 900; cursor: pointer; white-space: nowrap; display: inline-flex; align-items: center; gap: 5px; flex-shrink: 0; }
+    .tk-items { display: flex; flex-wrap: wrap; gap: 5px; }
+    .tk-pill { height: 32px; padding: 0 10px; border-radius: 10px; border: 1.5px solid var(--border-strong); background: var(--surface-deep); color: var(--text); font-size: 11px; font-weight: 900; cursor: pointer; white-space: nowrap; display: inline-flex; align-items: center; gap: 5px; }
     .tk-pill.active { border-color: var(--teal); background: rgba(20,184,166,0.22); color: #99f6e4; }
     .tk-pill.done { border-color: var(--emerald); background: rgba(16,185,129,0.2); color: #86efac; }
     .tk-pill.add { border-style: dashed; border-color: var(--amber); color: var(--amber); }
 
-    .preset-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px; }
-    .preset-btn { height: 29px; border-radius: 7px; border: 1px solid var(--border-strong); background: var(--surface-deep); color: var(--text); font-family: ui-monospace, monospace; font-size: 10.5px; font-weight: 900; cursor: pointer; }
-    .preset-btn.active { background: var(--teal); border-color: #5eead4; color: var(--teal-dark); }
-    .preset-btn.custom { font-family: inherit; font-size: 10px; color: var(--amber); }
-    .alert-box { display: none; padding: 5px 10px; border-radius: 9px; text-align: center; font-size: 11px; font-weight: 900; margin-bottom: 4px; flex-shrink: 0; }
+    .preset-grid-modal { display: grid; grid-template-columns: repeat(4, 1fr); gap: 7px; }
+    .preset-btn-lg { height: 42px; border-radius: 10px; border: 1.5px solid var(--border-strong); background: var(--surface-deep); color: var(--text); font-family: ui-monospace, monospace; font-size: 14px; font-weight: 900; cursor: pointer; }
+    .preset-btn-lg.active { background: var(--teal); border-color: #5eead4; color: var(--teal-dark); }
+
+    .alert-box { display: none; padding: 6px 10px; border-radius: 10px; text-align: center; font-size: 11.5px; font-weight: 900; margin-bottom: 5px; flex-shrink: 0; }
     .alert-box.warn { display: block; background: rgba(245,158,11,0.22); border: 1.5px solid var(--amber); color: #fde68a; }
+    .alert-box.clickable { cursor: pointer; box-shadow: 0 0 10px rgba(245,158,11,0.25); }
     .alert-box.stop { display: block; background: var(--emerald); color: #022c22; }
     .alert-box.over { display: block; background: rgba(14,165,233,0.18); border: 1.5px solid var(--primary); color: #7dd3fc; }
 
-    .t-stage { position: relative; flex: 1; min-height: 0; background: radial-gradient(circle at 50% 0%, rgba(20,184,166,0.08) 0%, var(--surface-deep) 68%); border: 1.5px solid var(--border-strong); border-radius: 15px; display: flex; flex-direction: column; overflow: hidden; margin-bottom: 5px; transition: border-color 0.25s ease, box-shadow 0.45s ease; }
+    .t-stage { position: relative; flex: 1; min-height: 0; background: radial-gradient(circle at 50% 0%, rgba(20,184,166,0.08) 0%, var(--surface-deep) 68%); border: 1.5px solid var(--border-strong); border-radius: 15px; display: flex; flex-direction: column; overflow: hidden; margin-bottom: 7px; transition: border-color 0.25s ease, box-shadow 0.45s ease; }
     .t-stage.glow-ok { border-color: var(--emerald); box-shadow: inset 0 0 22px rgba(16,185,129,0.28), 0 0 14px rgba(16,185,129,0.25); }
     .t-stage.glow-batch { border-color: var(--amber); box-shadow: inset 0 0 26px rgba(245,158,11,0.34), 0 0 16px rgba(245,158,11,0.3); }
     .t-stage.done { border-color: var(--emerald); }
@@ -142,21 +163,21 @@
     .t-stats-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; padding: 7px 6px 6px; background: rgba(15,23,42,0.88); border-bottom: 1px solid var(--border); flex-shrink: 0; }
     .t-kpi { background: rgba(6,10,18,0.58); border: 1px solid var(--border); border-radius: 9px; padding: 4px 4px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 0; }
     .t-kpi-lbl { font-size: 8.5px; font-weight: 800; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
-    .t-kpi-val { font-family: ui-monospace, monospace; font-size: 16.5px; font-weight: 900; line-height: 1.18; color: var(--text); white-space: nowrap; }
+    .t-kpi-val { font-family: ui-monospace, monospace; font-size: 17px; font-weight: 900; line-height: 1.18; color: var(--text); white-space: nowrap; }
     .t-kpi-val.sm { font-size: 12.5px; }
     .t-kpi-val.c-em { color: #6ee7b7; }
     .t-kpi-val.c-tl { color: #5eead4; }
     .t-kpi-val.c-am { color: #fcd34d; }
     .t-kpi-val.c-pr { color: #7dd3fc; }
 
-    .t-visual { flex: 1; min-height: 0; overflow-y: auto; padding: 8px 10px; display: flex; flex-direction: column; justify-content: center; gap: 7px; }
+    .t-visual { flex: 1; min-height: 0; overflow-y: auto; padding: 10px 10px; display: flex; flex-direction: column; justify-content: center; gap: 8px; }
     .t-visual.tally-mode { justify-content: flex-start; }
 
-    .batch-summary { display: flex; align-items: center; justify-content: space-between; gap: 6px; background: rgba(15,23,42,0.85); border: 1px solid var(--border); border-radius: 10px; padding: 5px 10px; }
+    .batch-summary { display: flex; align-items: center; justify-content: space-between; gap: 6px; background: rgba(15,23,42,0.85); border: 1px solid var(--border); border-radius: 10px; padding: 6px 10px; }
     .batch-chip { font-family: ui-monospace, monospace; font-size: 11px; font-weight: 900; color: var(--teal); }
     .batch-sub { font-size: 10px; font-weight: 800; color: var(--muted); }
     .dot-ring { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; padding: 4px 6px; }
-    .b-dot { height: 34px; border-radius: 11px; border: 1.5px solid var(--border-strong); background: rgba(15,23,42,0.65); display: flex; align-items: center; justify-content: center; font-family: ui-monospace, monospace; font-size: 11px; font-weight: 900; color: var(--muted); transition: transform 0.14s ease, background 0.14s ease, border-color 0.14s ease; }
+    .b-dot { height: 38px; border-radius: 12px; border: 1.5px solid var(--border-strong); background: rgba(15,23,42,0.65); display: flex; align-items: center; justify-content: center; font-family: ui-monospace, monospace; font-size: 12px; font-weight: 900; color: var(--muted); transition: transform 0.14s ease, background 0.14s ease, border-color 0.14s ease; }
     .b-dot.filled { background: rgba(16,185,129,0.22); border-color: var(--emerald); color: #a7f3d0; }
     .b-dot.odd { background: rgba(245,158,11,0.24); border-color: var(--amber); color: #fde68a; }
     .b-dot.latest { transform: scale(1.06); box-shadow: 0 0 12px rgba(20,184,166,0.45); border-color: #5eead4; }
@@ -166,8 +187,8 @@
     .b-dot.w3 { background: rgba(168,85,247,0.25); border-color: var(--violet); color: #e9d5ff; }
 
     .tally-compact-bar { background: rgba(20,184,166,0.14); border: 1px solid var(--teal); border-radius: 8px; padding: 4px 9px; font-size: 10.5px; font-weight: 900; color: #99f6e4; text-align: center; }
-    .tally-row-5 { display: grid; grid-template-columns: repeat(5, 1fr) 44px; align-items: center; gap: 4px; padding: 2px 0; border-bottom: 1px dashed rgba(51,65,85,0.45); }
-    .tally-row-tot { font-family: ui-monospace, monospace; font-size: 9.5px; font-weight: 900; color: var(--muted); text-align: right; }
+    .tally-row-5 { display: grid; grid-template-columns: repeat(5, 1fr) 44px; align-items: center; gap: 4px; padding: 3px 0; border-bottom: 1px dashed rgba(51,65,85,0.45); }
+    .tally-row-tot { font-family: ui-monospace, monospace; font-size: 10px; font-weight: 900; color: var(--muted); text-align: right; }
     .t-grp { position: relative; width: 38px; height: 34px; margin: 0 auto; display: inline-flex; align-items: center; justify-content: center; }
     .t-bar { width: 3.5px; height: 26px; background: var(--emerald); margin: 0 2px; border-radius: 2px; }
     .t-bar.odd { background: var(--amber); }
@@ -184,32 +205,32 @@
     .t-pause-mask { position: absolute; inset: 0; z-index: 20; background: rgba(6,10,18,0.92); backdrop-filter: blur(5px); display: none; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 14px; text-align: center; }
     .t-pause-mask.open { display: flex; }
 
-    .t-trigger-wrap { margin-bottom: 5px; flex-shrink: 0; }
-    .sg-track { position: relative; height: 54px; border-radius: 27px; background: linear-gradient(90deg, rgba(15,23,42,0.96), rgba(4,47,46,0.9)); border: 2px solid var(--teal); overflow: hidden; touch-action: none; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 2px 10px rgba(0,0,0,0.6); }
-    .sg-fill { position: absolute; left: 0; top: 0; bottom: 0; width: 0%; background: linear-gradient(90deg, rgba(20,184,166,0.28), rgba(16,185,129,0.52)); pointer-events: none; }
-    .sg-label { font-size: 12.5px; font-weight: 900; color: #99f6e4; letter-spacing: 0.2px; pointer-events: none; z-index: 1; padding-left: 36px; }
-    .sg-thumb { position: absolute; left: 4px; top: 4px; width: 64px; height: 42px; border-radius: 21px; background: linear-gradient(135deg, #2dd4bf, #0d9488); color: #022c22; font-size: 16px; font-weight: 900; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 14px rgba(20,184,166,0.5); cursor: grab; z-index: 2; will-change: transform; }
+    /* ብቸኛ የታችኛው የአውራ ጣት መቁጠሪያ ቀጠና */
+    .t-trigger-wrap { margin-bottom: 66px; flex-shrink: 0; }
+    .sg-track { position: relative; height: 64px; border-radius: 32px; background: linear-gradient(90deg, rgba(15,23,42,0.96), rgba(4,47,46,0.92)); border: 2px solid var(--teal); overflow: hidden; touch-action: none; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 2px 12px rgba(0,0,0,0.65); }
+    .sg-track.odd-fin { border-color: var(--amber); background: linear-gradient(90deg, rgba(15,23,42,0.96), rgba(69,26,3,0.92)); }
+    .sg-fill { position: absolute; left: 0; top: 0; bottom: 0; width: 0%; background: linear-gradient(90deg, rgba(20,184,166,0.3), rgba(16,185,129,0.55)); pointer-events: none; }
+    .sg-label { font-size: 13.5px; font-weight: 900; color: #99f6e4; letter-spacing: 0.2px; pointer-events: none; z-index: 1; padding-left: 44px; }
+    .sg-thumb { position: absolute; left: 4px; top: 4px; width: 72px; height: 52px; border-radius: 26px; background: linear-gradient(135deg, #2dd4bf, #0d9488); color: #022c22; font-size: 18px; font-weight: 900; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(20,184,166,0.5); cursor: grab; z-index: 2; will-change: transform; }
+    .sg-track.odd-fin .sg-thumb { background: linear-gradient(135deg, #fbbf24, #d97706); color: #451a03; }
     .sg-thumb.snap { transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1); }
 
-    .pp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
-    .pp-btn { height: 54px; border-radius: 16px; border: 2px solid var(--border-strong); background: var(--surface-deep); color: var(--muted); font-size: 13px; font-weight: 900; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; opacity: 0.42; }
+    .pp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .pp-btn { height: 64px; border-radius: 18px; border: 2px solid var(--border-strong); background: var(--surface-deep); color: var(--muted); font-size: 13.5px; font-weight: 900; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; opacity: 0.42; }
     .pp-btn.ready { opacity: 1; background: linear-gradient(135deg, rgba(20,184,166,0.28), rgba(16,185,129,0.22)); border-color: var(--teal); color: #ccfbf1; box-shadow: 0 0 14px rgba(20,184,166,0.25); }
 
-    .tap-btn { position: relative; width: 100%; height: 54px; border-radius: 16px; border: 2px solid var(--teal); background: linear-gradient(135deg, rgba(20,184,166,0.28), rgba(14,165,233,0.18)); color: #ccfbf1; font-size: 14px; font-weight: 900; cursor: pointer; overflow: hidden; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .tap-btn { position: relative; width: 100%; height: 64px; border-radius: 18px; border: 2px solid var(--teal); background: linear-gradient(135deg, rgba(20,184,166,0.28), rgba(14,165,233,0.18)); color: #ccfbf1; font-size: 15px; font-weight: 900; cursor: pointer; overflow: hidden; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .tap-btn.odd-fin { border-color: var(--amber); background: linear-gradient(135deg, rgba(245,158,11,0.34), rgba(217,119,6,0.22)); color: #fef3c7; }
     .tap-cd-bar { position: absolute; left: 0; bottom: 0; height: 4px; width: 0%; background: var(--amber); pointer-events: none; }
 
     .mc-grid { display: grid; gap: 6px; }
-    .mc-btn { position: relative; height: 54px; border-radius: 14px; border: 2px solid var(--border-strong); background: var(--surface); color: #fff; font-size: 11.5px; font-weight: 900; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; overflow: hidden; }
+    .mc-btn { position: relative; height: 64px; border-radius: 16px; border: 2px solid var(--border-strong); background: var(--surface); color: #fff; font-size: 12px; font-weight: 900; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; overflow: hidden; }
     .mc-btn.c0 { border-color: var(--primary); background: rgba(14,165,233,0.22); }
     .mc-btn.c1 { border-color: var(--emerald); background: rgba(16,185,129,0.22); }
     .mc-btn.c2 { border-color: var(--amber); background: rgba(245,158,11,0.22); }
     .mc-btn.c3 { border-color: var(--violet); background: rgba(168,85,247,0.22); }
     .mc-btn.cooling { opacity: 0.45; }
-    .mc-cnt { font-family: ui-monospace, monospace; font-size: 14px; font-weight: 900; }
-
-    .t-actions { display: grid; grid-template-columns: 0.72fr 0.72fr 0.72fr 1.84fr; gap: 5px; margin-bottom: 62px; flex-shrink: 0; }
-    .t-btn { height: 39px; border-radius: 11px; border: 1px solid var(--border-strong); background: var(--surface); color: var(--text); font-size: 10px; font-weight: 900; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.1; }
-    .t-btn.commit { background: var(--teal); border-color: #5eead4; color: var(--teal-dark); font-size: 11.5px; }
+    .mc-cnt { font-family: ui-monospace, monospace; font-size: 15px; font-weight: 900; }
 
     /* ሠንጠረዦች */
     .metrics { display: flex; justify-content: space-around; background: var(--surface-deep); border: 1px solid var(--border); border-radius: 7px; padding: 4px; margin-top: 5px; font-size: 10.5px; font-weight: 900; }
@@ -234,7 +255,7 @@
     .pdf-pill { height: 30px; padding: 0 9px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.22); background: rgba(15,23,42,0.84); color: #fff; font-size: 10.5px; font-weight: 900; cursor: pointer; white-space: nowrap; }
     .pdf-send { height: 32px; padding: 0 11px; border-radius: 16px; border: none; background: var(--emerald); color: #052e16; font-size: 11px; font-weight: 900; cursor: pointer; white-space: nowrap; }
 
-    /* Google Sheets–Style PDF Studio UI (v12) */
+    /* Google Sheets–Style PDF Studio UI */
     .pdf-preview-wrap { position: sticky; top: 0; z-index: 8; background: var(--surface); padding-bottom: 6px; border-bottom: 1px solid var(--border); }
     .pdf-preview-box { background: #ffffff; color: #0f172a; border-radius: 10px; padding: 6px; border: 1.5px solid var(--teal); overflow-x: auto; }
     .gs-bar { display: flex; flex-wrap: wrap; gap: 5px; align-items: center; }
@@ -337,7 +358,7 @@
       <button type="button" id="btnInstallApp" class="btn primary" style="display:none;height:36px;" onclick="triggerPwaInstall()"></button>
       <div style="display:flex;justify-content:space-between;align-items:center;">
         <span id="drawerUserInfo" style="font-size:11px;font-weight:800;color:var(--muted);"></span>
-        <span style="font-size:10px;font-weight:900;color:var(--teal);opacity:0.85;">v12</span>
+        <span style="font-size:10px;font-weight:900;color:var(--teal);opacity:0.85;">v13</span>
       </div>
       <button type="button" class="btn danger" id="btnLogout" onclick="doLogout()"></button>
     </div>
@@ -400,53 +421,32 @@
       </div>
     </section>
 
-    <!-- ገጽ 2: ዘመናዊ ቆጠራ -->
+    <!-- ገጽ 2: ዘመናዊ ቆጠራ (v13 Ergonomic) -->
     <section id="viewTally" class="view">
       <div class="seg">
         <button type="button" id="btnTTicket" class="seg-btn teal" onclick="setTallyTab('TICKET')"></button>
         <button type="button" id="btnTFree" class="seg-btn" onclick="setTallyTab('FREE')"></button>
         <button type="button" id="btnTAudit" class="seg-btn" onclick="setTallyTab('AUDIT')"></button>
+        <button type="button" id="btnTVoice" class="icon-btn" style="width:32px;height:32px;" onclick="toggleQuickVoice()">🔇</button>
         <button type="button" id="btnTPause" class="icon-btn" style="width:32px;height:32px;" onclick="toggleManualTallyPause()">🔓</button>
         <button type="button" class="icon-btn" style="width:32px;height:32px;color:var(--teal);" onclick="openTallyCfgModal()">⚙️</button>
       </div>
 
-      <div id="tallyTicketArea">
-        <div id="ticketBar" class="ticket-bar"></div>
-        <div class="card" style="padding:5px;margin-bottom:4px;">
-          <div style="display:grid;grid-template-columns:auto 1fr auto;gap:4px;align-items:center;">
-            <button type="button" id="btnTkDir" class="icon-btn" style="width:auto;padding:0 7px;font-size:10px;height:30px;" onclick="toggleTicketDir()"></button>
-            <div id="tkMainRow" class="grid-3"></div>
-            <button type="button" class="icon-btn" style="width:28px;height:30px;color:var(--rose);" onclick="deleteActiveTicket()">✕</button>
-          </div>
-          <div id="tkExtraFields" class="extra-fields"></div>
-        </div>
-        <div id="ticketItemsStrip" class="tk-items"></div>
+      <!-- ስማርት ካፕሱል (ቲኬት / ነጻ / ማስተካከያ + የሸክም ብዛት) -->
+      <div id="tallyCapsuleBar" class="t-cap-bar"></div>
+
+      <!-- የላይ እርምጃ መስመር (ከአደጋ ቀጠና የራቀ) -->
+      <div class="t-top-actions">
+        <button type="button" class="t-act-btn" style="color:#fca5a5;" onclick="undoTally()"><span>↩️ <span id="lblTUndo"></span></span></button>
+        <button type="button" class="t-act-btn" style="color:var(--amber);" onclick="openNumModal('odd')"><span>➕ <span id="lblTOdd"></span></span></button>
+        <button type="button" id="btnTClearHold" class="t-act-btn">
+          <div id="tClearFill" class="t-hold-fill"></div>
+          <span>🧹 <span id="lblTClear"></span></span>
+        </button>
+        <button type="button" class="t-act-btn commit" id="btnTCommit" onclick="commitTally(this)"></button>
       </div>
 
-      <div id="tallyFreeArea" style="display:none;margin-bottom:4px;flex-shrink:0;">
-        <div style="display:grid;grid-template-columns:1fr 0.9fr auto;gap:5px;">
-          <input type="text" id="inpFreeLabel" class="inp sm" oninput="freeTally.label=this.value;saveTallyState()">
-          <input type="number" id="inpFreeTarget" class="inp sm mono" min="0" inputmode="numeric" oninput="freeTally.target=Math.max(0,Math.floor(Number(this.value||0)));saveTallyState();renderTallyStats()">
-          <button type="button" id="btnFreeLock" class="icon-btn" style="width:34px;height:30px;" onclick="toggleFreeLock()">🔒</button>
-        </div>
-      </div>
-
-      <div id="tallyAuditArea" style="display:none;margin-bottom:4px;flex-shrink:0;">
-        <div class="grid-2">
-          <select id="selAuditItem" class="sel" style="height:31px;" onchange="onAuditItemChange()"></select>
-          <input type="number" id="inpAuditSys" class="inp sm mono" readonly>
-        </div>
-      </div>
-
-      <div class="card" style="padding:5px;margin-bottom:4px;">
-        <div style="display:flex;justify-content:space-between;font-size:9.5px;font-weight:800;color:var(--muted);margin-bottom:3px;">
-          <span id="lblPerCarry"></span>
-          <span id="lblCarryVal" style="color:var(--teal);font-family:ui-monospace,monospace;"></span>
-        </div>
-        <div id="presetGrid" class="preset-grid"></div>
-      </div>
-
-      <div id="tallyAlert" class="alert-box"></div>
+      <div id="tallyAlert" class="alert-box" onclick="onTallyAlertClick()"></div>
 
       <div id="tallyStage" class="t-stage">
         <div class="t-prog-track"><div id="tProgFill" class="t-prog-fill"></div></div>
@@ -469,14 +469,8 @@
         </div>
       </div>
 
+      <!-- ብቸኛ የታችኛው የአውራ ጣት ቀስቃሽ -->
       <div id="tallyTriggerArea" class="t-trigger-wrap"></div>
-
-      <div class="t-actions">
-        <button type="button" class="t-btn" style="color:#fca5a5;" onclick="undoTally()"><span>↩️</span><span id="lblTUndo"></span></button>
-        <button type="button" class="t-btn" style="color:var(--amber);" onclick="openNumModal('odd')"><span>➕</span><span id="lblTOdd"></span></button>
-        <button type="button" class="t-btn" onclick="clearTallyUndoable()"><span>🧹</span><span id="lblTClear"></span></button>
-        <button type="button" class="t-btn commit" id="btnTCommit" onclick="commitTally(this)"></button>
-      </div>
     </section>
 
     <!-- ገጽ 3: ዕለታዊ -->
@@ -484,7 +478,7 @@
       <div class="card">
         <div style="display:grid;grid-template-columns:1fr auto auto auto auto;gap:4px;">
           <input type="text" id="inpDailySearch" class="inp" oninput="onSmartDimInput(this); renderDaily()">
-          <button type="button" id="btnDailySort" class="icon-btn" style="width:auto;padding:0 7px;font-size:10.5px;" onclick="toggleDailySort()">#</button>
+          <button type="button" id="btnDailySort" class="icon-btn" style="width:auto;padding:0 7px;font-size:10.5px;" onclick="toggleDailySort()">1-9</button>
           <button type="button" id="btnZeroOnly" class="icon-btn" style="width:auto;padding:0 8px;color:var(--amber);" onclick="toggleZeroFilter()">0</button>
           <button type="button" id="btnDailyActToggle" class="icon-btn on" style="width:30px;" onclick="toggleActionsCol('daily')">⚙️</button>
           <button type="button" id="btnDailyPdf" class="icon-btn" style="width:auto;padding:0 8px;font-size:10.5px;color:var(--teal);" onclick="openDailyPdfChoice()"></button>
@@ -566,7 +560,7 @@
     const LANG_KEY = 'erp_lang_v4';
     const BRAND_CFG_KEY = 'erp_brand_cfg_v5';
     const TALLY_STATE_KEY = 'erp_tally_state_v6';
-    const TALLY_CFG_KEY = 'erp_tally_cfg_v1';
+    const TALLY_CFG_KEY = 'erp_tally_cfg_v2';
     const FORM_CFG_KEY = 'erp_form_cfg_v2';
     const PDF_CFG_KEY = 'erp_pdf_cfg_v4';
     const UI_CFG_KEY = 'erp_ui_cfg_v1';
@@ -591,7 +585,9 @@
       showTimer: true,
       cooldownMs: 600,        // 0 | 600 | 1000 | 2000
       autoPauseCall: true,
-      voiceCallout: false,
+      voiceCallout: false,    // 🔊/🔇
+      voiceMode: 'LOADS',     // LOADS (1,2,3...) | TOTAL (pieces)
+      voiceLang: 'am',        // am | en
       strongHaptics: true,
     };
 
@@ -603,15 +599,15 @@
       bold: true,             // B
       italic: false,          // I
       stylePreset: 'classic', // classic | dark | bw | minimal
-      headerBg: '',           // custom accent fill color
-      textAlign: 'left',      // left | center | right
-      textPadX: 6,            // 0 | 6 | 12
-      numAlign: 'center',     // left | center | right
-      numPadX: 4,             // 0 | 6 | 10
-      vAlign: 'middle',       // top | middle | bottom
-      rowHeight: 26,          // 18 .. 46
-      borderStyle: 'thin',    // thin | medium | bold
-      adjColMode: 'AUTO',     // HIDE | AUTO | SHOW
+      headerBg: '',
+      textAlign: 'left',
+      textPadX: 6,
+      numAlign: 'center',
+      numPadX: 4,
+      vAlign: 'middle',
+      rowHeight: 26,
+      borderStyle: 'thin',
+      adjColMode: 'AUTO',
       colW: { item: 42, open: 15, inq: 14, outq: 14, adj: 14, bal: 15 },
       headerSub: '',
       footerNote: '',
@@ -639,41 +635,49 @@
         modeOut: 'የወጪ ዕቃ', modeIn: 'የገቢ ዕቃ', voidShort: 'የተበላሸ', unvoidShort: 'መልስ', pdfBtn: 'ፒዲኤፍ',
         tTicket: 'የጭነት ቲኬት', tFree: 'ነጻ ቆጠራ', tAudit: 'ስቶክ ማስተካከያ',
         tkShort: 'ቲኬት', tkNew: 'አዲስ', tkAddItem: 'ዕቃ ጨምር', tkDirOut: 'ወጪ', tkDirIn: 'ገቢ',
+        tkManageTitle: 'የቲኬት እና የዕቃ ማስተካከያ', freeManageTitle: 'የነጻ ቆጠራ ቅንብር', auditManageTitle: 'የስቶክ ቆጠራ ዕቃ ምርጫ',
         tkAddModalTitle: 'ወደ ቲኬት ዕቃዎች ጨምር', tkTargetPh: 'ዒላማ ብዛት (0 = ክፍት)',
-        tkNoItems: 'ዕቃ ለመቁጠር ከላይ «+ ዕቃ ጨምር» ይጫኑ',
-        freeLabelPh: 'ማስታወሻ (አማራጭ)', freeTargetPh: 'ዒላማ ብዛት',
+        tkNoItems: 'ዕቃ ለመቁጠር ከላይ ያለውን ካፕሱል ነክተው «+ ዕቃ ጨምር» ይጫኑ',
+        freeLabelPh: 'ማስታወሻ (አማራጭ)', freeTargetPh: 'ዒላማ ብዛት (0 = ክፍት)', freeLockLbl: 'ግቡ ሲሞላ በራሱ ይቆም (Hard Stop)',
         postDirect: 'ቀጥታ መዝግብ', sendEntry: 'ወደ መመዝገቢያ', applyAdj: 'ማስተካከያ ላክ',
         btnToTally: '🧮 ቆጠራ', sentToTally: 'ወደ ቆጠራ ገጽ ተልኳል — ተራ ይዟል',
         docPh: 'ሰነድ ቁ.', partyOutPh: 'ደንበኛ', partyInPh: 'አቅራቢ', driverPh: 'ሹፌር', platePh: 'ታርጋ ቁጥር',
         refOutPh: 'ፓድ ቁ.', padPrefix: 'ፓድ ቁ.', kgUnit: 'ኪ.ግ', kgPh: 'ክብደት (ኪ.ግ)', notePh: 'ማስታወሻ',
         searchPh: 'ዕቃ ፈልግ... (32rx0.8 ➔ 32Ø×0.8)', qtyPh: 'ብዛት', dailySearchPh: 'ሰነድ፣ ዕቃ፣ ደንበኛ ወይም ቀን ፈልግ...',
         stockSearchPh: 'ዕቃ ወይም ካቴጎሪ ፈልግ...', mapSearchPh: 'በካርታው ላይ ዕቃ ፈልግ...',
-        countBtn: 'ቁጠር', perCarry: 'በአንድ ሸክም', other: 'ሌላ',
+        countBtn: 'ቁጠር', perCarry: 'በአንድ ሸክም ብዛት', other: 'ሌላ',
         counted: 'የተቆጠረ', tLoaded: 'የተጫነ', tUnloaded: 'የተራገፈ', tLoads: 'ሸክም',
         tRemQty: 'ቀሪ ብዛት', tRemLoads: 'ቀሪ ሸክም', tSysBal: 'ሲስተም', diff: 'ልዩነት',
         remLoadMix: (l, r) => `${l}ሸ+${r}`,
-        undo: 'መልስ', odd: 'ጎዶሎ', clear: 'አጽዳ',
+        undo: 'መልስ', odd: 'ጎዶሎ', clear: 'አጽዳ', holdClearHint: 'ለማጽዳት 1 ሰከንድ ጫን አድርገው ይያዙ',
         submitOut: 'ወጪ መዝግብ', submitIn: 'ገቢ መዝግብ',
         pWeek: 'ይህ ሳምንት', pLastWeek: 'ያለፈው ሳምንት', pMonth: 'ይህ ወር', pAll: 'ሁሉም',
         stopAlert: '🛑 ግቡ ሞልቷል — ጭነት አስቆም',
         tTargetDone: '🎯 ግቡ ሙሉ በሙሉ ሞልቷል',
         nearAlert: (s, r) => `⚠️ የመጨረሻ ${s} ሸክም (${r} ፍሬ) ብቻ ቀረ!`,
-        oddWarn: (r) => `🔔 ጎዶሎ፦ ${r} ፍሬ ብቻ ቀረ!`,
+        oddWarnTap: (r) => `🔔 ጎዶሎ፦ ${r} ፍሬ ብቻ ቀረ — ለመጨረስ ይንኩ!`,
         overWarn: (d) => `ከግቡ +${d} ትርፍ ተገኝቷል`, shortWarn: (d) => `-${d} ጉድለት አለ`,
         exactMatch: 'ከሲስተም ቀሪ ጋር እኩል ነው',
         sgHint: (m) => `ወደ ቀኝ ይግፉ  (+${m})`,
+        sgOddHint: (r) => `ወደ ቀኝ ይግፉ — +${r} ጨርስ`,
         ppLeft: '◀ ግራ (A)', ppRight: 'ቀኝ (B) ▶',
         tapHint: (m) => `+${m} ቁጠር`,
+        tapOddHint: (r) => `+${r} ጨርስ (ጎዶሎ)`,
         workerLbl: (n) => `ሰው ${n}`,
         batchDone: (b, q) => `የተጠናቀቁ፦ ${b}×10 (${q})`,
         batchCur: (c, q) => `የአሁኑ ዙር፦ ${c}/10 (+${q})`,
         tallyCompBar: (l, q) => `✅ የተጠናቀቁ፦ ${l} ሸክም (${q} ፍሬ)`,
         secAgo: (s) => `⏱ ከ${s} ሰከንድ በፊት`,
         minAgo: (m, s) => `⏱ ከ${m}ደ ${s}ሰ በፊት`,
+        hrAgo: (h) => `⏱ ከ${h} ሰዓት በፊት`,
+        dayAgo: (d) => `⏱ ከ${d} ቀን በፊት`,
+        gapHourPlus: '>1ሰ',
         noTapYet: '⏱ ገና አልተጀመረም',
         pauseTitle: 'ቆጠራው ተቆልፏል',
-        pauseSub: (n, q) => `የመጨረሻ ሸክም #${n} (${q} ፍሬ)`,
+        pauseSub: (n, q) => `የመጨረሻ ሸክም ${n} (${q} ፍሬ)`,
         resumeBtn: '▶ ቆጠራ ቀጥል',
+        voiceOnToast: '🔊 የድምፅ ቆጠራ በርቷል',
+        voiceOffToast: '🔇 የድምፅ ቆጠራ ጠፍቷል',
         mTallyCfg: 'የቆጠራ ሴቲንግ',
         tCfgTrigLbl: 'የመቁጠሪያ ቁልፍ ዓይነት',
         tCfgSwipe: 'የመንሸራተቻ ማርሽ (Swipe-Gate)',
@@ -687,9 +691,15 @@
         tCfgCarN: (n) => `${n} ተሸካሚዎች`,
         tCfgCdLbl: 'የድጋሚ-ንክኪ መከላከያ',
         tCfgCdOff: 'ጠፍቷል',
+        tCfgVoiceModeLbl: 'በድምፅ ምን ይቁጠር?',
+        tCfgVoiceLoads: 'የሸክም ቁጥር (አንድ፣ ሁለት፣ ሶስት...)',
+        tCfgVoiceTotal: 'ጠቅላላ ብዛት (5፣ 10፣ 15...)',
+        tCfgVoiceLangLbl: 'የድምፅ ቋንቋ',
+        tCfgVoiceAm: 'አማርኛ',
+        tCfgVoiceEn: 'እንግሊዝኛ (English)',
         tCfgTimer: 'የመጨረሻ ንክኪ ሰዓት ቆጣሪ + ብርሃን',
         tCfgAutoPause: 'በስልክ ጥሪ ጊዜ ራስ-ሰር መቆለፊያ',
-        tCfgVoice: 'የድምፅ ንባብ (ለብሉቱዝ ጆሮ ማዳመጫ)',
+        tCfgVoice: 'የድምፅ ቆጠራ አብራ (🔊)',
         tCfgHaptic: 'ጠንካራ ንዝረት (ለጫጫታ መጋዘን)',
         dockTot: (c, q) => `${c} ዓይነት (${q})`,
         dCols: ['ሰነድ', 'ዕቃ', 'መነሻ', 'ገቢ', 'ወጪ', 'ቀሪ', 'ደንበኛ / ምክንያት', 'ፓድ / ታርጋ', 'ቀን', '⚙️'],
@@ -784,41 +794,49 @@
         modeOut: 'Issue Out', modeIn: 'Receive In', voidShort: 'Void', unvoidShort: 'Restore', pdfBtn: 'PDF',
         tTicket: 'Loading Ticket', tFree: 'Free Count', tAudit: 'Stock Audit',
         tkShort: 'Ticket', tkNew: 'New', tkAddItem: 'Add Item', tkDirOut: 'OUT', tkDirIn: 'IN',
+        tkManageTitle: 'Ticket & Items Setup', freeManageTitle: 'Free Count Setup', auditManageTitle: 'Select Audit Item',
         tkAddModalTitle: 'Add Items to Ticket', tkTargetPh: 'Target Qty (0 = Open)',
-        tkNoItems: 'Tap "+ Add Item" above to load items',
-        freeLabelPh: 'Note (optional)', freeTargetPh: 'Target Qty',
+        tkNoItems: 'Tap the capsule bar above and press "+ Add Item"',
+        freeLabelPh: 'Note (optional)', freeTargetPh: 'Target Qty (0 = Open)', freeLockLbl: 'Stop automatically at target (Hard Stop)',
         postDirect: 'Post Directly', sendEntry: 'Copy to Entry', applyAdj: 'Submit Adjustment',
         btnToTally: '🧮 Tally', sentToTally: 'Queued in Tally screen',
         docPh: 'Doc No.', partyOutPh: 'Customer', partyInPh: 'Supplier', driverPh: 'Driver', platePh: 'Plate No.',
         refOutPh: 'Pad No.', padPrefix: 'Pad No.', kgUnit: 'kg', kgPh: 'Weight (kg)', notePh: 'Note',
         searchPh: 'Search item... (32rx0.8 ➔ 32Ø×0.8)', qtyPh: 'Qty', dailySearchPh: 'Search doc, item, party, date...',
         stockSearchPh: 'Search item or category...', mapSearchPh: 'Find item on map...',
-        countBtn: 'Count', perCarry: 'Per load', other: 'Other',
+        countBtn: 'Count', perCarry: 'Qty Per Load', other: 'Other',
         counted: 'Counted', tLoaded: 'Loaded', tUnloaded: 'Unloaded', tLoads: 'Loads',
         tRemQty: 'Rem. Qty', tRemLoads: 'Rem. Loads', tSysBal: 'System', diff: 'Variance',
         remLoadMix: (l, r) => `${l}L+${r}`,
-        undo: 'Undo', odd: 'Odd', clear: 'Clear',
+        undo: 'Undo', odd: 'Odd', clear: 'Clear', holdClearHint: 'Hold 1 second to clear',
         submitOut: 'Post Issue', submitIn: 'Post Receipt',
         pWeek: 'This Week', pLastWeek: 'Last Week', pMonth: 'This Month', pAll: 'All Time',
         stopAlert: '🛑 Target reached — Stop loading',
         tTargetDone: '🎯 Target Reached',
         nearAlert: (s, r) => `⚠️ Final ${s} loads (${r} pcs) left!`,
-        oddWarn: (r) => `🔔 Odd: only ${r} pcs left!`,
+        oddWarnTap: (r) => `🔔 Odd: only ${r} pcs left — Tap to finish!`,
         overWarn: (d) => `Surplus: +${d}`, shortWarn: (d) => `Shortage: -${d}`,
         exactMatch: 'Matches system balance',
         sgHint: (m) => `Slide right  (+${m})`,
+        sgOddHint: (r) => `Slide right — Finish +${r}`,
         ppLeft: '◀ Left (A)', ppRight: 'Right (B) ▶',
         tapHint: (m) => `Count +${m}`,
+        tapOddHint: (r) => `Finish +${r} (Odd)`,
         workerLbl: (n) => `W${n}`,
         batchDone: (b, q) => `Completed: ${b}×10 (${q})`,
         batchCur: (c, q) => `Current: ${c}/10 (+${q})`,
         tallyCompBar: (l, q) => `✅ Completed: ${l} loads (${q} pcs)`,
         secAgo: (s) => `⏱ ${s}s ago`,
         minAgo: (m, s) => `⏱ ${m}m ${s}s ago`,
+        hrAgo: (h) => `⏱ ${h}h ago`,
+        dayAgo: (d) => `⏱ ${d}d ago`,
+        gapHourPlus: '>1h',
         noTapYet: '⏱ Ready to count',
         pauseTitle: 'Tally Paused',
-        pauseSub: (n, q) => `Last load #${n} (${q} pcs)`,
+        pauseSub: (n, q) => `Last load ${n} (${q} pcs)`,
         resumeBtn: '▶ Resume Tally',
+        voiceOnToast: '🔊 Voice count ON',
+        voiceOffToast: '🔇 Voice count OFF',
         mTallyCfg: 'Tally Settings',
         tCfgTrigLbl: 'Trigger Style',
         tCfgSwipe: 'Swipe-Gate Slider',
@@ -832,9 +850,15 @@
         tCfgCarN: (n) => `${n} Carriers`,
         tCfgCdLbl: 'Double-Tap Lock',
         tCfgCdOff: 'Off',
+        tCfgVoiceModeLbl: 'Voice Callout Reads',
+        tCfgVoiceLoads: 'Load Number (1, 2, 3...)',
+        tCfgVoiceTotal: 'Total Quantity (5, 10, 15...)',
+        tCfgVoiceLangLbl: 'Voice Language',
+        tCfgVoiceAm: 'Amharic (አማርኛ)',
+        tCfgVoiceEn: 'English',
         tCfgTimer: 'Last-Tap Timer + Edge Glow',
         tCfgAutoPause: 'Auto-Pause on Call / App Switch',
-        tCfgVoice: 'Voice Callout (Bluetooth Earbud)',
+        tCfgVoice: 'Voice Callout ON (🔊)',
         tCfgHaptic: 'Strong Industrial Vibration',
         dockTot: (c, q) => `${c} items (${q})`,
         dCols: ['Doc', 'Item', 'Open', 'In', 'Out', 'Bal', 'Party / Reason', 'Pad / Plate', 'Date', '⚙️'],
@@ -926,7 +950,7 @@
     let authMode = 'EMAIL';
     let session = loadJson(SESSION_KEY, null);
     let formCfg = { ...DEFAULT_FORM_CFG, ...loadJson(FORM_CFG_KEY, {}) };
-    let tallyCfg = { ...DEFAULT_TALLY_CFG, ...loadJson(TALLY_CFG_KEY, {}) };
+    let tallyCfg = { ...DEFAULT_TALLY_CFG, ...loadJson('erp_tally_cfg_v1', {}), ...loadJson(TALLY_CFG_KEY, {}) };
     const savedPdfV4 = loadJson(PDF_CFG_KEY, {});
     let pdfCfg = {
       ...DEFAULT_PDF_CFG,
@@ -946,12 +970,12 @@
     let carryMult = 5;
     let tickets = [];
     let activeTicketId = '';
-    let lastTkFormSig = '';
     let lastTriggerSig = '';
     let ppSide = 0;
     let tallyPaused = false;
     let workerLastTap = [0, 0, 0, 0];
     let stageGlowTimer = null;
+    let pendingOddFinishQty = 0;
     let freeTally = { label: '', target: 0, lockTarget: true, strokes: [] };
     let auditTally = { itemId: '', strokes: [] };
 
@@ -1155,15 +1179,77 @@
       } catch {}
     }
 
-    function speakCount(num) {
+    // ==================== የአማርኛ እና እንግሊዝኛ ድምፅ ቆጣሪ (1, 2, 3...) ====================
+    function numberToAmharicWords(num) {
+      const n = Math.floor(Math.abs(Number(num || 0)));
+      if (n === 0) return 'ዜሮ';
+      const ones = ['', 'አንድ', 'ሁለት', 'ሶስት', 'አራት', 'አምስት', 'ስድስት', 'ሰባት', 'ስምንት', 'ዘጠኝ'];
+      const tens = ['', 'አስር', 'ሃያ', 'ሰላሳ', 'አርባ', 'ሃምሳ', 'ስልሳ', 'ሰባ', 'ሰማንያ', 'ዘጠና'];
+      const sub100 = (x) => {
+        if (x < 10) return ones[x];
+        if (x === 10) return 'አስር';
+        if (x < 20) return `አስራ ${ones[x - 10]}`;
+        const tPart = tens[Math.floor(x / 10)];
+        const oPart = ones[x % 10];
+        return oPart ? `${tPart} ${oPart}` : tPart;
+      };
+      const sub1000 = (x) => {
+        if (x < 100) return sub100(x);
+        const h = Math.floor(x / 100);
+        const r = x % 100;
+        const hTxt = h === 1 ? 'መቶ' : `${ones[h]} መቶ`;
+        return r ? `${hTxt} ${sub100(r)}` : hTxt;
+      };
+      if (n < 1000) return sub1000(n);
+      const th = Math.floor(n / 1000);
+      const rem = n % 1000;
+      const thTxt = `${sub1000(th)} ሺህ`;
+      return rem ? `${thTxt} ${sub1000(rem)}` : thTxt;
+    }
+
+    function speakCount(loadsNum, totalQty) {
       if (!tallyCfg.voiceCallout || !('speechSynthesis' in window)) return;
       try {
+        const val = tallyCfg.voiceMode === 'TOTAL' ? totalQty : loadsNum;
+        const isAm = tallyCfg.voiceLang !== 'en';
+        const text = isAm ? numberToAmharicWords(val) : String(val);
         window.speechSynthesis.cancel();
-        const u = new SpeechSynthesisUtterance(String(num));
-        u.lang = 'en-US';
-        u.rate = 1.25;
+        const u = new SpeechSynthesisUtterance(text);
+        const voices = window.speechSynthesis.getVoices ? window.speechSynthesis.getVoices() : [];
+        if (isAm) {
+          const amVoice = voices.find((v) => /^am/i.test(v.lang) || /amharic/i.test(v.name));
+          if (amVoice) u.voice = amVoice;
+          u.lang = 'am-ET';
+          u.rate = 1.12;
+        } else {
+          const enVoice = voices.find((v) => /^en/i.test(v.lang));
+          if (enVoice) u.voice = enVoice;
+          u.lang = 'en-US';
+          u.rate = 1.22;
+        }
         window.speechSynthesis.speak(u);
       } catch {}
+    }
+
+    function updateQuickVoiceBtn() {
+      const btn = document.getElementById('btnTVoice');
+      if (!btn) return;
+      if (tallyCfg.voiceCallout) {
+        btn.textContent = '🔊';
+        btn.classList.add('voice-on');
+      } else {
+        btn.textContent = '🔇';
+        btn.classList.remove('voice-on');
+      }
+    }
+
+    function toggleQuickVoice() {
+      tallyCfg.voiceCallout = !tallyCfg.voiceCallout;
+      saveJson(TALLY_CFG_KEY, tallyCfg);
+      vib(18);
+      updateQuickVoiceBtn();
+      showToast(tallyCfg.voiceCallout ? t('voiceOnToast') : t('voiceOffToast'));
+      if (tallyCfg.voiceCallout) speakCount(1, carryMult);
     }
 
     function showToast(msg, undoCb = null) {
@@ -1308,6 +1394,8 @@
       renderStaticLabels();
       renderDynamicFormFields();
       updateActionToggleBtns();
+      updateQuickVoiceBtn();
+      bindClearHoldBtn();
       updateSyncPill();
       syncOfflineQueue();
     }
@@ -1357,8 +1445,6 @@
       if (formCfg.inShowKg) inEx.push(`<input type="number" id="inpInKg" class="inp mono" placeholder="${esc(t('kgPh'))}">`);
       if (formCfg.inShowNote) inEx.push(`<input type="text" id="inpInNote" class="inp" placeholder="${esc(t('notePh'))}">`);
       document.getElementById('inExtraFields').innerHTML = inEx.join('');
-
-      renderTallyTicketForm(true);
     }
 
     function setEntryMode(m) {
@@ -1630,7 +1716,7 @@
       openMainModal(t('dupTitle'), `
         <div class="sub-card" style="font-size:12px;font-weight:800;">
           <div>${esc(t('dupAskPin'))}</div>
-          <div style="color:var(--amber);">#${esc(existing.doc_no)} — ${esc(existing.party_name)} (${esc(existing.recorder_name)})</div>
+          <div style="color:var(--amber);">${esc(existing.doc_no)} — ${esc(existing.party_name)} (${esc(existing.recorder_name)})</div>
           <input type="password" id="inpDupPin" class="inp mono" maxlength="6" inputmode="numeric" placeholder="••••••">
         </div>`,
         `<button type="button" class="btn muted" onclick="closeMainModal()">${esc(t('cancel'))}</button>
@@ -1645,7 +1731,7 @@
       const sugEnd = Math.ceil((expectedNext - 1) / 50) * 50;
       openMainModal(t('seqJumpTitle'), `
         <div class="sub-card" style="font-size:12px;font-weight:800;">
-          <div>#${expectedNext} ➔ <b style="color:var(--amber);">#${esc(docNo)}</b></div>
+          <div>${expectedNext} ➔ <b style="color:var(--amber);">${esc(docNo)}</b></div>
           <label class="chk-row"><input type="checkbox" id="chkRangeVoid"><span>${esc(t('seqVoidChk'))}</span></label>
           <div style="display:flex;align-items:center;gap:6px;">
             <span>${expectedNext} -</span>
@@ -1697,7 +1783,7 @@
       vib(18);
       const docNo = document.getElementById('inpDocNo').value.trim();
       if (!docNo) { showToast(t('errNeedDoc')); return; }
-      openMainModal(t('voidLabel'), `<div class="sub-card" style="font-weight:900;text-align:center;">#${esc(docNo)} ➔ ${esc(t('voidLabel'))}</div>`,
+      openMainModal(t('voidLabel'), `<div class="sub-card" style="font-weight:900;text-align:center;">${esc(docNo)} ➔ ${esc(t('voidLabel'))}</div>`,
         `<button type="button" class="btn muted" onclick="closeMainModal()">${esc(t('cancel'))}</button>
          <button type="button" class="btn danger" id="btnDoVoid">${esc(t('voidShort'))}</button>`);
       document.getElementById('btnDoVoid').onclick = () => executeDirectVoid(docNo);
@@ -1715,7 +1801,7 @@
       });
     }
 
-    // ==================== ገጽ 2: ዘመናዊ ቆጠራ ሞተር ====================
+    // ==================== ገጽ 2: ዘመናዊ ቆጠራ ሞተር (v13 Ergonomic) ====================
     function normalizeTicket(tk) {
       return {
         id: tk.id || ('tk_' + Date.now()),
@@ -1769,57 +1855,229 @@
       const id = 'tk_' + Date.now() + '_' + Math.floor(Math.random() * 99);
       tickets.push(normalizeTicket({ id, dir: 'OUT', docNo: maxDoc > 0 ? String(maxDoc + 1) : '' }));
       activeTicketId = id; saveTallyState(); renderTally(true);
+      if (document.getElementById('mainModal')?.classList.contains('open')) openTallyCapsuleModal();
     }
 
-    function selectTicket(id) { vib(15); activeTicketId = id; saveTallyState(); renderTally(true); }
-    function deleteActiveTicket() { vib(22); tickets = tickets.filter((x) => x.id !== activeTicketId); ensureDefaultTicket(); saveTallyState(); renderTally(true); }
-    function toggleTicketDir() { const tk = getActiveTicket(); tk.dir = tk.dir === 'OUT' ? 'IN' : 'OUT'; vib(16); saveTallyState(); renderTally(true); }
-    function updateTicketField(field, val) { const tk = getActiveTicket(); tk[field] = val; saveTallyState(); if (field === 'docNo' || field === 'party') renderTicketBarOnly(); }
-    function toggleFreeLock() { freeTally.lockTarget = !freeTally.lockTarget; vib(16); saveTallyState(); renderTally(false); }
+    function selectTicket(id) {
+      vib(15); activeTicketId = id; saveTallyState(); renderTally(true);
+      if (document.getElementById('mainModal')?.classList.contains('open')) openTallyCapsuleModal();
+    }
 
-    function renderTallyTicketForm(force = false) {
-      const mainRow = document.getElementById('tkMainRow');
-      const extraWrap = document.getElementById('tkExtraFields');
-      if (!mainRow || !extraWrap) return;
+    function deleteActiveTicket() {
+      vib(22); tickets = tickets.filter((x) => x.id !== activeTicketId); ensureDefaultTicket(); saveTallyState(); renderTally(true);
+      if (document.getElementById('mainModal')?.classList.contains('open')) openTallyCapsuleModal();
+    }
 
+    function toggleTicketDir() {
+      const tk = getActiveTicket(); tk.dir = tk.dir === 'OUT' ? 'IN' : 'OUT'; vib(16); saveTallyState(); renderTally(true);
+      if (document.getElementById('mainModal')?.classList.contains('open')) openTallyCapsuleModal();
+    }
+
+    function updateTicketField(field, val) {
+      const tk = getActiveTicket(); tk[field] = val; saveTallyState();
+      renderTallyCapsule();
+    }
+
+    function cycleTicketItem(delta) {
       const tk = getActiveTicket();
-      const sig = `${tk.id}|${tk.dir}|${lang}|${JSON.stringify(formCfg)}`;
-      if (!force && sig === lastTkFormSig) return;
-      lastTkFormSig = sig;
+      if (!tk || tk.items.length <= 1) return;
+      vib(15);
+      const idx = Math.max(0, tk.items.findIndex((x) => x.item_id === tk.activeItemId));
+      const next = (idx + delta + tk.items.length) % tk.items.length;
+      tk.activeItemId = tk.items[next].item_id;
+      saveTallyState(); renderTally(true);
+    }
 
-      const dirBtn = document.getElementById('btnTkDir');
-      if (dirBtn) {
-        dirBtn.textContent = tk.dir === 'OUT' ? t('tkDirOut') : t('tkDirIn');
-        dirBtn.style.color = tk.dir === 'OUT' ? '#fca5a5' : '#86efac';
-        dirBtn.style.borderColor = tk.dir === 'OUT' ? 'var(--rose)' : 'var(--emerald)';
+    function selectTicketItem(itemId, keepModal = false) {
+      const tk = getActiveTicket(); tk.activeItemId = itemId; vib(15); saveTallyState(); renderTally(true);
+      if (!keepModal) closeMainModal();
+      else openTallyCapsuleModal();
+    }
+
+    function setTallyTab(tab) { tallyTab = tab; vib(16); saveTallyState(); renderTally(true); }
+
+    // 1 መስመር ስማርት ካፕሱል (3 የቲኬት ረድፍ + 1 የሸክም ረድፍ -> 1 ንጹህ መስመር!)
+    function renderTallyCapsule() {
+      const bar = document.getElementById('tallyCapsuleBar');
+      if (!bar) return;
+
+      const multBtn = `<button type="button" class="t-cap-mult" onclick="openCarryMultModal()">×${carryMult} ▾</button>`;
+
+      if (tallyTab === 'TICKET') {
+        const tk = getActiveTicket();
+        const tkIdx = Math.max(0, tickets.findIndex((x) => x.id === tk.id));
+        const tkName = (tk.dir === 'OUT' && tk.docNo) ? tk.docNo : `${t('tkShort')} ${tkIdx + 1}`;
+        const item = getActiveTicketItem();
+        const cnt = item ? sumStrokes(item.strokes) : 0;
+        const stat = item ? (item.target > 0 ? `${cnt}/${item.target}` : String(cnt)) : `+ ${t('tkAddItem')}`;
+        const itemLabel = item ? item.name : t('tkAddItem');
+        const dirTag = tk.dir === 'OUT' ? t('tkDirOut') : t('tkDirIn');
+        const dirCls = tk.dir === 'OUT' ? 'dir-out' : 'dir-in';
+        const hasMulti = tk.items.length > 1;
+
+        bar.innerHTML = `
+          ${hasMulti ? `<button type="button" class="t-cap-nav" onclick="cycleTicketItem(-1)">◀</button>` : ''}
+          <button type="button" class="t-cap-main ${dirCls}" onclick="openTallyCapsuleModal()">
+            <span class="t-cap-txt"><span>🚛 ${esc(tkName)}</span><span style="opacity:0.45;">·</span><span style="color:var(--muted);font-size:10px;">${esc(dirTag)}</span><span style="opacity:0.45;">·</span><span>${esc(itemLabel)}</span></span>
+            <span class="t-cap-badge">${esc(stat)} ▾</span>
+          </button>
+          ${hasMulti ? `<button type="button" class="t-cap-nav" onclick="cycleTicketItem(1)">▶</button>` : ''}
+          ${multBtn}`;
+        return;
       }
 
-      if (tk.dir === 'OUT') {
-        mainRow.className = formCfg.outShowPad ? 'grid-3' : 'grid-2';
-        mainRow.innerHTML = `
-          <input type="text" class="inp sm mono" value="${esc(tk.docNo)}" placeholder="${esc(t('docPh'))}" oninput="updateTicketField('docNo',this.value)">
-          <input type="text" class="inp sm" value="${esc(tk.party)}" placeholder="${esc(t('partyOutPh'))}" oninput="updateTicketField('party',this.value)">
-          ${formCfg.outShowPad ? `<input type="text" class="inp sm" value="${esc(tk.pad)}" placeholder="${esc(t('refOutPh'))}" oninput="updateTicketField('pad',this.value)">` : ''}`;
-
-        const ex = [];
-        if (formCfg.outShowKg) ex.push(`<input type="number" class="inp sm mono" value="${esc(tk.kg)}" placeholder="${esc(t('kgPh'))}" oninput="updateTicketField('kg',this.value)">`);
-        if (formCfg.outShowDriver) ex.push(`<input type="text" class="inp sm" value="${esc(tk.driver)}" placeholder="${esc(t('driverPh'))}" oninput="updateTicketField('driver',this.value)">`);
-        if (formCfg.outShowPlate) ex.push(`<input type="text" class="inp sm" value="${esc(tk.plate)}" placeholder="${esc(t('platePh'))}" oninput="updateTicketField('plate',this.value)">`);
-        if (formCfg.outShowNote) ex.push(`<input type="text" class="inp sm" value="${esc(tk.note)}" placeholder="${esc(t('notePh'))}" oninput="updateTicketField('note',this.value)">`);
-        extraWrap.innerHTML = ex.join('');
-      } else {
-        mainRow.className = 'grid-3';
-        mainRow.innerHTML = `
-          <input type="text" class="inp sm" value="${esc(tk.party)}" placeholder="${esc(t('partyInPh'))}" oninput="updateTicketField('party',this.value)">
-          <input type="text" class="inp sm" value="${esc(tk.driver)}" placeholder="${esc(t('driverPh'))}" oninput="updateTicketField('driver',this.value)">
-          <input type="text" class="inp sm" value="${esc(tk.plate)}" placeholder="${esc(t('platePh'))}" oninput="updateTicketField('plate',this.value)">`;
-
-        const ex = [];
-        if (formCfg.inShowDocNo) ex.push(`<input type="text" class="inp sm mono" value="${esc(tk.docNo)}" placeholder="${esc(t('docPh'))}" oninput="updateTicketField('docNo',this.value)">`);
-        if (formCfg.inShowKg) ex.push(`<input type="number" class="inp sm mono" value="${esc(tk.kg)}" placeholder="${esc(t('kgPh'))}" oninput="updateTicketField('kg',this.value)">`);
-        if (formCfg.inShowNote) ex.push(`<input type="text" class="inp sm" value="${esc(tk.note)}" placeholder="${esc(t('notePh'))}" oninput="updateTicketField('note',this.value)">`);
-        extraWrap.innerHTML = ex.join('');
+      if (tallyTab === 'FREE') {
+        const cnt = sumStrokes(freeTally.strokes);
+        const stat = freeTally.target > 0 ? `${cnt}/${freeTally.target}` : String(cnt);
+        const lbl = (freeTally.label || '').trim() || t('tFree');
+        const lkIco = freeTally.lockTarget ? '🔒' : '🔓';
+        bar.innerHTML = `
+          <button type="button" class="t-cap-main dir-free" onclick="openTallyCapsuleModal()">
+            <span class="t-cap-txt"><span>📝 ${esc(lbl)}</span><span style="font-size:11px;">${lkIco}</span></span>
+            <span class="t-cap-badge">${esc(stat)} ▾</span>
+          </button>
+          ${multBtn}`;
+        return;
       }
+
+      const it = (whData.items || []).find((x) => x.id === auditTally.itemId);
+      const itName = it ? it.name : t('auditManageTitle');
+      const sysBal = it ? `${t('tSysBal')}: ${Number(it.stock).toLocaleString()}` : '-';
+      bar.innerHTML = `
+        <button type="button" class="t-cap-main dir-audit" onclick="openTallyCapsuleModal()">
+          <span class="t-cap-txt"><span>🔎 ${esc(itName)}</span></span>
+          <span class="t-cap-badge">${esc(sysBal)} ▾</span>
+        </button>
+        ${multBtn}`;
+    }
+
+    // ካፕሱሉ ላይ ሲነካ የሚከፈት ንጹህ የማስተካከያ መስኮት
+    function openTallyCapsuleModal() {
+      vib(16);
+      if (tallyTab === 'TICKET') {
+        const tk = getActiveTicket();
+        const tkTabsHtml = tickets.map((x, i) => {
+          const label = (x.dir === 'OUT' && x.docNo) ? x.docNo : `${t('tkShort')} ${i + 1}`;
+          const sub = x.party ? ` · ${x.party.slice(0, 8)}` : '';
+          return `<button type="button" class="tk-tab ${x.id === activeTicketId ? 'active' : ''}" onclick="selectTicket('${x.id}')">🚛 ${esc(label + sub)}</button>`;
+        }).join('') + `<button type="button" class="tk-tab add" onclick="addNewTicket()">+ ${esc(t('tkNew'))}</button>`;
+
+        let formInputsHtml = '';
+        if (tk.dir === 'OUT') {
+          formInputsHtml = `
+            <div class="${formCfg.outShowPad ? 'grid-3' : 'grid-2'}">
+              <input type="text" class="inp sm mono" value="${esc(tk.docNo)}" placeholder="${esc(t('docPh'))}" oninput="updateTicketField('docNo',this.value)">
+              <input type="text" class="inp sm" value="${esc(tk.party)}" placeholder="${esc(t('partyOutPh'))}" oninput="updateTicketField('party',this.value)">
+              ${formCfg.outShowPad ? `<input type="text" class="inp sm" value="${esc(tk.pad)}" placeholder="${esc(t('refOutPh'))}" oninput="updateTicketField('pad',this.value)">` : ''}
+            </div>
+            <div class="extra-fields">
+              ${formCfg.outShowKg ? `<input type="number" class="inp sm mono" value="${esc(tk.kg)}" placeholder="${esc(t('kgPh'))}" oninput="updateTicketField('kg',this.value)">` : ''}
+              ${formCfg.outShowDriver ? `<input type="text" class="inp sm" value="${esc(tk.driver)}" placeholder="${esc(t('driverPh'))}" oninput="updateTicketField('driver',this.value)">` : ''}
+              ${formCfg.outShowPlate ? `<input type="text" class="inp sm" value="${esc(tk.plate)}" placeholder="${esc(t('platePh'))}" oninput="updateTicketField('plate',this.value)">` : ''}
+              ${formCfg.outShowNote ? `<input type="text" class="inp sm" value="${esc(tk.note)}" placeholder="${esc(t('notePh'))}" oninput="updateTicketField('note',this.value)">` : ''}
+            </div>`;
+        } else {
+          formInputsHtml = `
+            <div class="grid-3">
+              <input type="text" class="inp sm" value="${esc(tk.party)}" placeholder="${esc(t('partyInPh'))}" oninput="updateTicketField('party',this.value)">
+              <input type="text" class="inp sm" value="${esc(tk.driver)}" placeholder="${esc(t('driverPh'))}" oninput="updateTicketField('driver',this.value)">
+              <input type="text" class="inp sm" value="${esc(tk.plate)}" placeholder="${esc(t('platePh'))}" oninput="updateTicketField('plate',this.value)">
+            </div>
+            <div class="extra-fields">
+              ${formCfg.inShowDocNo ? `<input type="text" class="inp sm mono" value="${esc(tk.docNo)}" placeholder="${esc(t('docPh'))}" oninput="updateTicketField('docNo',this.value)">` : ''}
+              ${formCfg.inShowKg ? `<input type="number" class="inp sm mono" value="${esc(tk.kg)}" placeholder="${esc(t('kgPh'))}" oninput="updateTicketField('kg',this.value)">` : ''}
+              ${formCfg.inShowNote ? `<input type="text" class="inp sm" value="${esc(tk.note)}" placeholder="${esc(t('notePh'))}" oninput="updateTicketField('note',this.value)">` : ''}
+            </div>`;
+        }
+
+        const pillsHtml = tk.items.map((x) => {
+          const cnt = sumStrokes(x.strokes);
+          const isDone = x.target > 0 && cnt >= x.target;
+          const cls = x.item_id === tk.activeItemId ? 'active' : (isDone ? 'done' : '');
+          const stat = x.target > 0 ? `${cnt}/${x.target}` : String(cnt);
+          return `<button type="button" class="tk-pill ${cls}" onclick="selectTicketItem('${x.item_id}',false)">${isDone ? '✅ ' : ''}${esc(x.name)} <span style="font-family:ui-monospace,monospace;">${stat}</span></button>`;
+        }).join('') + `<button type="button" class="tk-pill add" onclick="openTicketAddItemModal()">+ ${esc(t('tkAddItem'))}</button>`;
+
+        openMainModal(t('tkManageTitle'), `
+          <div class="sub-card">
+            <div class="ticket-bar">${tkTabsHtml}</div>
+          </div>
+          <div class="sub-card">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;">
+              <button type="button" class="seg-btn ${tk.dir === 'OUT' ? 'out' : 'in'}" style="max-width:110px;height:30px;" onclick="toggleTicketDir()">${esc(tk.dir === 'OUT' ? t('tkDirOut') : t('tkDirIn'))} ⇄</button>
+              <button type="button" class="pdf-pill" style="color:#fca5a5;" onclick="deleteActiveTicket()">🗑️ ${esc(t('del'))}</button>
+            </div>
+            ${formInputsHtml}
+          </div>
+          <div class="sub-card">
+            <div class="tk-items">${pillsHtml}</div>
+          </div>`,
+          `<button type="button" class="btn teal" style="grid-column:span 2;" onclick="closeMainModal();renderTally(true);">${esc(t('ok'))}</button>`);
+        return;
+      }
+
+      if (tallyTab === 'FREE') {
+        openMainModal(t('freeManageTitle'), `
+          <div class="sub-card">
+            <input type="text" id="modFreeLbl" class="inp" value="${esc(freeTally.label || '')}" placeholder="${esc(t('freeLabelPh'))}">
+            <input type="number" id="modFreeTrg" class="inp mono" min="0" inputmode="numeric" value="${freeTally.target > 0 ? freeTally.target : ''}" placeholder="${esc(t('freeTargetPh'))}">
+            <label class="chk-row"><input type="checkbox" id="modFreeLk" ${freeTally.lockTarget ? 'checked' : ''}><span>${esc(t('freeLockLbl'))}</span></label>
+          </div>`,
+          `<button type="button" class="btn muted" onclick="closeMainModal()">${esc(t('cancel'))}</button>
+           <button type="button" class="btn teal" onclick="saveFreeModal()">${esc(t('save'))}</button>`);
+        return;
+      }
+
+      const sorted = (whData.items || []).slice().sort((a, b) => compareItemsSmart(a.name, b.name, a.category_name || ''));
+      openMainModal(t('auditManageTitle'), `
+        <div class="sub-card">
+          <input type="text" id="audModFilter" class="inp" placeholder="${esc(t('searchPh'))}" oninput="onSmartDimInput(this); filterAuditItemSel(this.value)">
+          <select id="audModSel" class="sel">${sorted.map((it) => `<option value="${it.id}" ${it.id === auditTally.itemId ? 'selected' : ''}>${esc(it.name)} (${it.stock})</option>`).join('')}</select>
+        </div>`,
+        `<button type="button" class="btn muted" onclick="closeMainModal()">${esc(t('cancel'))}</button>
+         <button type="button" class="btn teal" onclick="applyAuditItemPick()">${esc(t('ok'))}</button>`);
+    }
+
+    function saveFreeModal() {
+      vib(18);
+      freeTally.label = document.getElementById('modFreeLbl').value.trim();
+      freeTally.target = Math.max(0, Math.floor(Number(document.getElementById('modFreeTrg').value || 0)));
+      freeTally.lockTarget = document.getElementById('modFreeLk').checked;
+      saveTallyState(); closeMainModal(); renderTally(true);
+    }
+
+    function filterAuditItemSel(q) {
+      const clean = q.trim().toLowerCase();
+      document.getElementById('audModSel').innerHTML = (whData.items || [])
+        .filter((it) => !clean || it.name.toLowerCase().includes(clean))
+        .sort((a, b) => compareItemsSmart(a.name, b.name, a.category_name || ''))
+        .map((it) => `<option value="${it.id}" ${it.id === auditTally.itemId ? 'selected' : ''}>${esc(it.name)} (${it.stock})</option>`).join('');
+    }
+
+    function applyAuditItemPick() {
+      const id = document.getElementById('audModSel')?.value;
+      if (id && id !== auditTally.itemId) {
+        auditTally.itemId = id;
+        auditTally.strokes = [];
+        saveTallyState();
+      }
+      vib(18); closeMainModal(); renderTally(true);
+    }
+
+    // የሸክም ብዛት መምረጫ ሞዳል (×5 ▾)
+    function openCarryMultModal() {
+      vib(16);
+      const isP = PRESETS.includes(carryMult);
+      openMainModal(t('perCarry'), `
+        <div class="preset-grid-modal">
+          ${PRESETS.map((n) => `<button type="button" class="preset-btn-lg ${carryMult === n ? 'active' : ''}" onclick="pickCarryMult(${n})">+${n}</button>`).join('')}
+          <button type="button" class="preset-btn-lg ${!isP ? 'active' : ''}" style="color:var(--amber);font-size:12px;" onclick="openNumModal('custom')">${!isP ? '+' + carryMult : esc(t('other'))}</button>
+        </div>`,
+        `<button type="button" class="btn muted" style="grid-column:span 2;" onclick="closeMainModal()">${esc(t('close'))}</button>`);
+    }
+
+    function pickCarryMult(n) {
+      carryMult = n; vib(18); saveTallyState(); closeMainModal(); renderTally(true);
     }
 
     function openInTally(itemId) {
@@ -1853,7 +2111,7 @@
           </div>
         </div>
         <div class="sub-card">${listHtml}</div>`,
-        `<button type="button" class="btn primary" style="grid-column:span 2;" onclick="closeMainModal();renderTally(false);">${esc(t('ok'))}</button>`);
+        `<button type="button" class="btn primary" style="grid-column:span 2;" onclick="closeMainModal();renderTally(true);">${esc(t('ok'))}</button>`);
     }
 
     function filterTkItemSelect(q) {
@@ -1882,10 +2140,6 @@
       if (tk.activeItemId === itemId) tk.activeItemId = tk.items[0]?.item_id || '';
       saveTallyState(); openTicketAddItemModal();
     }
-
-    function selectTicketItem(itemId) { const tk = getActiveTicket(); tk.activeItemId = itemId; vib(15); saveTallyState(); renderTally(false); }
-    function setTallyTab(tab) { tallyTab = tab; vib(16); saveTallyState(); renderTally(true); }
-    function onAuditItemChange() { auditTally.itemId = document.getElementById('selAuditItem').value; auditTally.strokes = []; saveTallyState(); renderTally(false); }
 
     function getActiveStrokeContext() {
       if (tallyTab === 'FREE') {
@@ -1939,6 +2193,12 @@
     function toggleManualTallyPause() { vib(20); setTallyPausedState(!tallyPaused); }
     function resumeTallyFromPause() { vib(35); setTallyPausedState(false); }
 
+    function onTallyAlertClick() {
+      if (pendingOddFinishQty > 0) {
+        addTallyStroke(pendingOddFinishQty, null);
+      }
+    }
+
     function addTallyStroke(customQty = null, workerIdx = null) {
       if (tallyPaused) return false;
       const ctx = getActiveStrokeContext();
@@ -1963,7 +2223,16 @@
         vib([110, 50, 140]); playTone(920, 0.16, 'square', 0.16); return false;
       }
 
-      let add = customQty !== null ? Math.floor(Number(customQty)) : Number(carryMult);
+      // ቀሪው ጎዶሎ ሲሆን በራሱ ትክክለኛውን ቀሪ ጎዶሎ ብቻ መጨመር
+      let add;
+      if (customQty !== null) {
+        add = Math.floor(Number(customQty));
+      } else if (!ctx.isAudit && ctx.target > 0 && (ctx.target - counted) > 0 && (ctx.target - counted) < carryMult) {
+        add = ctx.target - counted;
+      } else {
+        add = Number(carryMult);
+      }
+
       if (!add || add <= 0) return false;
       let isOdd = add !== carryMult;
       if (ctx.hardStop && ctx.target > 0 && counted + add > ctx.target) { add = ctx.target - counted; isOdd = add !== carryMult; }
@@ -1994,11 +2263,12 @@
       }
 
       triggerStageGlow(isBatch10);
-      speakCount(newTotal);
+      speakCount(loads, newTotal);
 
-      renderTicketItemsStrip();
+      renderTallyCapsule();
       renderTallyVisual();
       renderTallyStats();
+      renderTallyTrigger(false);
       updateCadenceStrip();
       if (tallyCfg.carriers >= 2) updateMultiCarrierCounts();
       if (tallyCfg.carriers === 0 && tallyCfg.triggerMode === 'TAP' && tallyCfg.cooldownMs >= 400) animateTapCooldown();
@@ -2009,7 +2279,7 @@
       const ctx = getActiveStrokeContext();
       if (!ctx.strokes.length) return;
       ctx.strokes.pop(); vib(24); saveTallyState();
-      renderTicketItemsStrip(); renderTallyVisual(); renderTallyStats(); updateCadenceStrip();
+      renderTallyCapsule(); renderTallyVisual(); renderTallyStats(); renderTallyTrigger(false); updateCadenceStrip();
       if (tallyCfg.carriers >= 2) updateMultiCarrierCounts();
     }
 
@@ -2017,17 +2287,61 @@
       const ctx = getActiveStrokeContext();
       if (!ctx.strokes.length) return;
       undoTallyBuf = ctx.strokes.slice();
-      ctx.strokes.length = 0; vib(35); saveTallyState();
-      renderTicketItemsStrip(); renderTallyVisual(); renderTallyStats(); updateCadenceStrip();
+      ctx.strokes.length = 0; vib([40, 25, 40]); saveTallyState();
+      renderTallyCapsule(); renderTallyVisual(); renderTallyStats(); renderTallyTrigger(false); updateCadenceStrip();
       if (tallyCfg.carriers >= 2) updateMultiCarrierCounts();
       showToast(t('clear'), () => {
         if (undoTallyBuf) {
           undoTallyBuf.forEach((x) => ctx.strokes.push(x));
           undoTallyBuf = null; saveTallyState();
-          renderTicketItemsStrip(); renderTallyVisual(); renderTallyStats(); updateCadenceStrip();
+          renderTallyCapsule(); renderTallyVisual(); renderTallyStats(); renderTallyTrigger(false); updateCadenceStrip();
           if (tallyCfg.carriers >= 2) updateMultiCarrierCounts();
         }
       });
+    }
+
+    // 🧹 አጽዳ — ለ1 ሰከንድ ጫን አድርጎ መያዝ (በስህተት እንዳይጠፋ!)
+    let clearHoldBound = false;
+    function bindClearHoldBtn() {
+      const btn = document.getElementById('btnTClearHold');
+      const fill = document.getElementById('tClearFill');
+      if (!btn || !fill || clearHoldBound) return;
+      clearHoldBound = true;
+
+      let timer = null, fired = false;
+      const cancelHold = (wasUp) => {
+        if (timer) { clearTimeout(timer); timer = null; }
+        fill.style.transition = 'width 0.15s ease';
+        fill.style.width = '0%';
+        if (wasUp && !fired) {
+          const ctx = getActiveStrokeContext();
+          if (ctx.strokes && ctx.strokes.length > 0) showToast(t('holdClearHint'));
+        }
+      };
+
+      btn.addEventListener('pointerdown', (e) => {
+        e.preventDefault();
+        const ctx = getActiveStrokeContext();
+        if (!ctx.strokes || !ctx.strokes.length) return;
+        fired = false;
+        vib(15);
+        fill.style.transition = 'none';
+        fill.style.width = '0%';
+        void fill.offsetWidth;
+        fill.style.transition = 'width 0.85s linear';
+        fill.style.width = '100%';
+        timer = setTimeout(() => {
+          fired = true;
+          timer = null;
+          fill.style.transition = 'none';
+          fill.style.width = '0%';
+          clearTallyUndoable();
+        }, 850);
+      });
+
+      btn.addEventListener('pointerup', () => cancelHold(true));
+      btn.addEventListener('pointerleave', () => cancelHold(false));
+      btn.addEventListener('pointercancel', () => cancelHold(false));
     }
 
     async function commitTally(btnEl) {
@@ -2071,67 +2385,19 @@
       }, btnEl);
     }
 
-    function renderTicketBarOnly() {
-      const bar = document.getElementById('ticketBar');
-      bar.innerHTML = tickets.map((tk, i) => {
-        const label = (tk.dir === 'OUT' && tk.docNo) ? `#${tk.docNo}` : `${t('tkShort')} ${i + 1}`;
-        const sub = tk.party ? ` · ${tk.party.slice(0, 8)}` : '';
-        return `<button type="button" class="tk-tab ${tk.id === activeTicketId ? 'active' : ''}" onclick="selectTicket('${tk.id}')">🚛 ${esc(label + sub)}</button>`;
-      }).join('') + `<button type="button" class="tk-tab add" onclick="addNewTicket()">+ ${esc(t('tkNew'))}</button>`;
-    }
-
-    function renderTicketItemsStrip() {
-      if (tallyTab !== 'TICKET') return;
-      const tk = getActiveTicket();
-      document.getElementById('ticketItemsStrip').innerHTML = tk.items.map((x) => {
-        const cnt = sumStrokes(x.strokes);
-        const isDone = x.target > 0 && cnt >= x.target;
-        const cls = x.item_id === tk.activeItemId ? 'active' : (isDone ? 'done' : '');
-        const stat = x.target > 0 ? `${cnt}/${x.target}` : String(cnt);
-        return `<button type="button" class="tk-pill ${cls}" onclick="selectTicketItem('${x.item_id}')">${isDone ? '✅ ' : ''}${esc(x.name)} <span style="font-family:ui-monospace,monospace;">${stat}</span></button>`;
-      }).join('') + `<button type="button" class="tk-pill add" onclick="openTicketAddItemModal()">+ ${esc(t('tkAddItem'))}</button>`;
-    }
-
-    function renderTally(forceForm = false) {
+    function renderTally(forceTrigger = false) {
       document.getElementById('btnTTicket').className = 'seg-btn' + (tallyTab === 'TICKET' ? ' teal' : '');
       document.getElementById('btnTFree').className = 'seg-btn' + (tallyTab === 'FREE' ? ' in' : '');
       document.getElementById('btnTAudit').className = 'seg-btn' + (tallyTab === 'AUDIT' ? ' adj' : '');
-      document.getElementById('tallyTicketArea').style.display = tallyTab === 'TICKET' ? 'block' : 'none';
-      document.getElementById('tallyFreeArea').style.display = tallyTab === 'FREE' ? 'block' : 'none';
-      document.getElementById('tallyAuditArea').style.display = tallyTab === 'AUDIT' ? 'block' : 'none';
-
-      if (tallyTab === 'TICKET') {
-        renderTicketBarOnly();
-        renderTallyTicketForm(forceForm);
-        renderTicketItemsStrip();
-      } else if (tallyTab === 'FREE') {
-        document.getElementById('inpFreeLabel').value = freeTally.label || '';
-        document.getElementById('inpFreeLabel').placeholder = t('freeLabelPh');
-        document.getElementById('inpFreeTarget').value = freeTally.target > 0 ? freeTally.target : '';
-        document.getElementById('inpFreeTarget').placeholder = t('freeTargetPh');
-        const lk = document.getElementById('btnFreeLock');
-        lk.textContent = freeTally.lockTarget ? '🔒' : '🔓';
-        lk.style.borderColor = freeTally.lockTarget ? 'var(--teal)' : 'var(--border-strong)';
-      } else {
-        const sel = document.getElementById('selAuditItem');
-        const sorted = (whData.items || []).slice().sort((a, b) => compareItemsSmart(a.name, b.name, a.category_name || ''));
-        sel.innerHTML = sorted.map((it) => `<option value="${it.id}" ${it.id === auditTally.itemId ? 'selected' : ''}>${esc(it.name)} (${it.stock})</option>`).join('');
-        const it = (whData.items || []).find((x) => x.id === auditTally.itemId);
-        document.getElementById('inpAuditSys').value = it ? it.stock : 0;
-      }
-
-      document.getElementById('lblCarryVal').textContent = `1 = ${carryMult}`;
-      const isP = PRESETS.includes(carryMult);
-      document.getElementById('presetGrid').innerHTML =
-        PRESETS.map((n) => `<button type="button" class="preset-btn ${carryMult === n ? 'active' : ''}" onclick="carryMult=${n};vib(15);saveTallyState();renderTally(false);">+${n}</button>`).join('') +
-        `<button type="button" class="preset-btn custom ${!isP ? 'active' : ''}" onclick="openNumModal('custom')">${!isP ? '+' + carryMult : esc(t('other'))}</button>`;
+      updateQuickVoiceBtn();
 
       document.getElementById('btnTCommit').textContent =
         tallyTab === 'TICKET' ? `✅ ${t('postDirect')}` : tallyTab === 'FREE' ? `📥 ${t('sendEntry')}` : `⚡ ${t('applyAdj')}`;
 
+      renderTallyCapsule();
       renderTallyVisual();
       renderTallyStats();
-      renderTallyTrigger(forceForm);
+      renderTallyTrigger(forceTrigger);
       updateCadenceStrip();
       setTallyPausedState(tallyPaused);
     }
@@ -2141,7 +2407,7 @@
       const ctx = getActiveStrokeContext();
       if (!ctx.enabled) {
         box.className = 't-visual';
-        box.innerHTML = `<div style="margin:auto;text-align:center;color:var(--muted);font-size:12px;font-weight:800;padding:12px;">${esc(t('tkNoItems'))}</div>`;
+        box.innerHTML = `<div style="margin:auto;text-align:center;color:var(--muted);font-size:12px;font-weight:800;padding:12px;cursor:pointer;" onclick="openTicketAddItemModal()">${esc(t('tkNoItems'))}</div>`;
         return;
       }
 
@@ -2230,10 +2496,13 @@
       const box = document.getElementById('tallyAlert');
       const stage = document.getElementById('tallyStage');
       const prog = document.getElementById('tProgFill');
+      const commitBtn = document.getElementById('btnTCommit');
 
       box.className = 'alert-box';
       stage.classList.remove('done', 'near');
+      commitBtn.classList.remove('ready-done');
       rLdVal.className = 't-kpi-val c-pr';
+      pendingOddFinishQty = 0;
 
       if (trg > 0) {
         const pct = Math.min(100, Math.round((cnt / trg) * 100));
@@ -2248,6 +2517,7 @@
         rQtyVal.textContent = (d > 0 ? '+' : '') + d.toLocaleString();
         rLdLbl.textContent = t('tSysBal');
         rLdVal.textContent = trg.toLocaleString();
+        if (cnt > 0) commitBtn.classList.add('ready-done');
         if (d > 0) { box.className = 'alert-box over'; box.textContent = t('overWarn')(d); }
         else if (d < 0 && cnt > 0) { box.className = 'alert-box warn'; box.textContent = t('shortWarn')(Math.abs(d)); }
         else if (d === 0 && cnt > 0) { box.className = 'alert-box stop'; box.textContent = t('exactMatch'); stage.classList.add('done'); }
@@ -2257,6 +2527,7 @@
         if (trg <= 0) {
           rQtyVal.textContent = '∞';
           rLdVal.textContent = '∞';
+          if (cnt > 0) commitBtn.classList.add('ready-done');
         } else {
           const rem = Math.max(0, trg - cnt);
           const fullL = Math.floor(rem / mult);
@@ -2274,18 +2545,31 @@
             rLdVal.textContent = t('remLoadMix')(fullL, oddR);
           }
 
+          if (rem > 0 && rem < mult) pendingOddFinishQty = rem;
+
           if (ctx.hardStop) {
             rQtyVal.textContent = rem.toLocaleString();
-            if (cnt >= trg) { box.className = 'alert-box stop'; box.textContent = t('stopAlert'); stage.classList.add('done'); }
-            else if (rem < mult) { box.className = 'alert-box warn'; box.textContent = t('oddWarn')(rem); stage.classList.add('near'); }
-            else if (remLoadsCeil <= 3) { box.className = 'alert-box warn'; box.textContent = t('nearAlert')(remLoadsCeil, rem); stage.classList.add('near'); }
+            if (cnt >= trg) {
+              box.className = 'alert-box stop'; box.textContent = t('stopAlert');
+              stage.classList.add('done'); commitBtn.classList.add('ready-done');
+            } else if (rem < mult) {
+              box.className = 'alert-box warn clickable'; box.textContent = t('oddWarnTap')(rem); stage.classList.add('near');
+            } else if (remLoadsCeil <= 3) {
+              box.className = 'alert-box warn'; box.textContent = t('nearAlert')(remLoadsCeil, rem); stage.classList.add('near');
+            }
           } else {
             const d = cnt - trg;
             rQtyVal.textContent = d > 0 ? `+${d.toLocaleString()}` : rem.toLocaleString();
-            if (d > 0) { box.className = 'alert-box over'; box.textContent = t('overWarn')(d); }
-            else if (d === 0) { box.className = 'alert-box stop'; box.textContent = t('tTargetDone'); stage.classList.add('done'); }
-            else if (rem < mult) { box.className = 'alert-box warn'; box.textContent = t('oddWarn')(rem); stage.classList.add('near'); }
-            else if (remLoadsCeil <= 3) { box.className = 'alert-box warn'; box.textContent = t('nearAlert')(remLoadsCeil, rem); stage.classList.add('near'); }
+            if (d > 0) {
+              box.className = 'alert-box over'; box.textContent = t('overWarn')(d); commitBtn.classList.add('ready-done');
+            } else if (d === 0) {
+              box.className = 'alert-box stop'; box.textContent = t('tTargetDone');
+              stage.classList.add('done'); commitBtn.classList.add('ready-done');
+            } else if (rem < mult) {
+              box.className = 'alert-box warn clickable'; box.textContent = t('oddWarnTap')(rem); stage.classList.add('near');
+            } else if (remLoadsCeil <= 3) {
+              box.className = 'alert-box warn'; box.textContent = t('nearAlert')(remLoadsCeil, rem); stage.classList.add('near');
+            }
           }
         }
       }
@@ -2313,7 +2597,9 @@
       const diffSec = Math.max(0, Math.floor((Date.now() - lastTs) / 1000));
       timerEl.className = 'cadence-timer ' + (diffSec <= 4 ? 'fresh' : 'stale');
       if (diffSec < 60) timerEl.textContent = t('secAgo')(diffSec);
-      else timerEl.textContent = t('minAgo')(Math.floor(diffSec / 60), diffSec % 60);
+      else if (diffSec < 3600) timerEl.textContent = t('minAgo')(Math.floor(diffSec / 60), diffSec % 60);
+      else if (diffSec < 86400) timerEl.textContent = t('hrAgo')(Math.floor(diffSec / 3600));
+      else timerEl.textContent = t('dayAgo')(Math.floor(diffSec / 86400));
 
       const recent = s.slice(-3).reverse();
       pillsEl.innerHTML = recent.map((st, idx) => {
@@ -2321,15 +2607,23 @@
         const prev = realIdx > 0 ? s[realIdx - 1] : null;
         const gap = prev && prev.ts ? ((st.ts - prev.ts) / 1000) : null;
         const isFast = gap !== null && gap < 1.3;
-        const gapTxt = gap !== null ? `${gap < 10 ? gap.toFixed(1) : Math.round(gap)}s` : '•';
-        return `<span class="c-pill ${isFast ? 'fast' : ''}">#${realIdx + 1} (${gapTxt})</span>`;
+        let gapTxt = '•';
+        if (gap !== null) {
+          if (gap < 10) gapTxt = `${gap.toFixed(1)}s`;
+          else if (gap < 60) gapTxt = `${Math.round(gap)}s`;
+          else if (gap < 3600) gapTxt = `${Math.floor(gap / 60)}m`;
+          else gapTxt = t('gapHourPlus');
+        }
+        return `<span class="c-pill ${isFast ? 'fast' : ''}">${realIdx + 1} · ${gapTxt}</span>`;
       }).join('');
     }
 
     function renderTallyTrigger(force = false) {
       const area = document.getElementById('tallyTriggerArea');
       if (!area) return;
-      const sig = `${tallyCfg.carriers}|${tallyCfg.triggerMode}|${carryMult}|${lang}`;
+      const effMult = pendingOddFinishQty > 0 ? pendingOddFinishQty : carryMult;
+      const isOddFin = pendingOddFinishQty > 0;
+      const sig = `${tallyCfg.carriers}|${tallyCfg.triggerMode}|${effMult}|${isOddFin}|${lang}`;
       if (!force && sig === lastTriggerSig) {
         if (tallyCfg.carriers >= 2) updateMultiCarrierCounts();
         return;
@@ -2341,7 +2635,7 @@
         area.innerHTML = `<div class="mc-grid" style="grid-template-columns:repeat(${n},1fr);">
           ${Array.from({ length: n }, (_, i) => `
             <button type="button" class="mc-btn c${i}" id="mcBtn${i}" onclick="onMultiCarrierTap(${i})">
-              <span>${esc(t('workerLbl')(i + 1))} (+${carryMult})</span>
+              <span>${esc(t('workerLbl')(i + 1))} (+${effMult})</span>
               <span class="mc-cnt" id="mcCnt${i}">0</span>
             </button>`).join('')}
         </div>`;
@@ -2351,24 +2645,24 @@
 
       if (tallyCfg.triggerMode === 'PINGPONG') {
         area.innerHTML = `<div class="pp-grid">
-          <button type="button" id="ppBtn0" class="pp-btn ${ppSide === 0 ? 'ready' : ''}" onclick="onPingPongTap(0)">${esc(t('ppLeft'))} (+${carryMult})</button>
-          <button type="button" id="ppBtn1" class="pp-btn ${ppSide === 1 ? 'ready' : ''}" onclick="onPingPongTap(1)">${esc(t('ppRight'))} (+${carryMult})</button>
+          <button type="button" id="ppBtn0" class="pp-btn ${ppSide === 0 ? 'ready' : ''}" onclick="onPingPongTap(0)">${esc(t('ppLeft'))} (+${effMult})</button>
+          <button type="button" id="ppBtn1" class="pp-btn ${ppSide === 1 ? 'ready' : ''}" onclick="onPingPongTap(1)">${esc(t('ppRight'))} (+${effMult})</button>
         </div>`;
         return;
       }
 
       if (tallyCfg.triggerMode === 'TAP') {
-        area.innerHTML = `<button type="button" id="wideTapBtn" class="tap-btn" onclick="addTallyStroke()">
-          <span>⚡ ${esc(t('tapHint')(carryMult))}</span>
+        area.innerHTML = `<button type="button" id="wideTapBtn" class="tap-btn ${isOddFin ? 'odd-fin' : ''}" onclick="addTallyStroke()">
+          <span>⚡ ${esc(isOddFin ? t('tapOddHint')(effMult) : t('tapHint')(effMult))}</span>
           <div id="tapCdBar" class="tap-cd-bar"></div>
         </button>`;
         return;
       }
 
       area.innerHTML = `
-        <div id="sgTrack" class="sg-track">
+        <div id="sgTrack" class="sg-track ${isOddFin ? 'odd-fin' : ''}">
           <div id="sgFill" class="sg-fill"></div>
-          <span class="sg-label">${esc(t('sgHint')(carryMult))}</span>
+          <span class="sg-label">${esc(isOddFin ? t('sgOddHint')(effMult) : t('sgHint')(effMult))}</span>
           <div id="sgThumb" class="sg-thumb">❯❯</div>
         </div>`;
       bindSwipeGate();
@@ -2468,7 +2762,7 @@
         const v = Math.floor(Number(inp.value || 0));
         if (v <= 0) return;
         closeMainModal();
-        if (mode === 'custom') { carryMult = v; saveTallyState(); renderTally(false); } else addTallyStroke(v, null);
+        if (mode === 'custom') { carryMult = v; saveTallyState(); renderTally(true); } else addTallyStroke(v, null);
       };
     }
 
@@ -2509,9 +2803,25 @@
           </div>
         </div>
         <div class="sub-card">
+          <label class="chk-row"><input type="checkbox" id="tcVoice" ${tallyCfg.voiceCallout?'checked':''}><span>${esc(t('tCfgVoice'))}</span></label>
+          <div class="grid-2">
+            <div>
+              <span class="lbl-sm">${esc(t('tCfgVoiceModeLbl'))}</span>
+              <select id="tcVoiceMode" class="sel" style="margin-top:3px;">
+                <option value="LOADS" ${tallyCfg.voiceMode!=='TOTAL'?'selected':''}>${esc(t('tCfgVoiceLoads'))}</option>
+                <option value="TOTAL" ${tallyCfg.voiceMode==='TOTAL'?'selected':''}>${esc(t('tCfgVoiceTotal'))}</option>
+              </select>
+            </div>
+            <div>
+              <span class="lbl-sm">${esc(t('tCfgVoiceLangLbl'))}</span>
+              <select id="tcVoiceLang" class="sel" style="margin-top:3px;">
+                <option value="am" ${tallyCfg.voiceLang!=='en'?'selected':''}>${esc(t('tCfgVoiceAm'))}</option>
+                <option value="en" ${tallyCfg.voiceLang==='en'?'selected':''}>${esc(t('tCfgVoiceEn'))}</option>
+              </select>
+            </div>
+          </div>
           <label class="chk-row"><input type="checkbox" id="tcTimer" ${tallyCfg.showTimer?'checked':''}><span>${esc(t('tCfgTimer'))}</span></label>
           <label class="chk-row"><input type="checkbox" id="tcAutoPause" ${tallyCfg.autoPauseCall?'checked':''}><span>${esc(t('tCfgAutoPause'))}</span></label>
-          <label class="chk-row"><input type="checkbox" id="tcVoice" ${tallyCfg.voiceCallout?'checked':''}><span>${esc(t('tCfgVoice'))}</span></label>
           <label class="chk-row"><input type="checkbox" id="tcHaptic" ${tallyCfg.strongHaptics?'checked':''}><span>${esc(t('tCfgHaptic'))}</span></label>
         </div>`,
         `<button type="button" class="btn muted" onclick="closeMainModal()">${esc(t('cancel'))}</button>
@@ -2528,6 +2838,8 @@
         showTimer: document.getElementById('tcTimer').checked,
         autoPauseCall: document.getElementById('tcAutoPause').checked,
         voiceCallout: document.getElementById('tcVoice').checked,
+        voiceMode: document.getElementById('tcVoiceMode').value,
+        voiceLang: document.getElementById('tcVoiceLang').value,
         strongHaptics: document.getElementById('tcHaptic').checked,
       };
       saveJson(TALLY_CFG_KEY, tallyCfg);
@@ -2668,7 +2980,7 @@
 
     function toggleDailySort() {
       dailySort = dailySort === 'DOC' ? 'TIME' : 'DOC'; vib(18);
-      document.getElementById('btnDailySort').textContent = dailySort === 'DOC' ? '#' : '🕒';
+      document.getElementById('btnDailySort').textContent = dailySort === 'DOC' ? '1-9' : '🕒';
       showToast(dailySort === 'DOC' ? t('sortDoc') : t('sortTime'));
       renderDaily();
     }
@@ -2758,7 +3070,7 @@
 
     function promptUnvoidDoc(docId, docNo) {
       vib(18);
-      openMainModal(`↩ ${t('unvoidShort')} #${docNo}`, `<div class="sub-card" style="font-size:12px;font-weight:800;">${esc(t('unvoidAsk'))}</div>`,
+      openMainModal(`↩ ${t('unvoidShort')} ${docNo}`, `<div class="sub-card" style="font-size:12px;font-weight:800;">${esc(t('unvoidAsk'))}</div>`,
         `<button type="button" class="btn muted" onclick="closeMainModal()">${esc(t('cancel'))}</button>
          <button type="button" class="btn teal" onclick="verifyAndUnvoid('${docId}','${esc(docNo)}')">${esc(t('ok'))}</button>`);
     }
@@ -2768,7 +3080,7 @@
         try {
           const res = await callRpc('rpc_unvoid_document', { p_token: session.token, p_document_id: docId });
           if (!res.success) { showToast(res.error === 'INSUFFICIENT_STOCK' ? t('errStock') : (res.error || t('errGeneric'))); return; }
-          sendAuditLog(t('auditUnvoidTitle'), `#${docNo}`, `ሰነድ #${docNo} እንደገና ወደ ንቁ (Active) ተመልሷል።`, actor.full_name);
+          sendAuditLog(t('auditUnvoidTitle'), `${docNo}`, `ሰነድ ${docNo} እንደገና ወደ ንቁ (Active) ተመልሷል።`, actor.full_name);
           showToast(t('savedOk')); loadWarehouseData(currentWhId); loadDaily(false);
         } catch (e) { showToast(e?.message || t('errGeneric')); }
       });
@@ -2776,7 +3088,7 @@
 
     function promptHardDeleteDoc(docId, docNo) {
       vib(22);
-      openMainModal(`${t('hardDelBtn')} — #${docNo}`, `<div class="sub-card" style="font-size:12px;font-weight:800;color:#fecaca;">${esc(t('hardDelAsk'))}</div>`,
+      openMainModal(`${t('hardDelBtn')} — ${docNo}`, `<div class="sub-card" style="font-size:12px;font-weight:800;color:#fecaca;">${esc(t('hardDelAsk'))}</div>`,
         `<button type="button" class="btn muted" onclick="closeMainModal()">${esc(t('cancel'))}</button>
          <button type="button" class="btn danger" onclick="verifyAndHardDelete('${docId}','${esc(docNo)}')">${esc(t('del'))}</button>`);
     }
@@ -2793,7 +3105,7 @@
             sum.ref_no && sum.ref_no !== '-' ? `ፓድ/ታርጋ: ${sum.ref_no}` : '',
             linesTxt,
           ].filter(Boolean).join('\n');
-          sendAuditLog(t('auditDelTitle'), `#${sum.doc_no || docNo}`, detail, actor.full_name);
+          sendAuditLog(t('auditDelTitle'), `${sum.doc_no || docNo}`, detail, actor.full_name);
           showToast(t('savedOk')); loadWarehouseData(currentWhId); loadDaily(false);
         } catch (e) { showToast(e?.message || t('errGeneric')); }
       });
@@ -2890,7 +3202,7 @@
       const newParty = document.getElementById('edParty').value.trim();
       const rawRef = document.getElementById('edRef').value.trim();
       const newRef = docType === 'OUT' ? formatPadRef(rawRef) : rawRef;
-      if (newDocNo !== origDocNo) changes.unshift(`• ሰነድ ቁጥር: #${origDocNo} ➔ #${newDocNo}`);
+      if (newDocNo !== origDocNo) changes.unshift(`• ሰነድ ቁጥር: ${origDocNo} ➔ ${newDocNo}`);
 
       const appendCopy = editAppendList.map((x) => ({ item_id: x.item_id, qty: x.qty }));
       const voidCopy = editVoidIds.slice();
@@ -2903,7 +3215,7 @@
             p_line_updates: updates, p_append_items: appendCopy, p_void_ledger_ids: voidCopy,
           });
           if (!res.success) { showToast(res.error === 'INSUFFICIENT_STOCK' ? t('errStock') : (res.error || t('errGeneric'))); return; }
-          sendAuditLog(t('auditEditTitle'), `#${newDocNo}`, changes.join('\n') || `ደንበኛ/ማጣቀሻ: ${newParty} (${newRef})`, actor.full_name);
+          sendAuditLog(t('auditEditTitle'), `${newDocNo}`, changes.join('\n') || `ደንበኛ/ማጣቀሻ: ${newParty} (${newRef})`, actor.full_name);
           showToast(t('savedOk')); loadWarehouseData(currentWhId); loadDaily(false);
         } catch (e) { showToast(e?.message || t('errGeneric')); }
       });
@@ -2914,7 +3226,7 @@
         try {
           const res = await callRpc('rpc_void_document', { p_token: session.token, p_document_id: docId });
           if (!res.success) { showToast(res.error || t('errGeneric')); return; }
-          sendAuditLog(t('auditVoidTitle'), `#${docNo}`, `ደንበኛ/አቅራቢ: ${partyName || '-'}`, actor.full_name);
+          sendAuditLog(t('auditVoidTitle'), `${docNo}`, `ደንበኛ/አቅራቢ: ${partyName || '-'}`, actor.full_name);
           showToast(t('savedOk')); loadWarehouseData(currentWhId); loadDaily(false);
         } catch (e) { showToast(e?.message || t('errGeneric')); }
       });
@@ -3096,7 +3408,7 @@
       document.getElementById('btnPdfSend').textContent = `${t('pdfSend')} (${cnt})`;
     }
 
-    // ==================== v12 Google Sheets–Style PDF Studio Engine ====================
+    // ==================== Google Sheets–Style PDF Studio Engine ====================
     function getLockedPageSizeMm(cfg) {
       const c = cfg || pdfCfg;
       if (c.mode === 'MOBILE') return { w: 110, h: 215 };
@@ -3284,7 +3596,6 @@
         const ph = sz.h * 2.83465;
         const orient = pw > ph ? 'l' : 'p';
 
-        // ትክክለኛ የ96-DPI ሚዛን (1mm = 3.78px) — ለሞባይል 110×215 ሲመረጥ 416×813px ሆኖ በትልቁ ይወጣል!
         const stagePx = Math.max(340, Math.min(1150, Math.round(sz.w * 3.7795)));
         const pagePxH = Math.round(stagePx * (sz.h / sz.w));
         const padPx = stagePx <= 520 ? 10 : 20;
@@ -3832,7 +4143,7 @@
       renderDynamicFormFields(); renderDaily(); closeMainModal(); showToast(t('savedOk'));
     }
 
-    // ==================== Google Sheets–Style PDF Studio Modal (v12) ====================
+    // ==================== Google Sheets–Style PDF Studio Modal ====================
     function openPdfCfgModal() {
       vib(18);
       pdfDraft = {
@@ -4489,7 +4800,6 @@
       document.getElementById('btnTTicket').textContent = t('tTicket');
       document.getElementById('btnTFree').textContent = t('tFree');
       document.getElementById('btnTAudit').textContent = t('tAudit');
-      document.getElementById('lblPerCarry').textContent = t('perCarry');
       document.getElementById('lblTCounted').textContent = t('counted');
       document.getElementById('lblTStrokes').textContent = t('tLoads');
       document.getElementById('lblTRemQty').textContent = t('tRemQty');
@@ -4526,6 +4836,9 @@
     }, 1000);
 
     (function boot() {
+      if ('speechSynthesis' in window && window.speechSynthesis.getVoices) {
+        try { window.speechSynthesis.getVoices(); } catch {}
+      }
       const urlOrg = new URLSearchParams(location.search).get('org');
       if (urlOrg) document.getElementById('inpOrgCode').value = urlOrg.toUpperCase();
       renderStaticLabels();
