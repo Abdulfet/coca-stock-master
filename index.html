@@ -33,29 +33,32 @@
     .gate-title { text-align: center; font-size: 16px; font-weight: 900; }
     .gate-pin { height: 46px; text-align: center; font-size: 22px; letter-spacing: 8px; -webkit-text-security: disc; }
 
-    /* ዋና ቅርፊት + Smart Focus Mode */
+    /* ዋና ቅርፊት + ንጹህ Smart Focus Mode */
     .shell { max-width: 640px; height: 100vh; height: 100dvh; margin: 0 auto; display: none; flex-direction: column; padding: 6px 6px 0; position: relative; overflow: hidden; }
-    .topbar { height: 42px; display: flex; align-items: center; gap: 6px; background: var(--surface); border: 1px solid var(--border-strong); border-radius: 12px; padding: 0 7px; margin-bottom: 5px; flex-shrink: 0; position: relative; z-index: 60; }
+    .topbar { height: 44px; display: flex; align-items: center; gap: 6px; background: var(--surface); border: 1px solid var(--border-strong); border-radius: 12px; padding: 0 7px; margin-bottom: 6px; flex-shrink: 0; position: relative; z-index: 60; }
     .top-left-grp { display: flex; align-items: center; gap: 6px; min-width: 0; flex: 1; }
     #topFocusLeft { display: none; }
     .shell.focus-mode #topNormalLeft { display: none; }
     .shell.focus-mode #topFocusLeft { display: flex; }
 
-    .icon-btn { width: 32px; height: 30px; border-radius: 8px; border: 1px solid var(--border-strong); background: var(--surface-deep); color: var(--primary); font-size: 13.5px; font-weight: 900; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .tally-top-tools { display: none; align-items: center; gap: 5px; }
+    .shell.view-tally .tally-top-tools { display: inline-flex; }
+
+    .icon-btn { width: 34px; height: 32px; border-radius: 9px; border: 1px solid var(--border-strong); background: var(--surface-deep); color: var(--primary); font-size: 14px; font-weight: 900; line-height: 1; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; padding: 0; }
+    .icon-btn.back-btn { color: #fff; font-size: 16px; border-color: var(--border-strong); }
     .icon-btn.on { background: rgba(14,165,233,0.28); border-color: var(--primary); color: #fff; }
     .icon-btn.fmt-on { background: rgba(20,184,166,0.28); border-color: var(--teal); color: #5eead4; }
     .icon-btn.voice-on { background: rgba(20,184,166,0.25); border-color: var(--teal); color: #5eead4; }
-    .icon-btn.locked { background: rgba(239,68,68,0.22); border-color: var(--rose); color: #fca5a5; }
+    .icon-btn.locked { background: rgba(239,68,68,0.24); border-color: var(--rose); color: #fca5a5; }
     .brand-box { display: flex; flex-direction: column; min-width: 0; flex-shrink: 1; line-height: 1.18; }
     .brand-name { font-size: 12px; font-weight: 900; letter-spacing: 0.2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .brand-sub { font-size: 8.5px; font-weight: 800; color: var(--primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .focus-pill { height: 30px; max-width: 175px; padding: 0 11px; border-radius: 15px; border: 1px solid var(--teal); background: rgba(20,184,166,0.16); color: #99f6e4; font-size: 11.5px; font-weight: 900; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .focus-menu { position: absolute; top: 48px; left: 10px; min-width: 190px; background: #070d19; border: 1.5px solid var(--border-strong); border-radius: 14px; padding: 6px; display: none; flex-direction: column; gap: 4px; z-index: 500; box-shadow: 0 16px 36px rgba(0,0,0,0.82); }
+    .focus-menu { position: absolute; top: 50px; left: 10px; min-width: 190px; background: #070d19; border: 1.5px solid var(--border-strong); border-radius: 14px; padding: 6px; display: none; flex-direction: column; gap: 4px; z-index: 500; box-shadow: 0 16px 36px rgba(0,0,0,0.82); }
     .focus-menu.open { display: flex; }
     .focus-menu-item { height: 36px; padding: 0 10px; border-radius: 9px; border: none; background: transparent; color: var(--text); font-size: 12px; font-weight: 900; cursor: pointer; display: flex; align-items: center; gap: 8px; text-align: left; }
     .focus-menu-item.active { background: rgba(14,165,233,0.25); color: #7dd3fc; }
-    .wh-sel { margin-left: auto; max-width: 142px; height: 30px; padding: 0 6px; border-radius: 8px; border: 1px solid var(--primary); background: var(--surface-deep); color: var(--primary); font-size: 11px; font-weight: 900; outline: none; flex-shrink: 0; }
-    .sync-pill { display: none; height: 26px; padding: 0 7px; border-radius: 13px; border: 1px solid var(--amber); background: rgba(245,158,11,0.18); color: #fde68a; font-size: 10px; font-weight: 900; cursor: pointer; flex-shrink: 0; }
+    .wh-sel { margin-left: auto; max-width: 146px; height: 32px; padding: 0 8px; border-radius: 9px; border: 1px solid var(--primary); background: var(--surface-deep); color: var(--primary); font-size: 11px; font-weight: 900; outline: none; flex-shrink: 0; }
+    .sync-pill { display: none; height: 28px; padding: 0 8px; border-radius: 14px; border: 1px solid var(--amber); background: rgba(245,158,11,0.18); color: #fde68a; font-size: 10px; font-weight: 900; cursor: pointer; flex-shrink: 0; }
 
     /* ጎን ሜኑ */
     .drawer-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.76); backdrop-filter: blur(4px); z-index: 600; display: none; }
@@ -73,8 +76,8 @@
     /* የጋራ ክፍሎች */
     .view { display: none; flex: 1; min-height: 0; flex-direction: column; overflow: hidden; }
     .view.active { display: flex; }
-    .seg { display: flex; gap: 5px; margin-bottom: 5px; flex-shrink: 0; align-items: center; }
-    .seg-btn { flex: 1; height: 32px; border-radius: 10px; border: 1px solid var(--border-strong); background: var(--surface); color: var(--muted); font-size: 11px; font-weight: 900; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 4px; }
+    .seg { display: flex; gap: 5px; margin-bottom: 6px; flex-shrink: 0; align-items: center; }
+    .seg-btn { flex: 1; height: 34px; border-radius: 10px; border: 1px solid var(--border-strong); background: var(--surface); color: var(--muted); font-size: 11.5px; font-weight: 900; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 6px; }
     .seg-btn.out { background: #3b0a0a; border-color: var(--rose); color: #fca5a5; }
     .seg-btn.in { background: #052e16; border-color: var(--emerald); color: #86efac; }
     .seg-btn.adj { background: #172554; border-color: var(--primary); color: #7dd3fc; }
@@ -110,7 +113,7 @@
     .tile-bot { display: flex; justify-content: space-between; align-items: center; font-size: 9.5px; color: var(--muted); font-weight: 800; }
     .tile-cnt-btn { padding: 2px 6px; border-radius: 6px; border: 1px solid var(--teal); background: rgba(20,184,166,0.14); color: var(--teal); font-size: 9.5px; font-weight: 900; cursor: pointer; }
 
-    /* ቅርጫት + Dock (ቅርጫት ሲኖር 5-ታብ ይደበቅና Dock ወደ ታች ጠርዝ ይወርዳል) */
+    /* ቅርጫት + Dock */
     .basket-wrap { display: none; flex: 0 0 auto; max-height: 36vh; flex-direction: column; margin-top: auto; margin-bottom: 60px; padding-top: 4px; }
     .basket-list { overflow-y: auto; -webkit-overflow-scrolling: touch; display: flex; flex-direction: column; gap: 5px; }
     .b-row { height: 42px; background: rgba(15, 23, 42, 0.88); border: 1.5px solid rgba(56, 189, 248, 0.38); border-radius: 21px; padding: 4px 8px 4px 6px; display: flex; align-items: center; justify-content: space-between; gap: 6px; backdrop-filter: blur(6px); }
@@ -127,22 +130,23 @@
     .dock-btn.out { background: var(--rose); color: #fff; }
     .dock-btn.in { background: var(--emerald); color: #052e16; }
 
-    /* ==================== ገጽ 2: ዘመናዊ ቆጠራ (Smart Focus — 100% Safe Bottom Zone) ==================== */
-    .t-cap-bar { display: flex; align-items: center; gap: 5px; margin-bottom: 5px; flex-shrink: 0; }
+    /* ==================== ገጽ 2: ዘመናዊ ቆጠራ (v15 Polished) ==================== */
+    .t-cap-bar { display: flex; align-items: center; gap: 5px; margin-bottom: 6px; flex-shrink: 0; }
     .t-cap-nav { width: 30px; height: 36px; border-radius: 10px; border: 1px solid var(--border-strong); background: var(--surface); color: var(--teal); font-size: 12px; font-weight: 900; cursor: pointer; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; }
     .t-cap-main { flex: 1; min-width: 0; height: 36px; padding: 0 11px; border-radius: 18px; border: 1.5px solid var(--border-strong); background: var(--surface); color: var(--text); font-size: 11.5px; font-weight: 900; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 6px; overflow: hidden; }
     .t-cap-main.dir-out { border-color: rgba(239,68,68,0.5); }
     .t-cap-main.dir-in, .t-cap-main.dir-free { border-color: rgba(16,185,129,0.55); }
     .t-cap-main.dir-audit { border-color: rgba(14,165,233,0.55); }
     .t-cap-txt { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: inline-flex; align-items: center; gap: 5px; min-width: 0; }
-    .t-cap-badge { font-family: ui-monospace, monospace; font-size: 10.5px; color: var(--teal); background: rgba(20,184,166,0.14); padding: 2px 7px; border-radius: 10px; flex-shrink: 0; }
+    .t-cap-badge { font-family: ui-monospace, monospace; font-size: 11px; color: var(--teal); background: rgba(20,184,166,0.14); padding: 2px 8px; border-radius: 10px; flex-shrink: 0; }
     .t-cap-mult { height: 36px; min-width: 58px; padding: 0 10px; border-radius: 18px; border: 1.5px solid var(--teal); background: var(--teal-dark); color: #99f6e4; font-family: ui-monospace, monospace; font-size: 12px; font-weight: 900; cursor: pointer; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; gap: 3px; }
 
-    .t-top-actions { display: grid; grid-template-columns: 0.8fr 0.8fr 0.82fr 1.58fr; gap: 5px; margin-bottom: 5px; flex-shrink: 0; }
-    .t-act-btn { position: relative; height: 35px; border-radius: 10px; border: 1px solid var(--border-strong); background: var(--surface); color: var(--text); font-size: 10.5px; font-weight: 900; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 3px; overflow: hidden; white-space: nowrap; touch-action: none; }
-    .t-act-btn > span { position: relative; z-index: 1; }
+    .t-top-actions { display: grid; grid-template-columns: 0.78fr 0.78fr 0.8fr 1.64fr; gap: 5px; margin-bottom: 6px; flex-shrink: 0; }
+    .t-act-btn { position: relative; height: 36px; border-radius: 10px; border: 1px solid var(--border-strong); background: var(--surface); color: var(--text); font-size: 11px; font-weight: 900; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 4px; overflow: hidden; white-space: nowrap; touch-action: none; }
+    .t-act-btn > span { position: relative; z-index: 1; display: inline-flex; align-items: center; gap: 3px; }
+    .t-act-ico { font-size: 13px; line-height: 1; font-weight: 900; }
     .t-act-btn.commit { background: rgba(20,184,166,0.15); border: 1.5px solid var(--teal); color: #99f6e4; }
-    .t-act-btn.commit.ready-done { background: var(--emerald); border-color: #6ee7b7; color: #022c22; box-shadow: 0 0 14px rgba(16,185,129,0.45); }
+    .t-act-btn.commit.ready-done { background: var(--emerald); border-color: #6ee7b7; color: #022c22; box-shadow: 0 0 12px rgba(16,185,129,0.4); }
     .t-hold-fill { position: absolute; left: 0; top: 0; bottom: 0; width: 0%; background: rgba(239,68,68,0.52); pointer-events: none; z-index: 0; }
 
     .ticket-bar { display: flex; gap: 5px; overflow-x: auto; padding-bottom: 2px; }
@@ -173,8 +177,8 @@
     .t-prog-track { width: 100%; height: 4px; background: rgba(148,163,184,0.14); flex-shrink: 0; }
     .t-prog-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--teal), var(--emerald)); transition: width 0.2s ease; }
 
-    .t-stats-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; padding: 7px 6px 6px; background: rgba(15,23,42,0.88); border-bottom: 1px solid var(--border); flex-shrink: 0; }
-    .t-kpi { background: rgba(6,10,18,0.58); border: 1px solid var(--border); border-radius: 9px; padding: 4px 4px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 0; }
+    .t-stats-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; padding: 7px 6px 6px; background: rgba(15,23,42,0.92); border-bottom: 1px solid var(--border); flex-shrink: 0; position: relative; z-index: 25; }
+    .t-kpi { background: rgba(6,10,18,0.62); border: 1px solid var(--border); border-radius: 9px; padding: 4px 4px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 0; }
     .t-kpi-lbl { font-size: 8.5px; font-weight: 800; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
     .t-kpi-val { font-family: ui-monospace, monospace; font-size: 17px; font-weight: 900; line-height: 1.18; color: var(--text); white-space: nowrap; }
     .t-kpi-val.sm { font-size: 12.5px; }
@@ -183,6 +187,7 @@
     .t-kpi-val.c-am { color: #fcd34d; }
     .t-kpi-val.c-pr { color: #7dd3fc; }
 
+    .t-stage-body { position: relative; flex: 1; min-height: 0; display: flex; flex-direction: column; overflow: hidden; }
     .t-visual { flex: 1; min-height: 0; overflow-y: auto; padding: 10px 10px; display: flex; flex-direction: column; justify-content: center; gap: 8px; }
     .t-visual.tally-mode { justify-content: flex-start; }
 
@@ -215,11 +220,13 @@
     .c-pill { padding: 2px 6px; border-radius: 6px; background: var(--surface); border: 1px solid var(--border-strong); font-family: ui-monospace, monospace; font-size: 9.5px; color: var(--muted); white-space: nowrap; }
     .c-pill.fast { border-color: var(--amber); color: #fde68a; background: rgba(245,158,11,0.16); }
 
+    /* መቆለፊያው 4ቱን KPI ሳይሸፍን የታችኛውን visual ብቻ ይሸፍናል */
     .t-pause-mask { position: absolute; inset: 0; z-index: 20; background: rgba(6,10,18,0.92); backdrop-filter: blur(5px); display: none; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 14px; text-align: center; }
     .t-pause-mask.open { display: flex; }
 
-    /* ብቸኛ የታችኛው የአውራ ጣት መቁጠሪያ ቀጠና (Smart Focus ስለሆነ ከታች 10px ብቻ) */
-    .t-trigger-wrap { margin-bottom: max(10px, env(safe-area-inset-bottom)); flex-shrink: 0; }
+    /* ብቸኛ የታችኛው የአውራ ጣት መቁጠሪያ ቀጠና (ሲቆለፍ በግልጽ ይደበዝዛል) */
+    .t-trigger-wrap { margin-bottom: max(10px, env(safe-area-inset-bottom)); flex-shrink: 0; position: relative; transition: opacity 0.18s ease, filter 0.18s ease; }
+    .t-trigger-wrap.paused { opacity: 0.32; filter: grayscale(0.75); }
     .sg-track { position: relative; height: 68px; border-radius: 34px; background: linear-gradient(90deg, rgba(15,23,42,0.96), rgba(4,47,46,0.92)); border: 2px solid var(--teal); overflow: hidden; touch-action: none; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 2px 12px rgba(0,0,0,0.65); }
     .sg-track.odd-fin { border-color: var(--amber); background: linear-gradient(90deg, rgba(15,23,42,0.96), rgba(69,26,3,0.92)); }
     .sg-fill { position: absolute; left: 0; top: 0; bottom: 0; width: 0%; background: linear-gradient(90deg, rgba(20,184,166,0.3), rgba(16,185,129,0.55)); pointer-events: none; }
@@ -266,7 +273,6 @@
     tr.r-ltz-sp td { height: 6px; padding: 0; background: rgba(6,10,18,0.65); border-left: none; border-right: none; }
     .act-pair { display: inline-flex; gap: 4px; align-items: center; justify-content: center; }
 
-    /* True WYSIWYG Sheet Styling when 🎨 is active */
     .tbl-wrap.wysiwyg { background: var(--sh-page-bg, #fff); border: 2px solid var(--teal); }
     .tbl-wrap.wysiwyg table.tbl { font-size: var(--sh-font, 12px); table-layout: var(--sh-layout, auto); }
     .tbl-wrap.wysiwyg table.tbl th {
@@ -329,7 +335,7 @@
     .bin-id { font-size: 9.5px; font-weight: 900; color: var(--primary); }
     .bin-it { font-size: 8.5px; font-weight: 800; word-break: break-word; }
 
-    /* የታችኛው አውራ ጣት ዳሰሳ (በመመዝገቢያ ላይ ቋሚ፤ በትኩረት ገጾች እና ቅርጫት ሲኖር ይጠፋል) */
+    /* የታችኛው አውራ ጣት ዳሰሳ */
     .bottom-nav { position: fixed; bottom: max(6px, env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%); width: calc(100% - 14px); max-width: 626px; height: 50px; background: rgba(15,23,42,0.84); border: 1px solid rgba(255,255,255,0.22); border-radius: 25px; display: flex; align-items: center; padding: 3px 4px; z-index: 50; backdrop-filter: blur(8px); }
     .shell.focus-mode .bottom-nav, .shell.nav-hidden .bottom-nav { display: none !important; }
     .nav-item { flex: 1; height: 42px; border-radius: 21px; border: none; background: transparent; color: var(--muted); font-size: 10px; font-weight: 900; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; }
@@ -403,7 +409,7 @@
       <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;">
         <span id="drawerUserInfo" style="font-size:11px;font-weight:800;color:var(--muted);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"></span>
         <button type="button" class="pdf-pill" style="height:26px;font-size:10px;" id="btnDrawerLang" onclick="toggleLang()"></button>
-        <span style="font-size:10px;font-weight:900;color:var(--teal);opacity:0.85;">v14</span>
+        <span style="font-size:10px;font-weight:900;color:var(--teal);opacity:0.85;">v15</span>
       </div>
       <button type="button" class="btn danger" id="btnLogout" onclick="doLogout()"></button>
     </div>
@@ -422,17 +428,20 @@
         <button type="button" id="btnEntryQuickJump" class="icon-btn" style="display:none;width:auto;padding:0 8px;font-size:11px;color:var(--teal);" onclick="toggleFocusMenu()">🧭 ▾</button>
       </div>
 
-      <!-- የትኩረት ገጾች (Smart Focus) አሞሌ -->
+      <!-- የትኩረት ገጾች አሞሌ (ያለ ድርብ ታብ) -->
       <div id="topFocusLeft" class="top-left-grp">
-        <button type="button" class="icon-btn" style="color:#fff;" onclick="exitFocusToEntry()">←</button>
-        <button type="button" id="btnFocusSwitch" class="focus-pill" onclick="toggleFocusMenu()"></button>
+        <button type="button" class="icon-btn back-btn" onclick="exitFocusToEntry()">←</button>
+        <div id="tallyTopTools" class="tally-top-tools">
+          <button type="button" id="btnTVoice" class="icon-btn" onclick="toggleQuickVoice()">🔇</button>
+          <button type="button" id="btnTPause" class="icon-btn" onclick="toggleManualTallyPause()">⏸</button>
+          <button type="button" class="icon-btn" style="color:var(--teal);" onclick="openTallyCfgModal()">⚙️</button>
+        </div>
       </div>
 
       <button type="button" id="syncPill" class="sync-pill" onclick="openOfflineQueueModal()"></button>
       <select id="selWarehouse" class="wh-sel" onchange="switchWarehouse(this.value)"></select>
     </header>
 
-    <!-- ፈጣን የገጽ መቀያየሪያ ሜኑ -->
     <div id="focusMenu" class="focus-menu"></div>
 
     <!-- ገጽ 1: መመዝገቢያ -->
@@ -479,25 +488,22 @@
       </div>
     </section>
 
-    <!-- ገጽ 2: ዘመናዊ ቆጠራ (Smart Focus) -->
+    <!-- ገጽ 2: ዘመናዊ ቆጠራ (v15) -->
     <section id="viewTally" class="view">
       <div class="seg">
         <button type="button" id="btnTTicket" class="seg-btn teal" onclick="setTallyTab('TICKET')"></button>
         <button type="button" id="btnTFree" class="seg-btn" onclick="setTallyTab('FREE')"></button>
         <button type="button" id="btnTAudit" class="seg-btn" onclick="setTallyTab('AUDIT')"></button>
-        <button type="button" id="btnTVoice" class="icon-btn" style="width:32px;height:32px;" onclick="toggleQuickVoice()">🔇</button>
-        <button type="button" id="btnTPause" class="icon-btn" style="width:32px;height:32px;" onclick="toggleManualTallyPause()">🔓</button>
-        <button type="button" class="icon-btn" style="width:32px;height:32px;color:var(--teal);" onclick="openTallyCfgModal()">⚙️</button>
       </div>
 
       <div id="tallyCapsuleBar" class="t-cap-bar"></div>
 
       <div class="t-top-actions">
-        <button type="button" class="t-act-btn" style="color:#fca5a5;" onclick="undoTally()"><span>↩️ <span id="lblTUndo"></span></span></button>
-        <button type="button" class="t-act-btn" style="color:var(--amber);" onclick="openNumModal('odd')"><span>➕ <span id="lblTOdd"></span></span></button>
+        <button type="button" class="t-act-btn" style="color:#fca5a5;" onclick="undoTally()"><span><span class="t-act-ico">↩</span><span id="lblTUndo"></span></span></button>
+        <button type="button" class="t-act-btn" style="color:var(--amber);" onclick="openNumModal('odd')"><span><span class="t-act-ico">+</span><span id="lblTOdd"></span></span></button>
         <button type="button" id="btnTClearHold" class="t-act-btn">
           <div id="tClearFill" class="t-hold-fill"></div>
-          <span>🧹 <span id="lblTClear"></span></span>
+          <span><span class="t-act-ico">⌫</span><span id="lblTClear"></span></span>
         </button>
         <button type="button" class="t-act-btn commit" id="btnTCommit" onclick="commitTally(this)"></button>
       </div>
@@ -512,23 +518,25 @@
           <div class="t-kpi"><span class="t-kpi-lbl" id="lblTRemQty"></span><span class="t-kpi-val c-am" id="valTRemQty">∞</span></div>
           <div class="t-kpi"><span class="t-kpi-lbl" id="lblTRemLoads"></span><span class="t-kpi-val c-pr" id="valTRemLoads">∞</span></div>
         </div>
-        <div id="tallyVisual" class="t-visual"></div>
-        <div id="cadenceBar" class="cadence-bar">
-          <span id="cadenceTimer" class="cadence-timer stale">⏱ --</span>
-          <div id="cadencePills" class="cadence-pills"></div>
-        </div>
-        <div id="tallyPauseMask" class="t-pause-mask">
-          <div style="font-size:28px;">🔒</div>
-          <div id="lblPauseTitle" style="font-size:14px;font-weight:900;color:#fde68a;"></div>
-          <div id="lblPauseSub" style="font-size:11.5px;font-weight:800;color:var(--muted);"></div>
-          <button type="button" class="btn teal" style="min-width:150px;height:42px;border-radius:21px;" id="btnResumeTally" onclick="resumeTallyFromPause()"></button>
+        <div class="t-stage-body">
+          <div id="tallyVisual" class="t-visual"></div>
+          <div id="cadenceBar" class="cadence-bar">
+            <span id="cadenceTimer" class="cadence-timer stale">⏱ --</span>
+            <div id="cadencePills" class="cadence-pills"></div>
+          </div>
+          <div id="tallyPauseMask" class="t-pause-mask">
+            <div style="font-size:28px;">🔒</div>
+            <div id="lblPauseTitle" style="font-size:14px;font-weight:900;color:#fde68a;"></div>
+            <div id="lblPauseSub" style="font-size:11.5px;font-weight:800;color:var(--muted);"></div>
+            <button type="button" class="btn teal" style="min-width:155px;height:42px;border-radius:21px;" id="btnResumeTally" onclick="resumeTallyFromPause()"></button>
+          </div>
         </div>
       </div>
 
       <div id="tallyTriggerArea" class="t-trigger-wrap"></div>
     </section>
 
-    <!-- ገጽ 3: ዕለታዊ (Smart Focus + Inline Google Sheets Bar) -->
+    <!-- ገጽ 3: ዕለታዊ -->
     <section id="viewDaily" class="view">
       <div class="card">
         <div style="display:grid;grid-template-columns:1fr auto auto auto auto auto;gap:4px;">
@@ -546,7 +554,7 @@
       </div>
     </section>
 
-    <!-- ገጽ 4: ስቶክ (Smart Focus + Inline Google Sheets Bar) -->
+    <!-- ገጽ 4: ስቶክ -->
     <section id="viewStock" class="view">
       <div class="seg">
         <button type="button" id="btnPWeek" class="seg-btn teal" onclick="setStockPeriod('WEEK')"></button>
@@ -565,7 +573,7 @@
       </div>
     </section>
 
-    <!-- ገጽ 5: ካርታ (Smart Focus) -->
+    <!-- ገጽ 5: ካርታ -->
     <section id="viewMap" class="view">
       <div class="card" style="display:flex;gap:5px;">
         <input type="text" id="inpMapSearch" class="inp" style="flex:1;" oninput="onSmartDimInput(this); renderMap()">
@@ -577,7 +585,7 @@
       <div class="rack-wrap"><div id="rackGrid" class="rack-grid"></div></div>
     </section>
 
-    <!-- ቀጥታ የGoogle Sheets ቅርጸት አሞሌ እና ፓነል (ዕለታዊ / ስቶክ) -->
+    <!-- ቀጥታ የGoogle Sheets ቅርጸት አሞሌ እና ፓነል -->
     <div id="sheetFmtPanel" class="sheet-fmt-panel"></div>
     <div id="sheetFmtBar" class="sheet-fmt-bar"></div>
 
@@ -640,7 +648,7 @@
       inShowDocNo: false,
       inShowKg: false,
       inShowNote: false,
-      customFields: [], // { id, label, type: 'text'|'number'|'select'|'date', options: '', scope: 'OUT'|'IN'|'BOTH', enabled: true }
+      customFields: [],
     };
 
     const DEFAULT_TALLY_CFG = {
@@ -657,14 +665,14 @@
     };
 
     const DEFAULT_SHEET_STOCK = {
-      mode: 'MOBILE',         // MOBILE | A4_P | A4_L | A5_P | LETTER_P | CUSTOM
+      mode: 'MOBILE',
       widthMm: 110,
       heightMm: 215,
       fontSizePx: 12,
       bold: true,
       italic: false,
       wrap: false,
-      stylePreset: 'classic', // classic | dark | bw | minimal
+      stylePreset: 'classic',
       headerBg: '',
       textAlign: 'left',
       textPadX: 6,
@@ -713,7 +721,7 @@
     const DEFAULT_UI_CFG = {
       showDailyActions: true,
       showStockActions: true,
-      alwaysHideBottomNav: false, // አማራጭ 2 ማብሪያ
+      alwaysHideBottomNav: false,
     };
 
     const I18N = {
@@ -766,10 +774,10 @@
         noTapYet: '⏱ ገና አልተጀመረም',
         pauseTitle: 'ቆጠራው ተቆልፏል',
         pauseSub: (n, q) => `የመጨረሻ ሸክም ${n} (${q} ፍሬ)`,
+        pauseLockedHint: '🔒 መጀመሪያ «ቆጠራ ቀጥል» ን ይንኩ',
         resumeBtn: '▶ ቆጠራ ቀጥል',
         voiceOnToast: '🔊 የድምፅ ቆጠራ በርቷል',
         voiceOffToast: '🔇 የድምፅ ቆጠራ ጠፍቷል',
-        voiceFallbackToast: '⚠️ የአማርኛ ድምፅ ስልኩ ላይ የለም — በእንግሊዝኛ ቁጥር ይናገራል',
         mTallyCfg: 'የቆጠራ ሴቲንግ',
         tCfgTrigLbl: 'የመቁጠሪያ ቁልፍ ዓይነት',
         tCfgSwipe: 'የመንሸራተቻ ማርሽ (Swipe-Gate)',
@@ -939,10 +947,10 @@
         noTapYet: '⏱ Ready to count',
         pauseTitle: 'Tally Paused',
         pauseSub: (n, q) => `Last load ${n} (${q} pcs)`,
+        pauseLockedHint: '🔒 Tap "Resume Tally" first',
         resumeBtn: '▶ Resume Tally',
         voiceOnToast: '🔊 Voice count ON',
         voiceOffToast: '🔇 Voice count OFF',
-        voiceFallbackToast: '⚠️ Amharic voice unavailable — using English numbers',
         mTallyCfg: 'Tally Settings',
         tCfgTrigLbl: 'Trigger Style',
         tCfgSwipe: 'Swipe-Gate Slider',
@@ -1092,8 +1100,8 @@
     let uiCfg = { ...DEFAULT_UI_CFG, ...loadJson('erp_ui_cfg_v1', {}), ...loadJson(UI_CFG_KEY, {}) };
 
     let currentView = 'entry';
-    let activeFmtSheet = null; // null | 'daily' | 'stock'
-    let activeFmtSub = null;   // null | 'color' | 'cols' | 'page'
+    let activeFmtSheet = null;
+    let activeFmtSub = null;
     let currentWhId = '';
     let whData = { warehouse: {}, items: [], categories: [], racks: [], slot_map: {}, last_doc_num: 0, next_doc_num: 1, pending_adjustments_count: 0, is_branch_admin: false, is_org_admin: false, org_warehouses: [] };
     let cachedChannels = [];
@@ -1110,7 +1118,7 @@
     let workerLastTap = [0, 0, 0, 0];
     let stageGlowTimer = null;
     let pendingOddFinishQty = 0;
-    let voiceFallbackNotified = false;
+    let speakTimer = null;
     let freeTally = { label: '', target: 0, lockTarget: true, strokes: [] };
     let auditTally = { itemId: '', strokes: [] };
 
@@ -1335,6 +1343,7 @@
       } catch {}
     }
 
+    // ==================== የአማርኛ እና እንግሊዝኛ ድምፅ ቆጣሪ (am-ET + Phonetic + Android Fix) ====================
     function numberToAmharicWords(num) {
       const n = Math.floor(Math.abs(Number(num || 0)));
       if (n === 0) return 'ዜሮ';
@@ -1358,8 +1367,33 @@
       if (n < 1000) return sub1000(n);
       const th = Math.floor(n / 1000);
       const rem = n % 1000;
-      const thTxt = `${sub1000(th)} ሺህ`;
-      return rem ? `${thTxt} ${sub1000(rem)}` : thTxt;
+      return rem ? `${sub1000(th)} ሺህ ${sub1000(rem)}` : `${sub1000(th)} ሺህ`;
+    }
+
+    function numberToAmharicPhonetic(num) {
+      const n = Math.floor(Math.abs(Number(num || 0)));
+      if (n === 0) return 'zero';
+      const ones = ['', 'ahnd', 'hoo-let', 'sost', 'ah-rat', 'ah-mist', 'sid-dist', 'sa-bat', 'si-mint', 'ze-tegn'];
+      const tens = ['', 'ah-sir', 'ha-ya', 'se-la-sa', 'ar-ba', 'ham-sa', 'sil-sa', 'se-ba', 'se-man-ya', 'ze-te-na'];
+      const sub100 = (x) => {
+        if (x < 10) return ones[x];
+        if (x === 10) return 'ah-sir';
+        if (x < 20) return `ah-sra ${ones[x - 10]}`;
+        const tPart = tens[Math.floor(x / 10)];
+        const oPart = ones[x % 10];
+        return oPart ? `${tPart} ${oPart}` : tPart;
+      };
+      const sub1000 = (x) => {
+        if (x < 100) return sub100(x);
+        const h = Math.floor(x / 100);
+        const r = x % 100;
+        const hTxt = h === 1 ? 'me-to' : `${ones[h]} me-to`;
+        return r ? `${hTxt} ${sub100(r)}` : hTxt;
+      };
+      if (n < 1000) return sub1000(n);
+      const th = Math.floor(n / 1000);
+      const rem = n % 1000;
+      return rem ? `${sub1000(th)} shee ${sub1000(rem)}` : `${sub1000(th)} shee`;
     }
 
     function speakCount(loadsNum, totalQty) {
@@ -1369,21 +1403,34 @@
         const wantAm = tallyCfg.voiceLang !== 'en';
         const voices = window.speechSynthesis.getVoices ? window.speechSynthesis.getVoices() : [];
         const amVoice = voices.find((v) => /^am/i.test(v.lang) || /amharic/i.test(v.name));
-        const useAm = wantAm && Boolean(amVoice);
-        if (wantAm && !amVoice && voices.length > 0 && !voiceFallbackNotified) {
-          voiceFallbackNotified = true;
-          showToast(t('voiceFallbackToast'));
-        }
-        const text = useAm ? numberToAmharicWords(val) : String(val);
-        window.speechSynthesis.cancel();
-        const u = new SpeechSynthesisUtterance(text);
-        if (useAm) { u.voice = amVoice; u.lang = 'am-ET'; u.rate = 1.12; }
-        else {
+
+        const u = new SpeechSynthesisUtterance();
+        if (wantAm && amVoice) {
+          u.text = numberToAmharicWords(val);
+          u.voice = amVoice;
+          u.lang = 'am-ET';
+          u.rate = 1.1;
+        } else if (wantAm) {
+          u.text = numberToAmharicPhonetic(val);
           const enVoice = voices.find((v) => /^en/i.test(v.lang));
           if (enVoice) u.voice = enVoice;
-          u.lang = 'en-US'; u.rate = 1.2;
+          u.lang = 'en-US';
+          u.rate = 1.05;
+        } else {
+          u.text = String(val);
+          const enVoice = voices.find((v) => /^en/i.test(v.lang));
+          if (enVoice) u.voice = enVoice;
+          u.lang = 'en-US';
+          u.rate = 1.15;
         }
-        window.speechSynthesis.speak(u);
+
+        if (speakTimer) clearTimeout(speakTimer);
+        if (window.speechSynthesis.speaking || window.speechSynthesis.pending) {
+          window.speechSynthesis.cancel();
+          speakTimer = setTimeout(() => { try { window.speechSynthesis.speak(u); } catch {} }, 55);
+        } else {
+          window.speechSynthesis.speak(u);
+        }
       } catch {}
     }
 
@@ -1661,7 +1708,6 @@
         document.getElementById('drawerUserInfo').textContent = `${session.user.full_name} (${roleLabel(session.user.role)})`;
         if (entryMode === 'OUT') document.getElementById('inpDocNo').value = String(res.next_doc_num || 1);
 
-        // መጋዘን ሲቀየር የሌላ መጋዘን item_id እንዳይቆይ ማረጋገጥ
         if (!res.items.some((x) => x.id === auditTally.itemId)) {
           auditTally.itemId = res.items.length ? res.items[0].id : '';
           auditTally.strokes = [];
@@ -2005,9 +2051,7 @@
               openSeqJumpModal(docNo, whData.next_doc_num, (voidRange) => executePostDocument(docType, docNo, party, ref, itemsPayload, voidRange, null, onSuccess));
               return;
             }
-          } catch {
-            // Lie-Fi / ኔትወርክ ከተቋረጠ ሳይቆም ወደ Offline Queue fallback ይቀጥላል
-          }
+          } catch {}
         }
         await executePostDocument(docType, docNo, party, ref, itemsPayload, null, null, onSuccess);
       });
@@ -2114,7 +2158,7 @@
       });
     }
 
-    // ==================== ገጽ 2: ዘመናዊ ቆጠራ ሞተር (Per-Warehouse Scoped) ====================
+    // ==================== ገጽ 2: ዘመናዊ ቆጠራ ሞተር (v15) ====================
     function getTallyStorageKey() { return TALLY_STATE_PREFIX + (currentWhId || 'default'); }
 
     function normalizeTicket(tk) {
@@ -2262,12 +2306,13 @@
 
       if (tallyTab === 'FREE') {
         const cnt = sumStrokes(freeTally.strokes);
-        const stat = freeTally.target > 0 ? `${cnt}/${freeTally.target}` : String(cnt);
+        const hasTrg = freeTally.target > 0;
+        const stat = hasTrg ? `${cnt}/${freeTally.target}` : String(cnt);
         const lbl = (freeTally.label || '').trim() || t('tFree');
-        const lkIco = freeTally.lockTarget ? '🔒' : '🔓';
+        const trgTag = hasTrg ? `<span style="font-size:11px;">🎯</span>` : '';
         bar.innerHTML = `
           <button type="button" class="t-cap-main dir-free" onclick="openTallyCapsuleModal()">
-            <span class="t-cap-txt"><span>📝 ${esc(lbl)}</span><span style="font-size:11px;">${lkIco}</span></span>
+            <span class="t-cap-txt"><span>📝 ${esc(lbl)}</span>${trgTag}</span>
             <span class="t-cap-badge">${esc(stat)} ▾</span>
           </button>
           ${multBtn}`;
@@ -2507,7 +2552,9 @@
       tallyPaused = Boolean(paused);
       const mask = document.getElementById('tallyPauseMask');
       const btn = document.getElementById('btnTPause');
+      const trig = document.getElementById('tallyTriggerArea');
       if (!mask || !btn) return;
+      if (trig) trig.classList.toggle('paused', tallyPaused);
       if (tallyPaused) {
         const ctx = getActiveStrokeContext();
         document.getElementById('lblPauseTitle').textContent = t('pauseTitle');
@@ -2517,7 +2564,7 @@
         btn.textContent = '🔒'; btn.classList.add('locked');
       } else {
         mask.classList.remove('open');
-        btn.textContent = '🔓'; btn.classList.remove('locked');
+        btn.textContent = '⏸'; btn.classList.remove('locked');
       }
     }
 
@@ -2526,7 +2573,7 @@
     function onTallyAlertClick() { if (pendingOddFinishQty > 0) addTallyStroke(pendingOddFinishQty, null); }
 
     function addTallyStroke(customQty = null, workerIdx = null) {
-      if (tallyPaused) return false;
+      if (tallyPaused) { vib(20); showToast(t('pauseLockedHint')); return false; }
       const ctx = getActiveStrokeContext();
       if (!ctx.enabled) { openTicketAddItemModal(); return false; }
 
@@ -2719,7 +2766,7 @@
       updateQuickVoiceBtn();
 
       document.getElementById('btnTCommit').textContent =
-        tallyTab === 'TICKET' ? `✅ ${t('postDirect')}` : tallyTab === 'FREE' ? `📥 ${t('sendEntry')}` : `⚡ ${t('applyAdj')}`;
+        tallyTab === 'TICKET' ? `✓ ${t('postDirect')}` : tallyTab === 'FREE' ? `➔ ${t('sendEntry')}` : `⚡ ${t('applyAdj')}`;
 
       renderTallyCapsule(); renderTallyVisual(); renderTallyStats(); renderTallyTrigger(forceTrigger);
       updateCadenceStrip(); setTallyPausedState(tallyPaused);
@@ -2940,10 +2987,10 @@
       };
 
       track.addEventListener('pointerdown', (e) => {
-        if (!e.isPrimary || tallyPaused) return;
+        if (!e.isPrimary) return;
+        if (tallyPaused) { vib(20); showToast(t('pauseLockedHint')); return; }
         const rect = track.getBoundingClientRect();
         maxTravel = Math.max(40, rect.width - thumb.offsetWidth - 10);
-        // ጣቱ ከመሀል አካባቢ ቢጀምርም እንዳይቆለፍ startX ን በግራ 55% ክልል ውስጥ ማረጋጋት
         startX = Math.min(e.clientX, rect.left + rect.width * 0.45);
         active = true; triggered = false;
         thumb.classList.remove('snap');
@@ -3212,7 +3259,6 @@
       if (dailySort === 'TIME' && !forceDocAsc) {
         groups.reverse();
       } else {
-        // የገቢ ሰነዶች (doc_no ባዶ ሲሆን) ከሰነድ 1 በላይ ወደ አናት እንዳይገፉ በጊዜያዊ ቦታቸው ማቆየት
         const chrono = groups.slice().reverse();
         let lastAnchor = 0;
         chrono.forEach((g, idx) => {
@@ -4505,7 +4551,7 @@
     function stopQrCamera() { if (qrLoopId) { cancelAnimationFrame(qrLoopId); qrLoopId = null; } if (qrStream) { qrStream.getTracks().forEach((tr) => tr.stop()); qrStream = null; } }
     function jumpToScannedSlot(code) { const clean = String(code || '').trim().toUpperCase(); if (!clean) return; closeMainModal(); const rk = clean.split('-')[0]; if ((whData.racks || []).some((r) => r.code === rk)) activeRack = rk; renderMap(); openBinModal(clean); }
 
-    // ==================== ጎን ሜኑ (የጸዳ) + ተለዋዋጭ የቅጽ ቅንብር ====================
+    // ==================== ጎን ሜኑ + ተለዋዋጭ የቅጽ ቅንብር ====================
     function openDrawer() { vib(15); document.getElementById('focusMenu')?.classList.remove('open'); document.getElementById('drawerBg').style.display = 'block'; document.getElementById('drawer').classList.add('open'); }
     function closeDrawer() { document.getElementById('drawerBg').style.display = 'none'; document.getElementById('drawer').classList.remove('open'); }
 
@@ -4630,7 +4676,6 @@
       });
     }
 
-    // ተለዋዋጭ የቅጽ ቅንብር (+ አዲስ መስክ ጨምር)
     function openFormCfgModal() {
       formDraftCustom = (formCfg.customFields || []).map((f) => ({ ...f }));
       openMainModal(t('mFormCfg'), `
@@ -5020,7 +5065,7 @@
       });
     }
 
-    // ==================== Smart Focus Mode + Edge Swipe Back + ዳሰሳ ====================
+    // ==================== Smart Focus Mode + Safe Edge-to-Edge Swipe + ዳሰሳ ====================
     function openMainModal(title, bodyHtml, footHtml) {
       document.getElementById('focusMenu')?.classList.remove('open');
       document.getElementById('modalTitle').textContent = title;
@@ -5035,21 +5080,12 @@
       if (!shell) return;
       const isFocus = currentView !== 'entry';
       shell.classList.toggle('focus-mode', isFocus);
+      shell.classList.toggle('view-tally', currentView === 'tally');
       const hideNav = isFocus || Boolean(uiCfg.alwaysHideBottomNav) || (currentView === 'entry' && basket.length > 0);
       shell.classList.toggle('nav-hidden', hideNav);
 
       const jumpBtn = document.getElementById('btnEntryQuickJump');
       if (jumpBtn) jumpBtn.style.display = (!isFocus && uiCfg.alwaysHideBottomNav) ? 'inline-flex' : 'none';
-
-      const meta = {
-        entry: `📝 ${t('navEntry')}`,
-        tally: `🧮 ${t('navTally')}`,
-        daily: `📋 ${t('navDaily')}`,
-        stock: `📊 ${t('navStock')}`,
-        map: `🗺️ ${t('navMap')}`,
-      };
-      const focusBtn = document.getElementById('btnFocusSwitch');
-      if (focusBtn) focusBtn.textContent = `${meta[currentView] || ''} ▾`;
     }
 
     function toggleFocusMenu() {
@@ -5107,50 +5143,80 @@
       if (name === 'map') renderMap();
     }
 
-    // የስልኩ ተፈጥሯዊ የጎን-መመለሻ (Android/iOS Edge Back)
     window.addEventListener('popstate', () => {
       if (document.getElementById('mainModal')?.classList.contains('open')) { closeMainModal(); return; }
       if (activeFmtSheet) { closeSheetFormatBar(); return; }
       if (currentView !== 'entry') switchView('entry', false);
     });
 
-    // በገጹ ውስጥ ጣትን ወደ ቀኝ በመሳብ ወደ መመዝገቢያ መመለስ (ከSwipe-Gate እና ሠንጠረዥ scroll ጋር ሳይጋጭ)
+    // ቆጠራ ገጽ ላይ ሙሉ ለሙሉ የጠፋ፤ ሌሎች ገጾች ላይ ደግሞ ከግራ ጥግ (≤20px) እስከ 78% ቀስ ብሎ ሲጎተት ብቻ የሚወጣ
+    const ENABLE_EDGE_SWIPE = true; // ሙሉ ለሙሉ ለማጥፋት false አድርገው
+
     function bindEdgeSwipeBack() {
       const shell = document.getElementById('appShell');
-      if (!shell) return;
-      let sx = 0, sy = 0, tracking = false;
-
-      shell.addEventListener('touchstart', (e) => {
-        if (currentView === 'entry' || e.touches.length !== 1) { tracking = false; return; }
-        if (document.getElementById('mainModal')?.classList.contains('open')) { tracking = false; return; }
-        if (document.getElementById('drawer')?.classList.contains('open')) { tracking = false; return; }
-        const tgt = e.target;
-        // ቆጠራ ላይ ከSwipe-Gate / Trigger Area ጋር እንዳይጋጭ
-        if (tgt.closest('#tallyTriggerArea, #sheetFmtBar, #sheetFmtPanel, input, select, textarea')) { tracking = false; return; }
-        // ሠንጠረዥ / ካርታ ወደ ጎን ተሸብልሎ ከሆነ (scrollLeft > 2) በስህተት እንዳያስወጣ
-        const scroller = tgt.closest('.tbl-wrap, .rack-wrap, .rack-tabs');
-        if (scroller && scroller.scrollLeft > 2) { tracking = false; return; }
-        sx = e.touches[0].clientX;
-        sy = e.touches[0].clientY;
-        tracking = true;
-      }, { passive: true });
-
-      shell.addEventListener('touchend', (e) => {
-        if (!tracking || !e.changedTouches.length) return;
-        tracking = false;
-        const dx = e.changedTouches[0].clientX - sx;
-        const dy = Math.abs(e.changedTouches[0].clientY - sy);
-        if (dx > 82 && dy < 48) {
-          exitFocusToEntry();
-        }
-      }, { passive: true });
-
       document.addEventListener('click', (e) => {
         const menu = document.getElementById('focusMenu');
-        if (menu?.classList.contains('open') && !e.target.closest('#focusMenu, #btnFocusSwitch, #btnEntryQuickJump')) {
+        if (menu?.classList.contains('open') && !e.target.closest('#focusMenu, #btnEntryQuickJump')) {
           menu.classList.remove('open');
         }
       });
+
+      if (!shell || !ENABLE_EDGE_SWIPE) return;
+
+      let sx = 0, sy = 0, curDx = 0, tracking = false;
+      const bar = document.createElement('div');
+      bar.style.cssText = 'position:fixed;left:0;top:0;height:4px;width:0%;z-index:850;background:var(--teal);pointer-events:none;transition:opacity 0.15s ease;opacity:0;';
+      document.body.appendChild(bar);
+
+      const reset = () => {
+        tracking = false; curDx = 0;
+        bar.style.width = '0%'; bar.style.opacity = '0';
+      };
+
+      shell.addEventListener('touchstart', (e) => {
+        if (currentView === 'entry' || currentView === 'tally' || e.touches.length !== 1) return reset();
+        if (document.getElementById('mainModal')?.classList.contains('open')) return reset();
+        if (document.getElementById('drawer')?.classList.contains('open')) return reset();
+        const tgt = e.target;
+        if (tgt.closest('#sheetFmtBar, #sheetFmtPanel, input, select, textarea, button')) return reset();
+
+        const x0 = e.touches[0].clientX;
+        if (x0 > 20) return reset();
+
+        const scroller = tgt.closest('.tbl-wrap, .rack-wrap, .rack-tabs');
+        if (scroller && scroller.scrollLeft > 2) return reset();
+
+        sx = x0;
+        sy = e.touches[0].clientY;
+        curDx = 0;
+        tracking = true;
+      }, { passive: true });
+
+      shell.addEventListener('touchmove', (e) => {
+        if (!tracking || !e.touches.length) return;
+        const dx = e.touches[0].clientX - sx;
+        const dy = Math.abs(e.touches[0].clientY - sy);
+        if (dy > 45 || dx < 0) return reset();
+
+        curDx = dx;
+        const need = Math.max(240, window.innerWidth * 0.78);
+        const pct = Math.min(100, Math.round((dx / need) * 100));
+        if (dx > 20) {
+          bar.style.opacity = '1';
+          bar.style.width = `${pct}%`;
+          bar.style.background = pct >= 100 ? 'var(--emerald)' : 'var(--teal)';
+        }
+      }, { passive: true });
+
+      shell.addEventListener('touchend', () => {
+        if (!tracking) return;
+        const need = Math.max(240, window.innerWidth * 0.78);
+        const ok = curDx >= need;
+        reset();
+        if (ok) exitFocusToEntry();
+      }, { passive: true });
+
+      shell.addEventListener('touchcancel', reset, { passive: true });
     }
 
     function toggleLang() {

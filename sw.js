@@ -1,4 +1,4 @@
-const CACHE = 'erp-shell-v14';
+const CACHE = 'erp-shell-v15';
 const SHELL_ASSETS = ['./', './index.html', './manifest.json', './icon.svg'];
 const CDN_ASSETS = [
   'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js',
@@ -38,7 +38,6 @@ self.addEventListener('fetch', (e) => {
   const req = e.request;
   if (req.method !== 'GET' || !req.url.startsWith('http') || req.url.includes('supabase.co')) return;
 
-  // CDN ፋይሎች: Cache-First (ዳታ እና ፍጥነት ይቆጥባል)
   if (req.url.includes('cdnjs.cloudflare.com')) {
     e.respondWith(
       caches.match(req).then((hit) =>
@@ -55,7 +54,6 @@ self.addEventListener('fetch', (e) => {
     return;
   }
 
-  // የአፑ ፋይሎች: Network-First (ጤነኛ ምላሽ res.ok ብቻ Cache ያደርጋል)
   e.respondWith(
     fetch(req, { cache: 'no-store' })
       .then((res) => {
